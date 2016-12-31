@@ -29,8 +29,18 @@
                         </ul>
 
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="#">Logout</a></li>
+
+                            {% if is_granted('ROLE_USER')  %}
+
+                                <li><a href="#">Profile</a></li>
+                                <li><a href="{{ path('security_logout') }}">Logout</a></li>
+
+                            {% else %}
+
+                                <li><a href="{{ path('security_login') }}">Login</a></li>
+
+                            {% endif %}
+
                         </ul>
                     </div>
 
@@ -38,7 +48,11 @@
 
             </div>
 
-            {% block body %}{% endblock %}
+            <div class="row" style="margin-top: 60px;">
+                <div class="col-md-12">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
 
         </div> <!-- /container -->
 

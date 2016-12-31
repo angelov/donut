@@ -23,6 +23,13 @@ class User implements UserInterface
      */
     private $email;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $password;
+
+    private $plainPassword;
+
     public function getId() : string
     {
         return $this->id;
@@ -43,14 +50,30 @@ class User implements UserInterface
         return $this->email;
     }
 
-    public function getRoles()
+    public function getRoles() : array
     {
         return ['ROLE_USER'];
     }
 
-    public function getPassword()
+    public function getPassword() : string
     {
-        // TODO: Implement getPassword() method.
+        return $this->password;
+    }
+
+    public function setPassword(string $password)
+    {
+        $this->password = $password;
+    }
+
+    public function getPlainPassword() : string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword)
+    {
+        $this->password = '';
+        $this->plainPassword = $plainPassword;
     }
 
     public function getSalt()
@@ -60,6 +83,6 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+        $this->plainPassword = '';
     }
 }
