@@ -40,7 +40,7 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getUsername() : string
+    public function getUsername()
     {
         return $this->email;
     }
@@ -50,7 +50,7 @@ class User implements UserInterface
         $this->email = $email;
     }
 
-    public function getEmail() : string
+    public function getEmail()
     {
         return $this->email;
     }
@@ -60,7 +60,7 @@ class User implements UserInterface
         return ['ROLE_USER'];
     }
 
-    public function getPassword() : string
+    public function getPassword()
     {
         return $this->password;
     }
@@ -70,7 +70,7 @@ class User implements UserInterface
         $this->password = $password;
     }
 
-    public function getPlainPassword() : string
+    public function getPlainPassword()
     {
         return $this->plainPassword;
     }
@@ -91,7 +91,7 @@ class User implements UserInterface
         $this->plainPassword = '';
     }
 
-    public function getName() : string
+    public function getName()
     {
         return $this->name;
     }

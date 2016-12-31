@@ -11,9 +11,13 @@
     {% endif %}
 
     {{ form_start(form) }}
+
         {{ form_row(form._username) }}
         {{ form_row(form._password) }}
-        <button type="submit" class="btn btn-success">Login <span class="fa fa-lock"></span></button
+
+        <button type="submit" class="btn btn-success">Login <span class="fa fa-lock"></span></button>
+        <a href="{{ path('app.users.register') }}" class="btn btn-default">Register</a>
+
     {{ form_end(form) }}
 
 {% endblock %}
