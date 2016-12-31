@@ -30,6 +30,11 @@ class User implements UserInterface
 
     private $plainPassword;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $name;
+
     public function getId() : string
     {
         return $this->id;
@@ -84,5 +89,15 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         $this->plainPassword = '';
+    }
+
+    public function getName() : string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name)
+    {
+        $this->name = $name;
     }
 }
