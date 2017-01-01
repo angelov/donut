@@ -2,11 +2,32 @@
 
 {% block body %}
 
+    <h1>Thoughts</h1>
+
     {% for message in app.session.flashBag.get('success') %}
 
         <div class="alert alert-success">
             <strong>Success!</strong> {{ message }}
         </div>
+
+    {% endfor %}
+
+    <h2>Share a thought:</h2>
+
+    {{ form_start(form, {'action': path('app.thoughts.store'), 'method': 'POST'}) }}
+        {{ form_row(form.content, {
+            'label': ''
+        }) }}
+
+        <button type="submit" class="btn btn-default" formnovalidate>Submit</button>
+    {{ form_end(form) }}
+
+    <h2>Shared thoughts:</h2>
+
+    {% for thought in thoughts %}
+
+        <small>{{ thought.createdAt | date('d.m.Y H:i:s') }}</small>
+        <pre>{{ thought.content }}</pre>
 
     {% endfor %}
 

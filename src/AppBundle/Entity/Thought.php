@@ -30,6 +30,11 @@ class Thought
      */
     private $createdAt;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
     public function getId()
     {
         return $this->id;
@@ -50,17 +55,11 @@ class Thought
         $this->content = $content;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt() : \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param mixed $createdAt
-     */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
