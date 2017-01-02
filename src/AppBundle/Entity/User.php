@@ -45,6 +45,11 @@ class User implements UserInterface
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Thought", mappedBy="author")
+     */
+    private $thoughts;
+
     public function getId() : string
     {
         return $this->id;

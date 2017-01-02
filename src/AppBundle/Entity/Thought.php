@@ -26,6 +26,12 @@ class Thought
     private $content;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="thoughts", cascade={"remove"})
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
+     */
+    private $author;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -63,5 +69,18 @@ class Thought
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(User $author)
+    {
+        $this->author = $author;
     }
 }

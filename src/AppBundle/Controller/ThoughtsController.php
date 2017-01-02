@@ -42,6 +42,9 @@ class ThoughtsController extends Controller
             /** @var Thought $thought */
             $thought = $form->getData();
 
+            $user = $this->getUser();
+            $thought->setAuthor($user);
+
             $em->persist($thought);
             $em->flush();
 

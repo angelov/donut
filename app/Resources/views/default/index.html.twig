@@ -26,7 +26,10 @@
 
     {% for thought in thoughts %}
 
-        <small>{{ thought.createdAt | date('d.m.Y H:i:s') }}</small>
+        <small>
+            by <strong>{{ thought.author.name }}</strong>
+            on <strong>{{ thought.createdAt | date('d.m.Y H:i:s') }}</strong>
+        </small>
         <pre>{{ thought.content }}</pre>
 
     {% endfor %}
