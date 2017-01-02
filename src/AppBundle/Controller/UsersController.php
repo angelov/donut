@@ -37,4 +37,16 @@ class UsersController extends Controller
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/users", name="app.users.index")
+     */
+    public function indexAction()
+    {
+        $users = $this->getDoctrine()->getManager()->getRepository(User::class)->findAll();
+
+        return $this->render('users/index.html.twig', [
+            'users' => $users
+        ]);
+    }
 }
