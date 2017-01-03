@@ -45,8 +45,16 @@ class UsersController extends Controller
     {
         $users = $this->getDoctrine()->getManager()->getRepository(User::class)->findAll();
 
+        $counts = [];
+        $counter = $this->get('app.thoughts_counter.default');
+
+        foreach ($users as $user) {
+            $counts[$user->getId()] = $counter->count($user);
+        }
+
         return $this->render('users/index.html.twig', [
-            'users' => $users
+            'users' => $users,
+            'counts' => $counts
         ]);
     }
 }

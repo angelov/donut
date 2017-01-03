@@ -13,3 +13,8 @@ services:
         arguments: ['@security.password_encoder']
         tags:
             - { name: doctrine.event_subscriber }
+
+    app.thoughts_counter.default: '@app.thoughts_counter.db'
+
+    app.thoughts_counter.db:
+        class: 'AppBundle\ThoughtsCounter\DbThoughtsCounter'

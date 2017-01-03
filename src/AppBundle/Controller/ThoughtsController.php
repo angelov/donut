@@ -45,6 +45,9 @@ class ThoughtsController extends Controller
             $user = $this->getUser();
             $thought->setAuthor($user);
 
+            $counter = $this->get('app.thoughts_counter.default');
+            $counter->increase($user);
+
             $em->persist($thought);
             $em->flush();
 
