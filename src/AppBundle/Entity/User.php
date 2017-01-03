@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -49,6 +50,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Thought", mappedBy="author")
      */
     private $thoughts;
+
+    public function __construct()
+    {
+        $this->thoughts = new ArrayCollection();
+    }
 
     public function getId() : string
     {
@@ -99,6 +105,14 @@ class User implements UserInterface
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * @return Thought[]
+     */
+    public function getThoughts() : array
+    {
+        return $this->thoughts->getValues();
     }
 
     public function eraseCredentials()

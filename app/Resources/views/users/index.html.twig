@@ -14,8 +14,11 @@
 
                         <div class="row">
                             <div class="col-md-8">
-                                <strong>{{ user.name }}</strong><br />
-                                <small>{{ user.email }}</small>
+                                <strong>{{ user.name }}</strong> <small>{{ user.email }}</small>
+                                <br />
+
+                                <span class="badge">{{ user.thoughts | length }} thoughs</span>
+                                <span class="badge">32 friends</span>
                             </div>
 
                             <div class="col-md-4 text-right">
