@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Create new community:</h1>
+
+    {{ form_start(form, {'action': path('app.communities.store')}) }}
+
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+
+        <button type="submit" class="btn btn-success">Submit</button>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
