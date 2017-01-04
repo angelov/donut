@@ -24,6 +24,10 @@
             </div>
             <div class="media-body">
                 <h4 class="media-heading">{{ community.name }}</h4>
+                <small>
+                    Created by <strong>{{ community.author.name }}</strong> on <strong>{{ community.createdAt | date('Y-m-d H:i:s') }}</strong>
+                </small>
+                <br />
                 {{ community.description }}
             </div>
         </div>

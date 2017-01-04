@@ -68,17 +68,11 @@ class Community
         $this->description = $description;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAuthor()
+    public function getAuthor() : User
     {
         return $this->author;
     }
 
-    /**
-     * @param mixed $author
-     */
     public function setAuthor(User $author)
     {
         $this->author = $author;
