@@ -15,7 +15,13 @@ class CommunitiesController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('communities/index.html.twig');
+        $repository = $this->getDoctrine()->getManager()->getRepository(Community::class);
+
+        $communities = $repository->findAll();
+
+        return $this->render('communities/index.html.twig', [
+            'communities' => $communities
+        ]);
     }
 
     /**

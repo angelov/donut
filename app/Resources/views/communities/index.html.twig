@@ -14,4 +14,20 @@
 
     {% endfor %}
 
+    {% for community in communities %}
+
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                    {#<img class="media-object" src="..." alt="...">#}
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">{{ community.name }}</h4>
+                {{ community.description }}
+            </div>
+        </div>
+
+    {% endfor %}
+
 {% endblock %}
