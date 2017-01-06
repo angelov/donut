@@ -1,0 +1,5 @@
+AppBundle\Entity\Thought:
+
+    thought_{1..50}:
+        content: <sentence()>
+        author: "@user_*"

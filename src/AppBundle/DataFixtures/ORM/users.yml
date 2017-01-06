@@ -1,0 +1,11 @@
+AppBundle\Entity\User:
+
+  user_0:
+      name: "Dejan"
+      email: "dejan@socnet.local"
+      plainPassword: "123456"
+
+  user_{1..9}:
+      name: <name()>
+      email: <safeEmail()>
+      plainPassword: "123456"
