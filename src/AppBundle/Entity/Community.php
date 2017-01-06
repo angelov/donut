@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +35,12 @@ class Community
     private $author;
 
     /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinTable(name="community_member")
+     */
+    private $members;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -41,6 +48,7 @@ class Community
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime());
+        $this->members = new ArrayCollection();
     }
 
     public function getId() : string
