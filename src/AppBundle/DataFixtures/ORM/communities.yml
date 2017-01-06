@@ -1,0 +1,6 @@
+AppBundle\Entity\Community:
+
+    community_{1..10}:
+        name: "<country()> Residents"
+        author: "@user_*"
+        description: "<sentence()>"
