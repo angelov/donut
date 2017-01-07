@@ -32,7 +32,10 @@
 
                 {% if community.hasMember(app.user) %}
 
-                    <a href="" class="btn btn-default">View</a>
+                    {#<a href="" class="btn btn-default">View</a>#}
+                    <form action="{{ path('app.communities.leave', {'id': community.id}) }}" method="post">
+                        <button type="submit" class="btn btn-default">Leave</button>
+                    </form>
 
                 {% else %}
 

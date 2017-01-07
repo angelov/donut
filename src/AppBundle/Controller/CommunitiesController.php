@@ -80,4 +80,25 @@ class CommunitiesController extends Controller
 
         return $this->redirectToRoute('app.communities.index');
     }
+
+    /**
+     * @Route("/communities/{id}/leave", name="app.communities.leave", methods={"POST"})
+     */
+    public function leaveAction(Community $community)
+    {
+        $user = $this->getUser();
+
+        if ($community->hasMember($user)) {
+            $community->removeMember($user);
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($community);
+            $em->flush();
+
+            $this->addFlash('success', 'Successfully leaved the community');
+        }
+
+        return $this->redirectToRoute('app.communities.index');
+    }
 }

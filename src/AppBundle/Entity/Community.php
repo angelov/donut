@@ -112,4 +112,9 @@ class Community
     {
         $this->createdAt = $createdAt;
     }
+
+    public function removeMember(User $user)
+    {
+        $this->members->removeElement($user);
+    }
 }
