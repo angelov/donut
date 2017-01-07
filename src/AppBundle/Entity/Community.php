@@ -29,7 +29,7 @@ class Community
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", cascade={"remove"}, fetch="EAGER")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
      */
     private $author;
