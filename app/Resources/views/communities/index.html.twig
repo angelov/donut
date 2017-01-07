@@ -28,7 +28,20 @@
                     Created by <strong>{{ community.author.name }}</strong> on <strong>{{ community.createdAt | date('Y-m-d H:i:s') }}</strong>
                 </small>
                 <br />
-                {{ community.description }}
+                {{ community.description }}<br />
+
+                {% if community.hasMember(app.user) %}
+
+                    <a href="" class="btn btn-default">View</a>
+
+                {% else %}
+
+                    <form action="{{ path('app.communities.join', {'id': community.id}) }}" method="post">
+                        <button type="submit" class="btn btn-default">Join</button>
+                    </form>
+
+                {% endif %}
+
             </div>
         </div>
 

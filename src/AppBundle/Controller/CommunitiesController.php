@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Community;
 use AppBundle\Form\CommunityType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,6 +58,25 @@ class CommunitiesController extends Controller
             $this->addFlash('success', 'Community was successfully created!');
 
         }
+
+        return $this->redirectToRoute('app.communities.index');
+    }
+
+    /**
+     * @Route("/communities/{id}/join", name="app.communities.join", methods={"POST"})
+     */
+    public function joinAction(Community $community)
+    {
+        $user = $this->getUser();
+
+        $community->addMember($user);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($community);
+        $em->flush();
+
+        $this->addFlash('success', 'Successfully joined the community');
 
         return $this->redirectToRoute('app.communities.index');
     }

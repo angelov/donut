@@ -86,6 +86,20 @@ class Community
         $this->author = $author;
     }
 
+    public function addMember(User $user)
+    {
+        if ($this->hasMember($user)) {
+            return;
+        }
+
+        $this->members[] = $user;
+    }
+
+    public function hasMember(User $user)
+    {
+        return $this->members->contains($user);
+    }
+
     /**
      * @return \DateTime
      */
