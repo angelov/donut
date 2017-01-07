@@ -86,6 +86,14 @@ class Community
         $this->author = $author;
     }
 
+    /**
+     * @return User[]
+     */
+    public function getMembers() : array
+    {
+        return $this->members->getValues();
+    }
+
     public function addMember(User $user)
     {
         if ($this->hasMember($user)) {

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>{{ community.name }}</h1>
+
+    {% if community.hasMember(app.user) %}
+
+        <form action="{{ path('app.communities.leave', {'id': community.id}) }}" method="post">
+            <button type="submit" class="btn btn-default">Leave</button>
+        </form>
+
+    {% else %}
+
+        <form action="{{ path('app.communities.join', {'id': community.id}) }}" method="post">
+            <button type="submit" class="btn btn-default">Join</button>
+        </form>
+
+    {% endif %}
+
+    <h2>Members</h2>
+
+    <ul>
+
+        {% for member in community.members %}
+
+            <li>{{ member.name }}</li>
+
+        {% endfor %}
+
+    </ul>
+
+
+
+{% endblock %}
+

@@ -63,6 +63,16 @@ class CommunitiesController extends Controller
     }
 
     /**
+     * @Route("/communities/{id}", name="app.communities.show", methods={"POST", "GET"})
+     */
+    public function showAction(Community $community)
+    {
+        return $this->render('communities/show.html.twig', [
+            'community' => $community
+        ]);
+    }
+
+    /**
      * @Route("/communities/{id}/join", name="app.communities.join", methods={"POST"})
      */
     public function joinAction(Community $community)
