@@ -4,3 +4,4 @@ AppBundle\Entity\Community:
         name: "<country()> Residents"
         author: "@user_*"
         description: "<sentence()>"
+        members: "5x @user_*"
