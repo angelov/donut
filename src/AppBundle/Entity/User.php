@@ -51,6 +51,11 @@ class User implements UserInterface
      */
     private $thoughts;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isAdmin = false;
+
     public function __construct()
     {
         $this->thoughts = new ArrayCollection();
@@ -128,5 +133,15 @@ class User implements UserInterface
     public function setName(string $name)
     {
         $this->name = $name;
+    }
+
+    public function isIsAdmin(): bool
+    {
+        return $this->isAdmin;
+    }
+
+    public function setIsAdmin(bool $isAdmin)
+    {
+        $this->isAdmin = $isAdmin;
     }
 }
