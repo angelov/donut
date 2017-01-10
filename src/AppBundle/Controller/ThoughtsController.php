@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Thought;
 use AppBundle\Form\ThoughtType;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,17 +15,27 @@ class ThoughtsController extends Controller
     /**
      * @Route("/thoughts", name="app.thoughts.index", methods={"GET", "HEAD"})
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository(Thought::class);
+
+        $queryBuilder = $em
+            ->createQueryBuilder()
+            ->select('t')
+            ->from(Thought::class, 't');
+
+        $adapter = new DoctrineORMAdapter($queryBuilder);
+
+        $page = $request->query->get('page', 1);
+        $pager = new Pagerfanta($adapter);
+        $pager->setMaxPerPage(3);
+        $pager->setCurrentPage($page);
 
         $form = $this->createForm(ThoughtType::class);
-        $thoughts = $repository->findAll();
 
         return $this->render('default/index.html.twig', [
-            'thoughts' => $thoughts,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'pager' => $pager
         ]);
     }
 

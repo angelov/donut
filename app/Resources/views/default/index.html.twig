@@ -24,7 +24,7 @@
 
     <h2>Shared thoughts:</h2>
 
-    {% for thought in thoughts %}
+    {% for thought in pager.iterator %}
 
         <small>
             by <strong>{{ thought.author.name }}</strong>
@@ -33,5 +33,9 @@
         <pre>{{ thought.content }}</pre>
 
     {% endfor %}
+
+    <div class="pagerfanta">
+        {{ pagerfanta(pager, 'twitter_bootstrap3') }}
+    </div>
 
 {% endblock %}
