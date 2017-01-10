@@ -144,4 +144,9 @@ class User implements UserInterface
     {
         $this->isAdmin = $isAdmin;
     }
+
+    public function eqauls(User $user) : bool
+    {
+        return $this->getId() === $user->getId();
+    }
 }

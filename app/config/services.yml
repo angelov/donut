@@ -8,6 +8,16 @@ services:
             - '@router'
             - '@security.password_encoder'
 
+    app.security.voter.administrator_voter:
+        class: 'AppBundle\Security\Voter\AdministratorVoter'
+        tags:
+            - { name: 'security.voter' }
+
+    app.security.voter.thought_author_voter:
+        class: 'AppBundle\Security\Voter\ThoughtAuthorVoter'
+        tags:
+            - { name: 'security.voter' }
+
     app.doctrine.hash_password_listener:
         class: 'AppBundle\Doctrine\HashPasswordListener'
         arguments: ['@security.password_encoder']

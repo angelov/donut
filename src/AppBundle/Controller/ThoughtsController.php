@@ -79,8 +79,14 @@ class ThoughtsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        if (!$this->isGranted('DELETE_THOUGHT', $thought)) {
+            return $this->redirectToRoute('app.thoughts.index');
+        }
+
         $em->remove($thought);
         $em->flush();
+
+        $this->addFlash('success', 'Thought deleted!');
 
         return $this->redirectToRoute('app.thoughts.index');
     }
