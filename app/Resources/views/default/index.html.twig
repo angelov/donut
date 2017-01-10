@@ -30,7 +30,11 @@
             by <strong>{{ thought.author.name }}</strong>
             on <strong>{{ thought.createdAt | date('d.m.Y H:i:s') }}</strong>
         </small>
+        <form action="{{ path('app.thoughts.delete', {'id': thought.id}) }}" method="post">
+            <button type="submit" class="btn btn-default btn-xs">delete</button>
+        </form>
         <pre>{{ thought.content }}</pre>
+
 
     {% endfor %}
 

@@ -26,8 +26,8 @@ class Thought
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="thoughts", cascade={"remove"}, fetch="EAGER")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="thoughts", fetch="EAGER")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $author;
 

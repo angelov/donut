@@ -70,4 +70,18 @@ class ThoughtsController extends Controller
 
         return $this->redirectToRoute('app.thoughts.index');
     }
+
+    /**
+     * @Route("/thoughts/{id}", name="app.thoughts.delete", methods={"POST"})
+     * @todo change to use DELETE method
+     */
+    public function delete(Thought $thought)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($thought);
+        $em->flush();
+
+        return $this->redirectToRoute('app.thoughts.index');
+    }
 }
