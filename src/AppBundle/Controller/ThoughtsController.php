@@ -22,13 +22,14 @@ class ThoughtsController extends Controller
         $queryBuilder = $em
             ->createQueryBuilder()
             ->select('t')
-            ->from(Thought::class, 't');
+            ->from(Thought::class, 't')
+            ->orderBy('t.createdAt', 'DESC');
 
-        $adapter = new DoctrineORMAdapter($queryBuilder);
+        $adapter = new DoctrineORMAdapter($queryBuilder, false);
 
         $page = $request->query->get('page', 1);
         $pager = new Pagerfanta($adapter);
-        $pager->setMaxPerPage(3);
+        $pager->setMaxPerPage(10);
         $pager->setCurrentPage($page);
 
         $form = $this->createForm(ThoughtType::class);
