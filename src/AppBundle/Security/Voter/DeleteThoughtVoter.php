@@ -2,18 +2,24 @@
 
 namespace AppBundle\Security\Voter;
 
+use AppBundle\Entity\Thought;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class AdministratorVoter extends Voter
+class DeleteThoughtVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
-        // The administrators can do anything.
-        return true;
+        return $attribute === 'DELETE_THOUGHT';
     }
 
+    /**
+     * @param string $attribute
+     * @param Thought $subject
+     * @param TokenInterface $token
+     * @return bool
+     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $user = $token->getUser();
@@ -22,6 +28,10 @@ class AdministratorVoter extends Voter
             return false;
         }
 
-        return $user->isIsAdmin();
+        if ($user->isIsAdmin()) {
+            return true;
+        }
+
+        return $subject->getAuthor()->eqauls($user);
     }
 }

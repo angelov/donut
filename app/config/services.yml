@@ -8,13 +8,8 @@ services:
             - '@router'
             - '@security.password_encoder'
 
-    app.security.voter.administrator_voter:
-        class: 'AppBundle\Security\Voter\AdministratorVoter'
-        tags:
-            - { name: 'security.voter' }
-
-    app.security.voter.thought_author_voter:
-        class: 'AppBundle\Security\Voter\ThoughtAuthorVoter'
+    app.security.voter.delete_thought_voter:
+        class: 'AppBundle\Security\Voter\DeleteThoughtVoter'
         tags:
             - { name: 'security.voter' }
 
