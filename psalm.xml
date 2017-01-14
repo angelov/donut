@@ -1,0 +1,8 @@
+<psalm
+        stopOnFirstError="false"
+        useDocblockTypes="true"
+>
+    <projectFiles>
+        <directory name="src" />
+    </projectFiles>
+</psalm>
