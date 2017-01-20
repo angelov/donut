@@ -56,9 +56,15 @@ class User implements UserInterface
      */
     private $isAdmin = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FriendshipRequest", mappedBy="fromUser")
+     */
+    private $sentFriendshipRequests;
+
     public function __construct()
     {
         $this->thoughts = new ArrayCollection();
+        $this->sentFriendshipRequests = new ArrayCollection();
     }
 
     public function getId() : string
@@ -148,5 +154,22 @@ class User implements UserInterface
     public function eqauls(User $user) : bool
     {
         return $this->getId() === $user->getId();
+    }
+
+    public function getSentFriendshipRequests() : array
+    {
+        return $this->sentFriendshipRequests->getValues();
+    }
+
+    public function hasSentFriendshipRequestTo(User $user)
+    {
+        /** @var FriendshipRequest $friendshipRequest */
+        foreach ($this->sentFriendshipRequests as $friendshipRequest) {
+            if ($friendshipRequest->getToUser()->eqauls($user)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

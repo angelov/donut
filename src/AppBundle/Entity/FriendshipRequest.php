@@ -18,7 +18,7 @@ class FriendshipRequest
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="sentFriendshipRequests")
      * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id", nullable=false, onDelete="cascade")
      */
     private $fromUser;
@@ -49,7 +49,7 @@ class FriendshipRequest
         return $this->toUser;
     }
 
-    public function setToUser($toUser) : User
+    public function setToUser(User $toUser)
     {
         $this->toUser = $toUser;
     }

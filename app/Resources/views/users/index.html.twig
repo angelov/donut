@@ -6,6 +6,22 @@
         <div class="col-md-5">
             <h1>People</h1>
 
+            {% for message in app.session.flashBag.get('success') %}
+
+                <div class="alert alert-success">
+                    <strong>Success!</strong> {{ message }}
+                </div>
+
+            {% endfor %}
+
+            {% for message in app.session.flashBag.get('error') %}
+
+                <div class="alert alert-warning">
+                    <strong>Error!</strong> {{ message }}
+                </div>
+
+            {% endfor %}
+
             <ul class="list-group">
 
                 {% for user in users %}
@@ -22,10 +38,24 @@
                             </div>
 
                             <div class="col-md-4 text-right">
-                                <a href="" class="btn btn-default">
-                                    <i class="glyphicon glyphicon-plus"></i>
-                                    Add friend
-                                </a>
+
+                                {% if not app.user.hasSentFriendshipRequestTo(user) %}
+
+                                    <a href="{{ path('friendships.requests.store', {'id': user.id}) }}" class="btn btn-default">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        Add friend
+                                    </a>
+
+                                {% else %}
+
+                                    <a href="" class="btn btn-default">
+                                        <i class="glyphicon glyphicon-minus"></i>
+                                        Cancel request
+                                    </a>
+
+                                {% endif %}
+
+
                             </div>
                         </div>
 
