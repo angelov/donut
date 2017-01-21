@@ -64,7 +64,7 @@
 
                                     {% else %}
 
-                                        <a href="" class="btn btn-default">
+                                        <a href="{{ path('friendships.requests.cancel', {'id': user.id}) }}" class="btn btn-default">
                                             <i class="glyphicon glyphicon-minus"></i>
                                             Cancel request
                                         </a>
@@ -148,7 +148,7 @@
 
                             <div class="col-md-4 text-right">
 
-                                <a href="" class="btn btn-default">
+                                <a href="{{ path('friendships.requests.cancel', {'id': user.id}) }}" class="btn btn-default">
                                     <i class="glyphicon glyphicon-minus"></i>
                                     Cancel request
                                 </a>
