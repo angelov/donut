@@ -55,4 +55,31 @@ class FriendshipsController extends Controller
 
         return $this->redirectToRoute('app.users.index');
     }
+
+    /**
+     * @Route("/friendships/decline/{id}", name="friendships.requests.decline", methods={"GET"})
+     */
+    public function declineFriendshipRequestAction(User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(FriendshipRequest::class);
+
+        $friendshipRequest = $repository->findOneBy([
+            'fromUser' => $user,
+            'toUser' => $this->getUser()
+        ]);
+
+        if (!$friendshipRequest) {
+            $this->addFlash('error', 'Something went wrong!');
+
+            return $this->redirectToRoute('app.users.index');
+        }
+
+        $em->remove($friendshipRequest);
+        $em->flush();
+
+        $this->addFlash('success', 'Friendship request successfully declined!');
+
+        return $this->redirectToRoute('app.users.index');
+    }
 }
