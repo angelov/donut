@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Snc\RedisBundle\SncRedisBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            new Neo4j\Neo4jBundle\Neo4jBundle(),
             new AppBundle\AppBundle(),
         ];
 

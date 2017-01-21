@@ -75,3 +75,12 @@ snc_redis:
             type: predis
             alias: default
             dsn: redis://localhost
+
+neo4j:
+  connections:
+    default:
+      schema: bolt
+      host: "%neo4j_host%"
+      port: "%neo4j_port%"
+      username: "%neo4j_username%"
+      password: "%neo4j_password%"
