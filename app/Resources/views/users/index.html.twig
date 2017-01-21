@@ -68,6 +68,48 @@
 
         <div class="col-md-6">
 
+            <h1>Received friendship requests</h1>
+
+            <ul class="list-group">
+
+                {% for request in app.user.receivedFriendshipRequests %}
+
+                    {% set user = request.toUser %}
+
+                    <li class="list-group-item">
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <strong>{{ user.name }}</strong> <small>{{ user.email }}</small>
+                                <br />
+
+                                <span class="badge">{{ count_thoughts(user) }} thoughs</span>
+                                <span class="badge">32 friends</span>
+                            </div>
+
+                            <div class="col-md-4 text-right">
+
+                                <a href="" class="btn btn-default">
+                                    Accept
+                                </a>
+
+                                <a href="" class="btn btn-default">
+                                    Decline
+                                </a>
+
+                            </div>
+                        </div>
+
+                    </li>
+
+                {% else %}
+
+                    <li>0 non-responded friendship requests found.</li>
+
+                {% endfor %}
+
+            </ul>
+
             <h1>Sent friendship requests</h1>
 
             <ul class="list-group">
@@ -89,27 +131,19 @@
 
                             <div class="col-md-4 text-right">
 
-                                {% if not app.user.hasSentFriendshipRequestTo(user) %}
-
-                                    <a href="{{ path('friendships.requests.store', {'id': user.id}) }}" class="btn btn-default">
-                                        <i class="glyphicon glyphicon-plus"></i>
-                                        Add friend
-                                    </a>
-
-                                {% else %}
-
-                                    <a href="" class="btn btn-default">
-                                        <i class="glyphicon glyphicon-minus"></i>
-                                        Cancel request
-                                    </a>
-
-                                {% endif %}
-
+                                <a href="" class="btn btn-default">
+                                    <i class="glyphicon glyphicon-minus"></i>
+                                    Cancel request
+                                </a>
 
                             </div>
                         </div>
 
                     </li>
+
+                {% else %}
+
+                    <li>You haven't sent any friendship requests.</li>
 
                 {% endfor %}
 

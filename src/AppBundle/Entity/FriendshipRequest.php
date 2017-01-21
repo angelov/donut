@@ -24,7 +24,7 @@ class FriendshipRequest
     private $fromUser;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="receivedFriendshipRequests")
      * @ORM\JoinColumn(name="to_user_id", referencedColumnName="id", nullable=false, onDelete="cascade")
      */
     private $toUser;
