@@ -41,10 +41,24 @@
 
                                 {% if not app.user.hasSentFriendshipRequestTo(user) %}
 
-                                    <a href="{{ path('friendships.requests.store', {'id': user.id}) }}" class="btn btn-default">
-                                        <i class="glyphicon glyphicon-plus"></i>
-                                        Add friend
-                                    </a>
+                                    {% if app.user.hasReceivedFriendshipRequestFrom(user) %}
+
+                                        <a href="" class="btn btn-default">
+                                            Accept
+                                        </a>
+
+                                        <a href="" class="btn btn-default">
+                                            Decline
+                                        </a>
+
+                                    {% else %}
+
+                                        <a href="{{ path('friendships.requests.store', {'id': user.id}) }}" class="btn btn-default">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                            Add friend
+                                        </a>
+
+                                    {% endif %}
 
                                 {% else %}
 
@@ -74,7 +88,7 @@
 
                 {% for request in app.user.receivedFriendshipRequests %}
 
-                    {% set user = request.toUser %}
+                    {% set user = request.fromUser %}
 
                     <li class="list-group-item">
 

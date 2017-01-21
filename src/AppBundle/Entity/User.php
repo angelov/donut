@@ -189,4 +189,15 @@ class User implements UserInterface
     {
         return $this->receivedFriendshipRequests->getValues();
     }
+
+    public function hasReceivedFriendshipRequestFrom(User $user) : bool
+    {
+        foreach ($this->getReceivedFriendshipRequests() as $friendshipRequest) {
+            if ($friendshipRequest->getFromUser()->eqauls($user)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
