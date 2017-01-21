@@ -32,6 +32,6 @@ class DeleteThoughtVoter extends Voter
             return true;
         }
 
-        return $subject->getAuthor()->eqauls($user);
+        return $subject->getAuthor()->equals($user);
     }
 }

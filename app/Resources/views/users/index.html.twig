@@ -39,36 +39,39 @@
 
                             <div class="col-md-4 text-right">
 
-                                {% if not app.user.hasSentFriendshipRequestTo(user) %}
+                                {% if not user.equals(app.user) %}
 
-                                    {% if app.user.hasReceivedFriendshipRequestFrom(user) %}
+                                    {% if not app.user.hasSentFriendshipRequestTo(user) %}
 
-                                        <a href="" class="btn btn-default">
-                                            Accept
-                                        </a>
+                                        {% if app.user.hasReceivedFriendshipRequestFrom(user) %}
 
-                                        <a href="" class="btn btn-default">
-                                            Decline
-                                        </a>
+                                            <a href="" class="btn btn-default">
+                                                Accept
+                                            </a>
+
+                                            <a href="" class="btn btn-default">
+                                                Decline
+                                            </a>
+
+                                        {% else %}
+
+                                            <a href="{{ path('friendships.requests.store', {'id': user.id}) }}" class="btn btn-default">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                                Add friend
+                                            </a>
+
+                                        {% endif %}
 
                                     {% else %}
 
-                                        <a href="{{ path('friendships.requests.store', {'id': user.id}) }}" class="btn btn-default">
-                                            <i class="glyphicon glyphicon-plus"></i>
-                                            Add friend
+                                        <a href="" class="btn btn-default">
+                                            <i class="glyphicon glyphicon-minus"></i>
+                                            Cancel request
                                         </a>
 
                                     {% endif %}
 
-                                {% else %}
-
-                                    <a href="" class="btn btn-default">
-                                        <i class="glyphicon glyphicon-minus"></i>
-                                        Cancel request
-                                    </a>
-
                                 {% endif %}
-
 
                             </div>
                         </div>

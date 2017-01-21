@@ -157,7 +157,7 @@ class User implements UserInterface
         $this->isAdmin = $isAdmin;
     }
 
-    public function eqauls(User $user) : bool
+    public function equals(User $user) : bool
     {
         return $this->getId() === $user->getId();
     }
@@ -174,7 +174,7 @@ class User implements UserInterface
     {
         /** @var FriendshipRequest $friendshipRequest */
         foreach ($this->sentFriendshipRequests as $friendshipRequest) {
-            if ($friendshipRequest->getToUser()->eqauls($user)) {
+            if ($friendshipRequest->getToUser()->equals($user)) {
                 return true;
             }
         }
@@ -193,7 +193,7 @@ class User implements UserInterface
     public function hasReceivedFriendshipRequestFrom(User $user) : bool
     {
         foreach ($this->getReceivedFriendshipRequests() as $friendshipRequest) {
-            if ($friendshipRequest->getFromUser()->eqauls($user)) {
+            if ($friendshipRequest->getFromUser()->equals($user)) {
                 return true;
             }
         }
