@@ -45,7 +45,7 @@
 
                                         {% if app.user.hasReceivedFriendshipRequestFrom(user) %}
 
-                                            <a href="" class="btn btn-default">
+                                            <a href="{{ path('friendships.requests.accept', {'id': user.id}) }}" class="btn btn-default">
                                                 Accept
                                             </a>
 
@@ -106,7 +106,7 @@
 
                             <div class="col-md-4 text-right">
 
-                                <a href="" class="btn btn-default">
+                                <a href="{{ path('friendships.requests.accept', {'id': user.id}) }}" class="btn btn-default">
                                     Accept
                                 </a>
 

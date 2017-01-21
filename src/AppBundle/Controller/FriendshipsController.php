@@ -82,4 +82,33 @@ class FriendshipsController extends Controller
 
         return $this->redirectToRoute('app.users.index');
     }
+
+    /**
+     * @Route("/friendships/{id}", name="friendships.requests.accept")
+     */
+    public function acceptFriendshipRequestAction(User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(FriendshipRequest::class);
+
+        $friendshipRequest = $repository->findOneBy([
+            'fromUser' => $user,
+            'toUser' => $this->getUser()
+        ]);
+
+        if (!$friendshipRequest) {
+            $this->addFlash('error', 'Something went wrong!');
+
+            return $this->redirectToRoute('app.users.index');
+        }
+
+        $em->remove($friendshipRequest);
+        $em->flush();
+
+        // @todo: store the new friendship
+
+        $this->addFlash('success', 'Friendship request successfully accepted!');
+
+        return $this->redirectToRoute('app.users.index');
+    }
 }
