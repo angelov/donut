@@ -7,7 +7,7 @@ use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class FriendshipsController extends Controller
+class FriendshipRequestsController extends Controller
 {
     /**
      * @Route("/friendships/send/{id}", name="friendships.requests.store", methods={"GET"})
