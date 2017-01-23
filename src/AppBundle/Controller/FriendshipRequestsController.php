@@ -107,6 +107,9 @@ class FriendshipRequestsController extends Controller
 
         // @todo: store the new friendship
 
+        $recorder = $this->get('app.friendships.friends_recommender.friendship_recorder.default');
+        $recorder->record($user, $this->getUser());
+
         $this->addFlash('success', 'Friendship request successfully accepted!');
 
         return $this->redirectToRoute('app.users.index');

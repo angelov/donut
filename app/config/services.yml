@@ -35,3 +35,10 @@ services:
             - '@app.thoughts_counter.default'
         tags:
             - { name: 'twig.extension' }
+
+    app.friendships.friends_recommender.friendship_recorder.default: '@app.friendships.friends_recommender.friendship_recorder.neo4j'
+
+    app.friendships.friends_recommender.friendship_recorder.neo4j:
+        class: 'AppBundle\FriendsRecommender\Neo4JFriendsRecommender\Neo4jFriendshipRecorder'
+        arguments:
+            - '@neo4j.client.default'
