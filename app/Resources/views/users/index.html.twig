@@ -74,6 +74,21 @@
                                 {% endif %}
 
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <p>Mutual friends: </p>
+
+                                    {% set mf = mutual_friends(app.user, user) %}
+                                    {% for friend in mf %}
+
+                                        <strong>{{ friend.getName() }}</strong>
+
+                                    {% endfor %}
+
+                                </div>
+                            </div>
                         </div>
 
                     </li>

@@ -42,3 +42,24 @@ services:
         class: 'AppBundle\FriendsRecommender\Neo4JFriendsRecommender\Neo4jFriendshipRecorder'
         arguments:
             - '@neo4j.client.default'
+
+    app.mutual_friends_resolver.default: '@app.mutual_friends_resolver.neo4j'
+
+    app.mutual_friends_resolver.neo4j:
+        class: AppBundle\MutualFriendsResolver\Neo4jMutualFriendsResolver
+        arguments:
+            - '@neo4j.client.default'
+            - '@app.users.repository'
+
+    app.users.repository:
+            class: Doctrine\ORM\EntityRepository
+            factory: ["@doctrine.orm.entity_manager", getRepository]
+            arguments:
+                - AppBundle\Entity\User
+
+    app.mutual_friends_exstension:
+          class: 'AppBundle\Twig\Extension\MutualFriendsExtension'
+          arguments:
+              - '@app.mutual_friends_resolver.default'
+          tags:
+              - { name: 'twig.extension' }
