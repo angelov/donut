@@ -28,6 +28,7 @@ services:
         class: 'AppBundle\ThoughtsCounter\RedisThoughtsCounter'
         arguments:
             - '@snc_redis.default'
+            - '@logger'
 
     app.thoughts_counter_exstension:
         class: 'AppBundle\Twig\Extension\ThoughtsCounterExtension'
