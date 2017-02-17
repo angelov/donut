@@ -43,7 +43,7 @@ class UsersController extends Controller
      */
     public function indexAction()
     {
-        $users = $this->getDoctrine()->getManager()->getRepository(User::class)->findAll();
+        $users = $this->get('app.users.repository.default')->all();
 
         return $this->render('users/index.html.twig', [
             'users' => $users

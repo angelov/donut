@@ -3,7 +3,7 @@
 namespace AppBundle\MutualFriendsResolver;
 
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Repository\UsersRepositoryInterface;
 use GraphAware\Bolt\Result\Type\Node;
 use GraphAware\Neo4j\Client\Client;
 
@@ -12,7 +12,7 @@ class Neo4jMutualFriendsResolver implements MutualFriendsResolverInterface
     private $client;
     private $users;
 
-    public function __construct(Client $client, EntityRepository $repository)
+    public function __construct(Client $client, UsersRepositoryInterface $repository)
     {
         $this->client = $client;
         $this->users = $repository;

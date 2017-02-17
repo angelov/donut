@@ -3,8 +3,9 @@
 namespace AppBundle\Security;
 
 use AppBundle\Entity\User;
+use AppBundle\Exceptions\ResourceNotFoundException;
 use AppBundle\Form\LoginForm;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Repository\UsersRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,20 +20,20 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     private $formFactory;
-    private $em;
+    private $users;
     private $router;
     private $passwordEncoder;
 
     public function __construct(
         FormFactoryInterface $formFactory,
-        EntityManager $em,
+        UsersRepositoryInterface $users,
         RouterInterface $router,
         UserPasswordEncoderInterface $passwordEncoder
     ) {
         $this->formFactory = $formFactory;
-        $this->em = $em;
         $this->router = $router;
         $this->passwordEncoder = $passwordEncoder;
+        $this->users = $users;
     }
 
     protected function getLoginUrl() : string
@@ -65,9 +66,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         $email = $credentials['_username'];
 
-        return $this->em->getRepository(User::class)->findOneBy([
-            'email' => $email
-        ]);
+        try {
+            return $this->users->getByEmail($email);
+        } catch (ResourceNotFoundException $e) {
+            return null;
+        }
     }
 
     public function checkCredentials($credentials, UserInterface $user) : bool

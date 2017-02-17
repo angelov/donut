@@ -4,7 +4,7 @@ services:
         class: 'AppBundle\Security\LoginFormAuthenticator'
         arguments:
             - '@form.factory'
-            - '@doctrine.orm.entity_manager'
+            - '@app.users.repository.default'
             - '@router'
             - '@security.password_encoder'
 
@@ -50,13 +50,20 @@ services:
         class: AppBundle\MutualFriendsResolver\Neo4jMutualFriendsResolver
         arguments:
             - '@neo4j.client.default'
-            - '@app.users.repository'
+            - '@app.users.repository.default'
 
-    app.users.repository:
-            class: Doctrine\ORM\EntityRepository
-            factory: ["@doctrine.orm.entity_manager", getRepository]
-            arguments:
-                - AppBundle\Entity\User
+    app.users.repository.default: '@app.users.repository.doctrine'
+
+    app.users.repository.doctrine:
+        class: AppBundle\Repository\DoctrineUsersRepository
+        arguments:
+            - '@app.doctrine.repository.users'
+
+    app.doctrine.repository.users:
+        class: Doctrine\ORM\EntityRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - AppBundle\Entity\User
 
     app.mutual_friends_exstension:
           class: 'AppBundle\Twig\Extension\MutualFriendsExtension'
