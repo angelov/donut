@@ -3,7 +3,7 @@
 namespace AppBundle\MutualFriendsResolver;
 
 use AppBundle\Entity\User;
-use AppBundle\Repository\UsersRepositoryInterface;
+use AppBundle\MutualFriendsResolver\UsersProvider\UsersProviderInterface;
 use GraphAware\Bolt\Result\Type\Node;
 use GraphAware\Neo4j\Client\Client;
 
@@ -12,10 +12,10 @@ class Neo4jMutualFriendsResolver implements MutualFriendsResolverInterface
     private $client;
     private $users;
 
-    public function __construct(Client $client, UsersRepositoryInterface $repository)
+    public function __construct(Client $client, UsersProviderInterface $users)
     {
         $this->client = $client;
-        $this->users = $repository;
+        $this->users = $users;
     }
 
     public function forUsers(User $first, User $second): array
@@ -56,7 +56,7 @@ class Neo4jMutualFriendsResolver implements MutualFriendsResolverInterface
         $users = [];
 
         foreach ($ids as $id) {
-            $users[] = $this->users->find($id);
+            $users[] = $this->users->getById($id);
         }
 
         return $users;

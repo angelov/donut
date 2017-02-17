@@ -50,7 +50,20 @@ services:
         class: AppBundle\MutualFriendsResolver\Neo4jMutualFriendsResolver
         arguments:
             - '@neo4j.client.default'
+            - '@app.mutual_friends_resolver.users_provider.repository'
+
+    app.mutual_friends_resolver.users_provider.repository:
+        class: AppBundle\MutualFriendsResolver\UsersProvider\RepositoryUsersProvider
+        arguments:
             - '@app.users.repository.default'
+
+    app.mutual_friends_resolver.users_provider.fake:
+        class: AppBundle\MutualFriendsResolver\UsersProvider\FakeUsersProvider
+
+    app.mutual_friends_resolver.users_provider.qb:
+        class: AppBundle\MutualFriendsResolver\UsersProvider\QueryBuilderUsersProvider
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
     app.users.repository.default: '@app.users.repository.doctrine'
 
