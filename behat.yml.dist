@@ -13,6 +13,7 @@ default:
     suites:
         users:
             contexts:
+                - DoctrineHookContext
                 - RegistrationContext
             filters:
                 tags: "@users"
