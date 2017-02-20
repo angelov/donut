@@ -1,18 +1,9 @@
+imports:
+    - { resource: 'contexts.yml' }
+
 services:
 
     mink.default_session:
         class: 'Behat\Mink\Session'
         factory: ['@__behat__.mink', 'getSession']
         lazy: true
-
-    app.feature_contexts.hooks.doctrine:
-        class: 'AppBundle\FeatureContexts\DoctrineHookContext'
-        tags:
-            - { name: fob.context_service }
-        arguments: ['@__symfony__.doctrine.orm.entity_manager']
-
-    app.feature_contexts.users.registration:
-        class: 'AppBundle\FeatureContexts\RegistrationContext'
-        tags:
-            - { name: fob.context_service }
-        arguments: ['@mink.default_session', '@__symfony__.router']

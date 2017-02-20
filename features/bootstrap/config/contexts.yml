@@ -1,0 +1,13 @@
+services:
+
+    app.feature_contexts.hooks.doctrine:
+        class: 'AppBundle\FeatureContexts\DoctrineHookContext'
+        arguments: ['@__symfony__.doctrine.orm.entity_manager']
+        tags:
+            - { name: fob.context_service }
+
+    app.feature_contexts.users.registration:
+        class: 'AppBundle\FeatureContexts\RegistrationContext'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+        tags:
+            - { name: fob.context_service }
