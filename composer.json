@@ -45,7 +45,11 @@
         "behat/mink": "^1.7",
         "behat/mink-extension": "^2.2",
         "behat/symfony2-extension": "^2.1",
-        "behat/mink-goutte-driver": "^1.2"
+        "behat/mink-goutte-driver": "^1.2",
+        "friends-of-behat/context-service-extension": "^0.3.0",
+        "friends-of-behat/service-container-extension": "^0.3.0",
+        "friends-of-behat/symfony-extension": "^0.2.1",
+        "friends-of-behat/cross-container-extension": "^0.2.1"
     },
     "scripts": {
         "symfony-scripts": [

@@ -1,19 +1,27 @@
 default:
 
     extensions:
-        Behat\Symfony2Extension: ~
+
         Behat\MinkExtension:
             base_url: 'http://localhost:8000'
             goutte: ~
             default_session: symfony
             sessions:
                 symfony:
-                    symfony2: ~
+                    symfony: ~
+
+        FriendsOfBehat\SymfonyExtension: ~
+
+        FriendsOfBehat\CrossContainerExtension: ~
+
+        FriendsOfBehat\ContextServiceExtension:
+            imports:
+                - 'features/bootstrap/config/services.yml'
 
     suites:
         users:
-            contexts:
-                - DoctrineHookContext
-                - RegistrationContext
+            contexts_services:
+                - 'app.feature_contexts.hooks.doctrine'
+                - 'app.feature_contexts.users.registration'
             filters:
                 tags: "@users"
