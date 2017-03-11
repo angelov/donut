@@ -27,37 +27,11 @@
         <div class="col-md-6">
             <h1>Received friendship requests</h1>
 
-            <ul class="list-group">
-
                 {% for request in app.user.receivedFriendshipRequests %}
 
                     {% set user = request.fromUser %}
 
-                    <li class="list-group-item">
-
-                        <div class="row">
-                            <div class="col-md-8">
-                                <strong>{{ user.name }}</strong> <small>{{ user.email }}</small>
-                                <br />
-
-                                <span class="badge">{{ count_thoughts(user) }} thoughs</span>
-                                <span class="badge">32 friends</span>
-                            </div>
-
-                            <div class="col-md-4 text-right">
-
-                                <a href="{{ path('friendships.requests.accept', {'id': user.id}) }}" class="btn btn-default">
-                                    Accept
-                                </a>
-
-                                <a href="{{ path('friendships.requests.decline', {'id': user.id}) }}" class="btn btn-default">
-                                    Decline
-                                </a>
-
-                            </div>
-                        </div>
-
-                    </li>
+                    {% include 'users/partials/user-card.html.twig' %}
 
                 {% else %}
 
@@ -65,38 +39,13 @@
 
                 {% endfor %}
 
-            </ul>
-
             <h1>Sent friendship requests</h1>
-
-            <ul class="list-group">
 
                 {% for request in app.user.sentFriendshipRequests %}
 
                     {% set user = request.toUser %}
 
-                    <li class="list-group-item">
-
-                        <div class="row">
-                            <div class="col-md-8">
-                                <strong>{{ user.name }}</strong> <small>{{ user.email }}</small>
-                                <br />
-
-                                <span class="badge">{{ count_thoughts(user) }} thoughs</span>
-                                <span class="badge">32 friends</span>
-                            </div>
-
-                            <div class="col-md-4 text-right">
-
-                                <a href="{{ path('friendships.requests.cancel', {'id': user.id}) }}" class="btn btn-default">
-                                    <i class="glyphicon glyphicon-minus"></i>
-                                    Cancel request
-                                </a>
-
-                            </div>
-                        </div>
-
-                    </li>
+                    {% include 'users/partials/user-card.html.twig' %}
 
                 {% else %}
 
@@ -104,7 +53,6 @@
 
                 {% endfor %}
 
-            </ul>
         </div>
     </div>
 

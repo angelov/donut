@@ -1,0 +1,56 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {{ user.name }}
+
+        <span class="pull-right">
+            {% include 'users/partials/action-buttons.html.twig' %}
+        </span>
+    </div>
+    <div class="panel-body">
+
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <img src="https://placehold.it/80x80" />
+
+            </div>
+
+            <div class="col-md-9">
+
+               <div class="row">
+                   <div class="col-md-12">
+                       <span class="badge">{{ count_thoughts(user) }} thoughs</span>
+                       <span class="badge">32 friends</span>
+                       <span class="badge">12 mutual friends</span>
+
+                   </div>
+               </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="small" style="margin-top: 10px;">
+
+                            {% set mf = mutual_friends(app.user, user) %}
+
+                            {% if mf|length > 0 %}
+                                <strong>Mutual Friends:</strong><br />
+
+                                {% for friend in mf %}
+
+                                    {{ friend.getName() }} {% if not loop.last %},{% endif %}
+
+                                {% endfor %}
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
