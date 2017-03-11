@@ -67,7 +67,7 @@ class User implements UserInterface
     private $receivedFriendshipRequests;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Friendship", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Friendship", mappedBy="user", cascade={"remove"})
      */
     private $friendships;
 

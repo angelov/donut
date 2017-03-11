@@ -18,12 +18,12 @@ class Friendship
     private $id = '';
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", cascade={"remove"}, inversedBy="friendships")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="friendships")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="friend_id", referencedColumnName="id", nullable=false)
      */
     private $friend;

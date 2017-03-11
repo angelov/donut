@@ -6,7 +6,7 @@
 
     {% if user.isFriendWith(app.user) %}
 
-        <a href="#" class="btn btn-default btn-xs">
+        <a href="{{ path('app.friendships.remove', {id: user.id}) }}" class="btn btn-default btn-xs">
             Remove
         </a>
 
