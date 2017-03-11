@@ -66,11 +66,17 @@ class User implements UserInterface
      */
     private $receivedFriendshipRequests;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Friendship", mappedBy="user")
+     */
+    private $friendships;
+
     public function __construct()
     {
         $this->thoughts = new ArrayCollection();
         $this->sentFriendshipRequests = new ArrayCollection();
         $this->receivedFriendshipRequests = new ArrayCollection();
+        $this->friendships = new ArrayCollection();
     }
 
     public function getId() : string
@@ -199,5 +205,20 @@ class User implements UserInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getFriends()
+    {
+        $friends = [];
+
+        /** @var Friendship $friendship */
+        foreach ($this->friendships as $friendship) {
+            $friends[] = $friendship->getFriend();
+        }
+
+        return $friends;
     }
 }

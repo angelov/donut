@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Friendship;
 use AppBundle\Entity\FriendshipRequest;
 use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -105,7 +106,13 @@ class FriendshipRequestsController extends Controller
         $em->remove($friendshipRequest);
         $em->flush();
 
-        // @todo: store the new friendship
+        $friendship = Friendship::createBetween($user, $this->getUser());
+        $em->persist($friendship);
+
+        $friendship = Friendship::createBetween($this->getUser(), $user);
+        $em->persist($friendship);
+
+        $em->flush();
 
         $recorder = $this->get('app.friendships.friends_recommender.friendship_recorder.default');
         $recorder->record($user, $this->getUser());
