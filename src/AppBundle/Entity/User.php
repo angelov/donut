@@ -221,4 +221,19 @@ class User implements UserInterface
 
         return $friends;
     }
+
+    // @todo this will have a big effect on performance, use redis or something
+    public function isFriendWith(User $user)
+    {
+        /** @var Friendship $friendship */
+        foreach ($this->friendships as $friendship) {
+            $friend = $friendship->getFriend();
+
+            if ($friend->equals($user)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

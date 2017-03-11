@@ -4,33 +4,43 @@
 
 {% if not user.equals(app.user) %}
 
-    {% if not app.user.hasSentFriendshipRequestTo(user) %}
+    {% if user.isFriendWith(app.user) %}
 
-        {% if app.user.hasReceivedFriendshipRequestFrom(user) %}
-
-            <a href="{{ path('friendships.requests.accept', {'id': user.id}) }}" class="btn btn-default btn-xs">
-                Accept
-            </a>
-
-            <a href="{{ path('friendships.requests.decline', {'id': user.id}) }}" class="btn btn-default btn-xs">
-                Decline
-            </a>
-
-        {% else %}
-
-            <a href="{{ path('friendships.requests.store', {'id': user.id}) }}" class="btn btn-default btn-xs">
-                <i class="glyphicon glyphicon-plus"></i>
-                Add friend
-            </a>
-
-        {% endif %}
+        <a href="#" class="btn btn-default btn-xs">
+            Remove
+        </a>
 
     {% else %}
 
-        <a href="{{ path('friendships.requests.cancel', {'id': user.id}) }}" class="btn btn-default btn-xs">
-            <i class="glyphicon glyphicon-minus"></i>
-            Cancel
-        </a>
+        {% if not app.user.hasSentFriendshipRequestTo(user) %}
+
+            {% if app.user.hasReceivedFriendshipRequestFrom(user) %}
+
+                <a href="{{ path('friendships.requests.accept', {'id': user.id}) }}" class="btn btn-default btn-xs">
+                    Accept
+                </a>
+
+                <a href="{{ path('friendships.requests.decline', {'id': user.id}) }}" class="btn btn-default btn-xs">
+                    Decline
+                </a>
+
+            {% else %}
+
+                <a href="{{ path('friendships.requests.store', {'id': user.id}) }}" class="btn btn-default btn-xs">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    Add friend
+                </a>
+
+            {% endif %}
+
+        {% else %}
+
+            <a href="{{ path('friendships.requests.cancel', {'id': user.id}) }}" class="btn btn-default btn-xs">
+                <i class="glyphicon glyphicon-minus"></i>
+                Cancel
+            </a>
+
+        {% endif %}
 
     {% endif %}
 
