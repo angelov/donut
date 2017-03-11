@@ -104,7 +104,6 @@ class FriendshipRequestsController extends Controller
         }
 
         $em->remove($friendshipRequest);
-        $em->flush();
 
         $friendship = Friendship::createBetween($user, $this->getUser());
         $em->persist($friendship);
