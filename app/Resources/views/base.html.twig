@@ -35,6 +35,7 @@
                                 <li><a href="">{{ app.user.name }}</a></li>
 
                                 <li><a href="#">Profile</a></li>
+                                <li><a href="{{ path('app.friends.index') }}">Friends</a></li>
                                 <li><a href="{{ path('security_logout') }}">Logout</a></li>
 
                             {% else %}
