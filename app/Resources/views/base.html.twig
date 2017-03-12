@@ -32,7 +32,7 @@
 
                             {% if is_granted('ROLE_USER')  %}
 
-                                <li><a href="">{{ app.user.name }}</a></li>
+                                <li><a href="{{ path('app.users.show', {id: app.user.id}) }}">{{ app.user.name }}</a></li>
 
                                 <li><a href="#">Profile</a></li>
                                 <li><a href="{{ path('app.friends.index') }}">Friends</a></li>

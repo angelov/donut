@@ -49,4 +49,14 @@ class UsersController extends Controller
             'users' => $users
         ]);
     }
+
+    /**
+     * @Route("/users/{id}", name="app.users.show", methods={"GET", "HEAD"})
+     */
+    public function showAction(User $user)
+    {
+        return $this->render('users/show.html.twig', [
+            'user' => $user
+        ]);
+    }
 }

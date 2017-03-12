@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <legend>{{ user.name }}</legend>
+
+    <div class="row">
+        <div class="col-md-3">
+            <img src="https://placehold.it/200x200" />
+        </div>
+
+        <div class="col-md-3">
+            <h4>Friends</h4>
+
+            {% for friend in user.friends %}
+
+                <li><a href="{{ path('app.users.show', {id: friend.id}) }}">{{ friend.name }}</a></li>
+
+            {% endfor %}
+        </div>
+
+        <div class="col-md-3">
+            <h4>Mutual Friends</h4>
+
+            {% for friend in mutual_friends(user, app.user) %}
+
+                <li><a href="{{ path('app.users.show', {id: friend.id}) }}">{{ friend.name }}</a></li>
+
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Thoughts</h4>
+
+            {% for thought in user.thoughts %}
+
+                <small>{{ thought.createdAt | date('Y-m-d H:i:s') }}</small>
+                <pre>{{ thought.content }}</pre>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
