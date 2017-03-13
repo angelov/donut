@@ -40,6 +40,21 @@ class FriendshipsController extends Controller
 
         $em->flush();
 
+        // neo4j stuff intentionally put here
+        $neo4jClient = $this->get('neo4j.client');
+        $query = '
+            MATCH 
+                (u:User {id: {first}}), 
+                (r:User {id: {second}}),
+                (u)-[f:FRIEND]-(r)
+            DELETE f
+        ';
+
+        $neo4jClient->run($query, [
+            'first' => $user->getId(),
+            'second' => $this->getUser()->getId()
+        ]);
+
         $this->addFlash('success', 'Sorry to see broken friendships.');
 
         return $this->redirectToRoute('app.friends.index');
