@@ -27,7 +27,7 @@ class FriendshipRequestsController extends Controller
 
         $this->addFlash('success', 'Friendship request successfully sent!');
 
-        return $this->redirectToRoute('app.users.index');
+        return $this->redirectToRoute('app.friends.index');
     }
 
     /**
@@ -46,7 +46,7 @@ class FriendshipRequestsController extends Controller
         if (!$friendshipRequest) {
             $this->addFlash('error', 'Something went wrong!');
 
-            return $this->redirectToRoute('app.users.index');
+            return $this->redirectToRoute('app.friends.index');
         }
 
         $em->remove($friendshipRequest);
@@ -54,7 +54,7 @@ class FriendshipRequestsController extends Controller
 
         $this->addFlash('success', 'Friendship request successfully cancelled!');
 
-        return $this->redirectToRoute('app.users.index');
+        return $this->redirectToRoute('app.friends.index');
     }
 
     /**
@@ -73,7 +73,7 @@ class FriendshipRequestsController extends Controller
         if (!$friendshipRequest) {
             $this->addFlash('error', 'Something went wrong!');
 
-            return $this->redirectToRoute('app.users.index');
+            return $this->redirectToRoute('app.friends.index');
         }
 
         $em->remove($friendshipRequest);
@@ -81,7 +81,7 @@ class FriendshipRequestsController extends Controller
 
         $this->addFlash('success', 'Friendship request successfully declined!');
 
-        return $this->redirectToRoute('app.users.index');
+        return $this->redirectToRoute('app.friends.index');
     }
 
     /**
@@ -100,7 +100,7 @@ class FriendshipRequestsController extends Controller
         if (!$friendshipRequest) {
             $this->addFlash('error', 'Something went wrong!');
 
-            return $this->redirectToRoute('app.users.index');
+            return $this->redirectToRoute('app.friends.index');
         }
 
         $em->remove($friendshipRequest);
@@ -118,6 +118,6 @@ class FriendshipRequestsController extends Controller
 
         $this->addFlash('success', 'Friendship request successfully accepted!');
 
-        return $this->redirectToRoute('app.users.index');
+        return $this->redirectToRoute('app.friends.index');
     }
 }
