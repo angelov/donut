@@ -37,13 +37,6 @@ services:
         tags:
             - { name: 'twig.extension' }
 
-    app.friendships.friends_recommender.friendship_recorder.default: '@app.friendships.friends_recommender.friendship_recorder.neo4j'
-
-    app.friendships.friends_recommender.friendship_recorder.neo4j:
-        class: 'AppBundle\FriendsRecommender\Neo4JFriendsRecommender\Neo4jFriendshipRecorder'
-        arguments:
-            - '@neo4j.client.default'
-
     app.mutual_friends_resolver.default: '@app.mutual_friends_resolver.neo4j'
 
     app.mutual_friends_resolver.neo4j:
