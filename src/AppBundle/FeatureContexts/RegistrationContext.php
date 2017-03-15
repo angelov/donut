@@ -2,6 +2,7 @@
 
 namespace AppBundle\FeatureContexts;
 
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -19,7 +20,7 @@ class RegistrationContext extends RawMinkContext
     }
 
     /**
-     * @Given /^I want to create a new user account$/
+     * @When /^I want to create a new user account$/
      */
     public function iWantToCreateANewUserAccount()
     {
@@ -29,7 +30,7 @@ class RegistrationContext extends RawMinkContext
     }
 
     /**
-     * @Given I specify the name as :name
+     * @When I specify the name as :name
      */
     public function iSpecifyTheNameAs(string $name)
     {
@@ -37,7 +38,15 @@ class RegistrationContext extends RawMinkContext
     }
 
     /**
-     * @Given I specify the email as :email
+     * @When I don't specify the name
+     */
+    public function iDonTSpecifyTheName()
+    {
+        $this->session->getPage()->fillField('Name', '');
+    }
+
+    /**
+     * @When I specify the email as :email
      */
     public function iSpecifyTheEmailAs(string $email)
     {
@@ -45,16 +54,48 @@ class RegistrationContext extends RawMinkContext
     }
 
     /**
-     * @Given I specify the password as :password
+     * @When I don't specify the email
+     */
+    public function iDonTSpecifyTheEmail()
+    {
+        $this->session->getPage()->fillField('Email', '');
+    }
+
+    /**
+     * @When I specify the password as :password
      */
     public function iSpecifyThePasswordAs(string $password)
     {
         $this->session->getPage()->fillField('Password', $password);
-        $this->session->getPage()->fillField('Repeat Password', $password);
     }
 
     /**
-     * @Given I create the account
+     * @When I don't specify the password
+     */
+    public function iDonTSpecifyThePassword()
+    {
+        $this->session->getPage()->fillField('Password', '');
+    }
+
+    /**
+     * @When I confirm the password
+     */
+    public function iConfirmThePassword()
+    {
+//        $this->session->getPage()->fillField('Repeat Password', $password);
+        throw new PendingException();
+    }
+
+    /**
+     * @When I don't confirm the password
+     */
+    public function iDonTConfirmThePassword()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I (try to) create the account
      */
     public function iCreateTheAccount()
     {
@@ -66,11 +107,11 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatMyUserAccountHasBeenSuccessfullyCreated()
     {
-//        $this->assertSession()->pageTextContains('Registration was successful. You many now login.');
+        $this->assertSession()->pageTextContains('Registration was successful. You many now login.');
     }
 
     /**
-     * @Given I should not be logged in
+     * @Then I should not be logged in
      */
     public function iShouldNotBeLoggedIn()
     {
@@ -83,6 +124,33 @@ class RegistrationContext extends RawMinkContext
                 $url,
                 $currentUrl
             ));
+        }
+    }
+
+    /**
+     * @Then I should be notified that the :field is required
+     */
+    public function iShouldBeNotifiedThatAFieldIsRequired(string $field)
+    {
+        $found = $this->session->getPage()->hasContent(sprintf(
+            'Please enter your [%s].',
+            $field
+        ));
+
+        if (!$found) {
+            throw new \RuntimeException('Could not find the proper validation message.');
+        }
+    }
+
+    /**
+     * @Then I should be notified that the password must be confirmed
+     */
+    public function iShouldBeNotifiedThatThePasswordMustBeConfirmed()
+    {
+        $found = $this->session->getPage()->hasContent('Please confirm your password.');
+
+        if (!$found) {
+            throw new \RuntimeException('Could not find the proper validation message.');
         }
     }
 }
