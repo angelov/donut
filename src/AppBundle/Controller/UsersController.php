@@ -28,7 +28,7 @@ class UsersController extends Controller
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('success', 'Registration successfull!');
+            $this->addFlash('success', 'Registration was successful. You many now login.');
 
             return $this->redirectToRoute('homepage');
         }

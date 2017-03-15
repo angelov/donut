@@ -10,6 +10,12 @@
         </div>
     {% endif %}
 
+    {% for message in app.session.flashBag.get('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     {{ form_start(form) }}
 
         {{ form_row(form._username) }}
