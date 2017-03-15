@@ -18,7 +18,8 @@ class UserRegistrationForm extends AbstractType
         $builder->add('name', TextType::class);
         $builder->add('email', EmailType::class);
         $builder->add('plainPassword', RepeatedType::class, [
-            'type' => PasswordType::class
+            'type' => PasswordType::class,
+            'invalid_message' => 'Please confirm your password.'
         ]);
     }
 
