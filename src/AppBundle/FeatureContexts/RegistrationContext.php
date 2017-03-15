@@ -122,10 +122,13 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldNotBeLoggedIn()
     {
+        // @todo refactor
         $url = $this->router->generate('security_login', [], UrlGenerator::ABSOLUTE_URL);
+        $registrationUrl = $this->router->generate('app.users.register', [], UrlGenerator::ABSOLUTE_URL);
+
         $currentUrl = $this->session->getDriver()->getCurrentUrl();
 
-        if ($currentUrl !== $url) {
+        if ($currentUrl !== $url && $currentUrl !== $registrationUrl) {
             throw new \RuntimeException(sprintf(
                 'Expected to be on [%s], but ended up on [%s] instead.',
                 $url,
