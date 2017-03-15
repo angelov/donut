@@ -25,7 +25,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", unique=true)
      * @Assert\Email()
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Please enter your email.")
      */
     private $email;
 
@@ -35,14 +35,14 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @Assert\NotBlank()
-     * @Assert\Length(min="6")
+     * @Assert\NotBlank(message="Please enter your password.")
+     * @Assert\Length(min="6", minMessage="The password must be at least 6 characters long.")
      */
     private $plainPassword;
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Please enter your name.")
      */
     private $name;
 

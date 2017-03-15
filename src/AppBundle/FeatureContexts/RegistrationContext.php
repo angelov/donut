@@ -68,6 +68,7 @@ class RegistrationContext extends RawMinkContext
     public function iSpecifyThePasswordAs(string $password)
     {
         $this->session->getPage()->fillField('Password', $password);
+        $this->session->getPage()->fillField('Repeat Password', $password);
         $this->storage->set('password', $password);
     }
 
@@ -139,7 +140,7 @@ class RegistrationContext extends RawMinkContext
     public function iShouldBeNotifiedThatAFieldIsRequired(string $field)
     {
         $found = $this->session->getPage()->hasContent(sprintf(
-            'Please enter your [%s].',
+            'Please enter your %s.',
             $field
         ));
 
