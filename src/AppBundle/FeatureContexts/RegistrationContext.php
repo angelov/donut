@@ -153,4 +153,28 @@ class RegistrationContext extends RawMinkContext
             throw new \RuntimeException('Could not find the proper validation message.');
         }
     }
+
+    /**
+     * @Then I should be notified that the specified email is already in use
+     */
+    public function iShouldBeNotifiedThatTheSpecifiedEmailIsAlreadyInUse()
+    {
+        $found = $this->session->getPage()->hasContent('The email is already in use.');
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should be notified that the password is too short
+     */
+    public function iShouldBeNotifiedThatThePasswordIsTooShort()
+    {
+        $found = $this->session->getPage()->hasContent('The password must be at least 6 characters long.');
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
 }

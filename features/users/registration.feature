@@ -43,6 +43,13 @@ Feature: User registration
     Then I should be notified that the password is required
     And I should not be logged in
 
+  Scenario: Trying to register with short password
+    When I want to create a new user account
+    And I specify the password as "12345"
+    And I try to create the account
+    Then I should be notified that the password is too short
+    And I should not be logged in
+
   Scenario: Trying to register without confirming the specified password
     When I want to create a new user account
     And I specify the name as "John Smith"
@@ -53,4 +60,10 @@ Feature: User registration
     Then I should be notified that the password must be confirmed
     And I should not be logged in
 
-  # todo: try to register with existing email address
+  Scenario: Trying to register with email that is already in use
+    Given there is a user "John Smith" with email "john@example.com" and password "johnny11"
+    When I want to create a new user account
+    And I specify the email as "john@example.com"
+    And I try to create the account
+    Then I should be notified that the specified email is already in use
+    And I should not be logged in
