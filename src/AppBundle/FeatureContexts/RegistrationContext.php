@@ -2,7 +2,6 @@
 
 namespace AppBundle\FeatureContexts;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -12,11 +11,13 @@ class RegistrationContext extends RawMinkContext
 {
     private $router;
     private $session;
+    private $storage;
 
-    public function __construct(Session $session, RouterInterface $router)
+    public function __construct(Session $session, RouterInterface $router, Storage $storage)
     {
         $this->session = $session;
         $this->router = $router;
+        $this->storage = $storage;
     }
 
     /**
@@ -67,6 +68,7 @@ class RegistrationContext extends RawMinkContext
     public function iSpecifyThePasswordAs(string $password)
     {
         $this->session->getPage()->fillField('Password', $password);
+        $this->storage->set('password', $password);
     }
 
     /**
@@ -82,8 +84,8 @@ class RegistrationContext extends RawMinkContext
      */
     public function iConfirmThePassword()
     {
-//        $this->session->getPage()->fillField('Repeat Password', $password);
-        throw new PendingException();
+        $password = $this->storage->get('password');
+        $this->session->getPage()->fillField('Repeat Password', $password);
     }
 
     /**
@@ -91,7 +93,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iDonTConfirmThePassword()
     {
-        throw new PendingException();
+        $this->session->getPage()->fillField('Repeat Password', '');
     }
 
     /**
@@ -107,7 +109,11 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatMyUserAccountHasBeenSuccessfullyCreated()
     {
-        $this->assertSession()->pageTextContains('Registration was successful. You many now login.');
+        $found = $this->session->getPage()->hasContent('Registration was successful. You many now login.');
+
+        if (!$found) {
+            throw new \Exception();
+        }
     }
 
     /**

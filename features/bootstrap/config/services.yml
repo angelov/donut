@@ -7,3 +7,6 @@ services:
         class: 'Behat\Mink\Session'
         factory: ['@__behat__.mink', 'getSession']
         lazy: true
+
+    app.behat.storage:
+        class: 'AppBundle\FeatureContexts\Storage'

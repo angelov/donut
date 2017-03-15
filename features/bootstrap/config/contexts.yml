@@ -14,6 +14,6 @@ services:
 
     app.feature_contexts.users.registration:
         class: 'AppBundle\FeatureContexts\RegistrationContext'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
