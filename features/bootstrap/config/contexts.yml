@@ -8,12 +8,18 @@ services:
 
     app.feature_contexts.setup.users:
         class: 'AppBundle\FeatureContexts\Setup\UsersContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.users.registration:
         class: 'AppBundle\FeatureContexts\RegistrationContext'
         arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
+        tags:
+            - { name: fob.context_service }
+
+    app.feature_contexts.users.login:
+        class: 'AppBundle\FeatureContexts\LoginContext'
+        arguments: ['@mink.default_session', '@__symfony__.router']
         tags:
             - { name: fob.context_service }

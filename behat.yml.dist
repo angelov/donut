@@ -19,10 +19,18 @@ default:
                 - 'features/bootstrap/config/services.yml'
 
     suites:
-        users:
+        registration:
             contexts_services:
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.users'
                 - 'app.feature_contexts.users.registration'
             filters:
                 tags: "@users"
+
+        login:
+            contexts_services:
+                - 'app.feature_contexts.hooks.doctrine'
+                - 'app.feature_contexts.setup.users'
+                - 'app.feature_contexts.users.login'
+            filters:
+                tags: "@login"

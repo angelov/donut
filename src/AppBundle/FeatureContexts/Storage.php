@@ -12,8 +12,8 @@ class Storage
         $this->items[$key] = $value;
     }
 
-    public function get(string $key)
+    public function get(string $key, $default = '')
     {
-        return $this->items[$key];
+        return $this->items[$key] ?? $default;
     }
 }
