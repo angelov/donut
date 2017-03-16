@@ -31,6 +31,8 @@ class UsersContext implements Context
         $this->em->persist($user);
         $this->em->flush();
         // @todo refactor
+
+        $this->storage->set('created_user', $user);
     }
 
     /**

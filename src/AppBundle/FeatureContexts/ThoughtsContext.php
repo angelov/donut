@@ -98,4 +98,40 @@ class ThoughtsContext implements Context
             throw new \Exception();
         }
     }
+
+    /**
+     * @When I want to browse the thoughts
+     */
+    public function iWantToBrowseTheThoughts()
+    {
+        $url = $this->router->generate('app.thoughts.index');
+
+        $this->session->getDriver()->visit($url);
+    }
+
+    /**
+     * @Then I should see (the rest) :count thoughts from :name
+     */
+    public function iShouldSeeThoughtsFrom(int $count, string $name)
+    {
+        $counted = 0;
+        $thoughts = $this->session->getPage()->findAll('css', 'pre');
+
+        /** @var NodeElement $thought */
+        foreach ($thoughts as $thought) {
+            $el = $thought->getParent()->find('css', 'small')->getText();
+
+            if (strpos($el, $name) !== false) {
+                $counted++;
+            }
+        }
+
+        if ($counted !== $count) {
+            throw new \Exception(sprintf(
+                'Counted %d instead of %d',
+                $counted,
+                $count
+            ));
+        }
+    }
 }

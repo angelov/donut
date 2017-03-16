@@ -39,6 +39,9 @@ default:
             contexts_services:
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
+                - 'app.feature_contexts.setup.users'
+                - 'app.feature_contexts.setup.thoughts'
+                - 'app.feature_contexts.setup.pagination'
                 - 'app.feature_contexts.thoughts'
             filters:
                 tags: '@thoughts'
