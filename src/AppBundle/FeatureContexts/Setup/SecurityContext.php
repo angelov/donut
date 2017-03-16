@@ -3,6 +3,7 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use AppBundle\Entity\User;
+use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
@@ -16,12 +17,18 @@ class SecurityContext implements Context
     private $entityManager;
     private $session;
     private $minkSession;
+    private $storage;
 
-    public function __construct(EntityManager $entityManager, SessionInterface $session, Session $minkSession)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        SessionInterface $session,
+        Session $minkSession,
+        Storage $storage
+    ) {
         $this->entityManager = $entityManager;
         $this->session = $session;
         $this->minkSession = $minkSession;
+        $this->storage = $storage;
     }
 
     /**
@@ -44,5 +51,7 @@ class SecurityContext implements Context
         $this->session->save();
 
         $this->minkSession->setCookie($this->session->getName(), $this->session->getId());
+
+        $this->storage->set('logged_user', $user);
     }
 }

@@ -34,6 +34,8 @@ class UsersContext implements Context
 
         $key = 'created_user_' . $name;
         $this->storage->set($key, $user);
+
+        $this->storage->set('last_created_user', $user);
     }
 
     /**

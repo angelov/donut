@@ -85,6 +85,22 @@ class ThoughtsContext implements Context
     }
 
     /**
+     * @Then I shouldn't see it in the list of (latest) thoughts
+     */
+    public function iShouldnTSeeItInTheListOfThoughts()
+    {
+        $thoughts = $this->session->getPage()->findAll('css', 'pre');
+        $content = $this->storage->get('deleted_thought_content');
+
+        /** @var NodeElement $thought */
+        foreach ($thoughts as $thought) {
+            if ($thought->getText() === $content) {
+                throw new \Exception();
+            }
+        }
+    }
+
+    /**
      * @Then I should be notified that the maximum length is :length characters
      */
     public function iShouldBeNotifiedThatTheMaximumLengthIsCharacters(int $length)
@@ -101,6 +117,7 @@ class ThoughtsContext implements Context
 
     /**
      * @When I want to browse the thoughts
+     * @Given I am browsing the thoughts
      */
     public function iWantToBrowseTheThoughts()
     {
@@ -132,6 +149,47 @@ class ThoughtsContext implements Context
                 $counted,
                 $count
             ));
+        }
+    }
+
+    /**
+     * @When I delete the :content thought
+     */
+    public function iDeleteTheThought(string $content)
+    {
+        $thoughts = $this->session->getPage()->findAll('css', 'pre');
+
+        /** @var NodeElement $thought */
+        foreach ($thoughts as $thought) {
+            if ($thought->getText() === $content) {
+                $parent = $thought->getParent();
+                $parent->pressButton('delete');
+
+                return;
+            }
+        }
+
+        $this->storage->set('deleted_thought_content', $content);
+
+        throw new \Exception('Could not find the given thought');
+    }
+
+    /**
+     * @Then I should not be allowed to delete the :content thought
+     */
+    public function iShouldNotBeAllowedToDeleteTheThought(string $content)
+    {
+        $thoughts = $this->session->getPage()->findAll('css', 'pre');
+
+        /** @var NodeElement $thought */
+        foreach ($thoughts as $thought) {
+            if ($thought->getText() === $content) {
+                $parent = $thought->getParent();
+
+                if ($parent->hasButton('delete')) {
+                    throw new \Exception('Found a forbidden delete button.');
+                }
+            }
         }
     }
 }

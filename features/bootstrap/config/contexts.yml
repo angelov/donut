@@ -20,7 +20,7 @@ services:
 
     app.feature_contexts.setup.security:
         class: 'AppBundle\FeatureContexts\Setup\SecurityContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.session', '@mink.default_session']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.session', '@mink.default_session', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
 

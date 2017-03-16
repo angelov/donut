@@ -24,7 +24,7 @@ Feature: Browsing thoughts
     But I should see 0 thoughts from James
 
   Scenario: Displaying the rest of the thoughts on a second page
-    Given Somebody has shared 5 thoughts
+    Given James has shared 5 thoughts
     And Maria has shared 10 thoughts
     When I want to browse the thoughts
     Then I should see 10 thoughts from Maria
