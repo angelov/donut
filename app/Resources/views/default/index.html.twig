@@ -14,7 +14,7 @@
 
     <h2>Share a thought:</h2>
 
-    {{ form_start(form, {'action': path('app.thoughts.store'), 'method': 'POST'}) }}
+    {{ form_start(form) }}
         {{ form_row(form.content, {
             'label': ''
         }) }}

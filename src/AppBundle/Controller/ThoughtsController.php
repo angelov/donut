@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ThoughtsController extends Controller
 {
     /**
-     * @Route("/thoughts", name="app.thoughts.index", methods={"GET", "HEAD"})
+     * @Route("/thoughts", name="app.thoughts.index", methods={"GET", "HEAD", "POST"})
      */
     public function indexAction(Request $request)
     {
@@ -32,19 +32,6 @@ class ThoughtsController extends Controller
         $pager->setMaxPerPage(10);
         $pager->setCurrentPage($page);
 
-        $form = $this->createForm(ThoughtType::class);
-
-        return $this->render('default/index.html.twig', [
-            'form' => $form->createView(),
-            'pager' => $pager
-        ]);
-    }
-
-    /**
-     * @Route("/thoughts", name="app.thoughts.store", methods={"POST"})
-     */
-    public function storeAction(Request $request)
-    {
         $form = $this->createForm(ThoughtType::class);
         $form->handleRequest($request);
 
@@ -66,9 +53,13 @@ class ThoughtsController extends Controller
 
             $this->addFlash('success', 'Thought shared!');
 
+            return $this->redirectToRoute('app.thoughts.index');
         }
 
-        return $this->redirectToRoute('app.thoughts.index');
+        return $this->render('default/index.html.twig', [
+            'form' => $form->createView(),
+            'pager' => $pager
+        ]);
     }
 
     /**

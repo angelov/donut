@@ -21,7 +21,7 @@ class Thought
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
-     * @Assert\Length(min=1, max="150")
+     * @Assert\Length(min=1, max="140", maxMessage="Thoughts can't be longer than 140 characters.")
      */
     private $content;
 
