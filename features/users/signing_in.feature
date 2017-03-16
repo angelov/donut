@@ -14,3 +14,26 @@ Feature: User registration
     And I specify the password as "123456"
     And I try to log in
     Then I should be logged in
+
+  Scenario: Trying to sign in with invalid email address
+    When I want to log in
+    And I specify the email as "aa213>><?!;'"
+    And I specify the password as "123456"
+    And I try to log in
+    Then I should be notified about bad credentials
+    Then I should not be logged in
+
+  Scenario: Trying to sign in without email
+    When I want to log in
+    And I don't specify the email
+    And I try to log in
+    Then I should be notified about bad credentials
+    And I should not be logged in
+
+  Scenario: Trying to sign in without password
+    When I want to log in
+    And I specify the email as "john@example.com"
+    And I don't specify the password
+    And I try to log in
+    Then I should be notified about bad credentials
+    And I should not be logged in

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Security;
 
-use AppBundle\Entity\User;
 use AppBundle\Exceptions\ResourceNotFoundException;
 use AppBundle\Form\LoginForm;
 use AppBundle\Repository\UsersRepositoryInterface;
@@ -12,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -66,10 +66,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         $email = $credentials['_username'];
 
+        if ($email === null) {
+            throw new CustomUserMessageAuthenticationException('Invalid credentials.');
+        }
+
         try {
             return $this->users->getByEmail($email);
         } catch (ResourceNotFoundException $e) {
-            return null;
+            throw new CustomUserMessageAuthenticationException('Invalid credentials.');
         }
     }
 

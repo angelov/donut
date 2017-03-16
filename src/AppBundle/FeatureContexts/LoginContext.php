@@ -36,11 +36,27 @@ class LoginContext implements Context
     }
 
     /**
+     * @When I don't specify the email
+     */
+    public function iDonTSpecifyTheEmail()
+    {
+        $this->session->getPage()->fillField('Username', '');
+    }
+
+    /**
      * @When I specify the password as :password
      */
     public function iSpecifyThePasswordAs(string $password)
     {
         $this->session->getPage()->fillField('Password', $password);
+    }
+
+    /**
+     * @When I don't specify the password
+     */
+    public function iDonTSpecifyThePassword()
+    {
+        $this->session->getPage()->fillField('Password', '');
     }
 
     /**
@@ -59,6 +75,31 @@ class LoginContext implements Context
         $homepage = $this->router->generate('app.thoughts.index', [], UrlGenerator::ABSOLUTE_URL);
 
         if ($this->session->getCurrentUrl() !== $homepage) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should be notified about bad credentials
+     */
+    public function iShouldBeNotifiedAboutBadCredentials()
+    {
+        $found = $this->session->getPage()->hasContent('Invalid credentials.');
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should not be logged in
+     */
+    public function iShouldNotBeLoggedIn()
+    {
+        $url = $this->router->generate('security_login', [], UrlGenerator::ABSOLUTE_URL);
+        $currentUrl = $this->session->getDriver()->getCurrentUrl();
+
+        if ($url !== $currentUrl) {
             throw new \Exception();
         }
     }
