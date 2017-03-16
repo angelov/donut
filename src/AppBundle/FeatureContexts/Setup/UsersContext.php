@@ -32,7 +32,8 @@ class UsersContext implements Context
         $this->em->flush();
         // @todo refactor
 
-        $this->storage->set('created_user', $user);
+        $key = 'created_user_' . $name;
+        $this->storage->set($key, $user);
     }
 
     /**

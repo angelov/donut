@@ -20,12 +20,12 @@ class ThoughtsContext implements Context
     }
 
     /**
-     * @Given (s)he has shared :count thoughts
+     * @Given :name has shared :count thoughts
      */
-    public function heHasSharedThoughts(int $count)
+    public function heHasSharedThoughts(string $name, int $count)
     {
         /** @var User $author */
-        $author = $this->storage->get('created_user');
+        $author = $this->storage->get('created_user_' . $name);
         $latest = $this->storage->get('latest_thought_time', new \DateTime());
 
         for ($i=0; $i<$count; $i++) {
