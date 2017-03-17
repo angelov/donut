@@ -28,19 +28,7 @@ class CommunitiesController extends Controller
     /**
      * @Route("/communities/create", name="app.communities.create")
      */
-    public function createAction()
-    {
-        $form = $this->createForm(CommunityType::class);
-
-        return $this->render('communities/create.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
-     * @Route("/communities", name="app.communities.store", methods={"POST"})
-     */
-    public function storeAction(Request $request)
+    public function createAction(Request $request)
     {
         $form = $this->createForm(CommunityType::class);
         $form->handleRequest($request);
@@ -57,9 +45,12 @@ class CommunitiesController extends Controller
 
             $this->addFlash('success', 'Community was successfully created!');
 
+            return $this->redirectToRoute('app.communities.index');
         }
 
-        return $this->redirectToRoute('app.communities.index');
+        return $this->render('communities/create.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**

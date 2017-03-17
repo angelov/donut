@@ -14,7 +14,9 @@ class CommunityType extends BaseType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class);
-        $builder->add('description', TextareaType::class);
+        $builder->add('description', TextareaType::class, [
+            'required' => false
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

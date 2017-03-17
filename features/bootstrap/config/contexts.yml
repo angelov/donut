@@ -47,3 +47,9 @@ services:
         arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
+
+    app.feature_contexts.communities.creating:
+        class: 'AppBundle\FeatureContexts\CreatingCommunitiesContext'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+        tags:
+            - { name: fob.context_service }

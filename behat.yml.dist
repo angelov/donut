@@ -45,3 +45,11 @@ default:
                 - 'app.feature_contexts.thoughts'
             filters:
                 tags: '@thoughts'
+
+        creating_communities:
+            contexts_services:
+                - 'app.feature_contexts.hooks.doctrine'
+                - 'app.feature_contexts.setup.security'
+                - 'app.feature_contexts.communities.creating'
+            filters:
+                tags: '@creating_communities'

@@ -1,0 +1,78 @@
+<?php
+
+namespace AppBundle\FeatureContexts;
+
+use Behat\Behat\Context\Context;
+use Behat\Mink\Session;
+use Symfony\Component\Routing\RouterInterface;
+
+class CreatingCommunitiesContext implements Context
+{
+    private $router;
+    private $session;
+
+    public function __construct(Session $session, RouterInterface $router)
+    {
+        $this->session = $session;
+        $this->router = $router;
+    }
+
+    /**
+     * @When I want to create a new community
+     */
+    public function iWantToCreateANewCommunity()
+    {
+        $url = $this->router->generate('app.communities.create');
+
+        $this->session->getDriver()->visit($url);
+    }
+
+    /**
+     * @When I specify the name as :name
+     * @When I don't specify the name
+     */
+    public function iSpecifyTheNameAs(string $name = '')
+    {
+        $this->session->getPage()->fillField('Name', $name);
+    }
+
+    /**
+     * @When I try to create it
+     */
+    public function iTryToCreateIt()
+    {
+        $this->session->getPage()->pressButton('Submit');
+    }
+
+    /**
+     * @Then I should be notified that the community is created
+     */
+    public function iShouldBeNotifiedThatTheCommunityIsCreated()
+    {
+        $found = $this->session->getPage()->hasContent('Community was successfully created!');
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Given I specify the description as :description
+     */
+    public function iSpecifyTheDescriptionAs(string $description)
+    {
+        $this->session->getPage()->fillField('Description', $description);
+    }
+
+    /**
+     * @Then I should be notified that the name is required
+     */
+    public function iShouldBeNotifiedThatTheNameIsRequired()
+    {
+        $found = $this->session->getPage()->hasContent('Please enter a name for the community.');
+
+        if (!$found) {
+            throw new \RuntimeException('Could not find the proper validation message.');
+        }
+    }
+}
