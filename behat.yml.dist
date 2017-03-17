@@ -62,3 +62,13 @@ default:
                 - 'app.feature_contexts.communities.browsing'
             filters:
                 tags: '@browsing_communities'
+
+        viewing_communities:
+            contexts_services:
+                - 'app.feature_contexts.hooks.doctrine'
+                - 'app.feature_contexts.setup.security'
+                - 'app.feature_contexts.setup.users'
+                - 'app.feature_contexts.setup.communities'
+                - 'app.feature_contexts.communities.viewing'
+            filters:
+                tags: '@viewing_communities'

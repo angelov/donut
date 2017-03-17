@@ -26,27 +26,31 @@
         <div class="col-md-6">
 
             <h4>Description</h4>
-            <p>{{ community.description }}</p>
+            <p id="community-description">{{ community.description }}</p>
 
             <h4>Created by</h4>
-            <p>{{ community.author.name }}</p>
+            <p id="community-author">{{ community.author.name }}</p>
 
             <h4>Created on</h4>
-            <p>{{ community.createdAt | date('Y-m-d') }}</p>
+            <p id="community-creation-date">{{ community.createdAt | date('Y-m-d') }}</p>
 
         </div>
 
         <div class="col-md-6">
 
-            <h4>Members</h4>
+            {% if community.hasMember(app.user) %}
 
-            <ul>
-                {% for member in community.members %}
+                <h4>Members</h4>
 
-                    <li>{{ member.name }}</li>
+                <ul class="community-members">
+                    {% for member in community.members %}
 
-                {% endfor %}
-            </ul>
+                        <li>{{ member.name }}</li>
+
+                    {% endfor %}
+                </ul>
+
+            {% endif %}
 
         </div>
     </div>

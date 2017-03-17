@@ -65,3 +65,9 @@ services:
         arguments: ['@mink.default_session', '@__symfony__.router']
         tags:
             - { name: fob.context_service }
+
+    app.feature_contexts.communities.viewing:
+        class: 'AppBundle\FeatureContexts\ViewingCommunitiesContext'
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@mink.default_session', '@__symfony__.router', '@app.behat.storage']
+        tags:
+         - { name: fob.context_service }

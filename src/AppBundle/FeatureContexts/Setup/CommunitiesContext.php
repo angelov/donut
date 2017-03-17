@@ -5,6 +5,7 @@ namespace AppBundle\FeatureContexts\Setup;
 use AppBundle\Entity\Community;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Doctrine\ORM\EntityManager;
 
 class CommunitiesContext implements Context
@@ -33,6 +34,8 @@ class CommunitiesContext implements Context
 
         $this->em->persist($community);
         $this->em->flush();
+
+        $this->storage->set('created_community', $community);
     }
 
     /**
@@ -49,6 +52,41 @@ class CommunitiesContext implements Context
         $community->addMember($logged);
 
         $this->em->persist($community);
+        $this->em->flush();
+    }
+
+    /**
+     * @Given I have joined it
+     */
+    public function iHaveJoinedIt() : void
+    {
+        /** @var Community $community */
+        $community = $this->storage->get('created_community');
+        $user = $this->storage->get('logged_user');
+
+        $community->addMember($user);
+
+        $this->em->flush();
+    }
+
+    /**
+     * @Given I haven't joined it
+     */
+    public function iHavenTJoinedIt() : void
+    {
+        // do nothing
+    }
+
+    /**
+     * @Given (s)he has (also) joined it
+     */
+    public function heAlsoHasJoinedIt() : void
+    {
+        $community = $this->storage->get('created_community');
+        $user = $this->storage->get('last_created_user');
+
+        $community->addMember($user);
+
         $this->em->flush();
     }
 }
