@@ -16,14 +16,14 @@
 
     {% for community in communities %}
 
-        <div class="media">
+        <div class="media community">
             <div class="media-left">
                 <a href="#">
                     {#<img class="media-object" src="..." alt="...">#}
                 </a>
             </div>
             <div class="media-body">
-                <h4 class="media-heading">{{ community.name }}</h4>
+                <h4 class="media-heading community-name">{{ community.name }}</h4>
                 <small>
                     Created by <strong>{{ community.author.name }}</strong> on <strong>{{ community.createdAt | date('Y-m-d H:i:s') }}</strong>
                 </small>
