@@ -37,3 +37,15 @@ Feature: Viewing a community
     And I haven't joined it
     When I want to view it
     Then I shouldn't see a list of its members
+
+  Scenario: Joining the viewed community
+    Given there is a community named "Pearl Jam Fans"
+    And I haven't joined it
+    When I am viewing it
+    And I try to join it
+    Then I should be notified that I have joined it
+
+  Scenario: Leaving the viewed community
+    When I am viewing the "PHP Macedonia" community
+    And I try to leave it
+    Then I should be notified that I have left it

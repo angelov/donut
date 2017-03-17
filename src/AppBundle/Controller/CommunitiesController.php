@@ -97,7 +97,7 @@ class CommunitiesController extends Controller
             $em->persist($community);
             $em->flush();
 
-            $this->addFlash('success', 'Successfully leaved the community');
+            $this->addFlash('success', 'Successfully left the community');
         }
 
         return $this->redirectToRoute('app.communities.index');

@@ -4,6 +4,7 @@ namespace AppBundle\FeatureContexts;
 
 use AppBundle\Entity\Community;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
@@ -26,6 +27,7 @@ class ViewingCommunitiesContext implements Context
 
     /**
      * @When I want to view the :name community
+     * @When I am viewing the :name community
      */
     public function iWantToViewTheCommunity(string $name) : void
     {
@@ -35,6 +37,7 @@ class ViewingCommunitiesContext implements Context
 
     /**
      * @When I want to view it
+     * @When I am viewing it
      */
     public function iWantToViewIt() : void
     {
@@ -118,7 +121,7 @@ class ViewingCommunitiesContext implements Context
     /**
      * @Then I shouldn't see a list of its members
      */
-    public function iShouldnTSeeAListOfItsMembers()
+    public function iShouldnTSeeAListOfItsMembers() : void
     {
         $found = $this->session->getPage()->has('css', 'ul.community-members');
 
@@ -156,6 +159,46 @@ class ViewingCommunitiesContext implements Context
         $members = $list->findAll('css', 'li');
 
         if (count($members) !== $count) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @When I try to join it
+     */
+    public function iTryToJoinIt() : void
+    {
+        $this->session->getPage()->pressButton('Join');
+    }
+
+    /**
+     * @Then I should be notified that I have joined it
+     */
+    public function iShouldBeNotifiedThatIHaveJoinedIt() : void
+    {
+        $found = $this->session->getPage()->hasContent('Successfully joined the community');
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @When I try to leave it
+     */
+    public function iTryToLeaveIt() : void
+    {
+        $this->session->getPage()->pressButton('Leave');
+    }
+
+    /**
+     * @Then I should be notified that I have left it
+     */
+    public function iShouldBeNotifiedThatIHaveLeftIt() : void
+    {
+        $found = $this->session->getPage()->hasContent('Successfully left the community');
+
+        if (!$found) {
             throw new \Exception();
         }
     }
