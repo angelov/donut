@@ -21,3 +21,7 @@ Feature: Viewing other users' profiles
     When I want to view Emma's profile
     Then I should see that we have 1 mutual friend
     And that friend should be Jamie
+
+  Scenario: Listing user's thoughts
+    When I'm viewing Emma's profile
+    Then I should see that she has shared 5 thoughts

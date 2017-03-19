@@ -4,6 +4,7 @@ namespace AppBundle\FeatureContexts;
 
 use AppBundle\Entity\User;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
@@ -26,6 +27,7 @@ class ViewingUserProfileContext implements Context
 
     /**
      * @When I want to view :name's profile
+     * @When I'm viewing :name's profile
      */
     public function iWantToViewUserSProfile(string $name) : void
     {
@@ -112,6 +114,22 @@ class ViewingUserProfileContext implements Context
 
         if ($mutualFriend->getText() !== $name) {
             throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should see that (s)he has shared :count thoughts
+     */
+    public function iShouldSeeThatSheHasSharedThoughts(int $count) : void
+    {
+        $list = $this->session->getPage()->findAll('css', '#thoughts-list pre');
+
+        if (count($list) !== $count) {
+            throw new \Exception(sprintf(
+                'Expected to find %d thoughts, found %d instead.',
+                $count,
+                count($list)
+            ));
         }
     }
 }
