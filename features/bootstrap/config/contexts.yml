@@ -24,6 +24,12 @@ services:
         tags:
             - { name: fob.context_service }
 
+    app.feature_contexts.setup.friendships:
+        class: 'AppBundle\FeatureContexts\Setup\FriendshipsContext'
+        arguments: ['@app.behat.storage', '@__symfony__.doctrine.orm.entity_manager', '@__symfony__.neo4j.client']
+        tags:
+            - { name: fob.context_service }
+
     app.feature_contexts.setup.security:
         class: 'AppBundle\FeatureContexts\Setup\SecurityContext'
         arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.session', '@mink.default_session', '@app.behat.storage']
@@ -70,4 +76,10 @@ services:
         class: 'AppBundle\FeatureContexts\ViewingCommunitiesContext'
         arguments: ['@__symfony__.doctrine.orm.entity_manager', '@mink.default_session', '@__symfony__.router', '@app.behat.storage']
         tags:
-         - { name: fob.context_service }
+            - { name: fob.context_service }
+
+    app.feature_contexts.users.viewing_user_profile:
+        class: 'AppBundle\FeatureContexts\ViewingUserProfileContext'
+        arguments: ['@mink.default_session', '@__symfony__.doctrine.orm.entity_manager', '@__symfony__.router', '@app.behat.storage']
+        tags:
+            - { name: fob.context_service }

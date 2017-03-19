@@ -54,4 +54,16 @@ class UsersContext implements Context
         $name = $this->storage->get('user_name', 'John Smith');
         $this->thereIsAUserWithEmailAndPassword($name, $email, $password);
     }
+
+    /**
+     * @Given there are users :first, :second, :third and :fourth
+     * @Given there are users :first and :second
+     */
+    public function thereAreUsersWithNames(string ...$names) : void
+    {
+        foreach ($names as $name) {
+            $email = str_replace(' ', '.', strtolower($name));
+            $this->thereIsAUserWithEmailAndPassword($name, $email, '123456'); // @todo use a factory or something
+        }
+    }
 }

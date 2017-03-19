@@ -9,7 +9,7 @@
             <img src="https://placehold.it/200x200" />
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3" id="friends-list">
             <h4>Friends</h4>
 
             {% for friend in user.friends %}
@@ -19,7 +19,7 @@
             {% endfor %}
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3" id="mutual-friends-list">
             <h4>Mutual Friends</h4>
 
             {% for friend in mutual_friends(user, app.user) %}

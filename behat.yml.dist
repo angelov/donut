@@ -9,14 +9,12 @@ default:
             sessions:
                 symfony:
                     symfony: ~
-
         FriendsOfBehat\SymfonyExtension: ~
-
         FriendsOfBehat\CrossContainerExtension: ~
-
         FriendsOfBehat\ContextServiceExtension:
             imports:
                 - 'features/bootstrap/config/services.yml'
+        FriendsOfBehat\VariadicExtension: ~
 
     suites:
         registration:
@@ -72,3 +70,14 @@ default:
                 - 'app.feature_contexts.communities.viewing'
             filters:
                 tags: '@viewing_communities'
+
+        viewing_user_profile:
+            contexts_services:
+                - 'app.feature_contexts.hooks.doctrine'
+                - 'app.feature_contexts.setup.security'
+                - 'app.feature_contexts.setup.users'
+                - 'app.feature_contexts.setup.friendships'
+                - 'app.feature_contexts.setup.thoughts'
+                - 'app.feature_contexts.users.viewing_user_profile'
+            filters:
+                tags: '@viewing_user_profile'
