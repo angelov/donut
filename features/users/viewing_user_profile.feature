@@ -9,7 +9,7 @@ Feature: Viewing other users' profiles
     And there are users Jamie and Emma
     And I am friend with Jamie
     And Jamie is friend with Emma
-    And Jamie has shared 5 thoughts
+    And Emma has shared 5 thoughts
 
   Scenario: Listing user's friends
     When I want to view Jamie's profile

@@ -122,7 +122,7 @@ class ViewingUserProfileContext implements Context
      */
     public function iShouldSeeThatSheHasSharedThoughts(int $count) : void
     {
-        $list = $this->session->getPage()->findAll('css', '#thoughts-list');
+        $list = $this->session->getPage()->findAll('css', '#thoughts-list pre');
 
         if (count($list) !== $count) {
             throw new \Exception(sprintf(
