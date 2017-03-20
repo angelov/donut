@@ -81,3 +81,13 @@ default:
                 - 'app.feature_contexts.users.viewing_user_profile'
             filters:
                 tags: '@viewing_user_profile'
+
+        managing_friendships:
+            contexts_services:
+                - 'app.feature_contexts.hooks.doctrine'
+                - 'app.feature_contexts.setup.security'
+                - 'app.feature_contexts.setup.users'
+                - 'app.feature_contexts.setup.friendships'
+                - 'app.feature_contexts.friends.managing'
+            filters:
+                tags: '@managing_friendships'

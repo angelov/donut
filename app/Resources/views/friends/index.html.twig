@@ -19,7 +19,7 @@
     {% endfor %}
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6" id="friends-list">
 
             <h1>My friends</h1>
 
@@ -31,7 +31,10 @@
 
         </div>
         <div class="col-md-6">
-            <h1>Received friendship requests</h1>
+
+            <div id="received-friendship-requests-list">
+
+                <h1>Received friendship requests</h1>
 
                 {% for request in app.user.receivedFriendshipRequests %}
 
@@ -45,7 +48,11 @@
 
                 {% endfor %}
 
-            <h1>Sent friendship requests</h1>
+            </div>
+
+            <div id="sent-friendship-requests-list">
+
+                <h1>Sent friendship requests</h1>
 
                 {% for request in app.user.sentFriendshipRequests %}
 
@@ -58,6 +65,8 @@
                     <li>You haven't sent any friendship requests.</li>
 
                 {% endfor %}
+
+            </div>
 
         </div>
     </div>

@@ -83,3 +83,9 @@ services:
         arguments: ['@mink.default_session', '@__symfony__.doctrine.orm.entity_manager', '@__symfony__.router', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
+
+    app.feature_contexts.friends.managing:
+        class: 'AppBundle\FeatureContexts\ManagingFriendshipsContext'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+        tags:
+            - { name: fob.context_service }
