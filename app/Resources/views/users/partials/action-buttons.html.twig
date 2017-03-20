@@ -6,8 +6,8 @@
 
     {% if user.isFriendWith(app.user) %}
 
-        <a href="{{ path('app.friendships.remove', {id: user.id}) }}" class="btn btn-default btn-xs">
-            Remove
+        <a href="{{ path('app.friendships.remove', {id: user.id}) }}" class="btn btn-default btn-xs btn-delete-friendship">
+            Delete
         </a>
 
     {% else %}
@@ -16,11 +16,11 @@
 
             {% if app.user.hasReceivedFriendshipRequestFrom(user) %}
 
-                <a href="{{ path('friendships.requests.accept', {'id': user.id}) }}" class="btn btn-default btn-xs">
+                <a href="{{ path('friendships.requests.accept', {'id': user.id}) }}" class="btn btn-default btn-xs btn-accept-friendship">
                     Accept
                 </a>
 
-                <a href="{{ path('friendships.requests.decline', {'id': user.id}) }}" class="btn btn-default btn-xs">
+                <a href="{{ path('friendships.requests.decline', {'id': user.id}) }}" class="btn btn-default btn-xs btn-decline-friendship">
                     Decline
                 </a>
 
@@ -35,7 +35,7 @@
 
         {% else %}
 
-            <a href="{{ path('friendships.requests.cancel', {'id': user.id}) }}" class="btn btn-default btn-xs">
+            <a href="{{ path('friendships.requests.cancel', {'id': user.id}) }}" class="btn btn-default btn-xs btn-cancel-friendship-request">
                 <i class="glyphicon glyphicon-minus"></i>
                 Cancel
             </a>

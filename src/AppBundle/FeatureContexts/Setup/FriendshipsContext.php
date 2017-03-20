@@ -111,6 +111,8 @@ class FriendshipsContext implements Context
 
         $this->entityManager->persist($request);
         $this->entityManager->flush();
+
+        $this->storage->set('current_friendship_request', $request);
     }
 
     /**
@@ -127,6 +129,8 @@ class FriendshipsContext implements Context
 
         $this->entityManager->persist($request);
         $this->entityManager->flush();
+
+        $this->storage->set('current_friendship_request', $request);
     }
 
     /**
