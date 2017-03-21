@@ -7,14 +7,14 @@ Feature: Browsing users
   Background:
     Given I am John
     And I am logged in as "john@example.com"
-    And there is a user Dejan with email "dejan@example.com" and password "123456"
+    And there is a user Dejan
     And he has shared 2 thoughts
     And we are friends
-    And there is a user James with email "james@example.com" and password "123456"
+    And there is a user James with email "james@example.com"
     And he has shared 3 thoughts
     And he is friend with Dejan
     And we are not friends
-    And there is a user Emma with email "emma@example.com" and password "123456"
+    And there is a user Emma
     And she is friend with Dejan
     And she has shared 0 thoughts
 

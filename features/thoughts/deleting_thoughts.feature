@@ -7,7 +7,7 @@ Feature: Deleting thoughts
   Background:
     Given I am logged in as "john@example.com"
     And I have shared a "What a beautiful day!" thought
-    And there is a user "James" with email "james@example.com" and password "123456"
+    And there is a user James
     And he has shared a "Hello world!" thought
 
   Scenario: Deleting own thoughts

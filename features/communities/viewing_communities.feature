@@ -8,8 +8,8 @@ Feature: Viewing a community
     Given I am logged in as "john@example.com"
     And there is a community named "PHP Macedonia" and described as "PHP developers from Macedonia"
     And I have joined it
-    And there is a user "Maria" with email "maria@example.com" and password "123456"
-    And there is a user "James" with email "james@example.com" and password "123456"
+    And there is a user Maria
+    And there is a user James
     And he has also joined it
 
   Scenario: Displaying basic information about the community

@@ -5,6 +5,7 @@ namespace AppBundle\FeatureContexts\Setup;
 use AppBundle\Entity\User;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UsersContext implements Context
@@ -58,6 +59,7 @@ class UsersContext implements Context
     /**
      * @Given there are users :first, :second, :third and :fourth
      * @Given there are users :first and :second
+     * @Given there is a user :first
      */
     public function thereAreUsersWithNames(string ...$names) : void
     {
@@ -65,5 +67,13 @@ class UsersContext implements Context
             $email = str_replace(' ', '.', strtolower($name));
             $this->thereIsAUserWithEmailAndPassword($name, $email, '123456'); // @todo use a factory or something
         }
+    }
+
+    /**
+     * @Given there is a user :name with email :email
+     */
+    public function thereIsAUserNameWithEmail(string $name, string $email) : void
+    {
+        $this->thereIsAUserWithEmailAndPassword($name, $email, '123456');
     }
 }

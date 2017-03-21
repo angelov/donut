@@ -6,11 +6,11 @@ Feature: Managing my friendships
 
   Background:
     Given I am logged in as "john@example.com"
-    And there is a user James with email "james@example.com" and password "123456"
+    And there is a user James
     And we are friends
-    And there is a user Angela with email "angela@example.com" and password "123456"
+    And there is a user Angela
     And we also are friends
-    And there is a user Emma with email "emma@example.com" and password "123456"
+    And there is a user Emma
     But we are not friends
 
   Scenario: Listing my friends
