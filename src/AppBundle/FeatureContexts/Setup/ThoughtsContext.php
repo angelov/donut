@@ -7,7 +7,6 @@ use AppBundle\Entity\User;
 use AppBundle\FeatureContexts\Storage;
 use AppBundle\ThoughtsCounter\ThoughtsCounterInterface;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Doctrine\ORM\EntityManager;
 
 class ThoughtsContext implements Context

@@ -7,7 +7,6 @@ use AppBundle\Entity\FriendshipRequest;
 use AppBundle\Entity\User;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Doctrine\ORM\EntityManager;
 use GraphAware\Neo4j\Client\Client;
 

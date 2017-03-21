@@ -5,7 +5,6 @@ namespace AppBundle\FeatureContexts\Setup;
 use AppBundle\Entity\Community;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Doctrine\ORM\EntityManager;
 
 class CommunitiesContext implements Context

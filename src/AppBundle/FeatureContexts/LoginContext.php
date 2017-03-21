@@ -29,34 +29,20 @@ class LoginContext implements Context
 
     /**
      * @When I specify the email as :email
+     * @When I don't specify the email
      */
-    public function iSpecifyTheEmailAs(string $email)
+    public function iSpecifyTheEmailAs(string $email = '')
     {
         $this->session->getPage()->fillField('Username', $email); // @todo change label to E-mail
     }
 
     /**
-     * @When I don't specify the email
-     */
-    public function iDonTSpecifyTheEmail()
-    {
-        $this->session->getPage()->fillField('Username', '');
-    }
-
-    /**
      * @When I specify the password as :password
-     */
-    public function iSpecifyThePasswordAs(string $password)
-    {
-        $this->session->getPage()->fillField('Password', $password);
-    }
-
-    /**
      * @When I don't specify the password
      */
-    public function iDonTSpecifyThePassword()
+    public function iSpecifyThePasswordAs(string $password = '')
     {
-        $this->session->getPage()->fillField('Password', '');
+        $this->session->getPage()->fillField('Password', $password);
     }
 
     /**

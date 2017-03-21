@@ -32,52 +32,31 @@ class RegistrationContext extends RawMinkContext
 
     /**
      * @When I specify the name as :name
+     * @When I don't specify the name
      */
-    public function iSpecifyTheNameAs(string $name)
+    public function iSpecifyTheNameAs(string $name = '')
     {
         $this->session->getPage()->fillField('Name', $name);
     }
 
     /**
-     * @When I don't specify the name
-     */
-    public function iDonTSpecifyTheName()
-    {
-        $this->session->getPage()->fillField('Name', '');
-    }
-
-    /**
      * @When I specify the email as :email
+     * @When I don't specify the email
      */
-    public function iSpecifyTheEmailAs(string $email)
+    public function iSpecifyTheEmailAs(string $email = '')
     {
         $this->session->getPage()->fillField('Email', $email);
     }
 
     /**
-     * @When I don't specify the email
-     */
-    public function iDonTSpecifyTheEmail()
-    {
-        $this->session->getPage()->fillField('Email', '');
-    }
-
-    /**
      * @When I specify the password as :password
+     * @When I don't specify the password
      */
-    public function iSpecifyThePasswordAs(string $password)
+    public function iSpecifyThePasswordAs(string $password = '')
     {
         $this->session->getPage()->fillField('Password', $password);
         $this->session->getPage()->fillField('Repeat Password', $password);
         $this->storage->set('password', $password);
-    }
-
-    /**
-     * @When I don't specify the password
-     */
-    public function iDonTSpecifyThePassword()
-    {
-        $this->session->getPage()->fillField('Password', '');
     }
 
     /**
