@@ -106,7 +106,7 @@ class ViewingUserProfileContext implements Context
     }
 
     /**
-     * @Given that friend should be :name
+     * @Then that friend should be :name
      */
     public function thatFriendShouldBe(string $name) : void
     {

@@ -91,3 +91,14 @@ default:
                 - 'app.feature_contexts.friends.managing'
             filters:
                 tags: '@managing_friendships'
+
+        browsing_users:
+            contexts_services:
+                - 'app.feature_contexts.hooks.doctrine'
+                - 'app.feature_contexts.setup.security'
+                - 'app.feature_contexts.setup.users'
+                - 'app.feature_contexts.setup.friendships'
+                - 'app.feature_contexts.setup.thoughts'
+                - 'app.feature_contexts.users.browsing'
+            filters:
+                tags: '@browsing_users'

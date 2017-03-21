@@ -39,7 +39,7 @@ class SecurityContext implements Context
         $user = new User();
         $user->setEmail($email);
         $user->setPlainPassword('123456');
-        $user->setName('John Smith');
+        $user->setName($this->storage->get('user_name', 'John Smith'));
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

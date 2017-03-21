@@ -5,6 +5,7 @@ namespace AppBundle\FeatureContexts\Setup;
 use AppBundle\Entity\Thought;
 use AppBundle\Entity\User;
 use AppBundle\FeatureContexts\Storage;
+use AppBundle\ThoughtsCounter\ThoughtsCounterInterface;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Doctrine\ORM\EntityManager;
@@ -13,24 +14,31 @@ class ThoughtsContext implements Context
 {
     private $storage;
     private $em;
+    private $thoughtsCounter;
 
-    public function __construct(EntityManager $entityManager, Storage $storage)
+    public function __construct(EntityManager $entityManager, Storage $storage, ThoughtsCounterInterface $thoughtsCounter)
     {
         $this->storage = $storage;
         $this->em = $entityManager;
+        $this->thoughtsCounter = $thoughtsCounter;
     }
 
     /**
      * @Given :name has shared :count thoughts
      */
-    public function heHasSharedThoughts(string $name, int $count)
+    public function hasSharedThoughts(string $name, int $count)
     {
-        /** @var User $author */
-        $author = $this->storage->get('created_user_' . $name);
+        if (in_array($name, ['he', 'she'])) {
+            $author = $this->storage->get('last_created_user');
+        } else {
+            $author = $this->storage->get('created_user_' . $name);
+        }
 
         for ($i=0; $i<$count; $i++) {
             $thought = $this->createThought($author);
             $this->em->persist($thought);
+
+            $this->thoughtsCounter->increase($author);
         }
 
         $this->em->flush();

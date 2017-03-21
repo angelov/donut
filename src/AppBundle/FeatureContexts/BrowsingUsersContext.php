@@ -1,0 +1,154 @@
+<?php
+
+namespace AppBundle\FeatureContexts;
+
+use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Session;
+use Symfony\Component\Routing\RouterInterface;
+
+class BrowsingUsersContext implements Context
+{
+    private $session;
+    private $router;
+    private $storage;
+
+    public function __construct(Session $session, RouterInterface $router, Storage $storage)
+    {
+        $this->session = $session;
+        $this->router = $router;
+        $this->storage = $storage;
+    }
+
+    /**
+     * @When I want to browse the users
+     */
+    public function iWantToBrowseTheUsers() : void
+    {
+        $url = $this->router->generate('app.users.index');
+        $this->session->getDriver()->visit($url);
+    }
+
+    /**
+     * @Then I should see :count users in the list
+     */
+    public function iShouldSeeUsersInTheList(int $count) : void
+    {
+        $found = $this->session->getPage()->findAll('css', '#users-list .user-card');
+
+        if (count($found) !== $count) {
+            throw new \Exception(sprintf(
+                'Expected to find %d listed users, found %d',
+                $count,
+                count($found)
+            ));
+        }
+    }
+
+    /**
+     * @Then those users should be :first, :second, :third and :fourth
+     */
+    public function thoseUsersShouldBe(string ...$names) : void
+    {
+        $found = $this->session->getPage()->findAll('css', '#users-list .user-card .user-name');
+
+        $found = array_map(function(NodeElement $element) {
+            return $element->getText();
+        }, $found);
+
+        sort($names);
+        sort($found);
+
+        if ($names !== $found) {
+            throw new \Exception(sprintf(
+                'Expected users: %s. Found: %s',
+                implode(', ', $names),
+                implode(', ', $found)
+            ));
+        }
+    }
+
+    /**
+     * @Then I should see that :name has shared :count thoughts
+     */
+    public function iShouldSeeThatUserHasSharedThoughts(string $name, int $count) : void
+    {
+        $this->checkIfUserHasBadge($name, sprintf('%d thoughts', $count));
+        $this->storage->set('current_user_name', $name);
+    }
+
+    /**
+     * @Given I should see that his email is :email
+     */
+    public function iShouldSeeThatHisEmailIs(string $email) : void
+    {
+        $name = $this->storage->get('current_user_name');
+        $this->checkIfUserHasBadge($name, $email);
+    }
+
+    /**
+     * @Then I should see that (s)he has :count friend(s)
+     */
+    public function iShouldSeeThatHeHasFriends(int $count) : void
+    {
+        $name = $this->storage->get('current_user_name');
+        $this->checkIfUserHasBadge($name, sprintf('%d friends', $count));
+    }
+
+    /**
+     * @Then I should see that we have :count mutual friend(s)
+     */
+    public function iShouldSeeThatWeHaveMutualFriends(int $count) : void
+    {
+        $name = $this->storage->get('current_user_name');
+        $this->checkIfUserHasBadge($name, sprintf('%d mutual friends', $count));
+    }
+
+    private function checkIfUserHasBadge(string $name, string $badgeContent) : void
+    {
+        $found = $this->session->getPage()->findAll('css', '#users-list .user-card');
+
+        /** @var NodeElement $card */
+        foreach ($found as $card) {
+            $currentName = $card->find('css', '.user-name')->getText();
+
+            if ($currentName === $name) {
+                $badges = $card->findAll('css', '.badge');
+
+                /** @var NodeElement $badge */
+                foreach ($badges as $badge) {
+                    if ($badge->getText() === $badgeContent) {
+                        return;
+                    }
+                }
+            }
+        }
+
+        throw new \Exception();
+    }
+
+    /**
+     * @Then that friend should be :name
+     */
+    public function thatFriendShouldBe(string $name) : void
+    {
+        $cards = $this->session->getPage()->findAll('css', '#users-list .user-card');
+        $currentUserName = $this->storage->get('current_user_name');
+
+        /** @var NodeElement $card */
+        foreach ($cards as $card) {
+            $currentName = $card->find('css', '.user-name')->getText();
+
+            if ($currentName === $currentUserName) {
+                $mutualFriend = $card->find('css', '.mutual-friends-list .mutual-friend-name')->getText();
+
+                if ($mutualFriend === $name) {
+                    return;
+                }
+            }
+        }
+
+        throw new \Exception();
+    }
+}

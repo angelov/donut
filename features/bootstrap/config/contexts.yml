@@ -14,7 +14,7 @@ services:
 
     app.feature_contexts.setup.thoughts:
         class: 'AppBundle\FeatureContexts\Setup\ThoughtsContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.thoughts_counter.redis']
         tags:
             - { name: fob.context_service }
 
@@ -83,6 +83,12 @@ services:
         arguments: ['@mink.default_session', '@__symfony__.doctrine.orm.entity_manager', '@__symfony__.router', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
+
+    app.feature_contexts.users.browsing:
+        class: 'AppBundle\FeatureContexts\BrowsingUsersContext'
+        arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
+        tags:
+         - { name: fob.context_service }
 
     app.feature_contexts.friends.managing:
         class: 'AppBundle\FeatureContexts\ManagingFriendshipsContext'

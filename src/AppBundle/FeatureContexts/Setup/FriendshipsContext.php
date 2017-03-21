@@ -53,7 +53,12 @@ class FriendshipsContext implements Context
     {
         $repo = $this->entityManager->getRepository(User::class);
 
-        $firstUser = $repo->findOneBy(['name' => $first]);
+        if (in_array($first, ['she', 'he'])) {
+            $firstUser = $this->storage->get('last_created_user');
+        } else {
+            $firstUser = $repo->findOneBy(['name' => $first]);
+        }
+
         $secondUser = $repo->findOneBy(['name' => $second]);
 
         $this->storeFriendshipBetweenUsers($firstUser, $secondUser);
