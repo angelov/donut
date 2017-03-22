@@ -4,7 +4,6 @@ namespace AppBundle\FeatureContexts;
 
 use AppBundle\Entity\User;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
@@ -74,19 +73,14 @@ class ViewingUserProfileContext implements Context
 
     private function checkIfUserIsInFriendsList(string $name) : void
     {
-        $list = $this->session->getPage()->findAll('css', '#friends-list li a');
+        $found = $this->session->getPage()->find('css', sprintf('#friends-list li a:contains("%s")', $name));
 
-        /** @var NodeElement $current */
-        foreach ($list as $current) {
-            if ($name === $current->getText()) {
-                return;
-            }
+        if (!$found) {
+            throw new \Exception(sprintf(
+                'Could not find %s in the friends list.',
+                $name
+            ));
         }
-
-        throw new \Exception(sprintf(
-            'Could not find %s in the friends list.',
-            $name
-        ));
     }
 
     /**

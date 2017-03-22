@@ -3,7 +3,6 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
@@ -107,25 +106,12 @@ class BrowsingUsersContext implements Context
 
     private function checkIfUserHasBadge(string $name, string $badgeContent) : void
     {
-        $found = $this->session->getPage()->findAll('css', '#users-list .user-card');
+        $card = $this->session->getPage()->find('css', sprintf('#users-list .user-card:contains("%s")', $name));
+        $badge = $card->find('css', sprintf('.badge:contains("%s")', $badgeContent));
 
-        /** @var NodeElement $card */
-        foreach ($found as $card) {
-            $currentName = $card->find('css', '.user-name')->getText();
-
-            if ($currentName === $name) {
-                $badges = $card->findAll('css', '.badge');
-
-                /** @var NodeElement $badge */
-                foreach ($badges as $badge) {
-                    if ($badge->getText() === $badgeContent) {
-                        return;
-                    }
-                }
-            }
+        if (!$badge) {
+            throw new \Exception();
         }
-
-        throw new \Exception();
     }
 
     /**
@@ -133,22 +119,12 @@ class BrowsingUsersContext implements Context
      */
     public function thatFriendShouldBe(string $name) : void
     {
-        $cards = $this->session->getPage()->findAll('css', '#users-list .user-card');
         $currentUserName = $this->storage->get('current_user_name');
+        $card = $this->session->getPage()->find('css', sprintf('#users-list .user-card:contains("%s")', $currentUserName));
+        $mutualFriend = $card->find('css', '.mutual-friends-list .mutual-friend-name')->getText();
 
-        /** @var NodeElement $card */
-        foreach ($cards as $card) {
-            $currentName = $card->find('css', '.user-name')->getText();
-
-            if ($currentName === $currentUserName) {
-                $mutualFriend = $card->find('css', '.mutual-friends-list .mutual-friend-name')->getText();
-
-                if ($mutualFriend === $name) {
-                    return;
-                }
-            }
+        if ($mutualFriend !== $name) {
+            throw new \Exception();
         }
-
-        throw new \Exception();
     }
 }

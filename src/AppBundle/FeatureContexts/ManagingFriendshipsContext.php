@@ -4,7 +4,6 @@ namespace AppBundle\FeatureContexts;
 
 use AppBundle\Entity\FriendshipRequest;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
@@ -168,22 +167,8 @@ class ManagingFriendshipsContext implements Context
         $request = $this->storage->get('current_friendship_request');
         $toFind = $request->getFromUser()->getName();
 
-        // @todo use xpath?
-        $cards = $this->session->getPage()->findAll('css', '#received-friendship-requests-list .user-card');
-
-        /** @var NodeElement $card */
-        foreach ($cards as $card) {
-            $name = $card->find('css', '.user-name')->getText();
-
-            if ($name === $toFind) {
-                $button = $card->find('css', '.btn-accept-friendship');
-                $button->press();
-
-                return;
-            }
-        }
-
-        throw new \Exception();
+        $button = $this->session->getPage()->find('css', sprintf('#received-friendship-requests-list .user-card:contains("%s") .btn-accept-friendship', $toFind));
+        $button->press();
     }
 
     /**
@@ -216,22 +201,8 @@ class ManagingFriendshipsContext implements Context
         $request = $this->storage->get('current_friendship_request');
         $toFind = $request->getFromUser()->getName();
 
-        // @todo use xpath?
-        $cards = $this->session->getPage()->findAll('css', '#received-friendship-requests-list .user-card');
-
-        /** @var NodeElement $card */
-        foreach ($cards as $card) {
-            $name = $card->find('css', '.user-name')->getText();
-
-            if ($name === $toFind) {
-                $button = $card->find('css', '.btn-decline-friendship');
-                $button->press();
-
-                return;
-            }
-        }
-
-        throw new \Exception();
+        $button = $this->session->getPage()->find('css', sprintf('#received-friendship-requests-list .user-card:contains("%s") .btn-decline-friendship', $toFind));
+        $button->press();
     }
 
     /**
@@ -254,21 +225,8 @@ class ManagingFriendshipsContext implements Context
         $friend = $this->storage->get('created_user_' . $name);
         $toFind = $friend->getName();
 
-        $cards = $this->session->getPage()->findAll('css', '#friends-list .user-card');
-
-        /** @var NodeElement $card */
-        foreach ($cards as $card) {
-            $name = $card->find('css', '.user-name')->getText();
-
-            if ($name === $toFind) {
-                $button = $card->find('css', '.btn-delete-friendship');
-                $button->press();
-
-                return;
-            }
-        }
-
-        throw new \Exception();
+        $button = $this->session->getPage()->find('css', sprintf('#friends-list .user-card:contains("%s") .btn-delete-friendship', $toFind));
+        $button->press();
     }
 
     /**
@@ -288,15 +246,10 @@ class ManagingFriendshipsContext implements Context
      */
     public function iShouldnTSeeInTheListOfFriendsAnymore(string $name) : void
     {
-        $cards = $this->session->getPage()->findAll('css', '#friends-list .user-card');
+        $found = $this->session->getPage()->findAll('css', sprintf('#friends-list .user-card .user-name:contains("%s")', $name));
 
-        /** @var NodeElement $card */
-        foreach ($cards as $card) {
-            $found = $card->find('css', '.user-name')->getText();
-
-            if ($name === $found) {
-                throw new \Exception();
-            }
+        if ($found) {
+            throw new \Exception();
         }
     }
 
@@ -309,22 +262,8 @@ class ManagingFriendshipsContext implements Context
         $request = $this->storage->get('current_friendship_request');
         $toFind = $request->getToUser()->getName();
 
-        // @todo use xpath?
-        $cards = $this->session->getPage()->findAll('css', '#sent-friendship-requests-list .user-card');
-
-        /** @var NodeElement $card */
-        foreach ($cards as $card) {
-            $name = $card->find('css', '.user-name')->getText();
-
-            if ($name === $toFind) {
-                $button = $card->find('css', '.btn-cancel-friendship-request');
-                $button->press();
-
-                return;
-            }
-        }
-
-        throw new \Exception();
+        $button = $this->session->getPage()->find('css', sprintf('#sent-friendship-requests-list .user-card:contains("%s") .btn-cancel-friendship-request', $toFind));
+        $button->press();
     }
 
     /**

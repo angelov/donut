@@ -4,7 +4,6 @@ namespace AppBundle\FeatureContexts;
 
 use AppBundle\Entity\Community;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
@@ -138,16 +137,11 @@ class ViewingCommunitiesContext implements Context
         $list = $this->session->getPage()->find('css', 'ul.community-members');
         $user = $this->storage->get('logged_user');
 
-        $members = $list->findAll('css', 'li');
+        $found = $list->findAll('css', sprintf('li:contains("%s")', $user->getName()));
 
-        /** @var NodeElement $member */
-        foreach ($members as $member) {
-            if ($member->getText() === $user->getName()) {
-                return;
-            }
+        if (!$found) {
+            throw new \Exception();
         }
-
-        throw new \Exception();
     }
 
     /**

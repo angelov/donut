@@ -3,8 +3,6 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -50,24 +48,11 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iShouldHaveAnOptionToJoinTheCommunity(string $name) : void
     {
-        $items = $this->session->getPage()->findAll('css', '.community');
+        $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
 
-        /** @var NodeElement $item */
-        foreach ($items as $item) {
-
-            $currentName = $item->find('css', '.community-name')->getText();
-
-            if ($currentName !== $name) {
-                continue;
-            }
-
-            if ($item->hasButton('Join')) {
-                return;
-            }
-
+        if (!$item->hasButton('Join')) {
+            throw new \Exception();
         }
-
-        throw new \Exception();
     }
 
     /**
@@ -75,24 +60,11 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iShouldHaveAnOptionToViewTheCommunity(string $name) : void
     {
-        $items = $this->session->getPage()->findAll('css', '.community');
+        $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
 
-        /** @var NodeElement $item */
-        foreach ($items as $item) {
-
-            $currentName = $item->find('css', '.community-name')->getText();
-
-            if ($currentName !== $name) {
-                continue;
-            }
-
-            if ($item->hasLink('View')) {
-                return;
-            }
-
+        if (!$item->hasLink('View')) {
+            throw new \Exception();
         }
-
-        throw new \Exception();
     }
 
     /**
@@ -100,20 +72,8 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iTryToJoinTheCommunity(string $name) : void
     {
-        $items = $this->session->getPage()->findAll('css', '.community');
-
-        /** @var NodeElement $item */
-        foreach ($items as $item) {
-
-            $currentName = $item->find('css', '.community-name')->getText();
-
-            if ($currentName === $name) {
-                $item->pressButton('Join');
-                return;
-            }
-        }
-
-        throw new \Exception();
+        $button = $this->session->getPage()->find('css', sprintf('.community:contains("%s") .btn:contains("Join")', $name));
+        $button->press();
     }
 
     /**

@@ -71,17 +71,13 @@ class ThoughtsContext implements Context
     public function iShouldSeeItInTheListOfLatestThoughts()
     {
         $page = $this->session->getPage();
-        $thoughts = $page->findAll('css', 'pre');
         $shared = $this->storage->get('thought_content');
 
-        /** @var NodeElement $thought */
-        foreach ($thoughts as $thought) {
-            if ($thought->getText() === $shared) {
-                return;
-            }
-        }
+        $found = $page->find('css', sprintf('pre:contains("%s")', $shared));
 
-        throw new \Exception();
+        if (!$found) {
+            throw new \Exception();
+        }
     }
 
     /**
@@ -89,14 +85,11 @@ class ThoughtsContext implements Context
      */
     public function iShouldnTSeeItInTheListOfThoughts()
     {
-        $thoughts = $this->session->getPage()->findAll('css', 'pre');
         $content = $this->storage->get('deleted_thought_content');
+        $found = $this->session->getPage()->find('css', sprintf('pre:contains("%s")', $content));
 
-        /** @var NodeElement $thought */
-        foreach ($thoughts as $thought) {
-            if ($thought->getText() === $content) {
-                throw new \Exception();
-            }
+        if ($found) {
+            throw new \Exception();
         }
     }
 
@@ -131,17 +124,8 @@ class ThoughtsContext implements Context
      */
     public function iShouldSeeThoughtsFrom(int $count, string $name)
     {
-        $counted = 0;
-        $thoughts = $this->session->getPage()->findAll('css', 'pre');
-
-        /** @var NodeElement $thought */
-        foreach ($thoughts as $thought) {
-            $el = $thought->getParent()->find('css', 'small')->getText();
-
-            if (strpos($el, $name) !== false) {
-                $counted++;
-            }
-        }
+        $thoughts = $this->session->getPage()->findAll('css', sprintf('.thought:contains("by %s")', $name));
+        $counted = count($thoughts);
 
         if ($counted !== $count) {
             throw new \Exception(sprintf(
@@ -157,21 +141,11 @@ class ThoughtsContext implements Context
      */
     public function iDeleteTheThought(string $content)
     {
-        $thoughts = $this->session->getPage()->findAll('css', 'pre');
+        $thought = $this->session->getPage()->find('css', sprintf('pre:contains("%s")', $content));
 
-        /** @var NodeElement $thought */
-        foreach ($thoughts as $thought) {
-            if ($thought->getText() === $content) {
-                $parent = $thought->getParent();
-                $parent->pressButton('delete');
-
-                return;
-            }
-        }
+        $thought->getParent()->pressButton('delete');
 
         $this->storage->set('deleted_thought_content', $content);
-
-        throw new \Exception('Could not find the given thought');
     }
 
     /**
@@ -179,17 +153,11 @@ class ThoughtsContext implements Context
      */
     public function iShouldNotBeAllowedToDeleteTheThought(string $content)
     {
-        $thoughts = $this->session->getPage()->findAll('css', 'pre');
+        $thought = $this->session->getPage()->find('css', sprintf('pre:contains("%s")', $content));
+        $parent = $thought->getParent();
 
-        /** @var NodeElement $thought */
-        foreach ($thoughts as $thought) {
-            if ($thought->getText() === $content) {
-                $parent = $thought->getParent();
-
-                if ($parent->hasButton('delete')) {
-                    throw new \Exception('Found a forbidden delete button.');
-                }
-            }
+        if ($parent->hasButton('delete')) {
+            throw new \Exception('Found a forbidden delete button.');
         }
     }
 }
