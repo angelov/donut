@@ -35,6 +35,7 @@ class CommunitiesContext implements Context
         $this->em->flush();
 
         $this->storage->set('created_community', $community);
+        $this->storage->set('community_' . $name, $community);
     }
 
     /**
@@ -42,10 +43,7 @@ class CommunitiesContext implements Context
      */
     public function iHaveJoinedTheCommunity(string $name) : void
     {
-        $repo = $this->em->getRepository(Community::class);
-
-        /** @var Community $community */
-        $community = $repo->findOneBy(['name' => $name]);
+        $community = $this->storage->get('community_' . $name);
 
         $logged = $this->storage->get('logged_user');
         $community->addMember($logged);

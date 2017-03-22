@@ -4,21 +4,18 @@ namespace AppBundle\FeatureContexts;
 
 use AppBundle\Entity\Community;
 use Behat\Behat\Context\Context;
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\RouterInterface;
 
 class ViewingCommunitiesContext implements Context
 {
-    private $em;
     private $session;
     private $router;
     private $storage;
 
     public function __construct(EntityManager $em, Session $session, RouterInterface $router, Storage $storage)
     {
-        $this->em = $em;
         $this->session = $session;
         $this->router = $router;
         $this->storage = $storage;
@@ -30,7 +27,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function iWantToViewTheCommunity(string $name) : void
     {
-        $community = $this->em->getRepository(Community::class)->findOneBy(['name' => $name]);
+        $community = $this->storage->get('community_' . $name);
         $this->openCommunityPage($community);
     }
 

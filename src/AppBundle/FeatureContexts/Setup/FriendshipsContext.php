@@ -55,7 +55,7 @@ class FriendshipsContext implements Context
         if (in_array($first, ['she', 'he'])) {
             $firstUser = $this->storage->get('last_created_user');
         } else {
-            $firstUser = $repo->findOneBy(['name' => $first]);
+            $firstUser = $this->storage->get('created_user_' . $first);
         }
 
         $secondUser = $repo->findOneBy(['name' => $second]);
