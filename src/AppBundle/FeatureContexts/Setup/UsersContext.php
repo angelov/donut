@@ -57,6 +57,7 @@ class UsersContext implements Context
 
     /**
      * @Given there are users :first, :second, :third and :fourth
+     * @Given there are users :first, :second and :third
      * @Given there are users :first and :second
      * @Given there is a user :first
      */

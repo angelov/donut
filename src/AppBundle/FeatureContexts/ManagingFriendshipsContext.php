@@ -219,6 +219,7 @@ class ManagingFriendshipsContext implements Context
 
     /**
      * @Given I delete my friendship with :name
+     * @Given I want to stop being a friend with :name
      */
     public function iDeleteMyFriendshipWith(string $name) : void
     {
