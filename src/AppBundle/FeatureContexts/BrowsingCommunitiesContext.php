@@ -3,6 +3,8 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -10,11 +12,13 @@ class BrowsingCommunitiesContext implements Context
 {
     private $session;
     private $router;
+    private $storage;
 
-    public function __construct(Session $session, RouterInterface $router)
+    public function __construct(Session $session, RouterInterface $router, Storage $storage)
     {
         $this->session = $session;
         $this->router = $router;
+        $this->storage = $storage;
     }
 
     /**
@@ -49,8 +53,22 @@ class BrowsingCommunitiesContext implements Context
     public function iShouldHaveAnOptionToJoinTheCommunity(string $name) : void
     {
         $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
+        $this->storage->set('current_community_name', $name);
 
         if (!$item->hasButton('Join')) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should not have an option to join it
+     */
+    public function iShouldNotHaveAnOptionToJoinIt() : void
+    {
+        $name = $this->storage->get('current_community_name');
+        $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
+
+        if ($item->hasButton('Join')) {
             throw new \Exception();
         }
     }
@@ -61,8 +79,22 @@ class BrowsingCommunitiesContext implements Context
     public function iShouldHaveAnOptionToViewTheCommunity(string $name) : void
     {
         $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
+        $this->storage->set('current_community_name', $name);
 
         if (!$item->hasLink('View')) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should not have an option to view it
+     */
+    public function iShouldNotHaveAnOptionToViewIt() : void
+    {
+        $name = $this->storage->get('current_community_name');
+        $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
+
+        if ($item->hasLink('View')) {
             throw new \Exception();
         }
     }
@@ -79,11 +111,29 @@ class BrowsingCommunitiesContext implements Context
     /**
      * @Then I should be notified that I have joined the community
      */
-    public function iShouldBeNotifiedThatIHaveJoinedTheCommunity()
+    public function iShouldBeNotifiedThatIHaveJoinedTheCommunity() : void
     {
         $found = $this->session->getPage()->hasContent('Successfully joined the community');
 
         if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Given those communities should be :first and :second
+     */
+    public function thoseCommunitiesShouldBeAnd(string ...$names) : void
+    {
+        $found = $this->session->getPage()->findAll('css', '.community-name');
+        $found = array_map(function (NodeElement $element) {
+            return $element->getText();
+        }, $found);
+
+        sort($names);
+        sort($found);
+
+        if ($names !== $found) {
             throw new \Exception();
         }
     }

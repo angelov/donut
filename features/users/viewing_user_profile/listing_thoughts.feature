@@ -12,7 +12,6 @@ Feature: Listing user's thoughts
     Given Emma has shared 5 thoughts
     When I want to view Emma's profile
     Then I should see that she has shared 5 thoughts
-#    And I should see her thoughts @todo
 
 #  @todo
 #  Scenario: The user hasn't shared any thoughts

@@ -12,6 +12,6 @@ Feature: Listing the communities
   Scenario: Listing the existing communities
     When I want to browse the communities
     Then I should see 2 listed communities
-#    And those communities should be "Music lovers" and "Software Engineers" @todo
+    And those communities should be "Music lovers" and "Software Engineers"
 
   # @todo scenario for when there are no communities

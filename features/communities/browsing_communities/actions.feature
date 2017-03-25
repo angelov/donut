@@ -11,10 +11,10 @@ Feature: Community actions
   Scenario: I haven't joined the community
     When I am browsing the communities
     Then I should have an option to join the "Humans" community
-#    But I should not have an option to view it @todo
+    But I should not have an option to view it
 
   Scenario: I have joined the community
     Given I have joined the "Humans" community
     When I am browsing the communities
     Then I should have an option to view the "Humans" community
-#    But I should not have an option to join it @todo
+    But I should not have an option to join it

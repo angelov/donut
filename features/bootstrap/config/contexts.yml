@@ -68,7 +68,7 @@ services:
 
     app.feature_contexts.communities.browsing:
         class: 'AppBundle\FeatureContexts\BrowsingCommunitiesContext'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
 
