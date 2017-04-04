@@ -121,7 +121,8 @@ class BrowsingCommunitiesContext implements Context
     }
 
     /**
-     * @Given those communities should be :first and :second
+     * @Then those communities should be :first and :second
+     * @Then I should see the :name community
      */
     public function thoseCommunitiesShouldBeAnd(string ...$names) : void
     {
@@ -130,10 +131,78 @@ class BrowsingCommunitiesContext implements Context
             return $element->getText();
         }, $found);
 
+        $this->storage->set('current_community_name', $names[count($names)-1]);
+
         sort($names);
         sort($found);
 
         if ($names !== $found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then it should be described as :description
+     */
+    public function itShouldBeDescribedAs(string $description) : void
+    {
+        $community = $this->storage->get('current_community_name');
+        $nameElement = $this->session->getPage()->find('css', sprintf('.community .media-body .community-name:contains("%s")', $community));
+
+        $communityElement = $nameElement->getParent()->getParent();
+
+        $found = $communityElement->has('css', sprintf('.media-body:contains("%s")', $description));
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should see that it is created by me
+     */
+    public function iShouldSeeThatItIsCreatedByMe() : void
+    {
+        $community = $this->storage->get('current_community_name');
+        $nameElement = $this->session->getPage()->find('css', sprintf('.community .media-body .community-name:contains("%s")', $community));
+
+        $communityElement = $nameElement->getParent()->getParent();
+
+        $logged = $this->storage->get('logged_user')->getName();
+
+        $found = $communityElement->has('css', sprintf('.media-body:contains("%s")', $logged));
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should see that the :name community is created by :author
+     */
+    public function iShouldSeeThatTheCommunityIsCreatedBy(string $name, string $author) : void
+    {
+        $nameElement = $this->session->getPage()->find('css', sprintf('.community .media-body .community-name:contains("%s")', $name));
+
+        $communityElement = $nameElement->getParent()->getParent();
+
+        $found = $communityElement->has('css', sprintf('.media-body:contains("%s")', $author));
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should see a message that there aren't any existing communities
+     */
+    public function iShouldSeeAMessageThatThereArenTAnyExistingCommunities() : void
+    {
+        $message = 'There aren\'t any communities available for you. Want to create one?';
+
+        $found = $this->session->getPage()->has('css', sprintf('p:contains("%s")', $message));
+
+        if (!$found) {
             throw new \Exception();
         }
     }

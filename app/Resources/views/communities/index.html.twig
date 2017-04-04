@@ -45,6 +45,10 @@
             </div>
         </div>
 
+    {% else %}
+
+        <p>There aren't any communities available for you. Want to create <a href="{{ path('app.communities.create') }}">one?</a></p>
+
     {% endfor %}
 
 {% endblock %}
