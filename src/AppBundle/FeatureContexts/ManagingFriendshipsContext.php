@@ -4,6 +4,7 @@ namespace AppBundle\FeatureContexts;
 
 use AppBundle\Entity\FriendshipRequest;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
@@ -273,6 +274,18 @@ class ManagingFriendshipsContext implements Context
     public function iShouldBeNotifiedThatTheRequestIsCancelled()
     {
         $found = $this->session->getPage()->hasContent('Friendship request successfully cancelled!');
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should see a message that I still don't have any friends
+     */
+    public function iShouldSeeAMessageThatIStillDonTHaveAnyFriends()
+    {
+        $found = $this->session->getPage()->find('css', '#friends-list li:contains("You still don\'t have any friends :(")');
 
         if (!$found) {
             throw new \Exception();

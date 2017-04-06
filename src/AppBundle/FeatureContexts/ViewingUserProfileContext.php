@@ -4,6 +4,7 @@ namespace AppBundle\FeatureContexts;
 
 use AppBundle\Entity\User;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
@@ -124,6 +125,42 @@ class ViewingUserProfileContext implements Context
                 $count,
                 count($list)
             ));
+        }
+    }
+
+    /**
+     * @Then I should see a message that (s)he has no friends
+     */
+    public function iShouldSeeAMessageThatHeHasNoFriends() : void
+    {
+        $found = $this->session->getPage()->find('css', '#friends-list li:contains("The user has no friends.")');
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should see a message that we don't have any mutual friends
+     */
+    public function iShouldSeeAMessageThatWeDonTHaveAnyMutualFriends() : void
+    {
+        $found = $this->session->getPage()->find('css', '#mutual-friends-list li:contains("You don\'t have any mutual friends.")');
+
+        if (!$found) {
+            throw new \Exception();
+        }
+    }
+
+    /**
+     * @Then I should see a message that (s)he hasn't shared anything yet
+     */
+    public function iShouldSeeAMessageThatSheHasnTSharedAnythingYet() : void
+    {
+        $found = $this->session->getPage()->find('css', '#thoughts-list p:contains("The user hasn\'t shared any thoughts yet.")');
+
+        if (!$found) {
+            throw new \Exception();
         }
     }
 }

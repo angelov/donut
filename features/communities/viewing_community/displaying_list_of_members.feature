@@ -18,8 +18,6 @@ Feature: List of members
     And I should be part of it
     And it should have 2 members
 
-  # @todo when there are no members
-
   Scenario: Hiding the members list from users who hasn't joined the community
     Given there is a community named "Pearl Jam Fans"
     And I haven't joined it

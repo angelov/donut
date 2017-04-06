@@ -16,6 +16,10 @@
 
                 <li><a href="{{ path('app.users.show', {id: friend.id}) }}">{{ friend.name }}</a></li>
 
+            {% else %}
+
+                <li>The user has no friends.</li>
+
             {% endfor %}
         </div>
 
@@ -25,6 +29,10 @@
             {% for friend in mutual_friends(user, app.user) %}
 
                 <li><a href="{{ path('app.users.show', {id: friend.id}) }}">{{ friend.name }}</a></li>
+
+            {% else %}
+
+                <li>You don't have any mutual friends.</li>
 
             {% endfor %}
         </div>
@@ -38,6 +46,10 @@
 
                 <small>{{ thought.createdAt | date('Y-m-d H:i:s') }}</small>
                 <pre>{{ thought.content }}</pre>
+
+            {% else %}
+
+                <p>The user hasn't shared any thoughts yet.</p>
 
             {% endfor %}
 

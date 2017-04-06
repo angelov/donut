@@ -16,8 +16,7 @@ Feature: Listing user's friends
     And I should be on the list of friends
     And Emma should also be on the list
 
-#  @todo
-#  Scenario: The user has no friends
-#    When I want to view Tom's profile
-#    Then I should see that he has 0 friends
-#    And I should see a message that he has no friends
+  Scenario: The user has no friends
+    When I want to view Tom's profile
+    Then I should see that he has 0 friends
+    And I should see a message that he has no friends

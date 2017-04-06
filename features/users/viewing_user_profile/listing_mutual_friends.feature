@@ -15,8 +15,7 @@ Feature: Listing mutual friends with user
     Then I should see that we have 1 mutual friend
     And that friend should be Jamie
 
-#  @todo
-#  Scenario: We don't have any mutual friends
-#    When I want to view Jamie's profile
-#    Then I should see that we have 0 mutual friends
-#    And I should see a message that we don't have any mutual friends
+  Scenario: We don't have any mutual friends
+    When I want to view Jamie's profile
+    Then I should see that we have 0 mutual friends
+    And I should see a message that we don't have any mutual friends

@@ -15,8 +15,7 @@ Feature: Listing my friends
     Then I should see that I have 2 friends
     And I should see that I am friend with James and Angela
 
-#  @todo
-#  Scenario: I don't have friends
-#    When I want to manage my friendships
-#    Then I should see that I have 0 friends
-#    And I should see a message that I still don't have any friends
+  Scenario: I don't have friends
+    When I want to manage my friendships
+    Then I should see that I have 0 friends
+    And I should see a message that I still don't have any friends
