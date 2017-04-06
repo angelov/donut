@@ -4,10 +4,10 @@ namespace AppBundle\FeatureContexts;
 
 use AppBundle\Entity\FriendshipRequest;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class ManagingFriendshipsContext implements Context
 {
@@ -38,13 +38,7 @@ class ManagingFriendshipsContext implements Context
     {
         $list = $this->session->getPage()->findAll('css', '#friends-list .panel');
 
-        if (count($list) !== $count) {
-            throw new \Exception(sprintf(
-                'Expected to find %d friends, found %d.',
-                $count,
-                count($list)
-            ));
-        }
+        Assert::same($count, count($list), 'Expected to find %s friends, found %s.');
     }
 
     /**
@@ -63,13 +57,10 @@ class ManagingFriendshipsContext implements Context
         sort($names);
         sort($foundNames);
 
-        if ($names !== $foundNames) {
-            throw new \Exception(sprintf(
-                'Expected friends: %s. Found friends: %s.',
-                implode(', ', $names),
-                implode(', ', $foundNames)
-            ));
-        }
+        $names = implode(', ', $names);
+        $foundNames = implode(', ', $foundNames);
+
+        Assert::same($names, $foundNames, 'Expected friends: %s. Found friends: %s.');
     }
 
     /**
@@ -79,13 +70,7 @@ class ManagingFriendshipsContext implements Context
     {
         $list = $this->session->getPage()->findAll('css', '#received-friendship-requests-list .panel');
 
-        if (count($list) !== $count) {
-            throw new \Exception(
-                'Expected to find %d received friendship requests, found %d instead.',
-                $count,
-                count($list)
-            );
-        }
+        Assert::same($count, count($list), 'Expected to find %s received friendship requests, found %s instead.');
     }
 
     /**
@@ -95,12 +80,7 @@ class ManagingFriendshipsContext implements Context
     {
         $listed = $this->session->getPage()->find('css', '#received-friendship-requests-list .user-name')->getText();
 
-        if ($name !== $listed) {
-            throw new \Exception(sprintf(
-                'Could not find a friendship request from %s.',
-                $name
-            ));
-        }
+        Assert::same($name, $listed, 'Could not find a friendship request from %s.');
     }
 
     /**
@@ -110,13 +90,7 @@ class ManagingFriendshipsContext implements Context
     {
         $list = $this->session->getPage()->findAll('css', '#sent-friendship-requests-list .panel');
 
-        if (count($list) !== $count) {
-            throw new \Exception(
-                'Expected to find %d sent friendship requests, found %d instead.',
-                $count,
-                count($list)
-            );
-        }
+        Assert::same($count, count($list), 'Expected to find %s sent friendship requests, found %s instead.');
     }
 
     /**
@@ -126,12 +100,7 @@ class ManagingFriendshipsContext implements Context
     {
         $listed = $this->session->getPage()->find('css', '#sent-friendship-requests-list .user-name')->getText();
 
-        if ($name !== $listed) {
-            throw new \Exception(sprintf(
-                'Could not find a friendship request sent to %s.',
-                $name
-            ));
-        }
+        Assert::same($name, $listed, 'Could not find a friendship request sent to %s.');
     }
 
     /**
@@ -139,11 +108,7 @@ class ManagingFriendshipsContext implements Context
      */
     public function iShouldSeeThatIHavenTGotAnyReceivedFriendshipRequests() : void
     {
-        $found = $this->session->getPage()->hasContent('0 non-responded friendship requests found.');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('0 non-responded friendship requests found.'));
     }
 
     /**
@@ -151,11 +116,7 @@ class ManagingFriendshipsContext implements Context
      */
     public function iShouldSeeThatIHavenTGotAnySentFriendshipRequests() : void
     {
-        $found = $this->session->getPage()->hasContent('You haven\'t sent any friendship requests.');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('You haven\'t sent any friendship requests.'));
     }
 
     /**
@@ -177,11 +138,7 @@ class ManagingFriendshipsContext implements Context
      */
     public function iShouldBeNotifiedThatWeVeBecameFriends() : void
     {
-        $found = $this->session->getPage()->hasContent('Friendship request successfully accepted!');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('Friendship request successfully accepted!'));
     }
 
     /**
@@ -211,11 +168,7 @@ class ManagingFriendshipsContext implements Context
      */
     public function iShouldBeNotifiedThatTheRequestIsRemoved() : void
     {
-        $found = $this->session->getPage()->hasContent('Friendship request successfully declined!');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('Friendship request successfully declined!'));
     }
 
     /**
@@ -236,11 +189,7 @@ class ManagingFriendshipsContext implements Context
      */
     public function iShouldBeNotifiedThatTheFriendshipIsDeleted() : void
     {
-        $found = $this->session->getPage()->hasContent('Sorry to see broken friendships.');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('Sorry to see broken friendships.'));
     }
 
     /**
@@ -248,17 +197,13 @@ class ManagingFriendshipsContext implements Context
      */
     public function iShouldnTSeeInTheListOfFriendsAnymore(string $name) : void
     {
-        $found = $this->session->getPage()->findAll('css', sprintf('#friends-list .user-card .user-name:contains("%s")', $name));
-
-        if ($found) {
-            throw new \Exception();
-        }
+        Assert::false($this->session->getPage()->has('css', sprintf('#friends-list .user-card .user-name:contains("%s")', $name)));
     }
 
     /**
      * @When I want to cancel the friendship request
      */
-    public function iWantToCancelTheFriendshipRequest()
+    public function iWantToCancelTheFriendshipRequest() : void
     {
         /** @var FriendshipRequest $request */
         $request = $this->storage->get('current_friendship_request');
@@ -271,24 +216,16 @@ class ManagingFriendshipsContext implements Context
     /**
      * @Then I should be notified that the request is cancelled
      */
-    public function iShouldBeNotifiedThatTheRequestIsCancelled()
+    public function iShouldBeNotifiedThatTheRequestIsCancelled() : void
     {
-        $found = $this->session->getPage()->hasContent('Friendship request successfully cancelled!');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('Friendship request successfully cancelled!'));
     }
 
     /**
      * @Then I should see a message that I still don't have any friends
      */
-    public function iShouldSeeAMessageThatIStillDonTHaveAnyFriends()
+    public function iShouldSeeAMessageThatIStillDonTHaveAnyFriends() : void
     {
-        $found = $this->session->getPage()->find('css', '#friends-list li:contains("You still don\'t have any friends :(")');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->has('css', '#friends-list li:contains("You still don\'t have any friends :(")'));
     }
 }

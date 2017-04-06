@@ -3,10 +3,10 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class BrowsingCommunitiesContext implements Context
 {
@@ -38,13 +38,7 @@ class BrowsingCommunitiesContext implements Context
     {
         $items = $this->session->getPage()->findAll('css', '.community');
 
-        if (count($items) !== $count) {
-            throw new \Exception(sprintf(
-                'Counted %d communities instead of %d',
-                count($items),
-                $count
-            ));
-        }
+        Assert::same(count($items), $count, 'Counted %d communities instead of %s');
     }
 
     /**
@@ -55,9 +49,7 @@ class BrowsingCommunitiesContext implements Context
         $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
         $this->storage->set('current_community_name', $name);
 
-        if (!$item->hasButton('Join')) {
-            throw new \Exception();
-        }
+        Assert::true($item->hasButton('Join'));
     }
 
     /**
@@ -68,9 +60,7 @@ class BrowsingCommunitiesContext implements Context
         $name = $this->storage->get('current_community_name');
         $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
 
-        if ($item->hasButton('Join')) {
-            throw new \Exception();
-        }
+        Assert::false($item->hasButton('Join'));
     }
 
     /**
@@ -81,9 +71,7 @@ class BrowsingCommunitiesContext implements Context
         $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
         $this->storage->set('current_community_name', $name);
 
-        if (!$item->hasLink('View')) {
-            throw new \Exception();
-        }
+        Assert::true($item->hasLink('View'));
     }
 
     /**
@@ -94,9 +82,7 @@ class BrowsingCommunitiesContext implements Context
         $name = $this->storage->get('current_community_name');
         $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
 
-        if ($item->hasLink('View')) {
-            throw new \Exception();
-        }
+        Assert::false($item->hasLink('View'));
     }
 
     /**
@@ -113,11 +99,7 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iShouldBeNotifiedThatIHaveJoinedTheCommunity() : void
     {
-        $found = $this->session->getPage()->hasContent('Successfully joined the community');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('Successfully joined the community'));
     }
 
     /**
@@ -136,9 +118,7 @@ class BrowsingCommunitiesContext implements Context
         sort($names);
         sort($found);
 
-        if ($names !== $found) {
-            throw new \Exception();
-        }
+        Assert::same($names, $found);
     }
 
     /**
@@ -151,11 +131,7 @@ class BrowsingCommunitiesContext implements Context
 
         $communityElement = $nameElement->getParent()->getParent();
 
-        $found = $communityElement->has('css', sprintf('.media-body:contains("%s")', $description));
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($communityElement->has('css', sprintf('.media-body:contains("%s")', $description)));
     }
 
     /**
@@ -170,11 +146,7 @@ class BrowsingCommunitiesContext implements Context
 
         $logged = $this->storage->get('logged_user')->getName();
 
-        $found = $communityElement->has('css', sprintf('.media-body:contains("%s")', $logged));
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($communityElement->has('css', sprintf('.media-body:contains("%s")', $logged)));
     }
 
     /**
@@ -186,11 +158,7 @@ class BrowsingCommunitiesContext implements Context
 
         $communityElement = $nameElement->getParent()->getParent();
 
-        $found = $communityElement->has('css', sprintf('.media-body:contains("%s")', $author));
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($communityElement->has('css', sprintf('.media-body:contains("%s")', $author)));
     }
 
     /**
@@ -200,10 +168,6 @@ class BrowsingCommunitiesContext implements Context
     {
         $message = 'There aren\'t any communities available for you. Want to create one?';
 
-        $found = $this->session->getPage()->has('css', sprintf('p:contains("%s")', $message));
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->has('css', sprintf('p:contains("%s")', $message)));
     }
 }

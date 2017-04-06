@@ -3,9 +3,9 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class ThoughtsContext implements Context
 {
@@ -45,6 +45,7 @@ class ThoughtsContext implements Context
      */
     public function iSpecifyItsContentAsSomethingLongerThanCharacters(int $length)
     {
+        // @todo extract string generating
         $list = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ<>?:"{}!@#$%^&';
         $list = str_shuffle($list);
 
@@ -73,11 +74,7 @@ class ThoughtsContext implements Context
         $page = $this->session->getPage();
         $shared = $this->storage->get('thought_content');
 
-        $found = $page->find('css', sprintf('pre:contains("%s")', $shared));
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($page->has('css', sprintf('pre:contains("%s")', $shared)));
     }
 
     /**
@@ -86,11 +83,8 @@ class ThoughtsContext implements Context
     public function iShouldnTSeeItInTheListOfThoughts()
     {
         $content = $this->storage->get('deleted_thought_content');
-        $found = $this->session->getPage()->find('css', sprintf('pre:contains("%s")', $content));
 
-        if ($found) {
-            throw new \Exception();
-        }
+        Assert::false($this->session->getPage()->has('css', sprintf('pre:contains("%s")', $content)));
     }
 
     /**
@@ -98,14 +92,7 @@ class ThoughtsContext implements Context
      */
     public function iShouldBeNotifiedThatTheMaximumLengthIsCharacters(int $length)
     {
-        $found = $this->session->getPage()->hasContent(sprintf(
-            'Thoughts can\'t be longer than %d characters.',
-            $length
-        ));
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent(sprintf('Thoughts can\'t be longer than %d characters.', $length)));
     }
 
     /**
@@ -127,13 +114,7 @@ class ThoughtsContext implements Context
         $thoughts = $this->session->getPage()->findAll('css', sprintf('.thought:contains("by %s")', $name));
         $counted = count($thoughts);
 
-        if ($counted !== $count) {
-            throw new \Exception(sprintf(
-                'Counted %d instead of %d',
-                $counted,
-                $count
-            ));
-        }
+        Assert::same($counted, $count, 'Counted %d instead of %d');
     }
 
     /**
@@ -156,8 +137,6 @@ class ThoughtsContext implements Context
         $thought = $this->session->getPage()->find('css', sprintf('pre:contains("%s")', $content));
         $parent = $thought->getParent();
 
-        if ($parent->hasButton('delete')) {
-            throw new \Exception('Found a forbidden delete button.');
-        }
+        Assert::false($parent->hasButton('delete'), 'Found a forbidden delete button.');
     }
 }

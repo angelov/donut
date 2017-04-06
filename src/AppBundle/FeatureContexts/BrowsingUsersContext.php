@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class BrowsingUsersContext implements Context
 {
@@ -36,13 +37,7 @@ class BrowsingUsersContext implements Context
     {
         $found = $this->session->getPage()->findAll('css', '#users-list .user-card');
 
-        if (count($found) !== $count) {
-            throw new \Exception(sprintf(
-                'Expected to find %d listed users, found %d',
-                $count,
-                count($found)
-            ));
-        }
+        Assert::same($count, count($found), 'Expected to find %s listed users, found %s');
     }
 
     /**
@@ -59,13 +54,10 @@ class BrowsingUsersContext implements Context
         sort($names);
         sort($found);
 
-        if ($names !== $found) {
-            throw new \Exception(sprintf(
-                'Expected users: %s. Found: %s',
-                implode(', ', $names),
-                implode(', ', $found)
-            ));
-        }
+        $names = implode(', ', $names);
+        $found = implode(', ', $found);
+
+        Assert::same($names, $found, 'Expected users: %s. Found: %s');
     }
 
     /**
@@ -107,11 +99,8 @@ class BrowsingUsersContext implements Context
     private function checkIfUserHasBadge(string $name, string $badgeContent) : void
     {
         $card = $this->session->getPage()->find('css', sprintf('#users-list .user-card:contains("%s")', $name));
-        $badge = $card->find('css', sprintf('.badge:contains("%s")', $badgeContent));
 
-        if (!$badge) {
-            throw new \Exception();
-        }
+        Assert::true($card->has('css', sprintf('.badge:contains("%s")', $badgeContent)));
     }
 
     /**
@@ -120,11 +109,10 @@ class BrowsingUsersContext implements Context
     public function thatFriendShouldBe(string $name) : void
     {
         $currentUserName = $this->storage->get('current_user_name');
+
         $card = $this->session->getPage()->find('css', sprintf('#users-list .user-card:contains("%s")', $currentUserName));
         $mutualFriend = $card->find('css', '.mutual-friends-list .mutual-friend-name')->getText();
 
-        if ($mutualFriend !== $name) {
-            throw new \Exception();
-        }
+        Assert::same($mutualFriend, $name);
     }
 }

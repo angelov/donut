@@ -5,6 +5,7 @@ namespace AppBundle\FeatureContexts;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class CreatingCommunitiesContext implements Context
 {
@@ -49,11 +50,7 @@ class CreatingCommunitiesContext implements Context
      */
     public function iShouldBeNotifiedThatTheCommunityIsCreated()
     {
-        $found = $this->session->getPage()->hasContent('Community was successfully created!');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('Community was successfully created!'));
     }
 
     /**
@@ -69,10 +66,9 @@ class CreatingCommunitiesContext implements Context
      */
     public function iShouldBeNotifiedThatTheNameIsRequired()
     {
-        $found = $this->session->getPage()->hasContent('Please enter a name for the community.');
-
-        if (!$found) {
-            throw new \RuntimeException('Could not find the proper validation message.');
-        }
+        Assert::true(
+            $this->session->getPage()->hasContent('Please enter a name for the community.'),
+            'Could not find the proper validation message.'
+        );
     }
 }

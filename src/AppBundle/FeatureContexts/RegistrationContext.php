@@ -6,6 +6,7 @@ use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class RegistrationContext extends RawMinkContext
 {
@@ -23,7 +24,7 @@ class RegistrationContext extends RawMinkContext
     /**
      * @When /^I want to create a new user account$/
      */
-    public function iWantToCreateANewUserAccount()
+    public function iWantToCreateANewUserAccount() : void
     {
         $url = $this->router->generate('app.users.register');
 
@@ -34,7 +35,7 @@ class RegistrationContext extends RawMinkContext
      * @When I specify the name as :name
      * @When I don't specify the name
      */
-    public function iSpecifyTheNameAs(string $name = '')
+    public function iSpecifyTheNameAs(string $name = '') : void
     {
         $this->session->getPage()->fillField('Name', $name);
     }
@@ -43,7 +44,7 @@ class RegistrationContext extends RawMinkContext
      * @When I specify the email as :email
      * @When I don't specify the email
      */
-    public function iSpecifyTheEmailAs(string $email = '')
+    public function iSpecifyTheEmailAs(string $email = '') : void
     {
         $this->session->getPage()->fillField('Email', $email);
     }
@@ -52,7 +53,7 @@ class RegistrationContext extends RawMinkContext
      * @When I specify the password as :password
      * @When I don't specify the password
      */
-    public function iSpecifyThePasswordAs(string $password = '')
+    public function iSpecifyThePasswordAs(string $password = '') : void
     {
         $this->session->getPage()->fillField('Password', $password);
         $this->session->getPage()->fillField('Repeat Password', $password);
@@ -62,7 +63,7 @@ class RegistrationContext extends RawMinkContext
     /**
      * @When I confirm the password
      */
-    public function iConfirmThePassword()
+    public function iConfirmThePassword() : void
     {
         $password = $this->storage->get('password');
         $this->session->getPage()->fillField('Repeat Password', $password);
@@ -71,7 +72,7 @@ class RegistrationContext extends RawMinkContext
     /**
      * @When I don't confirm the password
      */
-    public function iDonTConfirmThePassword()
+    public function iDonTConfirmThePassword() : void
     {
         $this->session->getPage()->fillField('Repeat Password', '');
     }
@@ -79,7 +80,7 @@ class RegistrationContext extends RawMinkContext
     /**
      * @When I (try to) create the account
      */
-    public function iCreateTheAccount()
+    public function iCreateTheAccount() : void
     {
         $this->session->getPage()->pressButton('Register');
     }
@@ -87,19 +88,15 @@ class RegistrationContext extends RawMinkContext
     /**
      * @Then I should be notified that my user account has been successfully created
      */
-    public function iShouldBeNotifiedThatMyUserAccountHasBeenSuccessfullyCreated()
+    public function iShouldBeNotifiedThatMyUserAccountHasBeenSuccessfullyCreated() : void
     {
-        $found = $this->session->getPage()->hasContent('Registration was successful. You many now login.');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('Registration was successful. You many now login.'));
     }
 
     /**
      * @Then I should not be logged in
      */
-    public function iShouldNotBeLoggedIn()
+    public function iShouldNotBeLoggedIn() : void
     {
         // @todo refactor
         $url = $this->router->generate('security_login', [], UrlGenerator::ABSOLUTE_URL);
@@ -121,14 +118,10 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatAFieldIsRequired(string $field)
     {
-        $found = $this->session->getPage()->hasContent(sprintf(
-            'Please enter your %s.',
-            $field
-        ));
-
-        if (!$found) {
-            throw new \RuntimeException('Could not find the proper validation message.');
-        }
+        Assert::true(
+            $this->session->getPage()->hasContent(sprintf('Please enter your %s.', $field)),
+            'Could not find the proper validation message.'
+        );
     }
 
     /**
@@ -136,11 +129,10 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatThePasswordMustBeConfirmed()
     {
-        $found = $this->session->getPage()->hasContent('Please confirm your password.');
-
-        if (!$found) {
-            throw new \RuntimeException('Could not find the proper validation message.');
-        }
+        Assert::true(
+            $this->session->getPage()->hasContent('Please confirm your password.'),
+            'Could not find the proper validation message.'
+        );
     }
 
     /**
@@ -148,11 +140,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatTheSpecifiedEmailIsAlreadyInUse()
     {
-        $found = $this->session->getPage()->hasContent('The email is already in use.');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('The email is already in use.'));
     }
 
     /**
@@ -160,10 +148,6 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatThePasswordIsTooShort()
     {
-        $found = $this->session->getPage()->hasContent('The password must be at least 6 characters long.');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('The password must be at least 6 characters long.'));
     }
 }

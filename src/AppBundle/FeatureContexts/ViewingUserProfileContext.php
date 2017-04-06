@@ -4,11 +4,10 @@ namespace AppBundle\FeatureContexts;
 
 use AppBundle\Entity\User;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class ViewingUserProfileContext implements Context
 {
@@ -45,14 +44,7 @@ class ViewingUserProfileContext implements Context
         $list = $this->session->getPage()->findAll('css', '#friends-list li a');
         $existing = count($list);
 
-        if ($existing !== $count) {
-            throw new \Exception(sprintf(
-                'Expected to find %d friends, but found %d',
-                $count,
-                $existing
-            ));
-        }
-
+        Assert::same($count, $existing, 'Expected to find %d friends, but found %d');
     }
 
     /**
@@ -74,14 +66,10 @@ class ViewingUserProfileContext implements Context
 
     private function checkIfUserIsInFriendsList(string $name) : void
     {
-        $found = $this->session->getPage()->find('css', sprintf('#friends-list li a:contains("%s")', $name));
-
-        if (!$found) {
-            throw new \Exception(sprintf(
-                'Could not find %s in the friends list.',
-                $name
-            ));
-        }
+        Assert::true(
+            $this->session->getPage()->has('css', sprintf('#friends-list li a:contains("%s")', $name)),
+            'Could not find %s in the friends list.'
+        );
     }
 
     /**
@@ -91,13 +79,7 @@ class ViewingUserProfileContext implements Context
     {
         $list = $this->session->getPage()->findAll('css', '#mutual-friends-list li a');
 
-        if (count($list) !== $count) {
-            throw new \Exception(sprintf(
-                'Expected %d mutual friends, found %d.',
-                $count,
-                count($list)
-            ));
-        }
+        Assert::same($count, count($list), 'Expected %s mutual friends, found %s.');
     }
 
     /**
@@ -107,9 +89,7 @@ class ViewingUserProfileContext implements Context
     {
         $mutualFriend = $this->session->getPage()->find('css', '#mutual-friends-list li a');
 
-        if ($mutualFriend->getText() !== $name) {
-            throw new \Exception();
-        }
+        Assert::same($name, $mutualFriend->getText());
     }
 
     /**
@@ -119,13 +99,7 @@ class ViewingUserProfileContext implements Context
     {
         $list = $this->session->getPage()->findAll('css', '#thoughts-list pre');
 
-        if (count($list) !== $count) {
-            throw new \Exception(sprintf(
-                'Expected to find %d thoughts, found %d instead.',
-                $count,
-                count($list)
-            ));
-        }
+        Assert::same($count, count($list), 'Expected to find %d thoughts, found %d instead.');
     }
 
     /**
@@ -133,11 +107,7 @@ class ViewingUserProfileContext implements Context
      */
     public function iShouldSeeAMessageThatHeHasNoFriends() : void
     {
-        $found = $this->session->getPage()->find('css', '#friends-list li:contains("The user has no friends.")');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->has('css', '#friends-list li:contains("The user has no friends.")'));
     }
 
     /**
@@ -145,11 +115,7 @@ class ViewingUserProfileContext implements Context
      */
     public function iShouldSeeAMessageThatWeDonTHaveAnyMutualFriends() : void
     {
-        $found = $this->session->getPage()->find('css', '#mutual-friends-list li:contains("You don\'t have any mutual friends.")');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->has('css', '#mutual-friends-list li:contains("You don\'t have any mutual friends.")'));
     }
 
     /**
@@ -157,10 +123,6 @@ class ViewingUserProfileContext implements Context
      */
     public function iShouldSeeAMessageThatSheHasnTSharedAnythingYet() : void
     {
-        $found = $this->session->getPage()->find('css', '#thoughts-list p:contains("The user hasn\'t shared any thoughts yet.")');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->has('css', '#thoughts-list p:contains("The user hasn\'t shared any thoughts yet.")'));
     }
 }

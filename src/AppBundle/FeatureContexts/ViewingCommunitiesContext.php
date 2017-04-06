@@ -7,6 +7,7 @@ use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class ViewingCommunitiesContext implements Context
 {
@@ -57,13 +58,7 @@ class ViewingCommunitiesContext implements Context
         $community = $this->storage->get('current_community');
         $description = $this->session->getPage()->find('css', '#community-description')->getText();
 
-        if ($description != $community->getDescription()) {
-            throw new \Exception(sprintf(
-                'The displayed community description is not correct. Got [%s] instead of [%s]',
-                $description,
-                $community->getDescription()
-            ));
-        }
+        Assert::same($community->getDescription(), $description, 'The displayed community description is not correct. Got [%s] instead of [%s]');
     }
 
     /**
@@ -75,13 +70,7 @@ class ViewingCommunitiesContext implements Context
         $community = $this->storage->get('current_community');
         $author = $this->session->getPage()->find('css', '#community-author')->getText();
 
-        if ($author != $community->getAuthor()->getName()) {
-            throw new \Exception(sprintf(
-                'The displayed community author is not correct. Got [%s] instead of [%s]',
-                $author,
-                $community->getAuthor()->getName()
-            ));
-        }
+        Assert::same($author, $community->getAuthor()->getName(), 'The displayed community author is not correct. Got [%s] instead of [%s]');
     }
 
     /**
@@ -93,13 +82,9 @@ class ViewingCommunitiesContext implements Context
         $community = $this->storage->get('current_community');
         $creationDate = $this->session->getPage()->find('css', '#community-creation-date')->getText();
 
-        if ($creationDate != $community->getCreatedAt()->format('Y-m-d')) {
-            throw new \Exception(sprintf(
-                'The displayed community creation date is not correct. Got [%s] instead of [%s]',
-                $creationDate,
-                $community->getCreatedAt()->format('Y-m-d')
-            ));
-        }
+        $expected = $community->getCreatedAt()->format('Y-m-d');
+
+        Assert::same($creationDate, $expected, 'The displayed community creation date is not correct. Got [%s] instead of [%s]');
     }
 
     /**
@@ -107,11 +92,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldSeeAListOfItsMembers() : void
     {
-        $found = $this->session->getPage()->has('css', 'ul.community-members');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->has('css', 'ul.community-members'));
     }
 
     /**
@@ -119,11 +100,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldnTSeeAListOfItsMembers() : void
     {
-        $found = $this->session->getPage()->has('css', 'ul.community-members');
-
-        if ($found) {
-            throw new \Exception();
-        }
+        Assert::false($this->session->getPage()->has('css', 'ul.community-members'));
     }
 
     /**
@@ -134,11 +111,7 @@ class ViewingCommunitiesContext implements Context
         $list = $this->session->getPage()->find('css', 'ul.community-members');
         $user = $this->storage->get('logged_user');
 
-        $found = $list->findAll('css', sprintf('li:contains("%s")', $user->getName()));
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($list->has('css', sprintf('li:contains("%s")', $user->getName())));
     }
 
     /**
@@ -149,9 +122,7 @@ class ViewingCommunitiesContext implements Context
         $list = $this->session->getPage()->find('css', 'ul.community-members');
         $members = $list->findAll('css', 'li');
 
-        if (count($members) !== $count) {
-            throw new \Exception();
-        }
+        Assert::same($count, count($members));
     }
 
     /**
@@ -167,11 +138,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldBeNotifiedThatIHaveJoinedIt() : void
     {
-        $found = $this->session->getPage()->hasContent('Successfully joined the community');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('Successfully joined the community'));
     }
 
     /**
@@ -187,10 +154,6 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldBeNotifiedThatIHaveLeftIt() : void
     {
-        $found = $this->session->getPage()->hasContent('Successfully left the community');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('Successfully left the community'));
     }
 }

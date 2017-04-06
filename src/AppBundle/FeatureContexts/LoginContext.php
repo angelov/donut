@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class LoginContext implements Context
 {
@@ -59,10 +60,9 @@ class LoginContext implements Context
     public function iShouldBeLoggedIn()
     {
         $homepage = $this->router->generate('app.thoughts.index', [], UrlGenerator::ABSOLUTE_URL);
+        $currentUrl = $this->session->getCurrentUrl();
 
-        if ($this->session->getCurrentUrl() !== $homepage) {
-            throw new \Exception();
-        }
+        Assert::same($currentUrl, $homepage);
     }
 
     /**
@@ -70,11 +70,7 @@ class LoginContext implements Context
      */
     public function iShouldBeNotifiedAboutBadCredentials()
     {
-        $found = $this->session->getPage()->hasContent('Invalid credentials.');
-
-        if (!$found) {
-            throw new \Exception();
-        }
+        Assert::true($this->session->getPage()->hasContent('Invalid credentials.'));
     }
 
     /**
@@ -85,8 +81,6 @@ class LoginContext implements Context
         $url = $this->router->generate('security_login', [], UrlGenerator::ABSOLUTE_URL);
         $currentUrl = $this->session->getDriver()->getCurrentUrl();
 
-        if ($url !== $currentUrl) {
-            throw new \Exception();
-        }
+        Assert::same($url, $currentUrl, 'Expected to be on the login page.');
     }
 }
