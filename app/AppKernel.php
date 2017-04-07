@@ -30,6 +30,10 @@ class AppKernel extends Kernel
             $bundles[] = new Hautelook\AliceBundle\HautelookAliceBundle();
         }
 
+        if ($this->getEnvironment() === 'test') {
+            $bundles[] = new DAMA\DoctrineTestBundle\DAMADoctrineTestBundle();
+        }
+
         return $bundles;
     }
 

@@ -35,7 +35,7 @@ class CommunitiesRepositoryTest extends KernelTestCase
         // @todo extract user creating
         $author = new User();
         $author->setName('John');
-        $author->setEmail('john@example.com');
+        $author->setEmail('john@example.net');
         $author->setPlainPassword('123456');
 
         $this->em->persist($author);

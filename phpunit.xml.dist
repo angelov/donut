@@ -18,6 +18,10 @@
         </testsuite>
     </testsuites>
 
+    <listeners>
+        <listener class="\DAMA\DoctrineTestBundle\PHPUnit\PHPUnitStaticDbConnectionListener" />
+    </listeners>
+
     <filter>
         <whitelist>
             <directory>src</directory>
