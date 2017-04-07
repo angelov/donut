@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use SocNet\Communities\Commands\StoreCommunityCommand;
 use SocNet\Communities\Community;
 use SocNet\Communities\Form\CommunityType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -34,12 +35,10 @@ class CommunitiesController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var Community $community */
-            $community = $form->getData();
-            $community->setAuthor($this->getUser());
+            /** @var StoreCommunityCommand $command */
+            $command = $form->getData();
 
-            $repository = $this->get('app.communities.repositories.default');
-            $repository->store($community);
+            $this->get('command_bus')->handle($command);
 
             $this->addFlash('success', 'Community was successfully created!');
 

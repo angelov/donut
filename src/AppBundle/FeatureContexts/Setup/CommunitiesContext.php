@@ -43,11 +43,7 @@ class CommunitiesContext implements Context
 
     private function createCommunity(string $name, string $description, User $author) : Community
     {
-        $community = new Community();
-        $community->setName($name);
-        $community->setDescription($description);
-
-        $community->setAuthor($author);
+        $community = new Community($name, $author, $description);
 
         $this->em->persist($community);
         $this->em->flush();

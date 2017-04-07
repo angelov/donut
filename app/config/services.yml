@@ -78,6 +78,16 @@ services:
           tags:
               - { name: 'twig.extension' }
 
+    ### core
+
+    app.core.security.current_user_resolver:
+        class: 'SocNet\Core\Security\CurrentUserResolver'
+        arguments: ['@security.token_storage']
+
+    app.core.security.current_user:
+        class: 'AppBundle\Entity\User'
+        factory: ['@app.core.security.current_user_resolver', 'getUser']
+
     ### communities
 
     app.communities.repositories.default: '@app.communities.repositories.doctrine'
@@ -85,3 +95,15 @@ services:
     app.communities.repositories.doctrine:
         class: 'SocNet\Communities\Repositories\CommunitiesRepository'
         arguments: ['@doctrine.orm.entity_manager']
+
+    app.communities.form.community_type:
+        class: 'SocNet\Communities\Form\CommunityType'
+        arguments: ['@app.core.security.current_user']
+        tags:
+            - { name: 'form.type' }
+
+    app.communities.handlers.store:
+        class: 'SocNet\Communities\Handlers\StoreCommunityCommandHandler'
+        arguments: ['@app.communities.repositories.doctrine']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Communities\Commands\StoreCommunityCommand' }

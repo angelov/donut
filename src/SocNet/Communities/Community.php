@@ -6,7 +6,6 @@ use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use SocNet\Communities\Exceptions\CommunityMemberNotFoundException;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -23,7 +22,6 @@ class Community
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Please enter a name for the community.")
      */
     private $name = '';
 
@@ -49,11 +47,11 @@ class Community
      */
     private $createdAt;
 
-    /**
-     * @todo Change the constructor so it can't be constructed without name and author
-     */
-    public function __construct()
+    public function __construct(string $name, User $author, string $description = '')
     {
+        $this->name = $name;
+        $this->author = $author;
+        $this->description = $description;
         $this->setCreatedAt(new \DateTime());
         $this->members = new ArrayCollection();
     }
