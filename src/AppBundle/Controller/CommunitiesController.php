@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use SocNet\Communities\Commands\JoinCommunityCommand;
 use SocNet\Communities\Commands\StoreCommunityCommand;
 use SocNet\Communities\Community;
 use SocNet\Communities\Form\CommunityType;
@@ -72,12 +73,7 @@ class CommunitiesController extends Controller
         $community = $repository->find($id);
         $user = $this->getUser();
 
-        $community->addMember($user);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($community);
-        $em->flush();
+        $this->get('command_bus')->handle(new JoinCommunityCommand($user, $community));
 
         $this->addFlash('success', 'Successfully joined the community');
 

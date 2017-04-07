@@ -61,6 +61,31 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
     }
 
     /** @test */
+    public function it_updates_existing_communities()
+    {
+        // @todo extract user creating
+        $author = new User();
+        $author->setName('John');
+        $author->setEmail('john@example.net');
+        $author->setPlainPassword('123456');
+
+        $this->em->persist($author);
+        $this->em->flush();
+
+        $community = new Community('Example community', $author, 'This is just an example');
+
+        $this->repository->store($community);
+
+        $id = $community->getId();
+
+        $community->setName('Updated name');
+
+        $found = $this->repository->find($id);
+
+        $this->assertSame('Updated name', $found->getName());
+    }
+
+    /** @test */
     public function it_finds_communities_by_id()
     {
         // @todo extract user creating

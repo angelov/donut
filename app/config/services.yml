@@ -104,6 +104,12 @@ services:
 
     app.communities.handlers.store:
         class: 'SocNet\Communities\Handlers\StoreCommunityCommandHandler'
-        arguments: ['@app.communities.repositories.doctrine']
+        arguments: ['@app.communities.repositories.default']
         tags:
             - { name: 'command_handler', handles: 'SocNet\Communities\Commands\StoreCommunityCommand' }
+
+    app.communities.handlers.join:
+        class: 'SocNet\Communities\Handlers\JoinCommunityCommandHandler'
+        arguments: ['@app.communities.repositories.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Communities\Commands\JoinCommunityCommand' }
