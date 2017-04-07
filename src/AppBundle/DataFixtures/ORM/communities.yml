@@ -1,4 +1,4 @@
-AppBundle\Entity\Community:
+SocNet\Communities\Community:
 
     community_{1..10}:
         name: "<country()> Residents"

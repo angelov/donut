@@ -77,3 +77,11 @@ services:
               - '@app.mutual_friends_resolver.default'
           tags:
               - { name: 'twig.extension' }
+
+    ### communities
+
+    app.communities.repositories.default: '@app.communities.repositories.doctrine'
+
+    app.communities.repositories.doctrine:
+        class: 'SocNet\Communities\Repositories\CommunitiesRepository'
+        arguments: ['@doctrine.orm.entity_manager']

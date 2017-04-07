@@ -2,7 +2,7 @@
 
 namespace AppBundle\FeatureContexts;
 
-use AppBundle\Entity\Community;
+use SocNet\Communities\Community;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
@@ -54,7 +54,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldSeeItsDescription() : void
     {
-        /** @var Community $community */
+        /** @var \SocNet\Communities\Community $community */
         $community = $this->storage->get('current_community');
         $description = $this->session->getPage()->find('css', '#community-description')->getText();
 
@@ -78,7 +78,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldSeeItsCreationDate() : void
     {
-        /** @var Community $community */
+        /** @var \SocNet\Communities\Community $community */
         $community = $this->storage->get('current_community');
         $creationDate = $this->session->getPage()->find('css', '#community-creation-date')->getText();
 

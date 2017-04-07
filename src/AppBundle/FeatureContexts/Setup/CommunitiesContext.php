@@ -2,7 +2,7 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
-use AppBundle\Entity\Community;
+use SocNet\Communities\Community;
 use AppBundle\Entity\User;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
@@ -77,7 +77,7 @@ class CommunitiesContext implements Context
      */
     public function iHaveJoinedIt() : void
     {
-        /** @var Community $community */
+        /** @var \SocNet\Communities\Community $community */
         $community = $this->storage->get('created_community');
         $user = $this->storage->get('logged_user');
 

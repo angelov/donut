@@ -1,8 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace SocNet\Communities\Form;
 
-use AppBundle\Entity\Community;
+use SocNet\Communities\Community;
+use SocNet\Core\Form\DataTransformers\NullToEmptyStringDataTransformer;
 use Symfony\Component\Form\Extension\Core\Type\BaseType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,6 +18,11 @@ class CommunityType extends BaseType
         $builder->add('description', TextareaType::class, [
             'required' => false
         ]);
+
+        $transformer = new NullToEmptyStringDataTransformer();
+
+        $builder->get('name')->addModelTransformer($transformer);
+        $builder->get('description')->addModelTransformer($transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

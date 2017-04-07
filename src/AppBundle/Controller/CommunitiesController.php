@@ -2,9 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Community;
-use AppBundle\Form\CommunityType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use SocNet\Communities\Community;
+use SocNet\Communities\Form\CommunityType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,9 +38,8 @@ class CommunitiesController extends Controller
             $community = $form->getData();
             $community->setAuthor($this->getUser());
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($community);
-            $em->flush();
+            $repository = $this->get('app.communities.repositories.default');
+            $repository->store($community);
 
             $this->addFlash('success', 'Community was successfully created!');
 
