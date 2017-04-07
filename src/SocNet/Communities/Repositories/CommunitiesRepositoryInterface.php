@@ -4,7 +4,7 @@ namespace SocNet\Communities\Repositories;
 
 use SocNet\Communities\Community;
 
-interface CommunityRepositoryInterface
+interface CommunitiesRepositoryInterface
 {
     public function store(Community $community) : void;
 

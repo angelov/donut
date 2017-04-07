@@ -8,11 +8,11 @@ use SocNet\Communities\Commands\StoreCommunityCommand;
 use SocNet\Communities\Community;
 use SocNet\Communities\Handlers\StoreCommunityCommandHandler;
 use PhpSpec\ObjectBehavior;
-use SocNet\Communities\Repositories\CommunityRepositoryInterface;
+use SocNet\Communities\Repositories\CommunitiesRepositoryInterface;
 
 class StoreCommunityCommandHandlerSpec extends ObjectBehavior
 {
-    function let(CommunityRepositoryInterface $repository, StoreCommunityCommand $command, User $user)
+    function let(CommunitiesRepositoryInterface $repository, StoreCommunityCommand $command, User $user)
     {
         $this->beConstructedWith($repository);
 
@@ -26,7 +26,7 @@ class StoreCommunityCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(StoreCommunityCommandHandler::class);
     }
 
-    function it_stores_new_communities(StoreCommunityCommand $command, CommunityRepositoryInterface $repository)
+    function it_stores_new_communities(StoreCommunityCommand $command, CommunitiesRepositoryInterface $repository)
     {
         $repository->store(Argument::type(Community::class))->shouldBeCalled();
 

@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use SocNet\Communities\Community;
 
-class CommunitiesRepository implements CommunityRepositoryInterface
+class DoctrineCommunitiesRepository implements CommunitiesRepositoryInterface
 {
     private $em;
 

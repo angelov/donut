@@ -4,13 +4,13 @@ namespace SocNet\Communities\Handlers;
 
 use SocNet\Communities\Commands\StoreCommunityCommand;
 use SocNet\Communities\Community;
-use SocNet\Communities\Repositories\CommunityRepositoryInterface;
+use SocNet\Communities\Repositories\CommunitiesRepositoryInterface;
 
 class StoreCommunityCommandHandler
 {
     private $communities;
 
-    public function __construct(CommunityRepositoryInterface $communities)
+    public function __construct(CommunitiesRepositoryInterface $communities)
     {
         $this->communities = $communities;
     }

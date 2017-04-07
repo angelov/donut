@@ -3,11 +3,11 @@
 namespace spec\SocNet\Communities\Repositories;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SocNet\Communities\Repositories\CommunitiesRepository;
+use SocNet\Communities\Repositories\DoctrineCommunitiesRepository;
 use PhpSpec\ObjectBehavior;
-use SocNet\Communities\Repositories\CommunityRepositoryInterface;
+use SocNet\Communities\Repositories\CommunitiesRepositoryInterface;
 
-class CommunitiesRepositorySpec extends ObjectBehavior
+class DoctrineCommunitiesRepositorySpec extends ObjectBehavior
 {
     function let(EntityManagerInterface $entityManager)
     {
@@ -16,11 +16,11 @@ class CommunitiesRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CommunitiesRepository::class);
+        $this->shouldHaveType(DoctrineCommunitiesRepository::class);
     }
 
     function it_implements_community_repository_interface()
     {
-        $this->shouldImplement(CommunityRepositoryInterface::class);
+        $this->shouldImplement(CommunitiesRepositoryInterface::class);
     }
 }

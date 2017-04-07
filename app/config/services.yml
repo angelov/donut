@@ -93,7 +93,7 @@ services:
     app.communities.repositories.default: '@app.communities.repositories.doctrine'
 
     app.communities.repositories.doctrine:
-        class: 'SocNet\Communities\Repositories\CommunitiesRepository'
+        class: 'SocNet\Communities\Repositories\DoctrineCommunitiesRepository'
         arguments: ['@doctrine.orm.entity_manager']
 
     app.communities.form.community_type:

@@ -6,13 +6,13 @@ use AppBundle\Entity\User;
 use AppBundle\Exceptions\ResourceNotFoundException;
 use Doctrine\ORM\EntityManager;
 use SocNet\Communities\Community;
-use SocNet\Communities\Repositories\CommunitiesRepository;
+use SocNet\Communities\Repositories\DoctrineCommunitiesRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class CommunitiesRepositoryTest extends KernelTestCase
+class DoctrineCommunitiesRepositoryTest extends KernelTestCase
 {
     /**
-     * @var CommunitiesRepository
+     * @var DoctrineCommunitiesRepository
      */
     private $repository;
 
