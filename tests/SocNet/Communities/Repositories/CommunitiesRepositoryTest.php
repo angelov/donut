@@ -3,6 +3,7 @@
 namespace SocNet\Tests\Communities\Repositories;
 
 use AppBundle\Entity\User;
+use AppBundle\Exceptions\ResourceNotFoundException;
 use Doctrine\ORM\EntityManager;
 use SocNet\Communities\Community;
 use SocNet\Communities\Repositories\CommunitiesRepository;
@@ -41,10 +42,7 @@ class CommunitiesRepositoryTest extends KernelTestCase
         $this->em->persist($author);
         $this->em->flush();
 
-        $community = new Community();
-        $community->setName('Example community');
-        $community->setDescription('This is just an example');
-        $community->setAuthor($author);
+        $community = new Community('Example community', $author, 'This is just an example');
 
         $this->repository->store($community);
 
@@ -60,5 +58,40 @@ class CommunitiesRepositoryTest extends KernelTestCase
         $this->assertSame('Example community', $found->getName());
         $this->assertSame('This is just an example', $found->getDescription());
         $this->assertSame($author, $found->getAuthor());
+    }
+
+    /** @test */
+    public function it_finds_communities_by_id()
+    {
+        // @todo extract user creating
+        $author = new User();
+        $author->setName('John');
+        $author->setEmail('john@example.net');
+        $author->setPlainPassword('123456');
+
+        $this->em->persist($author);
+
+        $community = new Community('Example community', $author, 'This is just an example');
+        $this->em->persist($community);
+
+        $this->em->flush();
+
+        $id = $community->getId();
+
+        $found = $this->repository->find($id);
+
+        $this->assertInstanceOf(Community::class, $found);
+
+        $this->assertSame('Example community', $found->getName());
+        $this->assertSame('This is just an example', $found->getDescription());
+        $this->assertSame($author, $found->getAuthor());
+    }
+
+    /** @test */
+    public function it_throws_exception_for_non_existing_ids()
+    {
+        $this->expectException(ResourceNotFoundException::class);
+
+        $this->repository->find('123');
     }
 }

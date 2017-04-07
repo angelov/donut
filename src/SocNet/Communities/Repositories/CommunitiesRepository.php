@@ -2,6 +2,8 @@
 
 namespace SocNet\Communities\Repositories;
 
+use AppBundle\Exceptions\ResourceNotFoundException;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use SocNet\Communities\Community;
 
@@ -18,5 +20,21 @@ class CommunitiesRepository implements CommunityRepositoryInterface
     {
         $this->em->persist($community);
         $this->em->flush();
+    }
+
+    public function find(string $id): Community
+    {
+        $found = $this->getBaseRepository()->find($id);
+
+        if (!$found) {
+            throw new ResourceNotFoundException();
+        }
+
+        return $found;
+    }
+
+    private function getBaseRepository() : ObjectRepository
+    {
+        return $this->em->getRepository(Community::class);
     }
 }

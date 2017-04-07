@@ -53,8 +53,11 @@ class CommunitiesController extends Controller
     /**
      * @Route("/communities/{id}", name="app.communities.show", methods={"POST", "GET"})
      */
-    public function showAction(Community $community)
+    public function showAction($id)
     {
+        $repository = $this->get('app.communities.repositories.default');
+        $community = $repository->find($id);
+
         return $this->render('communities/show.html.twig', [
             'community' => $community
         ]);
@@ -63,8 +66,10 @@ class CommunitiesController extends Controller
     /**
      * @Route("/communities/{id}/join", name="app.communities.join", methods={"POST"})
      */
-    public function joinAction(Community $community)
+    public function joinAction($id)
     {
+        $repository = $this->get('app.communities.repositories.default');
+        $community = $repository->find($id);
         $user = $this->getUser();
 
         $community->addMember($user);
@@ -82,8 +87,10 @@ class CommunitiesController extends Controller
     /**
      * @Route("/communities/{id}/leave", name="app.communities.leave", methods={"POST"})
      */
-    public function leaveAction(Community $community)
+    public function leaveAction($id)
     {
+        $repository = $this->get('app.communities.repositories.default');
+        $community = $repository->find($id);
         $user = $this->getUser();
 
         if ($community->hasMember($user)) {

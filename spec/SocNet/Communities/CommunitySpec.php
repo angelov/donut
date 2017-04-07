@@ -9,6 +9,14 @@ use SocNet\Communities\Exceptions\CommunityMemberNotFoundException;
 
 class CommunitySpec extends ObjectBehavior
 {
+    const COMMUNITY_NAME = 'Example';
+    const COMMUNITY_DESCRIPTION = 'This is an example';
+
+    function let(User $author)
+    {
+        $this->beConstructedWith(self::COMMUNITY_NAME, $author, self::COMMUNITY_DESCRIPTION);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(Community::class);
@@ -19,21 +27,16 @@ class CommunitySpec extends ObjectBehavior
         $this->getId()->shouldReturn('');
     }
 
-    function it_has_no_name_by_default()
-    {
-        $this->getName()->shouldReturn('');
-    }
-
     function it_has_mutable_name()
     {
-        $this->setName('Example');
-        $this->getName()->shouldReturn('Example');
+        $this->setName('Example 2');
+        $this->getName()->shouldReturn('Example 2');
     }
 
     function it_has_mutable_description()
     {
-        $this->setDescription('This is an example');
-        $this->getDescription()->shouldReturn('This is an example');
+        $this->setDescription('This is an example 2');
+        $this->getDescription()->shouldReturn('This is an example 2');
     }
 
     function it_has_mutable_author(User $author)
