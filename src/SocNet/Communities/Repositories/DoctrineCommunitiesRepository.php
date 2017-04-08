@@ -37,4 +37,9 @@ class DoctrineCommunitiesRepository implements CommunitiesRepositoryInterface
     {
         return $this->em->getRepository(Community::class);
     }
+
+    public function all() : array
+    {
+        return $this->getBaseRepository()->findAll();
+    }
 }

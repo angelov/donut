@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use SocNet\Communities\Commands\JoinCommunityCommand;
 use SocNet\Communities\Commands\StoreCommunityCommand;
-use SocNet\Communities\Community;
 use SocNet\Communities\Form\CommunityType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,9 +16,9 @@ class CommunitiesController extends Controller
      */
     public function indexAction()
     {
-        $repository = $this->getDoctrine()->getManager()->getRepository(Community::class);
+        $repository = $this->get('app.communities.repositories.default');
 
-        $communities = $repository->findAll();
+        $communities = $repository->all();
 
         return $this->render('communities/index.html.twig', [
             'communities' => $communities

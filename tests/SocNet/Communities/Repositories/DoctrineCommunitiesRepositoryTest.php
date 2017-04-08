@@ -119,4 +119,31 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
 
         $this->repository->find('123');
     }
+
+    /** @test */
+    public function it_returns_array_of_all_communities()
+    {
+        // @todo extract user creating
+        $author = new User();
+        $author->setName('John');
+        $author->setEmail('john@example.net');
+        $author->setPlainPassword('123456');
+
+        $this->em->persist($author);
+
+        $community = new Community('Example community', $author, 'This is just an example');
+        $this->em->persist($community);
+
+        $secondCommunity = new Community('Example community 2', $author, 'This is just an example 2');
+        $this->em->persist($secondCommunity);
+
+        $this->em->flush();
+
+        $all = $this->repository->all();
+
+        $this->assertTrue(is_array($all));
+        $this->assertCount(2, $all);
+        $this->assertContains($community, $all);
+        $this->assertContains($secondCommunity, $all);
+    }
 }
