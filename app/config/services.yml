@@ -113,3 +113,9 @@ services:
         arguments: ['@app.communities.repositories.default']
         tags:
             - { name: 'command_handler', handles: 'SocNet\Communities\Commands\JoinCommunityCommand' }
+
+    app.communities.handlers.leave:
+        class: 'SocNet\Communities\Handlers\LeaveCommunityCommandHandler'
+        arguments: ['@app.communities.repositories.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Communities\Commands\LeaveCommunityCommand' }

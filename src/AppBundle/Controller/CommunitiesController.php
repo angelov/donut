@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use SocNet\Communities\Commands\JoinCommunityCommand;
+use SocNet\Communities\Commands\LeaveCommunityCommand;
 use SocNet\Communities\Commands\StoreCommunityCommand;
 use SocNet\Communities\Form\CommunityType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -88,16 +89,9 @@ class CommunitiesController extends Controller
         $community = $repository->find($id);
         $user = $this->getUser();
 
-        if ($community->hasMember($user)) {
-            $community->removeMember($user);
+        $this->get('command_bus')->handle(new LeaveCommunityCommand($user, $community));
 
-            $em = $this->getDoctrine()->getManager();
-
-            $em->persist($community);
-            $em->flush();
-
-            $this->addFlash('success', 'Successfully left the community');
-        }
+        $this->addFlash('success', 'Successfully left the community');
 
         return $this->redirectToRoute('app.communities.index');
     }
