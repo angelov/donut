@@ -61,6 +61,7 @@ class Friendship
     public function setUser(User $user)
     {
         $this->user = $user;
+        $user->addFriendship($this);
     }
 
     public function getFriend() : User

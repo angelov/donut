@@ -43,6 +43,7 @@ class FriendshipRequest
     public function setFromUser(User $fromUser)
     {
         $this->fromUser = $fromUser;
+        $fromUser->addSentFriendshipRequest($this);
     }
 
     public function getToUser() : User
@@ -53,5 +54,6 @@ class FriendshipRequest
     public function setToUser(User $toUser)
     {
         $this->toUser = $toUser;
+        $toUser->addReceivedFriendshipRequest($this);
     }
 }

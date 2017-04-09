@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use SocNet\Core\Form\DataTransformers\NullToEmptyStringDataTransformer;
 use SocNet\Users\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -21,6 +22,12 @@ class UserRegistrationForm extends AbstractType
             'type' => PasswordType::class,
             'invalid_message' => 'Please confirm your password.'
         ]);
+
+        $transformer = new NullToEmptyStringDataTransformer();
+
+        $builder->get('name')->addModelTransformer($transformer);
+        $builder->get('email')->addModelTransformer($transformer);
+        $builder->get('plainPassword')->addModelTransformer($transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

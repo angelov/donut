@@ -23,31 +23,31 @@ class User implements UserInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $id = '';
 
     /**
      * @ORM\Column(type="string", unique=true)
      * @Assert\Email()
      * @Assert\NotBlank(message="Please enter your email.")
      */
-    private $email;
+    private $email = '';
 
     /**
      * @ORM\Column(type="string")
      */
-    private $password;
+    private $password = '';
 
     /**
      * @Assert\NotBlank(message="Please enter your password.")
      * @Assert\Length(min="6", minMessage="The password must be at least 6 characters long.")
      */
-    private $plainPassword;
+    private $plainPassword = '';
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Please enter your name.")
      */
-    private $name;
+    private $name = '';
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Thought", mappedBy="author")
@@ -92,7 +92,7 @@ class User implements UserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email)
+    public function setEmail(string $email = '')
     {
         $this->email = $email;
     }
@@ -112,7 +112,7 @@ class User implements UserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password)
+    public function setPassword(string $password = '')
     {
         $this->password = $password;
     }
@@ -151,7 +151,7 @@ class User implements UserInterface
         return $this->name;
     }
 
-    public function setName(string $name)
+    public function setName(string $name = '')
     {
         $this->name = $name;
     }
@@ -161,6 +161,7 @@ class User implements UserInterface
         return $this->isAdmin;
     }
 
+    // @todo remove admin stuff
     public function setIsAdmin(bool $isAdmin)
     {
         $this->isAdmin = $isAdmin;
@@ -177,6 +178,13 @@ class User implements UserInterface
     public function getSentFriendshipRequests() : array
     {
         return $this->sentFriendshipRequests->getValues();
+    }
+
+    public function addSentFriendshipRequest(FriendshipRequest $friendshipRequest) : void
+    {
+        if (!$this->sentFriendshipRequests->contains($friendshipRequest)) {
+            $this->sentFriendshipRequests->add($friendshipRequest);
+        }
     }
 
     public function hasSentFriendshipRequestTo(User $user) : bool
@@ -197,6 +205,13 @@ class User implements UserInterface
     public function getReceivedFriendshipRequests() : array
     {
         return $this->receivedFriendshipRequests->getValues();
+    }
+
+    public function addReceivedFriendshipRequest(FriendshipRequest $friendshipRequest) : void
+    {
+        if (!$this->receivedFriendshipRequests->contains($friendshipRequest)) {
+            $this->receivedFriendshipRequests->add($friendshipRequest);
+        }
     }
 
     public function hasReceivedFriendshipRequestFrom(User $user) : bool
@@ -223,6 +238,11 @@ class User implements UserInterface
         }
 
         return $friends;
+    }
+
+    public function addFriendship(Friendship $friendship) : void
+    {
+        $this->friendships->add($friendship);
     }
 
     // @todo this will have a big effect on performance, use redis or something
