@@ -8,7 +8,7 @@ services:
 
     app.feature_contexts.setup.users:
         class: 'AppBundle\FeatureContexts\Setup\UsersContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.security.password_encoder', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
 

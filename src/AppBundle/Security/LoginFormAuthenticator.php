@@ -71,7 +71,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         }
 
         try {
-            return $this->users->getByEmail($email);
+            return $this->users->findByEmail($email);
         } catch (ResourceNotFoundException $e) {
             throw new CustomUserMessageAuthenticationException('Invalid credentials.');
         }

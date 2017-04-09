@@ -29,10 +29,7 @@ class StoreCommunityCommandHandlerTest extends KernelTestCase
     public function it_handles_store_community_comands()
     {
         // @todo extract user creating
-        $author = new User();
-        $author->setName('John');
-        $author->setEmail('john@example.net');
-        $author->setPlainPassword('123456');
+        $author = new User('John', 'john@example.net', '123456');
 
         $this->em->persist($author);
         $this->em->flush();

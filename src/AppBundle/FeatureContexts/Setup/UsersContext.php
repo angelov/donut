@@ -6,16 +6,19 @@ use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class UsersContext implements Context
 {
     private $em;
     private $storage;
+    private $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, Storage $storage)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoder $passwordEncoder, Storage $storage)
     {
         $this->em = $entityManager;
         $this->storage = $storage;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     /**
@@ -24,6 +27,9 @@ class UsersContext implements Context
     public function thereIsAUserWithEmailAndPassword($name, $email, $password)
     {
         $user = new User($name, $email, $password);
+
+        $password = $this->passwordEncoder->encodePassword($user, $password);
+        $user->setPassword($password);
 
         $this->em->persist($user);
         $this->em->flush();

@@ -34,10 +34,7 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
     public function it_stores_communities()
     {
         // @todo extract user creating
-        $author = new User();
-        $author->setName('John');
-        $author->setEmail('john@example.net');
-        $author->setPlainPassword('123456');
+        $author = new User('John', 'john@example.net', '123456');
 
         $this->em->persist($author);
         $this->em->flush();
@@ -64,10 +61,7 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
     public function it_updates_existing_communities()
     {
         // @todo extract user creating
-        $author = new User();
-        $author->setName('John');
-        $author->setEmail('john@example.net');
-        $author->setPlainPassword('123456');
+        $author = new User('John', 'john@example.net', '123456');
 
         $this->em->persist($author);
         $this->em->flush();
@@ -89,10 +83,7 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
     public function it_finds_communities_by_id()
     {
         // @todo extract user creating
-        $author = new User();
-        $author->setName('John');
-        $author->setEmail('john@example.net');
-        $author->setPlainPassword('123456');
+        $author = new User('John', 'john@example.net', '123456');
 
         $this->em->persist($author);
 
@@ -124,10 +115,7 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
     public function it_returns_array_of_all_communities()
     {
         // @todo extract user creating
-        $author = new User();
-        $author->setName('John');
-        $author->setEmail('john@example.net');
-        $author->setPlainPassword('123456');
+        $author = new User('John', 'john@example.net', '123456');
 
         $this->em->persist($author);
 
