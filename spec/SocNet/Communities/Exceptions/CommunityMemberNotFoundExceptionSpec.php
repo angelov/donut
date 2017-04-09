@@ -2,7 +2,7 @@
 
 namespace spec\SocNet\Communities\Exceptions;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use SocNet\Communities\Community;
 use SocNet\Communities\Exceptions\CommunityMemberNotFoundException;
 use PhpSpec\ObjectBehavior;

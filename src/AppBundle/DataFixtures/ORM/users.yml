@@ -1,4 +1,4 @@
-AppBundle\Entity\User:
+SocNet\Users\User:
 
   user_0:
       name: "Dejan"

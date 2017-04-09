@@ -2,7 +2,7 @@
 
 namespace AppBundle\FeatureContexts;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;

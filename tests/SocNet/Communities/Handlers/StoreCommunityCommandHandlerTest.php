@@ -2,11 +2,10 @@
 
 namespace SocNet\Tests\Communities\Handlers;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SimpleBus\Message\Bus\MessageBus;
 use SocNet\Communities\Commands\StoreCommunityCommand;
-use SocNet\Communities\Community;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class StoreCommunityCommandHandlerTest extends KernelTestCase

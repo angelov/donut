@@ -2,7 +2,7 @@
 
 namespace spec\SocNet\Communities\Handlers;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use SocNet\Communities\Community;
 use SocNet\Communities\Commands\JoinCommunityCommand;
 use SocNet\Communities\Handlers\JoinCommunityCommandHandler;

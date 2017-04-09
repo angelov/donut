@@ -2,7 +2,7 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\Exceptions\ResourceNotFoundException;
 
 interface UsersRepositoryInterface
@@ -13,7 +13,7 @@ interface UsersRepositoryInterface
     public function find(int $id) : User;
 
     /**
-     * @return User[]
+     * @return \SocNet\Users\User[]
      */
     public function all() : array;
 

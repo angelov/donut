@@ -2,7 +2,7 @@
 
 namespace AppBundle\MutualFriendsResolver\UsersProvider;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\Repository\UsersRepositoryInterface;
 
 class RepositoryUsersProvider implements UsersProviderInterface

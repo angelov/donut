@@ -2,7 +2,7 @@
 
 namespace SocNet\Communities;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use SocNet\Communities\Exceptions\CommunityMemberNotFoundException;
@@ -31,13 +31,13 @@ class Community
     private $description = '';
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", cascade={"remove"}, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", cascade={"remove"}, fetch="EAGER")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
      */
     private $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToMany(targetEntity="SocNet\Users\User")
      * @ORM\JoinTable(name="community_member")
      */
     private $members;

@@ -2,7 +2,7 @@
 
 namespace SocNet\Tests\Communities\Repositories;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\Exceptions\ResourceNotFoundException;
 use Doctrine\ORM\EntityManager;
 use SocNet\Communities\Community;

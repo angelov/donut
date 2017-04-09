@@ -5,10 +5,10 @@ security:
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         users:
-            entity: { class: 'AppBundle\Entity\User', property: 'email'}
+            entity: { class: 'SocNet\Users\User', property: 'email'}
 
     encoders:
-        AppBundle\Entity\User: 'bcrypt'
+        SocNet\Users\User: 'bcrypt'
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs

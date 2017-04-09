@@ -3,7 +3,7 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use AppBundle\Entity\Thought;
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
 use AppBundle\ThoughtsCounter\ThoughtsCounterInterface;
 use Behat\Behat\Context\Context;

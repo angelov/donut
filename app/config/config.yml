@@ -61,11 +61,16 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
         mappings:
-            Community:
+            Communitiy:
                 type: annotation
                 is_bundle: false
                 dir: '%kernel.root_dir%/../src/SocNet'
                 prefix: 'SocNet\Communities'
+            User:
+                type: annotation
+                is_bundle: false
+                dir: '%kernel.root_dir%/../src/SocNet'
+                prefix: 'SocNet\Users'
 
 doctrine_migrations:
     dir_name: '%kernel.root_dir%/Resources/migrations'

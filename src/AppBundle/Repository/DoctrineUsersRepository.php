@@ -2,7 +2,7 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\Exceptions\ResourceNotFoundException;
 use Doctrine\ORM\EntityRepository;
 
@@ -20,7 +20,7 @@ class DoctrineUsersRepository implements UsersRepositoryInterface
      */
     public function find(int $id): User
     {
-        /** @var User|null $user */
+        /** @var \SocNet\Users\User|null $user */
         $user = $this->baseRepository->find($id);
 
         if ($user) {
@@ -40,7 +40,7 @@ class DoctrineUsersRepository implements UsersRepositoryInterface
 
     public function getByEmail(string $email): User
     {
-        /** @var User|null $user */
+        /** @var \SocNet\Users\User|null $user */
         $user = $this->baseRepository->findOneBy(['email' => $email]);
 
         if ($user) {

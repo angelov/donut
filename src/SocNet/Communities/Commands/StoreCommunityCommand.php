@@ -3,7 +3,7 @@
 namespace SocNet\Communities\Commands;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 
 class StoreCommunityCommand
 {

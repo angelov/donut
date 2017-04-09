@@ -3,7 +3,7 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use SocNet\Communities\Community;
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;

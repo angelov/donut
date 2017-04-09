@@ -69,7 +69,7 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: ["@doctrine.orm.entity_manager", getRepository]
         arguments:
-            - AppBundle\Entity\User
+            - SocNet\Users\User
 
     app.mutual_friends_exstension:
           class: 'AppBundle\Twig\Extension\MutualFriendsExtension'
@@ -85,7 +85,7 @@ services:
         arguments: ['@security.token_storage']
 
     app.core.security.current_user:
-        class: 'AppBundle\Entity\User'
+        class: 'SocNet\Users\User'
         factory: ['@app.core.security.current_user_resolver', 'getUser']
 
     app.core.command_bus.default: '@app.core.command_bus.simplebus'

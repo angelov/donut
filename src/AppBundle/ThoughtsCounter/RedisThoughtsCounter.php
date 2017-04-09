@@ -2,7 +2,7 @@
 
 namespace AppBundle\ThoughtsCounter;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use Predis\Client;
 use Predis\Connection\ConnectionException;
 use Predis\PredisException;

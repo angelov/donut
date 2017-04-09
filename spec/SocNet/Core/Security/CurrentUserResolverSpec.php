@@ -2,7 +2,7 @@
 
 namespace spec\SocNet\Core\Security;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use SocNet\Core\Security\CurrentUserResolver;
 use SocNet\Core\Security\CurrentUserResolverInterface;
 use PhpSpec\ObjectBehavior;

@@ -2,7 +2,7 @@
 
 namespace spec\SocNet\Communities\Handlers;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use Prophecy\Argument;
 use SocNet\Communities\Commands\LeaveCommunityCommand;
 use SocNet\Communities\Community;

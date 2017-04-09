@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use SocNet\Users\User;
 
 /**
  * @ORM\Entity
@@ -18,13 +19,13 @@ class FriendshipRequest
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="sentFriendshipRequests")
+     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="sentFriendshipRequests")
      * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id", nullable=false, onDelete="cascade")
      */
     private $fromUser;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="receivedFriendshipRequests")
+     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="receivedFriendshipRequests")
      * @ORM\JoinColumn(name="to_user_id", referencedColumnName="id", nullable=false, onDelete="cascade")
      */
     private $toUser;

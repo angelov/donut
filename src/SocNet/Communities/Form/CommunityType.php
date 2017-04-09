@@ -2,7 +2,7 @@
 
 namespace SocNet\Communities\Form;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use SocNet\Communities\Commands\StoreCommunityCommand;
 use SocNet\Core\Form\DataTransformers\NullToEmptyStringDataTransformer;
 use Symfony\Component\Form\Extension\Core\Type\BaseType;

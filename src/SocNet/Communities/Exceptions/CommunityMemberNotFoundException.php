@@ -2,7 +2,7 @@
 
 namespace SocNet\Communities\Exceptions;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use RuntimeException;
 use SocNet\Communities\Community;
 

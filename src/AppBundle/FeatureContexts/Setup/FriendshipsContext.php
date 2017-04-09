@@ -4,7 +4,7 @@ namespace AppBundle\FeatureContexts\Setup;
 
 use AppBundle\Entity\Friendship;
 use AppBundle\Entity\FriendshipRequest;
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManager;

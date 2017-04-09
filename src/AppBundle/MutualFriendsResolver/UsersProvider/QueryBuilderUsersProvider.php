@@ -2,7 +2,7 @@
 
 namespace AppBundle\MutualFriendsResolver\UsersProvider;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\Exceptions\ResourceNotFoundException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use SocNet\Users\User;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,7 +27,7 @@ class Thought
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="thoughts", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="thoughts", fetch="EAGER")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $author;

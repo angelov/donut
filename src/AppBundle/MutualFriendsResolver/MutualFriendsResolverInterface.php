@@ -2,12 +2,12 @@
 
 namespace AppBundle\MutualFriendsResolver;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 
 interface MutualFriendsResolverInterface
 {
     /**
-     * @return User[]
+     * @return \SocNet\Users\User[]
      */
     public function forUsers(User $first, User $second) : array;
 }

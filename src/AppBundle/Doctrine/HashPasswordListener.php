@@ -2,7 +2,7 @@
 
 namespace AppBundle\Doctrine;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;

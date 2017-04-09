@@ -2,7 +2,7 @@
 
 namespace SocNet\Core\Security;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 
 interface CurrentUserResolverInterface
 {

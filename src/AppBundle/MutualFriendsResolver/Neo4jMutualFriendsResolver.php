@@ -2,7 +2,7 @@
 
 namespace AppBundle\MutualFriendsResolver;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\MutualFriendsResolver\UsersProvider\UsersProviderInterface;
 use GraphAware\Bolt\Result\Type\Node;
 use GraphAware\Neo4j\Client\Client;

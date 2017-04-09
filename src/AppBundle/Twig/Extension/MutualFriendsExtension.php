@@ -2,7 +2,7 @@
 
 namespace AppBundle\Twig\Extension;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\MutualFriendsResolver\MutualFriendsResolverInterface;
 
 class MutualFriendsExtension extends \Twig_Extension
@@ -22,7 +22,7 @@ class MutualFriendsExtension extends \Twig_Extension
     }
 
     /**
-     * @return User[]
+     * @return \SocNet\Users\User[]
      */
     public function resolveMutualFriends(User $first, User $second)
     {

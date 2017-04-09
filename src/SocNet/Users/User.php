@@ -1,7 +1,10 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace SocNet\Users;
 
+use AppBundle\Entity\Friendship;
+use AppBundle\Entity\FriendshipRequest;
+use AppBundle\Entity\Thought;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;

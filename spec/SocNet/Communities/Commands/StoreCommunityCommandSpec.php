@@ -2,7 +2,7 @@
 
 namespace spec\SocNet\Communities\Commands;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use SocNet\Communities\Commands\StoreCommunityCommand;
 use PhpSpec\ObjectBehavior;
 

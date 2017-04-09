@@ -2,7 +2,7 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;

@@ -2,7 +2,7 @@
 
 namespace SocNet\Communities\Commands;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use SocNet\Communities\Community;
 
 class JoinCommunityCommand

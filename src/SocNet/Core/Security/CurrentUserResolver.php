@@ -2,7 +2,7 @@
 
 namespace SocNet\Core\Security;
 
-use AppBundle\Entity\User;
+use SocNet\Users\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
