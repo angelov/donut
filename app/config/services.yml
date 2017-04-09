@@ -88,6 +88,12 @@ services:
         class: 'AppBundle\Entity\User'
         factory: ['@app.core.security.current_user_resolver', 'getUser']
 
+    app.core.command_bus.default: '@app.core.command_bus.simplebus'
+
+    app.core.command_bus.simplebus:
+        class: 'SocNet\Core\CommandBus\SimpleBusAdapter'
+        arguments: ['@command_bus']
+
     ### communities
 
     app.communities.repositories.default: '@app.communities.repositories.doctrine'

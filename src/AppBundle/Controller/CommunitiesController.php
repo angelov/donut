@@ -39,7 +39,7 @@ class CommunitiesController extends Controller
             /** @var StoreCommunityCommand $command */
             $command = $form->getData();
 
-            $this->get('command_bus')->handle($command);
+            $this->get('app.core.command_bus.default')->handle($command);
 
             $this->addFlash('success', 'Community was successfully created!');
 
@@ -73,7 +73,7 @@ class CommunitiesController extends Controller
         $community = $repository->find($id);
         $user = $this->getUser();
 
-        $this->get('command_bus')->handle(new JoinCommunityCommand($user, $community));
+        $this->get('app.core.command_bus.default')->handle(new JoinCommunityCommand($user, $community));
 
         $this->addFlash('success', 'Successfully joined the community');
 
@@ -89,7 +89,7 @@ class CommunitiesController extends Controller
         $community = $repository->find($id);
         $user = $this->getUser();
 
-        $this->get('command_bus')->handle(new LeaveCommunityCommand($user, $community));
+        $this->get('app.core.command_bus.default')->handle(new LeaveCommunityCommand($user, $community));
 
         $this->addFlash('success', 'Successfully left the community');
 
