@@ -7,10 +7,10 @@ use AppBundle\Exceptions\ResourceNotFoundException;
 
 interface UsersRepositoryInterface
 {
-//    /**
-//     * @throws ResourceNotFoundException
-//     */
-//    public function find(int $id) : User;
+    /**
+     * @throws ResourceNotFoundException
+     */
+    public function find(string $id) : User;
 //
 //    /**
 //     * @return User[]

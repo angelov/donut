@@ -33,6 +33,11 @@ class DoctrineUsersRepository implements UsersRepositoryInterface
         return $found;
     }
 
+    public function find(string $id): User
+    {
+        return $this->getRepository()->find($id);
+    }
+
     private function getRepository() : ObjectRepository
     {
         return $this->entityManager->getRepository(User::class);
