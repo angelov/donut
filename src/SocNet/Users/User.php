@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
@@ -27,25 +26,18 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", unique=true)
-     * @Assert\Email()
-     * @Assert\NotBlank(message="Please enter your email.")
      */
-    private $email = '';
+    private $email;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $password = '';
+    private $password;
 
-    /**
-     * @Assert\NotBlank(message="Please enter your password.")
-     * @Assert\Length(min="6", minMessage="The password must be at least 6 characters long.")
-     */
     private $plainPassword = '';
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Please enter your name.")
      */
     private $name = '';
 
@@ -74,8 +66,11 @@ class User implements UserInterface
      */
     private $friendships;
 
-    public function __construct()
+    public function __construct(string $name, string $email, string $password)
     {
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
         $this->thoughts = new ArrayCollection();
         $this->sentFriendshipRequests = new ArrayCollection();
         $this->receivedFriendshipRequests = new ArrayCollection();

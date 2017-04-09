@@ -58,19 +58,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
-    app.users.repository.default: '@app.users.repository.doctrine'
-
-    app.users.repository.doctrine:
-        class: AppBundle\Repository\DoctrineUsersRepository
-        arguments:
-            - '@app.doctrine.repository.users'
-
-    app.doctrine.repository.users:
-        class: Doctrine\ORM\EntityRepository
-        factory: ["@doctrine.orm.entity_manager", getRepository]
-        arguments:
-            - SocNet\Users\User
-
     app.mutual_friends_exstension:
           class: 'AppBundle\Twig\Extension\MutualFriendsExtension'
           arguments:
@@ -93,6 +80,15 @@ services:
     app.core.command_bus.simplebus:
         class: 'SocNet\Core\CommandBus\SimpleBusAdapter'
         arguments: ['@command_bus']
+
+    ### users
+
+    app.users.repository.default: '@app.users.repository.doctrine'
+
+    app.users.repository.doctrine:
+        class: 'SocNet\Users\Repositories\DoctrineUsersRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
     ### communities
 

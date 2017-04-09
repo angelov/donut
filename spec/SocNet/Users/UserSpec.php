@@ -10,6 +10,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserSpec extends ObjectBehavior
 {
+    const USER_NAME = 'John';
+    const USER_EMAIL = 'john@example.com';
+    const USER_PASSWORD = '123456';
+
+    function let()
+    {
+        $this->beConstructedWith(self::USER_NAME, self::USER_EMAIL, self::USER_PASSWORD);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(User::class);
@@ -56,8 +65,7 @@ class UserSpec extends ObjectBehavior
 
     function it_returns_email_as_username()
     {
-        $this->setEmail('john@example.com');
-        $this->getEmail()->shouldReturn('john@example.com');
+        $this->getUsername()->shouldReturn(self::USER_EMAIL);
     }
 
     function it_has_no_thoughts_by_default()

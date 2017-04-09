@@ -4,7 +4,7 @@ namespace AppBundle\Security;
 
 use AppBundle\Exceptions\ResourceNotFoundException;
 use AppBundle\Form\LoginForm;
-use AppBundle\Repository\UsersRepositoryInterface;
+use SocNet\Users\Repositories\UsersRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

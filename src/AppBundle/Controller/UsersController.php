@@ -2,8 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use SocNet\Users\Commands\StoreUserCommand;
 use SocNet\Users\User;
-use AppBundle\Form\UserRegistrationForm;
+use SocNet\Users\Form\UserRegistrationForm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,12 +22,10 @@ class UsersController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var User $user */
-            $user = $form->getData();
+            /** @var StoreUserCommand $command */
+            $command = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->get('app.core.command_bus.default')->handle($command);
 
             $this->addFlash('success', 'Registration was successful. You many now login.');
 

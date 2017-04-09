@@ -23,10 +23,7 @@ class UsersContext implements Context
      */
     public function thereIsAUserWithEmailAndPassword($name, $email, $password)
     {
-        $user = new User();
-        $user->setName($name);
-        $user->setEmail($email);
-        $user->setPlainPassword($password);
+        $user = new User($name, $email, $password);
 
         $this->em->persist($user);
         $this->em->flush();

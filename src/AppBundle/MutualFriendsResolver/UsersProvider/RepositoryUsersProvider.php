@@ -3,7 +3,7 @@
 namespace AppBundle\MutualFriendsResolver\UsersProvider;
 
 use SocNet\Users\User;
-use AppBundle\Repository\UsersRepositoryInterface;
+use SocNet\Users\Repositories\UsersRepositoryInterface;
 
 class RepositoryUsersProvider implements UsersProviderInterface
 {

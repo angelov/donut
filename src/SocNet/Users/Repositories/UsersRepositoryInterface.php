@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace SocNet\Users\Repositories;
 
 use SocNet\Users\User;
 use AppBundle\Exceptions\ResourceNotFoundException;
@@ -13,7 +13,7 @@ interface UsersRepositoryInterface
     public function find(int $id) : User;
 
     /**
-     * @return \SocNet\Users\User[]
+     * @return User[]
      */
     public function all() : array;
 
@@ -21,4 +21,6 @@ interface UsersRepositoryInterface
      * @throws ResourceNotFoundException
      */
     public function getByEmail(string $email) : User;
+
+    public function store(User $user) : void;
 }
