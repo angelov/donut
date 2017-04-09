@@ -36,10 +36,11 @@ class SecurityContext implements Context
      */
     public function iAmLoggedInAs(string $email)
     {
-        $user = new User();
-        $user->setEmail($email);
-        $user->setPlainPassword('123456');
-        $user->setName($this->storage->get('user_name', 'John Smith'));
+        $user = new User(
+            $this->storage->get('user_name', 'John Smith'),
+            $email,
+            '123456'
+        );
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
