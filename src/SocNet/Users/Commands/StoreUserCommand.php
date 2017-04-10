@@ -2,6 +2,7 @@
 
 namespace SocNet\Users\Commands;
 
+use SocNet\Users\Validation\Constraints\UniqueEmail;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class StoreUserCommand
@@ -14,6 +15,7 @@ class StoreUserCommand
     /**
      * @Assert\Email()
      * @Assert\NotBlank(message="Please enter your email.")
+     * @UniqueEmail(message="The email is already in use.")
      */
     private $email;
 

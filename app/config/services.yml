@@ -90,6 +90,24 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
+    app.users.email_availability_checker.default: '@app.users.email_availability_checker.repository'
+
+    app.users.email_availability_checker.repository:
+        class: 'SocNet\Users\EmailAvailabilityChecker\EmailAvailabilityChecker'
+        arguments: ['@app.users.repository.default']
+
+    app.users.validation.validators.unique_email:
+        class: 'SocNet\Users\Validation\Validators\UniqueEmailValidator'
+        arguments: ['@app.users.email_availability_checker.repository']
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    app.users.handlers.store:
+        class: 'SocNet\Users\Handlers\StoreUserCommandHandler'
+        arguments: ['@app.users.repository.default', '@security.password_encoder', '@app.users.email_availability_checker.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Users\Commands\StoreUserCommand' }
+
     ### communities
 
     app.communities.repositories.default: '@app.communities.repositories.doctrine'
