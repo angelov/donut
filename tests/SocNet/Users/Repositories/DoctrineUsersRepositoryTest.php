@@ -69,10 +69,32 @@ class DoctrineUsersRepositoryTest extends KernelTestCase
         $this->assertTrue($user->equals($found));
     }
 
+    /** @test */
     public function it_throws_exception_for_non_existing_ids()
     {
         $this->expectException(ResourceNotFoundException::class);
 
         $this->repository->find('123');
+    }
+
+    /** @test */
+    public function it_returns_array_of_all_users()
+    {
+        $this->repository->store($user = new User('John', 'john@example.net', '123456'));
+        $this->repository->store($second = new User('James', 'james@example.net', '123456'));
+
+        $all = $this->repository->all();
+
+        $this->assertCount(2, $all);
+        $this->assertContains($user, $all);
+        $this->assertContains($second, $all);
+    }
+
+    /** @test */
+    public function it_returns_empty_array_when_there_are_no_users()
+    {
+        $all = $this->repository->all();
+
+        $this->assertCount(0, $all);
     }
 }

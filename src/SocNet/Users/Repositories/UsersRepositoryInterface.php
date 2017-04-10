@@ -11,12 +11,12 @@ interface UsersRepositoryInterface
      * @throws ResourceNotFoundException
      */
     public function find(string $id) : User;
-//
-//    /**
-//     * @return User[]
-//     */
-//    public function all() : array;
-//
+
+    /**
+     * @return User[]
+     */
+    public function all() : array;
+
     /**
      * @throws ResourceNotFoundException
      */
