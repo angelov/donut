@@ -1,6 +1,6 @@
 <?php
 
-namespace SocNet\Core\Security;
+namespace SocNet\Users\Security\CurrentUserResolver;
 
 use SocNet\Users\User;
 

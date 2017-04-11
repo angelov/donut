@@ -61,14 +61,6 @@ services:
 
     ### core
 
-    app.core.security.current_user_resolver:
-        class: 'SocNet\Core\Security\CurrentUserResolver'
-        arguments: ['@security.token_storage']
-
-    app.core.security.current_user:
-        class: 'SocNet\Users\User'
-        factory: ['@app.core.security.current_user_resolver', 'getUser']
-
     app.core.command_bus.default: '@app.core.command_bus.simplebus'
 
     app.core.command_bus.simplebus:
@@ -89,6 +81,14 @@ services:
     app.users.email_availability_checker.repository:
         class: 'SocNet\Users\EmailAvailabilityChecker\EmailAvailabilityChecker'
         arguments: ['@app.users.repository.default']
+
+    app.users.security.current_user_resolver:
+        class: 'SocNet\Users\Security\CurrentUserResolver\CurrentUserResolver'
+        arguments: ['@security.token_storage']
+
+    app.users.security.current_user:
+        class: 'SocNet\Users\User'
+        factory: ['@app.users.security.current_user_resolver', 'getUser']
 
     app.users.validation.validators.unique_email:
         class: 'SocNet\Users\Validation\Validators\UniqueEmailValidator'
@@ -112,7 +112,7 @@ services:
 
     app.communities.form.community_type:
         class: 'SocNet\Communities\Form\CommunityType'
-        arguments: ['@app.core.security.current_user']
+        arguments: ['@app.users.security.current_user']
         tags:
             - { name: 'form.type' }
 

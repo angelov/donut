@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\SocNet\Core\Security;
+namespace spec\SocNet\Users\Security\CurrentUserResolver;
 
+use SocNet\Users\Security\CurrentUserResolver\CurrentUserResolver;
 use SocNet\Users\User;
-use SocNet\Core\Security\CurrentUserResolver;
-use SocNet\Core\Security\CurrentUserResolverInterface;
+use SocNet\Users\Security\CurrentUserResolver\CurrentUserResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
