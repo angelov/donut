@@ -23,3 +23,8 @@ doctrine:
         dbname:   "%database_name%_test"
         user:     "%database_user%"
         password: "%database_password%"
+
+snc_redis:
+    clients:
+        default:
+            dsn: redis://localhost/1

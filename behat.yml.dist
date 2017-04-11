@@ -19,6 +19,7 @@ default:
     suites:
         registration:
             contexts_services:
+                - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.users'
                 - 'app.feature_contexts.users.registration'
@@ -27,6 +28,7 @@ default:
 
         login:
             contexts_services:
+                - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.users'
                 - 'app.feature_contexts.users.login'
@@ -35,6 +37,7 @@ default:
 
         thoughts:
             contexts_services:
+                - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
                 - 'app.feature_contexts.setup.users'
@@ -46,6 +49,7 @@ default:
 
         creating_communities:
             contexts_services:
+                - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
                 - 'app.feature_contexts.communities.creating'
@@ -54,6 +58,7 @@ default:
 
         browsing_communities:
             contexts_services:
+                - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.setup.users'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
@@ -64,6 +69,7 @@ default:
 
         viewing_communities:
             contexts_services:
+                - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
                 - 'app.feature_contexts.setup.users'
@@ -74,6 +80,7 @@ default:
 
         viewing_user_profile:
             contexts_services:
+                - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
                 - 'app.feature_contexts.setup.users'
@@ -85,6 +92,7 @@ default:
 
         managing_friendships:
             contexts_services:
+                - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
                 - 'app.feature_contexts.setup.users'
@@ -95,6 +103,7 @@ default:
 
         browsing_users:
             contexts_services:
+                - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
                 - 'app.feature_contexts.setup.users'
