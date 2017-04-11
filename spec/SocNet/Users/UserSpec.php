@@ -46,12 +46,6 @@ class UserSpec extends ObjectBehavior
         $this->getPassword()->shouldReturn('123456');
     }
 
-    function it_has_mutable_plain_password()
-    {
-        $this->setPlainPassword('123456');
-        $this->getPlainPassword()->shouldReturn('123456');
-    }
-
     function it_has_mutable_name()
     {
         $this->setName('Dejan');
@@ -71,15 +65,6 @@ class UserSpec extends ObjectBehavior
     function it_has_no_thoughts_by_default()
     {
         $this->getThoughts()->shouldHaveCount(0);
-    }
-
-    function it_erases_plain_text_credentials()
-    {
-        $this->setPlainPassword('123456');
-
-        $this->eraseCredentials();
-
-        $this->getPlainPassword()->shouldReturn('');
     }
 
     function it_equals_users_with_same_id(User $anotherUser)

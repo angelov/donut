@@ -34,12 +34,10 @@ class User implements UserInterface
      */
     private $password;
 
-    private $plainPassword = '';
-
     /**
      * @ORM\Column(type="string")
      */
-    private $name = '';
+    private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Thought", mappedBy="author")
@@ -82,17 +80,17 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getUsername()
+    public function getUsername() : string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email = '')
+    public function setEmail(string $email = '') : void
     {
         $this->email = $email;
     }
 
-    public function getEmail()
+    public function getEmail() : string
     {
         return $this->email;
     }
@@ -102,30 +100,19 @@ class User implements UserInterface
         return ['ROLE_USER'];
     }
 
-    public function getPassword()
+    public function getPassword() : string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password = '')
+    public function setPassword(string $password = '') : void
     {
         $this->password = $password;
     }
 
-    public function getPlainPassword()
+    public function getSalt() : string
     {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(string $plainPassword)
-    {
-        $this->password = '';
-        $this->plainPassword = $plainPassword;
-    }
-
-    public function getSalt()
-    {
-        // TODO: Implement getSalt() method.
+        return '';
     }
 
     /**
@@ -136,17 +123,16 @@ class User implements UserInterface
         return $this->thoughts->getValues();
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials() : void
     {
-        $this->plainPassword = '';
     }
 
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
 
-    public function setName(string $name = '')
+    public function setName(string $name = '') : void
     {
         $this->name = $name;
     }
@@ -157,7 +143,7 @@ class User implements UserInterface
     }
 
     // @todo remove admin stuff
-    public function setIsAdmin(bool $isAdmin)
+    public function setIsAdmin(bool $isAdmin) : void
     {
         $this->isAdmin = $isAdmin;
     }
@@ -223,7 +209,7 @@ class User implements UserInterface
     /**
      * @return User[]
      */
-    public function getFriends()
+    public function getFriends() : array
     {
         $friends = [];
 
@@ -241,7 +227,7 @@ class User implements UserInterface
     }
 
     // @todo this will have a big effect on performance, use redis or something
-    public function isFriendWith(User $user)
+    public function isFriendWith(User $user) : bool
     {
         /** @var Friendship $friendship */
         foreach ($this->friendships as $friendship) {

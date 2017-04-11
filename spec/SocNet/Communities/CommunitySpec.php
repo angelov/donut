@@ -2,6 +2,7 @@
 
 namespace spec\SocNet\Communities;
 
+use Prophecy\Argument;
 use SocNet\Users\User;
 use SocNet\Communities\Community;
 use PhpSpec\ObjectBehavior;
@@ -80,6 +81,8 @@ class CommunitySpec extends ObjectBehavior
 
     function it_throws_exception_when_removing_nonexisting_member(User $nonMember)
     {
+        $nonMember->getName()->willReturn(Argument::type('string'));
+
         $this->shouldThrow(CommunityMemberNotFoundException::class)->during('removeMember', [$nonMember]);
     }
 

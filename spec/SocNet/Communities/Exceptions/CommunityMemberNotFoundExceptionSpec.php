@@ -12,6 +12,9 @@ class CommunityMemberNotFoundExceptionSpec extends ObjectBehavior
     function let(User $user, Community $community)
     {
         $this->beConstructedWith($user, $community);
+
+        $user->getName()->willReturn('John Smith');
+        $community->getName()->willReturn('PHP Developers');
     }
 
     function it_is_initializable()
@@ -36,9 +39,6 @@ class CommunityMemberNotFoundExceptionSpec extends ObjectBehavior
 
     function it_has_message_by_default(User $user, Community $community)
     {
-        $user->getName()->willReturn('John Smith');
-        $community->getName()->willReturn('PHP Developers');
-
         $this->getMessage()->shouldReturn(
             'The given user ["John Smith"] is not part of the community ["PHP Developers"]'
         );

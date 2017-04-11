@@ -13,12 +13,6 @@ services:
         tags:
             - { name: 'security.voter' }
 
-    app.doctrine.hash_password_listener:
-        class: 'AppBundle\Doctrine\HashPasswordListener'
-        arguments: ['@security.password_encoder']
-        tags:
-            - { name: doctrine.event_subscriber }
-
     app.thoughts_counter.default: '@app.thoughts_counter.redis'
 
     app.thoughts_counter.db:

@@ -2,6 +2,7 @@
 
 namespace SocNet\Communities;
 
+use DateTime;
 use SocNet\Users\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,12 +24,12 @@ class Community
     /**
      * @ORM\Column(type="string")
      */
-    private $name = '';
+    private $name;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $description = '';
+    private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="SocNet\Users\User", cascade={"remove"}, fetch="EAGER")
@@ -52,7 +53,7 @@ class Community
         $this->name = $name;
         $this->author = $author;
         $this->description = $description;
-        $this->setCreatedAt(new \DateTime());
+        $this->setCreatedAt(new DateTime());
         $this->members = new ArrayCollection();
     }
 
@@ -61,17 +62,17 @@ class Community
         return $this->id;
     }
 
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
 
-    public function setName(string $name)
+    public function setName(string $name) : void
     {
         $this->name = $name;
     }
 
-    public function getDescription()
+    public function getDescription() : string
     {
         return $this->description;
     }
@@ -86,7 +87,7 @@ class Community
         return $this->author;
     }
 
-    public function setAuthor(User $author)
+    public function setAuthor(User $author) : void
     {
         $this->author = $author;
     }
@@ -99,7 +100,7 @@ class Community
         return $this->members->getValues();
     }
 
-    public function addMember(User $user)
+    public function addMember(User $user) : void
     {
         if ($this->hasMember($user)) {
             return;
@@ -108,25 +109,22 @@ class Community
         $this->members[] = $user;
     }
 
-    public function hasMember(User $user)
+    public function hasMember(User $user) : bool
     {
         return $this->members->contains($user);
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
+    public function getCreatedAt() : DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(DateTime $createdAt) : void
     {
         $this->createdAt = $createdAt;
     }
 
-    public function removeMember(User $user)
+    public function removeMember(User $user) : void
     {
         if (!$this->hasMember($user)) {
             throw new CommunityMemberNotFoundException($user, $this);
