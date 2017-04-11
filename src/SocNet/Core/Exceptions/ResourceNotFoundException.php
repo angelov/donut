@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Exceptions;
+namespace SocNet\Core\Exceptions;
 
 class ResourceNotFoundException extends \RuntimeException
 {

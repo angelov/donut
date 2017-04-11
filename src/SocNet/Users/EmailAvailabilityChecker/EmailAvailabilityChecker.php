@@ -2,7 +2,7 @@
 
 namespace SocNet\Users\EmailAvailabilityChecker;
 
-use AppBundle\Exceptions\ResourceNotFoundException;
+use SocNet\Core\Exceptions\ResourceNotFoundException;
 use SocNet\Users\Repositories\UsersRepositoryInterface;
 
 class EmailAvailabilityChecker implements EmailAvailabilityCheckerInterface

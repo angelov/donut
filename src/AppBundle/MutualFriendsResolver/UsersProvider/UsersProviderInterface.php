@@ -3,12 +3,12 @@
 namespace AppBundle\MutualFriendsResolver\UsersProvider;
 
 use SocNet\Users\User;
-use AppBundle\Exceptions\ResourceNotFoundException;
+use SocNet\Core\Exceptions\ResourceNotFoundException;
 
 interface UsersProviderInterface
 {
     /**
-     * @throws ResourceNotFoundException
+     * @throws \SocNet\Core\Exceptions\ResourceNotFoundException
      */
     public function getById(int $id) : User;
 }

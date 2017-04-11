@@ -2,7 +2,7 @@
 
 namespace spec\SocNet\Users\Handlers;
 
-use AppBundle\Exceptions\ResourceNotFoundException;
+use SocNet\Core\Exceptions\ResourceNotFoundException;
 use SocNet\Users\EmailAvailabilityChecker\EmailAvailabilityCheckerInterface;
 use SocNet\Users\Exceptions\EmailTakenException;
 use SocNet\Users\Repositories\UsersRepositoryInterface;

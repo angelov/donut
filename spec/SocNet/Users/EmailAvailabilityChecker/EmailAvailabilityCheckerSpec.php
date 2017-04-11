@@ -2,7 +2,7 @@
 
 namespace spec\SocNet\Users\EmailAvailabilityChecker;
 
-use AppBundle\Exceptions\ResourceNotFoundException;
+use SocNet\Core\Exceptions\ResourceNotFoundException;
 use SocNet\Users\EmailAvailabilityChecker\EmailAvailabilityChecker;
 use PhpSpec\ObjectBehavior;
 use SocNet\Users\EmailAvailabilityChecker\EmailAvailabilityCheckerInterface;

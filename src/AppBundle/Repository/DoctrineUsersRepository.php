@@ -4,7 +4,7 @@ namespace AppBundle\Repository;
 
 use SocNet\Users\Repositories\UsersRepositoryInterface;
 use SocNet\Users\User;
-use AppBundle\Exceptions\ResourceNotFoundException;
+use SocNet\Core\Exceptions\ResourceNotFoundException;
 use Doctrine\ORM\EntityRepository;
 
 class DoctrineUsersRepository implements UsersRepositoryInterface

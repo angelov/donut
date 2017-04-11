@@ -3,7 +3,7 @@
 namespace SocNet\Users\Repositories;
 
 use SocNet\Users\User;
-use AppBundle\Exceptions\ResourceNotFoundException;
+use SocNet\Core\Exceptions\ResourceNotFoundException;
 
 interface UsersRepositoryInterface
 {
