@@ -2,7 +2,8 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Thought;
+use SocNet\Core\Form\DataTransformers\NullToEmptyStringDataTransformer;
+use SocNet\Thoughts\Thought;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,6 +14,8 @@ class ThoughtType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('content', TextareaType::class);
+
+        $builder->get('content')->addModelTransformer(new NullToEmptyStringDataTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver)

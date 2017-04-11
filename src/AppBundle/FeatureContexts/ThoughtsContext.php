@@ -31,9 +31,10 @@ class ThoughtsContext implements Context
     }
 
     /**
-     * @Given I specify its content as :content
+     * @When I specify its content as :content
+     * @When I don't specify its content
      */
-    public function iSpecifyItsContentAs($content)
+    public function iSpecifyItsContentAs($content = '')
     {
         $this->session->getPage()->fillField('Content', $content);
 
@@ -93,6 +94,14 @@ class ThoughtsContext implements Context
     public function iShouldBeNotifiedThatTheMaximumLengthIsCharacters(int $length)
     {
         Assert::true($this->session->getPage()->hasContent(sprintf('Thoughts can\'t be longer than %d characters.', $length)));
+    }
+
+    /**
+     * @Then I should be notified that the thought must have content
+     */
+    public function iShouldBeNotifiedThatTheThoughtMustHaveContent()
+    {
+        Assert::true($this->session->getPage()->hasContent('Please write the content of your thought.'));
     }
 
     /**

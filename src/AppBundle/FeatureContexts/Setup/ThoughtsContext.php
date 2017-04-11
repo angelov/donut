@@ -2,7 +2,7 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
-use AppBundle\Entity\Thought;
+use SocNet\Thoughts\Thought;
 use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
 use AppBundle\ThoughtsCounter\ThoughtsCounterInterface;

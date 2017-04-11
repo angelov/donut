@@ -64,13 +64,18 @@ doctrine:
             Community:
                 type: annotation
                 is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet'
+                dir: '%kernel.root_dir%/../src/SocNet/Communities'
                 prefix: 'SocNet\Communities'
             User:
                 type: annotation
                 is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet'
+                dir: '%kernel.root_dir%/../src/SocNet/Users'
                 prefix: 'SocNet\Users'
+            Thought:
+                type: annotation
+                is_bundle: false
+                dir: '%kernel.root_dir%/../src/SocNet/Thoughts'
+                prefix: 'SocNet\Thoughts'
 
 doctrine_migrations:
     dir_name: '%kernel.root_dir%/Resources/migrations'

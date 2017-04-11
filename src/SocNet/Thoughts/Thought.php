@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace SocNet\Thoughts;
 
 use Doctrine\ORM\Mapping as ORM;
 use SocNet\Users\User;
@@ -17,14 +17,14 @@ class Thought
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $id = '';
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Please write the content of your thought.")
      * @Assert\Length(min=1, max="140", maxMessage="Thoughts can't be longer than 140 characters.")
      */
-    private $content;
+    private $content = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="thoughts", fetch="EAGER")
@@ -42,22 +42,17 @@ class Thought
         $this->createdAt = new \DateTime();
     }
 
-    public function getId()
+    public function getId() : string
     {
         return $this->id;
     }
 
-    public function setId(string $id)
-    {
-        $this->id = $id;
-    }
-
-    public function getContent()
+    public function getContent() : string
     {
         return $this->content;
     }
 
-    public function setContent(string $content)
+    public function setContent(string $content) : void
     {
         $this->content = $content;
     }
@@ -72,15 +67,12 @@ class Thought
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return User
-     */
-    public function getAuthor()
+    public function getAuthor() : User
     {
         return $this->author;
     }
 
-    public function setAuthor(User $author)
+    public function setAuthor(User $author) : void
     {
         $this->author = $author;
     }

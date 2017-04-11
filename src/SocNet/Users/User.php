@@ -4,7 +4,7 @@ namespace SocNet\Users;
 
 use AppBundle\Entity\Friendship;
 use AppBundle\Entity\FriendshipRequest;
-use AppBundle\Entity\Thought;
+use SocNet\Thoughts\Thought;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -40,7 +40,7 @@ class User implements UserInterface
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Thought", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="SocNet\Thoughts\Thought", mappedBy="author")
      */
     private $thoughts;
 
@@ -116,7 +116,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Thought[]
+     * @return \SocNet\Thoughts\Thought[]
      */
     public function getThoughts() : array
     {

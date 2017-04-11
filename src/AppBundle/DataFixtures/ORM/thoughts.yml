@@ -1,4 +1,4 @@
-AppBundle\Entity\Thought:
+SocNet\Thoughts\Thought:
 
     thought_{1..50}:
         content: <sentence()>
