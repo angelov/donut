@@ -102,6 +102,18 @@ services:
         tags:
             - { name: 'command_handler', handles: 'SocNet\Users\Commands\StoreUserCommand' }
 
+    ### thoughts
+
+    app.thoughts.repositories.doctrine:
+        class: 'SocNet\Thoughts\Repositories\DoctrineThoughtsRepository'
+        arguments: ['@doctrine.orm.entity_manager']
+
+    app.thoughts.form.thought_type:
+        class: 'SocNet\Thoughts\Form\ThoughtType'
+        arguments: ['@app.users.security.current_user']
+        tags:
+            - { name: 'form.type' }
+
     ### communities
 
     app.communities.repositories.default: '@app.communities.repositories.doctrine'

@@ -2,8 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use SocNet\Thoughts\Commands\StoreThoughtCommand;
 use SocNet\Thoughts\Thought;
-use AppBundle\Form\ThoughtType;
+use SocNet\Thoughts\Form\ThoughtType;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,19 +38,15 @@ class ThoughtsController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $em = $this->getDoctrine()->getManager();
+            /** @var StoreThoughtCommand $thought */
+            $command = $form->getData();
 
-            /** @var Thought $thought */
-            $thought = $form->getData();
+            $this->get('app.core.command_bus.default')->handle($command);
 
             $user = $this->getUser();
-            $thought->setAuthor($user);
 
             $counter = $this->get('app.thoughts_counter.default');
             $counter->increase($user);
-
-            $em->persist($thought);
-            $em->flush();
 
             $this->addFlash('success', 'Thought shared!');
 

@@ -1,16 +1,25 @@
 <?php
 
-namespace AppBundle\Form;
+namespace SocNet\Thoughts\Form;
 
 use SocNet\Core\Form\DataTransformers\NullToEmptyStringDataTransformer;
-use SocNet\Thoughts\Thought;
+use SocNet\Thoughts\Commands\StoreThoughtCommand;
+use SocNet\Users\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ThoughtType extends AbstractType
 {
+    private $author;
+
+    public function __construct(User $author)
+    {
+        $this->author = $author;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('content', TextareaType::class);
@@ -20,6 +29,14 @@ class ThoughtType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('data_class', Thought::class);
+        $resolver->setDefaults([
+            'data_class' => StoreThoughtCommand::class,
+            'empty_data' => function (FormInterface $form) {
+                return new StoreThoughtCommand(
+                    $this->author,
+                    $form->get('content')->getData()
+                );
+            }
+        ]);
     }
 }

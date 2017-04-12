@@ -4,7 +4,6 @@ namespace SocNet\Thoughts;
 
 use Doctrine\ORM\Mapping as ORM;
 use SocNet\Users\User;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -21,8 +20,6 @@ class Thought
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Please write the content of your thought.")
-     * @Assert\Length(min=1, max="140", maxMessage="Thoughts can't be longer than 140 characters.")
      */
     private $content = '';
 
