@@ -17,9 +17,10 @@ class StoreThoughtCommandHandler
 
     public function handle(StoreThoughtCommand $command)
     {
-        $thought = new Thought();
-        $thought->setContent($command->getContent());
-        $thought->setAuthor($command->getAuthor());
+        $thought = new Thought(
+            $command->getAuthor(),
+            $command->getContent()
+        );
 
         $this->thoughts->store($thought);
     }

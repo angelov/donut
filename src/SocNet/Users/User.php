@@ -116,11 +116,16 @@ class User implements UserInterface
     }
 
     /**
-     * @return \SocNet\Thoughts\Thought[]
+     * @return Thought[]
      */
     public function getThoughts() : array
     {
         return $this->thoughts->getValues();
+    }
+
+    public function addThought(Thought $thought) : void
+    {
+        $this->thoughts->add($thought);
     }
 
     public function eraseCredentials() : void

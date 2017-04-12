@@ -9,6 +9,11 @@ use SocNet\Users\User;
 
 class ThoughtSpec extends ObjectBehavior
 {
+    function let(User $user)
+    {
+        $this->beConstructedWith($user, 'example');
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(Thought::class);

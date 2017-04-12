@@ -4,6 +4,7 @@ namespace spec\SocNet\Users;
 
 use AppBundle\Entity\Friendship;
 use AppBundle\Entity\FriendshipRequest;
+use SocNet\Thoughts\Thought;
 use SocNet\Users\User;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -65,6 +66,14 @@ class UserSpec extends ObjectBehavior
     function it_has_no_thoughts_by_default()
     {
         $this->getThoughts()->shouldHaveCount(0);
+    }
+
+    function it_can_have_mulitple_thoughts(Thought $first, Thought $second)
+    {
+        $this->addThought($first);
+        $this->addThought($second);
+
+        $this->getThoughts()->shouldHaveCount(2);
     }
 
     function it_equals_users_with_same_id(User $anotherUser)

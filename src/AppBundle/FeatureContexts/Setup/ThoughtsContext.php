@@ -71,9 +71,10 @@ class ThoughtsContext implements Context
     {
         $latest = $this->storage->get('latest_thought_time', new \DateTime());
 
-        $thought = new Thought();
-        $thought->setAuthor($author);
-        $thought->setContent($content ?? sprintf('Random content #%d', random_int(0, 10000)));
+        $thought = new Thought(
+            $author,
+            $content ?? sprintf('Random content #%d', random_int(0, 10000))
+        );
 
         $latest = (clone $latest)->add(new \DateInterval('PT1S')); // add one second to the latest
 

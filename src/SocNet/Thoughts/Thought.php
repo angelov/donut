@@ -21,7 +21,7 @@ class Thought
     /**
      * @ORM\Column(type="string")
      */
-    private $content = '';
+    private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="thoughts", fetch="EAGER")
@@ -34,9 +34,11 @@ class Thought
      */
     private $createdAt;
 
-    public function __construct()
+    public function __construct(User $author, string $content)
     {
         $this->createdAt = new \DateTime();
+        $this->author = $author;
+        $this->content = $content;
     }
 
     public function getId() : string
@@ -72,5 +74,6 @@ class Thought
     public function setAuthor(User $author) : void
     {
         $this->author = $author;
+        $author->addThought($this);
     }
 }
