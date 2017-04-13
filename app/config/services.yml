@@ -104,6 +104,8 @@ services:
 
     ### thoughts
 
+    app.thoughts.repositories.default: '@app.thoughts.repositories.doctrine'
+
     app.thoughts.repositories.doctrine:
         class: 'SocNet\Thoughts\Repositories\DoctrineThoughtsRepository'
         arguments: ['@doctrine.orm.entity_manager']
@@ -113,6 +115,12 @@ services:
         arguments: ['@app.users.security.current_user']
         tags:
             - { name: 'form.type' }
+
+    app.thoughts.handlers.delete:
+        class: 'SocNet\Thoughts\Handlers\DeleteThoughtCommandHandler'
+        arguments: ['@app.thoughts.repositories.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Thoughts\Commands\DeleteThoughtCommand' }
 
     ### communities
 

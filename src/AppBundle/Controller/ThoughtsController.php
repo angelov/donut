@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use SocNet\Thoughts\Commands\DeleteThoughtCommand;
 use SocNet\Thoughts\Commands\StoreThoughtCommand;
 use SocNet\Thoughts\Thought;
 use SocNet\Thoughts\Form\ThoughtType;
@@ -65,14 +66,11 @@ class ThoughtsController extends Controller
      */
     public function delete(Thought $thought)
     {
-        $em = $this->getDoctrine()->getManager();
-
         if (!$this->isGranted('DELETE_THOUGHT', $thought)) {
             return $this->redirectToRoute('app.thoughts.index');
         }
 
-        $em->remove($thought);
-        $em->flush();
+        $this->get('app.core.command_bus.default')->handle(new DeleteThoughtCommand($thought));
 
         $this->addFlash('success', 'Thought deleted!');
 

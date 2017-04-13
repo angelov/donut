@@ -34,9 +34,7 @@ class DoctrineThoughtsRepositoryTest extends KernelTestCase
         $this->em->persist($author);
         $this->em->flush();
 
-        $thought = new Thought();
-        $thought->setAuthor($author);
-        $thought->setContent('something');
+        $thought = new Thought($author, 'something');
 
         $this->repository->store($thought);
 
@@ -46,5 +44,27 @@ class DoctrineThoughtsRepositoryTest extends KernelTestCase
 
         $this->assertInstanceOf(Thought::class, $found);
         $this->assertSame($thought->getContent(), $found->getContent());
+    }
+
+    /** @test */
+    public function it_removes_thoughts_from_database()
+    {
+        // @todo extract user creating
+        $author = new User('John', 'john@example.net', '123456');
+
+        $this->em->persist($author);
+        $this->em->flush();
+
+        $thought = new Thought($author, 'something');
+
+        $this->repository->store($thought);
+
+        $id = $thought->getId();
+
+        $this->repository->destroy($thought);
+
+        $found = $this->em->find(Thought::class, $id);
+
+        $this->assertNull($found);
     }
 }

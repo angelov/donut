@@ -19,4 +19,10 @@ class DoctrineThoughtsRepository implements ThoughtsRepositoryInterface
         $this->em->persist($thought);
         $this->em->flush();
     }
+
+    public function destroy(Thought $thought)
+    {
+        $this->em->remove($thought);
+        $this->em->flush();
+    }
 }
