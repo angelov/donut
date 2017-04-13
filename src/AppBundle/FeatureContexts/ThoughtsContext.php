@@ -75,7 +75,7 @@ class ThoughtsContext implements Context
         $page = $this->session->getPage();
         $shared = $this->storage->get('thought_content');
 
-        Assert::true($page->has('css', sprintf('pre:contains("%s")', $shared)));
+        Assert::true($page->has('css', sprintf('.thought pre:contains("%s")', $shared)));
     }
 
     /**

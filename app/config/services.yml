@@ -116,6 +116,12 @@ services:
         tags:
             - { name: 'form.type' }
 
+    app.thoughts.handlers.store:
+        class: 'SocNet\Thoughts\Handlers\StoreThoughtCommandHandler'
+        arguments: ['@app.thoughts.repositories.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Thoughts\Commands\StoreThoughtCommand' }
+
     app.thoughts.handlers.delete:
         class: 'SocNet\Thoughts\Handlers\DeleteThoughtCommandHandler'
         arguments: ['@app.thoughts.repositories.default']
