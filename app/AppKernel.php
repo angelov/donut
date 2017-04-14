@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
             new Neo4j\Neo4jBundle\Neo4jBundle(),
             new SimpleBus\SymfonyBridge\SimpleBusCommandBusBundle(),
+            new SimpleBus\SymfonyBridge\SimpleBusEventBusBundle(),
             new AppBundle\AppBundle(),
         ];
 

@@ -67,6 +67,12 @@ services:
         class: 'SocNet\Core\CommandBus\SimpleBusAdapter'
         arguments: ['@command_bus']
 
+    app.core.event_bus.default: '@app.core.event_bus.simplebus'
+
+    app.core.event_bus.simplebus:
+        class: 'SocNet\Core\EventBus\SimpleBusAdapter'
+        arguments: ['@simple_bus.event_bus']
+
     ### users
 
     app.users.repository.default: '@app.users.repository.doctrine'
@@ -118,7 +124,7 @@ services:
 
     app.thoughts.handlers.store:
         class: 'SocNet\Thoughts\Handlers\StoreThoughtCommandHandler'
-        arguments: ['@app.thoughts.repositories.default']
+        arguments: ['@app.thoughts.repositories.default', '@app.core.event_bus.default']
         tags:
             - { name: 'command_handler', handles: 'SocNet\Thoughts\Commands\StoreThoughtCommand' }
 
