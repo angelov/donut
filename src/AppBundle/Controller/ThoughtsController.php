@@ -46,7 +46,7 @@ class ThoughtsController extends Controller
 
             $user = $this->getUser();
 
-            $counter = $this->get('app.thoughts_counter.default');
+            $counter = $this->get('app.thoughts.thoughts_counter.default');
             $counter->increase($user);
 
             $this->addFlash('success', 'Thought shared!');

@@ -3,7 +3,7 @@
 namespace AppBundle\Twig\Extension;
 
 use SocNet\Users\User;
-use AppBundle\ThoughtsCounter\ThoughtsCounterInterface;
+use SocNet\Thoughts\ThoughtsCounter\ThoughtsCounterInterface;
 
 class ThoughtsCounterExtension extends \Twig_Extension
 {

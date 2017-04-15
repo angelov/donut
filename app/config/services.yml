@@ -13,21 +13,9 @@ services:
         tags:
             - { name: 'security.voter' }
 
-    app.thoughts_counter.default: '@app.thoughts_counter.redis'
-
-    app.thoughts_counter.db:
-        class: 'AppBundle\ThoughtsCounter\DbThoughtsCounter'
-
-    app.thoughts_counter.redis:
-        class: 'AppBundle\ThoughtsCounter\RedisThoughtsCounter'
-        arguments:
-            - '@snc_redis.default'
-            - '@logger'
-
     app.thoughts_counter_exstension:
         class: 'AppBundle\Twig\Extension\ThoughtsCounterExtension'
-        arguments:
-            - '@app.thoughts_counter.default'
+        arguments: ['@app.thoughts.thoughts_counter.default']
         tags:
             - { name: 'twig.extension' }
 
@@ -121,6 +109,20 @@ services:
         arguments: ['@app.users.security.current_user']
         tags:
             - { name: 'form.type' }
+
+    app.thoughts.thoughts_counter.default: '@app.thoughts.thoughts_counter.ensuring_default_value'
+
+    app.thoughts.thoughts_counter.redis:
+        class: 'SocNet\Thoughts\ThoughtsCounter\RedisThoughtsCounter'
+        arguments: ['@snc_redis.default']
+
+    app.thoughts.thoughts_counter.logging:
+        class: 'SocNet\Thoughts\ThoughtsCounter\LoggingThoughtsCounter'
+        arguments: ['@app.thoughts.thoughts_counter.redis', '@logger']
+
+    app.thoughts.thoughts_counter.ensuring_default_value:
+        class: 'SocNet\Thoughts\ThoughtsCounter\EnsuringDefaultValueThoughtCounter'
+        arguments: ['@app.thoughts.thoughts_counter.logging']
 
     app.thoughts.handlers.store:
         class: 'SocNet\Thoughts\Handlers\StoreThoughtCommandHandler'

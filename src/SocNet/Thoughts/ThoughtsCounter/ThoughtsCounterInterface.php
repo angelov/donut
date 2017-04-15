@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\ThoughtsCounter;
+namespace SocNet\Thoughts\ThoughtsCounter;
 
 use SocNet\Users\User;
 
 interface ThoughtsCounterInterface
 {
-    public function increase(User $user);
+    public function increase(User $user) : void;
 
     public function count(User $user) : int;
 }

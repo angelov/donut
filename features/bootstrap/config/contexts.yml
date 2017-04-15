@@ -20,7 +20,7 @@ services:
 
     app.feature_contexts.setup.thoughts:
         class: 'AppBundle\FeatureContexts\Setup\ThoughtsContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.thoughts_counter.redis']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.thoughts.thoughts_counter.default']
         tags:
             - { name: fob.context_service }
 

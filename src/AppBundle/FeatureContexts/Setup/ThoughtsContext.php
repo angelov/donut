@@ -5,7 +5,7 @@ namespace AppBundle\FeatureContexts\Setup;
 use SocNet\Thoughts\Thought;
 use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
-use AppBundle\ThoughtsCounter\ThoughtsCounterInterface;
+use SocNet\Thoughts\ThoughtsCounter\ThoughtsCounterInterface;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManager;
 
