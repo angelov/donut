@@ -12,6 +12,7 @@ Feature: Sharing thoughts
     And I specify its content as "Hello world!"
     And I try to share it
     Then I should see it in the list of latest thoughts
+    And my number of shared thoughts should be 1
 
   Scenario: Sharing a thought without a content
     When I want to share a thought

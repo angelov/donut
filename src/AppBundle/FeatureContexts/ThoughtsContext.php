@@ -148,4 +148,21 @@ class ThoughtsContext implements Context
 
         Assert::false($parent->hasButton('delete'), 'Found a forbidden delete button.');
     }
+
+    /**
+     * @Then my number of shared thoughts should be :number
+     */
+    public function myNumberOfSharedThoughtsShouldBe(int $number)
+    {
+        $usersPage = $this->router->generate('app.users.index');
+        $this->session->getDriver()->visit($usersPage);
+
+        $name = $this->storage->get('logged_user')->getName();
+
+        // @todo this should be extracted using Page classes
+        $card = $this->session->getPage()->find('css', sprintf('#users-list .user-card:contains("%s")', $name));
+
+        // @todo provide a better feedback message
+        Assert::true($card->has('css', sprintf('.badge:contains("%d thoughts")', $number)));
+    }
 }

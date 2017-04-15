@@ -44,11 +44,6 @@ class ThoughtsController extends Controller
 
             $this->get('app.core.command_bus.default')->handle($command);
 
-            $user = $this->getUser();
-
-            $counter = $this->get('app.thoughts.thoughts_counter.default');
-            $counter->increase($user);
-
             $this->addFlash('success', 'Thought shared!');
 
             return $this->redirectToRoute('app.thoughts.index');

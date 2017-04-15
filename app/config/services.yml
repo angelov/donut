@@ -136,6 +136,12 @@ services:
         tags:
             - { name: 'command_handler', handles: 'SocNet\Thoughts\Commands\DeleteThoughtCommand' }
 
+    app.thoughts.event_subscribers.increase_thoughts_number_for_user:
+        class: 'SocNet\Thoughts\EventSubscribers\IncreaseThoughtsNumberForUser'
+        arguments: ['@app.thoughts.thoughts_counter.default']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'SocNet\Thoughts\Events\ThoughtWasPublishedEvent' }
+
     ### communities
 
     app.communities.repositories.default: '@app.communities.repositories.doctrine'
