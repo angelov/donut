@@ -21,6 +21,11 @@ class LoggingThoughtsCounter implements ThoughtsCounterInterface
         $this->decorated->increase($user);
     }
 
+    public function decrease(User $user): void
+    {
+        $this->decorated->decrease($user);
+    }
+
     public function count(User $user): int
     {
         try {

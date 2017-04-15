@@ -20,6 +20,15 @@ class RedisThoughtsCounter implements ThoughtsCounterInterface
         $this->redisClient->incr($this->resolveKey($user));
     }
 
+    public function decrease(User $user): void
+    {
+        $key = $this->resolveKey($user);
+
+        if ($this->count($user) !== 0) {
+            $this->redisClient->decr($key);
+        }
+    }
+
     public function count(User $user): int
     {
         try {

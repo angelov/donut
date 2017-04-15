@@ -42,6 +42,7 @@ class RedisThoughtsCounterTest extends KernelTestCase
         $this->assertEquals(1, $count);
     }
 
+    /** @test */
     public function it_increases_number_of_thoughts_for_existing_users()
     {
         $user = new User('John', 'john@example.com', '123456');
@@ -55,6 +56,22 @@ class RedisThoughtsCounterTest extends KernelTestCase
         $this->assertEquals(2, $count);
     }
 
+    /** @test */
+    public function it_decreases_number_of_thougts_for_users()
+    {
+        $user = new User('John', 'john@example.com', '123456');
+        $this->usersRepository->store($user);
+
+        $this->redisClient->set('user_thoughts_'. $user->getId(), 3);
+
+        $this->counter->decrease($user);
+
+        $count = $this->counter->count($user);
+
+        $this->assertEquals(2, $count);
+    }
+
+    /** @test */
     public function it_fetches_number_of_thougts_for_user()
     {
         $user = new User('John', 'john@example.com', '123456');

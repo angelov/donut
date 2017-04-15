@@ -34,6 +34,13 @@ class LoggingThoughtsCounterSpec extends ObjectBehavior
         $this->increase($user);
     }
 
+    function it_passes_decrease_calls_to_decorated_counter(ThoughtsCounterInterface $inner, User $user)
+    {
+        $inner->decrease($user)->shouldBeCalled();
+
+        $this->decrease($user);
+    }
+
     function it_logs_exceptions_from_decorated_counter_when_counting(ThoughtsCounterInterface $inner, User $user, LoggerInterface $logger)
     {
         $inner->count($user)->willThrow(CouldNotCountThoughtsForUserException::class);

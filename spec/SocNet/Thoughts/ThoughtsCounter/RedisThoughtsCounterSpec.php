@@ -37,6 +37,24 @@ class RedisThoughtsCounterSpec extends ObjectBehavior
         $this->increase($user);
     }
 
+    function it_decreases_number_of_thoughts_for_user(User $user, Client $redisClient)
+    {
+        $redisClient->get(Argument::type('string'))->shouldBeCalled()->willReturn(2);
+
+        $redisClient->decr(Argument::type('string'))->shouldBeCalled();
+
+        $this->decrease($user);
+    }
+
+    function it_does_not_decrease_bellow_zero(User $user, Client $redisClient)
+    {
+        $redisClient->get(Argument::type('string'))->shouldBeCalled()->willReturn(0);
+
+        $redisClient->decr(Argument::type('string'))->shouldNotBeCalled();
+
+        $this->decrease($user);
+    }
+
     function it_returns_zero_if_user_has_no_shared_thoughts(User $user, Client $redisClient)
     {
         $redisClient->get(Argument::type('string'))->shouldBeCalled()->willReturn(null);

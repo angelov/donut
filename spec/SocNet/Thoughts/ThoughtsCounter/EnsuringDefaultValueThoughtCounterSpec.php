@@ -32,6 +32,13 @@ class EnsuringDefaultValueThoughtCounterSpec extends ObjectBehavior
         $this->increase($user);
     }
 
+    function it_passes_decrease_calls_to_decorated_counter(ThoughtsCounterInterface $decorated, User $user)
+    {
+        $decorated->decrease($user)->shouldBeCalled();
+
+        $this->decrease($user);
+    }
+
     function it_returns_counted_value_from_decorated_counter_when_there_is_any(ThoughtsCounterInterface $decorated, User $user)
     {
         $decorated->count($user)->willReturn(2);
