@@ -5,7 +5,7 @@ security:
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         users:
-            entity: { class: 'SocNet\Users\User', property: 'email'}
+            id: 'app.users.security.user_provider'
 
     encoders:
         SocNet\Users\User: 'bcrypt'
@@ -26,9 +26,10 @@ security:
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
 
-            guard:
-                authenticators:
-                    - app.security.login_form_authenticator
+            form_login:
+                login_path: security_login
+                check_path: security_login
+                provider: users
 
             logout:
                 path: '/logout'

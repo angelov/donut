@@ -19,7 +19,7 @@ services:
         arguments: ['@app.users.repository.default']
 
 
-    # current user resolver
+    # security
 
     app.users.security.current_user_resolver:
         class: 'SocNet\Users\Security\CurrentUserResolver\CurrentUserResolver'
@@ -28,6 +28,10 @@ services:
     app.users.security.current_user:
         class: 'SocNet\Users\User'
         factory: ['@app.users.security.current_user_resolver', 'getUser']
+
+    app.users.security.user_provider:
+        class: 'SocNet\Users\Security\Provider\RepositoryUserProvider'
+        arguments: ['@app.users.repository.default']
 
 
     # validation

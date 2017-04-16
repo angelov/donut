@@ -14,4 +14,9 @@ class LoginForm extends AbstractType
         $builder->add('_username', EmailType::class);
         $builder->add('_password', PasswordType::class);
     }
+
+    public function getBlockPrefix()
+    {
+        return '';
+    }
 }
