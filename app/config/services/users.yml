@@ -1,0 +1,48 @@
+services:
+
+    # repositories
+
+    app.users.repository.default: '@app.users.repository.doctrine'
+
+    app.users.repository.doctrine:
+        class: 'SocNet\Users\Repositories\DoctrineUsersRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+
+    # email availability checker
+
+    app.users.email_availability_checker.default: '@app.users.email_availability_checker.repository'
+
+    app.users.email_availability_checker.repository:
+        class: 'SocNet\Users\EmailAvailabilityChecker\EmailAvailabilityChecker'
+        arguments: ['@app.users.repository.default']
+
+
+    # current user resolver
+
+    app.users.security.current_user_resolver:
+        class: 'SocNet\Users\Security\CurrentUserResolver\CurrentUserResolver'
+        arguments: ['@security.token_storage']
+
+    app.users.security.current_user:
+        class: 'SocNet\Users\User'
+        factory: ['@app.users.security.current_user_resolver', 'getUser']
+
+
+    # validation
+
+    app.users.validation.validators.unique_email:
+        class: 'SocNet\Users\Validation\Validators\UniqueEmailValidator'
+        arguments: ['@app.users.email_availability_checker.repository']
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+
+    # command handlers
+
+    app.users.handlers.store:
+        class: 'SocNet\Users\Handlers\StoreUserCommandHandler'
+        arguments: ['@app.users.repository.default', '@security.password_encoder', '@app.users.email_availability_checker.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Users\Commands\StoreUserCommand' }

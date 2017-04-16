@@ -1,0 +1,42 @@
+services:
+
+    app.security.login_form_authenticator:
+        class: 'AppBundle\Security\LoginFormAuthenticator'
+        arguments:
+            - '@form.factory'
+            - '@app.users.repository.default'
+            - '@router'
+            - '@security.password_encoder'
+
+    app.security.voter.delete_thought_voter:
+        class: 'AppBundle\Security\Voter\DeleteThoughtVoter'
+        tags:
+            - { name: 'security.voter' }
+
+    app.mutual_friends_resolver.default: '@app.mutual_friends_resolver.neo4j'
+
+    app.mutual_friends_resolver.neo4j:
+        class: AppBundle\MutualFriendsResolver\Neo4jMutualFriendsResolver
+        arguments:
+            - '@neo4j.client.default'
+            - '@app.mutual_friends_resolver.users_provider.repository'
+
+    app.mutual_friends_resolver.users_provider.repository:
+        class: AppBundle\MutualFriendsResolver\UsersProvider\RepositoryUsersProvider
+        arguments:
+            - '@app.users.repository.default'
+
+    app.mutual_friends_resolver.users_provider.fake:
+        class: AppBundle\MutualFriendsResolver\UsersProvider\FakeUsersProvider
+
+    app.mutual_friends_resolver.users_provider.qb:
+        class: AppBundle\MutualFriendsResolver\UsersProvider\QueryBuilderUsersProvider
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    app.mutual_friends_exstension:
+          class: 'AppBundle\Twig\Extension\MutualFriendsExtension'
+          arguments:
+              - '@app.mutual_friends_resolver.default'
+          tags:
+              - { name: 'twig.extension' }

@@ -1,0 +1,71 @@
+services:
+
+    # repositories
+
+    app.thoughts.repositories.default: '@app.thoughts.repositories.doctrine'
+
+    app.thoughts.repositories.doctrine:
+        class: 'SocNet\Thoughts\Repositories\DoctrineThoughtsRepository'
+        arguments: ['@doctrine.orm.entity_manager']
+
+
+    # form
+
+    app.thoughts.form.thought_type:
+        class: 'SocNet\Thoughts\Form\ThoughtType'
+        arguments: ['@app.users.security.current_user']
+        tags:
+            - { name: 'form.type' }
+
+
+    # thoughts counter
+
+    app.thoughts.thoughts_counter.default: '@app.thoughts.thoughts_counter.ensuring_default_value'
+
+    app.thoughts.thoughts_counter.redis:
+        class: 'SocNet\Thoughts\ThoughtsCounter\RedisThoughtsCounter'
+        arguments: ['@snc_redis.default']
+
+    app.thoughts.thoughts_counter.logging:
+        class: 'SocNet\Thoughts\ThoughtsCounter\LoggingThoughtsCounter'
+        arguments: ['@app.thoughts.thoughts_counter.redis', '@logger']
+
+    app.thoughts.thoughts_counter.ensuring_default_value:
+        class: 'SocNet\Thoughts\ThoughtsCounter\EnsuringDefaultValueThoughtCounter'
+        arguments: ['@app.thoughts.thoughts_counter.logging']
+
+    app.thoughts.thoughts_counter.twig.exstension:
+        class: 'SocNet\Thoughts\ThoughtsCounter\Twig\ThoughtsCounterExtension'
+        arguments: ['@app.thoughts.thoughts_counter.default']
+        tags:
+            - { name: 'twig.extension' }
+
+
+    # command handlers
+
+    app.thoughts.handlers.store:
+        class: 'SocNet\Thoughts\Handlers\StoreThoughtCommandHandler'
+        arguments: ['@app.thoughts.repositories.default', '@app.core.event_bus.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Thoughts\Commands\StoreThoughtCommand' }
+
+    app.thoughts.handlers.delete:
+        class: 'SocNet\Thoughts\Handlers\DeleteThoughtCommandHandler'
+        arguments: ['@app.thoughts.repositories.default', '@app.core.event_bus.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Thoughts\Commands\DeleteThoughtCommand' }
+
+
+    # event subscribers
+
+    app.thoughts.event_subscribers.increase_thoughts_number_for_user:
+        class: 'SocNet\Thoughts\EventSubscribers\IncreaseThoughtsNumberForUser'
+        arguments: ['@app.thoughts.thoughts_counter.default']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'SocNet\Thoughts\Events\ThoughtWasPublishedEvent' }
+
+    app.thoughts.event_subscribers.decrease_thoughts_number_for_user:
+        class: 'SocNet\Thoughts\EventSubscribers\DecreaseThoughtsNumberForUser'
+        arguments: ['@app.thoughts.thoughts_counter.default']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'SocNet\Thoughts\Events\ThoughtWasDeletedEvent' }
