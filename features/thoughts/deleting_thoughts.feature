@@ -14,6 +14,7 @@ Feature: Deleting thoughts
     Given I am browsing the thoughts
     When I delete the "What a beautiful day!" thought
     Then I shouldn't see it in the list of thoughts
+    And my number of shared thoughts should be 0
 
   Scenario: Trying to delete other people's thoughts
     Given I am browsing the thoughts

@@ -132,7 +132,7 @@ services:
 
     app.thoughts.handlers.delete:
         class: 'SocNet\Thoughts\Handlers\DeleteThoughtCommandHandler'
-        arguments: ['@app.thoughts.repositories.default']
+        arguments: ['@app.thoughts.repositories.default', '@app.core.event_bus.default']
         tags:
             - { name: 'command_handler', handles: 'SocNet\Thoughts\Commands\DeleteThoughtCommand' }
 
@@ -141,6 +141,12 @@ services:
         arguments: ['@app.thoughts.thoughts_counter.default']
         tags:
             - { name: 'event_subscriber', subscribes_to: 'SocNet\Thoughts\Events\ThoughtWasPublishedEvent' }
+
+    app.thoughts.event_subscribers.decrease_thoughts_number_for_user:
+        class: 'SocNet\Thoughts\EventSubscribers\DecreaseThoughtsNumberForUser'
+        arguments: ['@app.thoughts.thoughts_counter.default']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'SocNet\Thoughts\Events\ThoughtWasDeletedEvent' }
 
     ### communities
 

@@ -53,6 +53,8 @@ class ThoughtsContext implements Context
 
         $this->em->persist($thought);
         $this->em->flush();
+
+        $this->thoughtsCounter->increase($logged);
     }
 
     /**
