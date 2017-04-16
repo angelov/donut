@@ -2,7 +2,7 @@
 
 namespace spec\SocNet\Users;
 
-use AppBundle\Entity\Friendship;
+use SocNet\Friendships\Friendship;
 use AppBundle\Entity\FriendshipRequest;
 use SocNet\Thoughts\Thought;
 use SocNet\Users\User;

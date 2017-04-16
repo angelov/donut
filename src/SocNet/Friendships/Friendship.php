@@ -1,7 +1,8 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace SocNet\Friendships;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use SocNet\Users\User;
 
@@ -34,18 +35,11 @@ class Friendship
      */
     private $createdAt;
 
-    public function __construct()
+    public function __construct(User $user, User $friend)
     {
-        $this->createdAt = new \DateTime();
-    }
-
-    public static function createBetween(User $user, User $friend)
-    {
-        $friendship = new self();
-        $friendship->setUser($user);
-        $friendship->setFriend($friend);
-
-        return $friendship;
+        $this->createdAt = new DateTime();
+        $this->user = $user;
+        $this->friend = $friend;
     }
 
     public function getId() : string
@@ -58,7 +52,7 @@ class Friendship
         return $this->user;
     }
 
-    public function setUser(User $user)
+    public function setUser(User $user) : void
     {
         $this->user = $user;
         $user->addFriendship($this);
@@ -69,17 +63,17 @@ class Friendship
         return $this->friend;
     }
 
-    public function setFriend(User $friend)
+    public function setFriend(User $friend) : void
     {
         $this->friend = $friend;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(DateTime $createdAt) : void
     {
         $this->createdAt = $createdAt;
     }

@@ -2,7 +2,7 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
-use AppBundle\Entity\Friendship;
+use SocNet\Friendships\Friendship;
 use AppBundle\Entity\FriendshipRequest;
 use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
@@ -65,10 +65,10 @@ class FriendshipsContext implements Context
 
     private function storeFriendshipBetweenUsers(User $first, User $second) : void
     {
-        $friendship = Friendship::createBetween($first, $second);
+        $friendship = new Friendship($first, $second);
         $this->entityManager->persist($friendship);
 
-        $friendship = Friendship::createBetween($second, $first);
+        $friendship = new Friendship($second, $first);
         $this->entityManager->persist($friendship);
 
         $this->entityManager->flush();

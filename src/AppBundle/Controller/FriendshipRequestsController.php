@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Friendship;
+use SocNet\Friendships\Friendship;
 use AppBundle\Entity\FriendshipRequest;
 use SocNet\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -105,10 +105,10 @@ class FriendshipRequestsController extends Controller
 
         $em->remove($friendshipRequest);
 
-        $friendship = Friendship::createBetween($user, $this->getUser());
+        $friendship = new Friendship($user, $this->getUser());
         $em->persist($friendship);
 
-        $friendship = Friendship::createBetween($this->getUser(), $user);
+        $friendship = new Friendship($this->getUser(), $user);
         $em->persist($friendship);
 
         $em->flush();

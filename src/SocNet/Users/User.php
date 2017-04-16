@@ -2,7 +2,7 @@
 
 namespace SocNet\Users;
 
-use AppBundle\Entity\Friendship;
+use SocNet\Friendships\Friendship;
 use AppBundle\Entity\FriendshipRequest;
 use SocNet\Thoughts\Thought;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -60,7 +60,7 @@ class User implements UserInterface
     private $receivedFriendshipRequests;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Friendship", mappedBy="user", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="SocNet\Friendships\Friendship", mappedBy="user", cascade={"remove"})
      */
     private $friendships;
 
@@ -218,7 +218,7 @@ class User implements UserInterface
     {
         $friends = [];
 
-        /** @var Friendship $friendship */
+        /** @var \SocNet\Friendships\Friendship $friendship */
         foreach ($this->friendships as $friendship) {
             $friends[] = $friendship->getFriend();
         }
@@ -234,7 +234,7 @@ class User implements UserInterface
     // @todo this will have a big effect on performance, use redis or something
     public function isFriendWith(User $user) : bool
     {
-        /** @var Friendship $friendship */
+        /** @var \SocNet\Friendships\Friendship $friendship */
         foreach ($this->friendships as $friendship) {
             $friend = $friendship->getFriend();
 
