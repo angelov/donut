@@ -2,7 +2,7 @@
 
 namespace AppBundle\FeatureContexts;
 
-use AppBundle\Entity\FriendshipRequest;
+use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
@@ -155,7 +155,7 @@ class ManagingFriendshipsContext implements Context
      */
     public function iDeclineHerFriendshipRequest() : void
     {
-        /** @var FriendshipRequest $request */
+        /** @var \SocNet\Friendships\FriendshipRequests\FriendshipRequest $request */
         $request = $this->storage->get('current_friendship_request');
         $toFind = $request->getFromUser()->getName();
 

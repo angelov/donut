@@ -3,7 +3,7 @@
 namespace SocNet\Users;
 
 use SocNet\Friendships\Friendship;
-use AppBundle\Entity\FriendshipRequest;
+use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Thoughts\Thought;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -50,12 +50,12 @@ class User implements UserInterface
     private $isAdmin = false;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FriendshipRequest", mappedBy="fromUser")
+     * @ORM\OneToMany(targetEntity="SocNet\Friendships\FriendshipRequests\FriendshipRequest", mappedBy="fromUser")
      */
     private $sentFriendshipRequests;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FriendshipRequest", mappedBy="toUser")
+     * @ORM\OneToMany(targetEntity="SocNet\Friendships\FriendshipRequests\FriendshipRequest", mappedBy="toUser")
      */
     private $receivedFriendshipRequests;
 
@@ -159,7 +159,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return FriendshipRequest[]
+     * @return \SocNet\Friendships\FriendshipRequests\FriendshipRequest[]
      */
     public function getSentFriendshipRequests() : array
     {
@@ -175,7 +175,7 @@ class User implements UserInterface
 
     public function hasSentFriendshipRequestTo(User $user) : bool
     {
-        /** @var FriendshipRequest $friendshipRequest */
+        /** @var \SocNet\Friendships\FriendshipRequests\FriendshipRequest $friendshipRequest */
         foreach ($this->sentFriendshipRequests as $friendshipRequest) {
             if ($friendshipRequest->getToUser()->equals($user)) {
                 return true;
@@ -186,7 +186,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return FriendshipRequest[]
+     * @return \SocNet\Friendships\FriendshipRequests\FriendshipRequest[]
      */
     public function getReceivedFriendshipRequests() : array
     {

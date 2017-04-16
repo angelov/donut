@@ -3,7 +3,7 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use SocNet\Friendships\Friendship;
-use AppBundle\Entity\FriendshipRequest;
+use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
@@ -109,9 +109,7 @@ class FriendshipsContext implements Context
         $friend = $this->storage->get('created_user_' . $name);
         $user = $this->storage->get('logged_user');
 
-        $request = new FriendshipRequest();
-        $request->setFromUser($friend);
-        $request->setToUser($user);
+        $request = new FriendshipRequest($friend, $user);
 
         $this->entityManager->persist($request);
         $this->entityManager->flush();
@@ -127,9 +125,7 @@ class FriendshipsContext implements Context
         $friend = $this->storage->get('created_user_' . $name);
         $user = $this->storage->get('logged_user');
 
-        $request = new FriendshipRequest();
-        $request->setFromUser($user);
-        $request->setToUser($friend);
+        $request = new FriendshipRequest($user, $friend);
 
         $this->entityManager->persist($request);
         $this->entityManager->flush();

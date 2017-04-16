@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use SocNet\Friendships\Friendship;
-use AppBundle\Entity\FriendshipRequest;
+use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,11 +15,9 @@ class FriendshipRequestsController extends Controller
      */
     public function sendFriendshipRequestAction(User $user)
     {
-        $friendshipRequest = new FriendshipRequest();
         $currentUser = $this->getUser();
 
-        $friendshipRequest->setFromUser($currentUser);
-        $friendshipRequest->setToUser($user);
+        $friendshipRequest = new FriendshipRequest($currentUser, $user);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($friendshipRequest);

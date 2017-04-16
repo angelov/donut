@@ -3,7 +3,7 @@
 namespace spec\SocNet\Users;
 
 use SocNet\Friendships\Friendship;
-use AppBundle\Entity\FriendshipRequest;
+use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Thoughts\Thought;
 use SocNet\Users\User;
 use PhpSpec\ObjectBehavior;

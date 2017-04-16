@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace SocNet\Friendships\FriendshipRequests;
 
 use Doctrine\ORM\Mapping as ORM;
 use SocNet\Users\User;
@@ -16,7 +16,7 @@ class FriendshipRequest
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $id = '';
 
     /**
      * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="sentFriendshipRequests")
@@ -30,7 +30,13 @@ class FriendshipRequest
      */
     private $toUser;
 
-    public function getId()
+    public function __construct(User $sender, User $receiver)
+    {
+        $this->setFromUser($sender);
+        $this->setToUser($receiver);
+    }
+
+    public function getId() : string
     {
         return $this->id;
     }
@@ -40,7 +46,7 @@ class FriendshipRequest
         return $this->fromUser;
     }
 
-    public function setFromUser(User $fromUser)
+    public function setFromUser(User $fromUser) : void
     {
         $this->fromUser = $fromUser;
         $fromUser->addSentFriendshipRequest($this);
@@ -51,7 +57,7 @@ class FriendshipRequest
         return $this->toUser;
     }
 
-    public function setToUser(User $toUser)
+    public function setToUser(User $toUser) : void
     {
         $this->toUser = $toUser;
         $toUser->addReceivedFriendshipRequest($this);
