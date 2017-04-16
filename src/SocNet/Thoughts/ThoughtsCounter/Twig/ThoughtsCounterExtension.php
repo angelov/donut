@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Twig\Extension;
+namespace SocNet\Thoughts\ThoughtsCounter\Twig;
 
 use SocNet\Users\User;
 use SocNet\Thoughts\ThoughtsCounter\ThoughtsCounterInterface;

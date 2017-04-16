@@ -13,12 +13,6 @@ services:
         tags:
             - { name: 'security.voter' }
 
-    app.thoughts_counter_exstension:
-        class: 'AppBundle\Twig\Extension\ThoughtsCounterExtension'
-        arguments: ['@app.thoughts.thoughts_counter.default']
-        tags:
-            - { name: 'twig.extension' }
-
     app.mutual_friends_resolver.default: '@app.mutual_friends_resolver.neo4j'
 
     app.mutual_friends_resolver.neo4j:
@@ -123,6 +117,12 @@ services:
     app.thoughts.thoughts_counter.ensuring_default_value:
         class: 'SocNet\Thoughts\ThoughtsCounter\EnsuringDefaultValueThoughtCounter'
         arguments: ['@app.thoughts.thoughts_counter.logging']
+
+    app.thoughts.thoughts_counter.twig.exstension:
+        class: 'SocNet\Thoughts\ThoughtsCounter\Twig\ThoughtsCounterExtension'
+        arguments: ['@app.thoughts.thoughts_counter.default']
+        tags:
+            - { name: 'twig.extension' }
 
     app.thoughts.handlers.store:
         class: 'SocNet\Thoughts\Handlers\StoreThoughtCommandHandler'
