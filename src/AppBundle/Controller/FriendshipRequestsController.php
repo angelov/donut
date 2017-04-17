@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use SocNet\Friendships\Friendship;
+use SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,11 +19,7 @@ class FriendshipRequestsController extends Controller
     {
         $currentUser = $this->getUser();
 
-        $friendshipRequest = new FriendshipRequest($currentUser, $user);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($friendshipRequest);
-        $em->flush();
+        $this->get('app.core.command_bus.default')->handle(new SendFriendshipRequestCommand($currentUser, $user));
 
         $this->addFlash('success', 'Friendship request successfully sent!');
 

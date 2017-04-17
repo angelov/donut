@@ -1,4 +1,4 @@
-<psalm stopOnFirstError="true" useDocblockTypes="true">
+<psalm stopOnFirstError="false" useDocblockTypes="true">
 
     <issueHandlers>
         <MissingPropertyType errorLevel="suppress" />

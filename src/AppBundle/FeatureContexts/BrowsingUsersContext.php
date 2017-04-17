@@ -23,6 +23,7 @@ class BrowsingUsersContext implements Context
 
     /**
      * @When I want to browse the users
+     * @Given I am browsing the users
      */
     public function iWantToBrowseTheUsers() : void
     {

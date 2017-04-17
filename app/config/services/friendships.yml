@@ -1,0 +1,18 @@
+services:
+
+    # repositories
+
+    app.friendships.friendship_requests.repositories.default: '@app.friendships.friendship_requests.repositories.doctrine'
+
+    app.friendships.friendship_requests.repositories.doctrine:
+        class: 'SocNet\Friendships\FriendshipRequests\Repositories\DoctrineFriendshipRequestsRepository'
+        arguments: ['@doctrine.orm.entity_manager']
+
+
+    # handlers
+
+    app.friendships.friendship_requests.handlers.send:
+        class: 'SocNet\Friendships\FriendshipRequests\Handlers\SendFriendshipRequestCommandHandler'
+        arguments: ['@app.friendships.friendship_requests.repositories.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand' }

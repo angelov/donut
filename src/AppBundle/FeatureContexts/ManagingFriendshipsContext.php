@@ -222,10 +222,29 @@ class ManagingFriendshipsContext implements Context
     }
 
     /**
+     * @Then I should be notified that a friendship request is sent
+     */
+    public function iShouldBeNotifiedThatAFriendshipRequestIsSent() : void
+    {
+        Assert::true($this->session->getPage()->hasContent('Friendship request successfully sent!'));
+    }
+
+    /**
      * @Then I should see a message that I still don't have any friends
      */
     public function iShouldSeeAMessageThatIStillDonTHaveAnyFriends() : void
     {
         Assert::true($this->session->getPage()->has('css', '#friends-list li:contains("You still don\'t have any friends :(")'));
+    }
+
+    /**
+     * @When I want to be friends with :name
+     */
+    public function iWantToBeFriendsWith(string $name) : void
+    {
+        $card = $this->session->getPage()->find('css', sprintf('#users-list .user-card:contains("%s")', $name));
+        $button = $card->find('css', '.btn:contains("Add friend")');
+
+        $button->press();
     }
 }
