@@ -16,3 +16,9 @@ services:
         arguments: ['@app.friendships.friendship_requests.repositories.default']
         tags:
             - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand' }
+
+    app.friendships.friendship_requests.handlers.cancel:
+        class: 'SocNet\Friendships\FriendshipRequests\Handlers\CancelFriendshipRequestCommandHandler'
+        arguments: ['@app.friendships.friendship_requests.repositories.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand' }

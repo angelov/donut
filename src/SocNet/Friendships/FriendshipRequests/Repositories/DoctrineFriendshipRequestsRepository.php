@@ -19,4 +19,10 @@ class DoctrineFriendshipRequestsRepository implements FriendshipRequestsReposito
         $this->em->persist($request);
         $this->em->flush();
     }
+
+    public function destroy(FriendshipRequest $request): void
+    {
+        $this->em->remove($request);
+        $this->em->flush();
+    }
 }
