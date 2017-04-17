@@ -136,7 +136,7 @@ class FriendshipsContext implements Context
     /**
      * @Given (s)he hasn't responded yet
      */
-    public function sheHasnTRespondedYet()
+    public function sheHasnTRespondedYet() : void
     {
         // nothing to be done
     }

@@ -20,18 +20,18 @@ class ThoughtType extends AbstractType
         $this->author = $author;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder->add('content', TextareaType::class);
 
         $builder->get('content')->addModelTransformer(new NullToEmptyStringDataTransformer());
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'data_class' => StoreThoughtCommand::class,
-            'empty_data' => function (FormInterface $form) {
+            'empty_data' => function (FormInterface $form) : StoreThoughtCommand {
                 return new StoreThoughtCommand(
                     $this->author,
                     $form->get('content')->getData()

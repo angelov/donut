@@ -8,5 +8,5 @@ interface ThoughtsRepositoryInterface
 {
     public function store(Thought $thought) : void;
 
-    public function destroy(Thought $thought);
+    public function destroy(Thought $thought) : void;
 }

@@ -6,6 +6,7 @@ use SocNet\Friendships\Friendship;
 use SocNet\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class FriendshipsController extends Controller
 {
@@ -13,7 +14,7 @@ class FriendshipsController extends Controller
      * @Route("/friendships/remove/{id}", name="app.friendships.remove", methods={"GET"})
      * @todo fix to use delete requests
      */
-    public function delete(User $user)
+    public function delete(User $user) : Response
     {
         $em = $this->get('doctrine.orm.entity_manager');
         $repository = $em->getRepository(Friendship::class);

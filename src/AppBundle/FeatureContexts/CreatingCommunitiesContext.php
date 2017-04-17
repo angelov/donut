@@ -21,7 +21,7 @@ class CreatingCommunitiesContext implements Context
     /**
      * @When I want to create a new community
      */
-    public function iWantToCreateANewCommunity()
+    public function iWantToCreateANewCommunity() : void
     {
         $url = $this->router->generate('app.communities.create');
 
@@ -32,7 +32,7 @@ class CreatingCommunitiesContext implements Context
      * @When I specify the name as :name
      * @When I don't specify the name
      */
-    public function iSpecifyTheNameAs(string $name = '')
+    public function iSpecifyTheNameAs(string $name = '') : void
     {
         $this->session->getPage()->fillField('Name', $name);
     }
@@ -40,7 +40,7 @@ class CreatingCommunitiesContext implements Context
     /**
      * @When I try to create it
      */
-    public function iTryToCreateIt()
+    public function iTryToCreateIt() : void
     {
         $this->session->getPage()->pressButton('Submit');
     }
@@ -48,7 +48,7 @@ class CreatingCommunitiesContext implements Context
     /**
      * @Then I should be notified that the community is created
      */
-    public function iShouldBeNotifiedThatTheCommunityIsCreated()
+    public function iShouldBeNotifiedThatTheCommunityIsCreated() : void
     {
         Assert::true($this->session->getPage()->hasContent('Community was successfully created!'));
     }
@@ -56,7 +56,7 @@ class CreatingCommunitiesContext implements Context
     /**
      * @Given I specify the description as :description
      */
-    public function iSpecifyTheDescriptionAs(string $description)
+    public function iSpecifyTheDescriptionAs(string $description) : void
     {
         $this->session->getPage()->fillField('Description', $description);
     }
@@ -64,7 +64,7 @@ class CreatingCommunitiesContext implements Context
     /**
      * @Then I should be notified that the name is required
      */
-    public function iShouldBeNotifiedThatTheNameIsRequired()
+    public function iShouldBeNotifiedThatTheNameIsRequired() : void
     {
         Assert::true(
             $this->session->getPage()->hasContent('Please enter a name for the community.'),

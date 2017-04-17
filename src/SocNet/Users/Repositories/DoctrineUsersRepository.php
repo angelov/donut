@@ -22,6 +22,7 @@ class DoctrineUsersRepository implements UsersRepositoryInterface
         $this->entityManager->flush();
     }
 
+    /** @psalm-suppress MoreSpecificReturnType */
     public function findByEmail(string $email): User
     {
         $found = $this->getRepository()->findOneBy(['email' => $email]);
@@ -33,6 +34,7 @@ class DoctrineUsersRepository implements UsersRepositoryInterface
         return $found;
     }
 
+    /** @psalm-suppress MoreSpecificReturnType */
     public function find(string $id): User
     {
         $found = $this->getRepository()->find($id);

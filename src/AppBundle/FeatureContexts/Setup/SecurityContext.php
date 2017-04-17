@@ -34,7 +34,7 @@ class SecurityContext implements Context
     /**
      * @Given I am logged in as :email
      */
-    public function iAmLoggedInAs(string $email)
+    public function iAmLoggedInAs(string $email) : void
     {
         $user = new User(
             $this->storage->get('user_name', 'John Smith'),

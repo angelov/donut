@@ -19,7 +19,7 @@ class StoreThoughtCommandHandler
         $this->events = $events;
     }
 
-    public function handle(StoreThoughtCommand $command)
+    public function handle(StoreThoughtCommand $command) : void
     {
         $thought = new Thought(
             $command->getAuthor(),

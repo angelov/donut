@@ -5,13 +5,14 @@ namespace AppBundle\Controller;
 use SocNet\Users\Form\LoginForm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class SecurityController extends Controller
 {
     /**
      * @Route("/login", name="security_login")
      */
-    public function loginAction()
+    public function loginAction() : Response
     {
         $authUtils = $this->get('security.authentication_utils');
 
@@ -31,7 +32,7 @@ class SecurityController extends Controller
     /**
      * @Route("/logout", name="security_logout")
      */
-    public function logoutAction()
+    public function logoutAction() : void
     {
         throw new \Exception('This should not be reached!');
     }

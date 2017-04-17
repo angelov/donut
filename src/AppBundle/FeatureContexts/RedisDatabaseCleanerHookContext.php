@@ -17,7 +17,7 @@ class RedisDatabaseCleanerHookContext implements Context
     /**
      * @BeforeScenario
      */
-    public function clearDatabase()
+    public function clearDatabase() : void
     {
         $this->client->flushdb();
     }

@@ -22,7 +22,7 @@ class LoginContext implements Context
     /**
      * @When I want to log in
      */
-    public function iWantToLogIn()
+    public function iWantToLogIn() : void
     {
         $url = $this->router->generate('security_login');
         $this->session->getDriver()->visit($url);
@@ -32,7 +32,7 @@ class LoginContext implements Context
      * @When I specify the email as :email
      * @When I don't specify the email
      */
-    public function iSpecifyTheEmailAs(string $email = '')
+    public function iSpecifyTheEmailAs(string $email = '') : void
     {
         $this->session->getPage()->fillField('Username', $email); // @todo change label to E-mail
     }
@@ -41,7 +41,7 @@ class LoginContext implements Context
      * @When I specify the password as :password
      * @When I don't specify the password
      */
-    public function iSpecifyThePasswordAs(string $password = '')
+    public function iSpecifyThePasswordAs(string $password = '') : void
     {
         $this->session->getPage()->fillField('Password', $password);
     }
@@ -49,7 +49,7 @@ class LoginContext implements Context
     /**
      * @When I try to log in
      */
-    public function iTryToLogIn()
+    public function iTryToLogIn() : void
     {
         $this->session->getPage()->pressButton('Login');
     }
@@ -57,7 +57,7 @@ class LoginContext implements Context
     /**
      * @Then I should be logged in
      */
-    public function iShouldBeLoggedIn()
+    public function iShouldBeLoggedIn() : void
     {
         $homepage = $this->router->generate('app.thoughts.index', [], UrlGenerator::ABSOLUTE_URL);
         $currentUrl = $this->session->getCurrentUrl();
@@ -68,7 +68,7 @@ class LoginContext implements Context
     /**
      * @Then I should be notified about bad credentials
      */
-    public function iShouldBeNotifiedAboutBadCredentials()
+    public function iShouldBeNotifiedAboutBadCredentials() : void
     {
         Assert::true($this->session->getPage()->hasContent('Invalid credentials.'));
     }
@@ -76,7 +76,7 @@ class LoginContext implements Context
     /**
      * @Then I should not be logged in
      */
-    public function iShouldNotBeLoggedIn()
+    public function iShouldNotBeLoggedIn() : void
     {
         $url = $this->router->generate('security_login', [], UrlGenerator::ABSOLUTE_URL);
         $currentUrl = $this->session->getDriver()->getCurrentUrl();

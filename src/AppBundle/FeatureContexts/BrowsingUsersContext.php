@@ -47,7 +47,7 @@ class BrowsingUsersContext implements Context
     {
         $found = $this->session->getPage()->findAll('css', '#users-list .user-card .user-name');
 
-        $found = array_map(function(NodeElement $element) {
+        $found = array_map(function(NodeElement $element) : string {
             return $element->getText();
         }, $found);
 

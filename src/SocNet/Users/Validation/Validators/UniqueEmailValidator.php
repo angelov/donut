@@ -15,7 +15,7 @@ class UniqueEmailValidator extends ConstraintValidator
         $this->emailAvailabilityChecker = $emailAvailabilityChecker;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint) : void
     {
         if ($this->emailAvailabilityChecker->isTaken($value)) {
             $this->context->buildViolation($constraint->message)

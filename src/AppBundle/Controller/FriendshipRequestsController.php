@@ -7,13 +7,14 @@ use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class FriendshipRequestsController extends Controller
 {
     /**
      * @Route("/friendships/send/{id}", name="friendships.requests.store", methods={"GET"})
      */
-    public function sendFriendshipRequestAction(User $user)
+    public function sendFriendshipRequestAction(User $user) : Response
     {
         $currentUser = $this->getUser();
 
@@ -31,7 +32,7 @@ class FriendshipRequestsController extends Controller
     /**
      * @Route("/friendships/cancel/{id}", name="friendships.requests.cancel", methods={"GET"})
      */
-    public function cancelFriendshipRequestAction(User $user)
+    public function cancelFriendshipRequestAction(User $user) : Response
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository(FriendshipRequest::class);
@@ -58,7 +59,7 @@ class FriendshipRequestsController extends Controller
     /**
      * @Route("/friendships/decline/{id}", name="friendships.requests.decline", methods={"GET"})
      */
-    public function declineFriendshipRequestAction(User $user)
+    public function declineFriendshipRequestAction(User $user) : Response
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository(FriendshipRequest::class);
@@ -85,7 +86,7 @@ class FriendshipRequestsController extends Controller
     /**
      * @Route("/friendships/{id}", name="friendships.requests.accept")
      */
-    public function acceptFriendshipRequestAction(User $user)
+    public function acceptFriendshipRequestAction(User $user) : Response
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository(FriendshipRequest::class);

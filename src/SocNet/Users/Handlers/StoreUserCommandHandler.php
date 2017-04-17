@@ -25,7 +25,7 @@ class StoreUserCommandHandler
     /**
      * @throws EmailTakenException
      */
-    public function handle(StoreUserCommand $command)
+    public function handle(StoreUserCommand $command) : void
     {
         $this->assertEmailNotTaken($command->getEmail());
 

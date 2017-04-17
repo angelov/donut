@@ -17,7 +17,7 @@ class PaginationContext implements Context
     /**
      * @When when I go to page :number
      */
-    public function whenIGoToPage(int $number)
+    public function whenIGoToPage(int $number) : void
     {
         $this->session->getPage()->clickLink($number);
     }

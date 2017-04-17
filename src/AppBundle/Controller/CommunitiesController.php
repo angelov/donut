@@ -9,13 +9,14 @@ use SocNet\Communities\Form\CommunityType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CommunitiesController extends Controller
 {
     /**
      * @Route("/communities", name="app.communities.index", methods={"GET", "HEAD"})
      */
-    public function indexAction()
+    public function indexAction() : Response
     {
         $repository = $this->get('app.communities.repositories.default');
 
@@ -29,7 +30,7 @@ class CommunitiesController extends Controller
     /**
      * @Route("/communities/create", name="app.communities.create")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request) : Response
     {
         $form = $this->createForm(CommunityType::class);
         $form->handleRequest($request);
@@ -54,7 +55,7 @@ class CommunitiesController extends Controller
     /**
      * @Route("/communities/{id}", name="app.communities.show", methods={"POST", "GET"})
      */
-    public function showAction($id)
+    public function showAction($id) : Response
     {
         $repository = $this->get('app.communities.repositories.default');
         $community = $repository->find($id);
@@ -67,7 +68,7 @@ class CommunitiesController extends Controller
     /**
      * @Route("/communities/{id}/join", name="app.communities.join", methods={"POST"})
      */
-    public function joinAction($id)
+    public function joinAction($id) : Response
     {
         $repository = $this->get('app.communities.repositories.default');
         $community = $repository->find($id);
@@ -83,7 +84,7 @@ class CommunitiesController extends Controller
     /**
      * @Route("/communities/{id}/leave", name="app.communities.leave", methods={"POST"})
      */
-    public function leaveAction($id)
+    public function leaveAction($id) : Response
     {
         $repository = $this->get('app.communities.repositories.default');
         $community = $repository->find($id);

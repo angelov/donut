@@ -18,7 +18,7 @@ class LeaveCommunityCommandHandler
     /**
      * @throws CommunityMemberNotFoundException
      */
-    public function handle(LeaveCommunityCommand $command)
+    public function handle(LeaveCommunityCommand $command) : void
     {
         $community = $command->getCommunity();
         $user = $command->getUser();

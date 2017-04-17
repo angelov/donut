@@ -18,7 +18,7 @@ class DeleteThoughtCommandHandler
         $this->events = $events;
     }
 
-    public function handle(DeleteThoughtCommand $command)
+    public function handle(DeleteThoughtCommand $command) : void
     {
         $thought = $command->getThought();
 

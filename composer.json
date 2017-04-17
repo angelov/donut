@@ -43,7 +43,7 @@
         "symfony/phpunit-bridge": "^3.0",
         "hautelook/alice-bundle": "^1.4",
         "doctrine/data-fixtures": "^1.2",
-        "vimeo/psalm": "^0.3.11",
+        "vimeo/psalm": "^0.3",
         "behat/behat": "^3.3",
         "behat/mink": "^1.7",
         "behat/mink-extension": "^2.2",

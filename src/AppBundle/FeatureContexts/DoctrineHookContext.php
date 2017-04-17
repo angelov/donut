@@ -18,7 +18,7 @@ class DoctrineHookContext extends RawMinkContext
     /**
      * @BeforeScenario
      */
-    public function purgeDatabase()
+    public function purgeDatabase() : void
     {
         $purger = new ORMPurger($this->em);
         $purger->purge();

@@ -23,7 +23,7 @@ class ThoughtsContext implements Context
     /**
      * @When I want to share a thought
      */
-    public function iWantToShareAThought()
+    public function iWantToShareAThought() : void
     {
         $url = $this->router->generate('app.thoughts.index');
 
@@ -34,7 +34,7 @@ class ThoughtsContext implements Context
      * @When I specify its content as :content
      * @When I don't specify its content
      */
-    public function iSpecifyItsContentAs($content = '')
+    public function iSpecifyItsContentAs($content = '') : void
     {
         $this->session->getPage()->fillField('Content', $content);
 
@@ -44,7 +44,7 @@ class ThoughtsContext implements Context
     /**
      * @Given I specify its content as something longer than :length characters
      */
-    public function iSpecifyItsContentAsSomethingLongerThanCharacters(int $length)
+    public function iSpecifyItsContentAsSomethingLongerThanCharacters(int $length) : void
     {
         // @todo extract string generating
         $list = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ<>?:"{}!@#$%^&';
@@ -62,7 +62,7 @@ class ThoughtsContext implements Context
     /**
      * @When I try to share it
      */
-    public function iTryToShareIt()
+    public function iTryToShareIt() : void
     {
         $this->session->getPage()->pressButton('Submit');
     }
@@ -70,7 +70,7 @@ class ThoughtsContext implements Context
     /**
      * @Then I should see it in the list of latest thoughts
      */
-    public function iShouldSeeItInTheListOfLatestThoughts()
+    public function iShouldSeeItInTheListOfLatestThoughts() : void
     {
         $page = $this->session->getPage();
         $shared = $this->storage->get('thought_content');
@@ -81,7 +81,7 @@ class ThoughtsContext implements Context
     /**
      * @Then I shouldn't see it in the list of (latest) thoughts
      */
-    public function iShouldnTSeeItInTheListOfThoughts()
+    public function iShouldnTSeeItInTheListOfThoughts() : void
     {
         $content = $this->storage->get('deleted_thought_content');
 
@@ -91,7 +91,7 @@ class ThoughtsContext implements Context
     /**
      * @Then I should be notified that the maximum length is :length characters
      */
-    public function iShouldBeNotifiedThatTheMaximumLengthIsCharacters(int $length)
+    public function iShouldBeNotifiedThatTheMaximumLengthIsCharacters(int $length) : void
     {
         Assert::true($this->session->getPage()->hasContent(sprintf('Thoughts can\'t be longer than %d characters.', $length)));
     }
@@ -99,7 +99,7 @@ class ThoughtsContext implements Context
     /**
      * @Then I should be notified that the thought must have content
      */
-    public function iShouldBeNotifiedThatTheThoughtMustHaveContent()
+    public function iShouldBeNotifiedThatTheThoughtMustHaveContent() : void
     {
         Assert::true($this->session->getPage()->hasContent('Please write the content of your thought.'));
     }
@@ -108,7 +108,7 @@ class ThoughtsContext implements Context
      * @When I want to browse the thoughts
      * @Given I am browsing the thoughts
      */
-    public function iWantToBrowseTheThoughts()
+    public function iWantToBrowseTheThoughts() : void
     {
         $url = $this->router->generate('app.thoughts.index');
 
@@ -118,7 +118,7 @@ class ThoughtsContext implements Context
     /**
      * @Then I should see (the rest) :count thoughts from :name
      */
-    public function iShouldSeeThoughtsFrom(int $count, string $name)
+    public function iShouldSeeThoughtsFrom(int $count, string $name) : void
     {
         $thoughts = $this->session->getPage()->findAll('css', sprintf('.thought:contains("by %s")', $name));
         $counted = count($thoughts);
@@ -129,7 +129,7 @@ class ThoughtsContext implements Context
     /**
      * @When I delete the :content thought
      */
-    public function iDeleteTheThought(string $content)
+    public function iDeleteTheThought(string $content) : void
     {
         $thought = $this->session->getPage()->find('css', sprintf('pre:contains("%s")', $content));
 
@@ -141,7 +141,7 @@ class ThoughtsContext implements Context
     /**
      * @Then I should not be allowed to delete the :content thought
      */
-    public function iShouldNotBeAllowedToDeleteTheThought(string $content)
+    public function iShouldNotBeAllowedToDeleteTheThought(string $content) : void
     {
         $thought = $this->session->getPage()->find('css', sprintf('pre:contains("%s")', $content));
         $parent = $thought->getParent();
@@ -152,7 +152,7 @@ class ThoughtsContext implements Context
     /**
      * @Then my number of shared thoughts should be :number
      */
-    public function myNumberOfSharedThoughtsShouldBe(int $number)
+    public function myNumberOfSharedThoughtsShouldBe(int $number) : void
     {
         $usersPage = $this->router->generate('app.users.index');
         $this->session->getDriver()->visit($usersPage);

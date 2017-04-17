@@ -1,8 +1,11 @@
-<psalm
-        stopOnFirstError="false"
-        useDocblockTypes="true"
->
+<psalm stopOnFirstError="true" useDocblockTypes="true">
+
+    <issueHandlers>
+        <MissingPropertyType errorLevel="suppress" />
+    </issueHandlers>
+
     <projectFiles>
         <directory name="src" />
     </projectFiles>
+
 </psalm>

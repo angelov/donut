@@ -14,7 +14,7 @@ class JoinCommunityCommandHandler
         $this->communities = $communities;
     }
 
-    public function handle(JoinCommunityCommand $command)
+    public function handle(JoinCommunityCommand $command) : void
     {
         $community = $command->getCommunity();
         $user = $command->getUser();

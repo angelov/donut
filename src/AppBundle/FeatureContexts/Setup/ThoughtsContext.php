@@ -25,7 +25,7 @@ class ThoughtsContext implements Context
     /**
      * @Given :name has shared :count thoughts
      */
-    public function hasSharedThoughts(string $name, int $count)
+    public function hasSharedThoughts(string $name, int $count) : void
     {
         if (in_array($name, ['he', 'she'])) {
             $author = $this->storage->get('last_created_user');
@@ -46,7 +46,7 @@ class ThoughtsContext implements Context
     /**
      * @Given I have shared a :content thought
      */
-    public function iHaveSharedAThought(string $content)
+    public function iHaveSharedAThought(string $content) : void
     {
         $logged = $this->storage->get('logged_user');
         $thought = $this->createThought($logged, $content);
@@ -60,7 +60,7 @@ class ThoughtsContext implements Context
     /**
      * @Given (s)he has shared a :content thought
      */
-    public function heHasSharedAThought(string $content)
+    public function heHasSharedAThought(string $content) : void
     {
         $author = $this->storage->get('last_created_user');
         $thought = $this->createThought($author, $content);
@@ -69,7 +69,7 @@ class ThoughtsContext implements Context
         $this->em->flush();
     }
 
-    private function createThought(User $author, string $content = '')
+    private function createThought(User $author, string $content = '') : Thought
     {
         $latest = $this->storage->get('latest_thought_time', new \DateTime());
 

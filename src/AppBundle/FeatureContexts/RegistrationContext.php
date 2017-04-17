@@ -116,7 +116,7 @@ class RegistrationContext extends RawMinkContext
     /**
      * @Then I should be notified that the :field is required
      */
-    public function iShouldBeNotifiedThatAFieldIsRequired(string $field)
+    public function iShouldBeNotifiedThatAFieldIsRequired(string $field) : void
     {
         Assert::true(
             $this->session->getPage()->hasContent(sprintf('Please enter your %s.', $field)),
@@ -127,7 +127,7 @@ class RegistrationContext extends RawMinkContext
     /**
      * @Then I should be notified that the password must be confirmed
      */
-    public function iShouldBeNotifiedThatThePasswordMustBeConfirmed()
+    public function iShouldBeNotifiedThatThePasswordMustBeConfirmed() : void
     {
         Assert::true(
             $this->session->getPage()->hasContent('Please confirm your password.'),
@@ -138,7 +138,7 @@ class RegistrationContext extends RawMinkContext
     /**
      * @Then I should be notified that the specified email is already in use
      */
-    public function iShouldBeNotifiedThatTheSpecifiedEmailIsAlreadyInUse()
+    public function iShouldBeNotifiedThatTheSpecifiedEmailIsAlreadyInUse() : void
     {
         Assert::true($this->session->getPage()->hasContent('The email is already in use.'));
     }
@@ -146,7 +146,7 @@ class RegistrationContext extends RawMinkContext
     /**
      * @Then I should be notified that the password is too short
      */
-    public function iShouldBeNotifiedThatThePasswordIsTooShort()
+    public function iShouldBeNotifiedThatThePasswordIsTooShort() : void
     {
         Assert::true($this->session->getPage()->hasContent('The password must be at least 6 characters long.'));
     }

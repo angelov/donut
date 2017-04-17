@@ -9,13 +9,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class LoginForm extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder->add('_username', EmailType::class);
         $builder->add('_password', PasswordType::class);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix() : string
     {
         return '';
     }

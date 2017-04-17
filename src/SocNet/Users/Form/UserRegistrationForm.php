@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserRegistrationForm extends AbstractType implements DataMapperInterface
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder->add('name', TextType::class);
         $builder->add('email', EmailType::class);
@@ -36,7 +36,7 @@ class UserRegistrationForm extends AbstractType implements DataMapperInterface
         $builder->get('password')->get('second')->addModelTransformer($transformer);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'data_class' => StoreUserCommand::class,
@@ -44,7 +44,7 @@ class UserRegistrationForm extends AbstractType implements DataMapperInterface
         ]);
     }
 
-    public function mapDataToForms($data, $forms)
+    public function mapDataToForms($data, $forms) : void
     {
         $forms = iterator_to_array($forms);
 
@@ -54,7 +54,7 @@ class UserRegistrationForm extends AbstractType implements DataMapperInterface
         $forms['password']->get('second')->setData('');
     }
 
-    public function mapFormsToData($forms, &$data)
+    public function mapFormsToData($forms, &$data) : void
     {
         $forms = iterator_to_array($forms);
 

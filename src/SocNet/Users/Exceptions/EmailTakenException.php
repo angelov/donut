@@ -15,7 +15,7 @@ class EmailTakenException extends RuntimeException
         parent::__construct(sprintf('The provided email address [%s] is already in use', $email));
     }
 
-    public function getEmail()
+    public function getEmail() : string
     {
         return $this->email;
     }

@@ -24,7 +24,7 @@ class UsersContext implements Context
     /**
      * @Given there is a user :name with email :email and password :password
      */
-    public function thereIsAUserWithEmailAndPassword($name, $email, $password)
+    public function thereIsAUserWithEmailAndPassword($name, $email, $password) : void
     {
         $user = new User($name, $email, $password);
 
@@ -44,7 +44,7 @@ class UsersContext implements Context
     /**
      * @Given I am :name
      */
-    public function iAm($name)
+    public function iAm($name) : void
     {
         $this->storage->set('user_name', $name);
     }
@@ -52,7 +52,7 @@ class UsersContext implements Context
     /**
      * @Given I am registered with email :email and password :password
      */
-    public function iAmRegisteredWithEmailAndPassword($email, $password)
+    public function iAmRegisteredWithEmailAndPassword($email, $password) : void
     {
         $name = $this->storage->get('user_name', 'John Smith');
         $this->thereIsAUserWithEmailAndPassword($name, $email, $password);

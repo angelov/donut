@@ -40,7 +40,7 @@ class RedisThoughtsCounter implements ThoughtsCounterInterface
         return $count ? (int) $count : 0;
     }
 
-    private function resolveKey(User $user)
+    private function resolveKey(User $user) : string
     {
         return sprintf('user_thoughts_%s', $user->getId());
     }

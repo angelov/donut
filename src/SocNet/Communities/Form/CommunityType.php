@@ -21,7 +21,7 @@ class CommunityType extends BaseType
         $this->author = $author;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder->add('name', TextType::class);
         $builder->add('description', TextareaType::class, [
@@ -34,11 +34,11 @@ class CommunityType extends BaseType
         $builder->get('description')->addModelTransformer($transformer);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'data_class' => StoreCommunityCommand::class,
-            'empty_data' => function (FormInterface $form) {
+            'empty_data' => function (FormInterface $form) : StoreCommunityCommand {
                 return new StoreCommunityCommand(
                     $form->get('name')->getData(),
                     $this->author,

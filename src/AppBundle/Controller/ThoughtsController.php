@@ -11,13 +11,14 @@ use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ThoughtsController extends Controller
 {
     /**
      * @Route("/thoughts", name="app.thoughts.index", methods={"GET", "HEAD", "POST"})
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request) : Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -59,7 +60,7 @@ class ThoughtsController extends Controller
      * @Route("/thoughts/{id}", name="app.thoughts.delete", methods={"POST"})
      * @todo change to use DELETE method
      */
-    public function delete(Thought $thought)
+    public function delete(Thought $thought) : Response
     {
         if (!$this->isGranted('DELETE_THOUGHT', $thought)) {
             return $this->redirectToRoute('app.thoughts.index');

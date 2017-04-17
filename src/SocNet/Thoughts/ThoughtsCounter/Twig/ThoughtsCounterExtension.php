@@ -25,9 +25,4 @@ class ThoughtsCounterExtension extends \Twig_Extension
     {
         return (string) $this->counter->count($user);
     }
-
-    public function getName()
-    {
-        return 'count_thoughts';
-    }
 }

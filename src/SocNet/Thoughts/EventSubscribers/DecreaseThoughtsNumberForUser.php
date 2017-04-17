@@ -14,7 +14,7 @@ class DecreaseThoughtsNumberForUser
         $this->counter = $counter;
     }
 
-    public function notify(ThoughtWasDeletedEvent $event)
+    public function notify(ThoughtWasDeletedEvent $event) : void
     {
         $thought = $event->getThought();
         $author = $thought->getAuthor();

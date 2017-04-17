@@ -109,7 +109,7 @@ class BrowsingCommunitiesContext implements Context
     public function thoseCommunitiesShouldBeAnd(string ...$names) : void
     {
         $found = $this->session->getPage()->findAll('css', '.community-name');
-        $found = array_map(function (NodeElement $element) {
+        $found = array_map(function (NodeElement $element) : string {
             return $element->getText();
         }, $found);
 

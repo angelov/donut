@@ -2,6 +2,7 @@
 
 namespace SocNet\Thoughts;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use SocNet\Users\User;
 
@@ -36,7 +37,7 @@ class Thought
 
     public function __construct(User $author, string $content)
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
         $this->author = $author;
         $this->content = $content;
     }
@@ -56,12 +57,12 @@ class Thought
         $this->content = $content;
     }
 
-    public function getCreatedAt() : \DateTime
+    public function getCreatedAt() : DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(DateTime $createdAt) : void
     {
         $this->createdAt = $createdAt;
     }

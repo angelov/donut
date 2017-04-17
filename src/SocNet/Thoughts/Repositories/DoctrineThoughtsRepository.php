@@ -20,7 +20,7 @@ class DoctrineThoughtsRepository implements ThoughtsRepositoryInterface
         $this->em->flush();
     }
 
-    public function destroy(Thought $thought)
+    public function destroy(Thought $thought) : void
     {
         $this->em->remove($thought);
         $this->em->flush();

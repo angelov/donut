@@ -22,6 +22,7 @@ class DoctrineCommunitiesRepository implements CommunitiesRepositoryInterface
         $this->em->flush();
     }
 
+    /** @psalm-suppress MoreSpecificReturnType */
     public function find(string $id): Community
     {
         $found = $this->getBaseRepository()->find($id);
