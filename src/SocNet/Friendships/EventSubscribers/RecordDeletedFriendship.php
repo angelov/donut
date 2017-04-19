@@ -14,7 +14,7 @@ class RecordDeletedFriendship
         $this->recorder = $recorder;
     }
 
-    public function notify(FriendshipWasDeletedEvent $event)
+    public function notify(FriendshipWasDeletedEvent $event) : void
     {
         // @todo handle exceptions
 

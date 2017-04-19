@@ -14,7 +14,7 @@ class DeleteInverseFriendship
         $this->friendships = $friendships;
     }
 
-    public function notify(FriendshipWasDeletedEvent $event)
+    public function notify(FriendshipWasDeletedEvent $event) : void
     {
         $friendship = $event->getFriendship();
         $user = $friendship->getUser();

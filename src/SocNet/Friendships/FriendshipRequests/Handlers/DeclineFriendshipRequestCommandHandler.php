@@ -14,7 +14,7 @@ class DeclineFriendshipRequestCommandHandler
         $this->repository = $repository;
     }
 
-    public function handle(DeclineFriendshipRequestCommand $command)
+    public function handle(DeclineFriendshipRequestCommand $command) : void
     {
         $this->repository->destroy(
             $command->getFriendshipRequest()

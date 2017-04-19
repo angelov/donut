@@ -28,14 +28,14 @@ class Neo4jFriendshipsRecorder implements FriendshipsRecorderInterface
         $this->createFriendshipRelationships($user, $friend);
     }
 
-    private function createUserNode(User $user)
+    private function createUserNode(User $user) : void
     {
         $query = 'MERGE (n:User {id: {id}, name: {name}})';
 
         $this->client->run($query, ['id' => $user->getId(), 'name' => $user->getName()]);
     }
 
-    private function createFriendshipRelationships(User $first, User $second)
+    private function createFriendshipRelationships(User $first, User $second) : void
     {
         $query = '
             MATCH

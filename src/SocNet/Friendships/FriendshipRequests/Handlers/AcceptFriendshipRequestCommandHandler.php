@@ -23,7 +23,7 @@ class AcceptFriendshipRequestCommandHandler
         $this->events = $events;
     }
 
-    public function handle(AcceptFriendshipRequestCommand $command)
+    public function handle(AcceptFriendshipRequestCommand $command) : void
     {
         $request = $command->getFriendshipRequest();
         $sender = $request->getFromUser();
