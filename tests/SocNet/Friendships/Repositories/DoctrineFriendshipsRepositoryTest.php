@@ -72,4 +72,41 @@ class DoctrineFriendshipsRepositoryTest extends KernelTestCase
 
         $this->assertNull($found);
     }
+
+    /** @test */
+    public function it_finds_friendships_between_users()
+    {
+        $sender = new User('John', 'john@example.com', '123456');
+        $this->usersRepository->store($sender);
+
+        $recipient = new User('James', 'james@example.com', '123456');
+        $this->usersRepository->store($recipient);
+
+        $friendship = new Friendship($sender, $recipient);
+        $this->repository->store($friendship);
+
+        $friendship2 = new Friendship($recipient, $sender);
+        $this->repository->store($friendship2);
+
+        $res = $this->repository->findBetweenUsers($sender, $recipient);
+
+        $this->assertCount(2, $res);
+        $this->assertTrue(in_array($friendship, $res, true));
+        $this->assertTrue(in_array($friendship2, $res, true));
+    }
+
+    /** @test */
+    public function it_returns_empty_array_when_no_friendships_between_users()
+    {
+        $sender = new User('John', 'john@example.com', '123456');
+        $this->usersRepository->store($sender);
+
+        $recipient = new User('James', 'james@example.com', '123456');
+        $this->usersRepository->store($recipient);
+
+        $res = $this->repository->findBetweenUsers($sender, $recipient);
+
+        $this->assertTrue(is_array($res));
+        $this->assertCount(0, $res);
+    }
 }

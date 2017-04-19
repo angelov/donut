@@ -62,6 +62,12 @@ services:
         tags:
             - { name: 'event_subscriber', subscribes_to: 'SocNet\Friendships\Events\FriendshipWasDeletedEvent' }
 
+    app.friendships.event_subscribers.delete_inverse_friendship:
+        class: 'SocNet\Friendships\EventSubscribers\DeleteInverseFriendship'
+        arguments: ['@app.friendships.repositories.default']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'SocNet\Friendships\Events\FriendshipWasDeletedEvent' }
+
 
     # friendships recorder
 

@@ -27,15 +27,8 @@ class FriendshipsController extends Controller
         }
 
         $friendship = $repository->findOneBy([
-            'user' => $user,
-            'friend' => $this->getUser()
-        ]);
-
-        $em->remove($friendship);
-
-        $friendship = $repository->findOneBy([
-            'friend' => $user,
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'friend' => $user
         ]);
 
         $this->get('app.core.command_bus.default')->handle(new DeleteFriendshipCommand($friendship));
