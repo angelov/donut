@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand;
+use SocNet\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand;
 use SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Users\User;
@@ -75,8 +76,7 @@ class FriendshipRequestsController extends Controller
             return $this->redirectToRoute('app.friends.index');
         }
 
-        $em->remove($friendshipRequest);
-        $em->flush();
+        $this->get('app.core.command_bus.default')->handle(new DeclineFriendshipRequestCommand($friendshipRequest));
 
         $this->addFlash('success', 'Friendship request successfully declined!');
 
