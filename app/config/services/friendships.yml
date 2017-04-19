@@ -43,7 +43,7 @@ services:
 
     app.friendships.handlers.delete:
         class: 'SocNet\Friendships\Handlers\DeleteFriendshipCommandHandler'
-        arguments: ['@app.friendships.repositories.default']
+        arguments: ['@app.friendships.repositories.default', '@app.core.event_bus.default']
         tags:
             - { name: 'command_handler', handles: 'SocNet\Friendships\Commands\DeleteFriendshipCommand' }
 
@@ -55,6 +55,12 @@ services:
         arguments: ['@app.friendships.friendships_recorder.neo4j']
         tags:
             - { name: 'event_subscriber', subscribes_to: 'SocNet\Friendships\Events\FriendshipWasCreatedEvent' }
+
+    app.friendships.event_subscribers.record_deleted_friendship:
+        class: 'SocNet\Friendships\EventSubscribers\RecordDeletedFriendship'
+        arguments: ['@app.friendships.friendships_recorder.neo4j']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'SocNet\Friendships\Events\FriendshipWasDeletedEvent' }
 
 
     # friendships recorder

@@ -50,4 +50,25 @@ class Neo4jFriendshipsRecorder implements FriendshipsRecorderInterface
             'second' => $second->getId()
         ]);
     }
+
+    public function recordDeleted(Friendship $friendship): void
+    {
+        // @todo handle exceptions
+
+        $first = $friendship->getUser();
+        $second = $friendship->getFriend();
+
+        $query = '
+            MATCH 
+                (u:User {id: {first}}), 
+                (r:User {id: {second}}),
+                (u)-[f:FRIEND]-(r)
+            DELETE f
+        ';
+
+        $this->client->run($query, [
+            'first' => $first->getId(),
+            'second' => $second->getId()
+        ]);
+    }
 }

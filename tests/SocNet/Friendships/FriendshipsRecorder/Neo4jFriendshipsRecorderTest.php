@@ -60,4 +60,36 @@ class Neo4jFriendshipsRecorderTest extends KernelTestCase
 
         $this->assertCount(2, $records);
     }
+
+    public function it_removed_friendships_from_neo4j()
+    {
+        $sender = new User('John', 'john@example.com', '123456');
+        $this->users->store($sender);
+
+        $recipient = new User('James', 'james@example.com', '123456');
+        $this->users->store($recipient);
+
+        $friendship = new Friendship($sender, $recipient);
+
+        $this->recorder->recordCreated($friendship);
+
+        $this->recorder->recordDeleted($friendship);
+
+        $query = '
+            MATCH
+                (first: User {id: {first}}),
+                (second: User {id: {second}}),
+                (first)-[f: FRIEND]-(second)
+            RETURN f
+        ';
+
+        $result = $this->client->run($query, [
+            'first' => $sender->getId(),
+            'second' => $recipient->getId()
+        ]);
+
+        $records = $result->records();
+
+        $this->assertCount(0, $records);
+    }
 }
