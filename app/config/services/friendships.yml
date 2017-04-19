@@ -41,6 +41,12 @@ services:
         tags:
             - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand' }
 
+    app.friendships.handlers.delete:
+        class: 'SocNet\Friendships\Handlers\DeleteFriendshipCommandHandler'
+        arguments: ['@app.friendships.repositories.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Friendships\Commands\DeleteFriendshipCommand' }
+
 
     # event subscribers
 

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use SocNet\Friendships\Commands\DeleteFriendshipCommand;
 use SocNet\Friendships\Friendship;
 use SocNet\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,9 +38,7 @@ class FriendshipsController extends Controller
             'user' => $this->getUser()
         ]);
 
-        $em->remove($friendship);
-
-        $em->flush();
+        $this->get('app.core.command_bus.default')->handle(new DeleteFriendshipCommand($friendship));
 
         // neo4j stuff intentionally put here
         $neo4jClient = $this->get('neo4j.client');

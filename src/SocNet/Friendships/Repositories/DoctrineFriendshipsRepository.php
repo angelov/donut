@@ -19,4 +19,10 @@ class DoctrineFriendshipsRepository implements FriendshipsRepositoryInterface
         $this->entityManager->persist($friendship);
         $this->entityManager->flush();
     }
+
+    public function destroy(Friendship $friendship): void
+    {
+        $this->entityManager->remove($friendship);
+        $this->entityManager->flush();
+    }
 }

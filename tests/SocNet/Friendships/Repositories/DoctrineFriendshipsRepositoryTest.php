@@ -50,4 +50,26 @@ class DoctrineFriendshipsRepositoryTest extends KernelTestCase
 
         $this->assertInstanceOf(Friendship::class, $found);
     }
+
+    /** @test */
+    public function it_deletes_friendships()
+    {
+        $sender = new User('John', 'john@example.com', '123456');
+        $this->usersRepository->store($sender);
+
+        $recipient = new User('James', 'james@example.com', '123456');
+        $this->usersRepository->store($recipient);
+
+        $friendship = new Friendship($sender, $recipient);
+
+        $this->repository->store($friendship);
+
+        $id = $friendship->getId();
+
+        $this->repository->destroy($friendship);
+
+        $found = $this->entityManager->find(Friendship::class, $id);
+
+        $this->assertNull($found);
+    }
 }
