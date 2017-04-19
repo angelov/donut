@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use SocNet\Friendships\Friendship;
+use SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
 use SocNet\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand;
 use SocNet\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand;
 use SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
@@ -102,15 +103,7 @@ class FriendshipRequestsController extends Controller
             return $this->redirectToRoute('app.friends.index');
         }
 
-        $em->remove($friendshipRequest);
-
-        $friendship = new Friendship($user, $this->getUser());
-        $em->persist($friendship);
-
-        $friendship = new Friendship($this->getUser(), $user);
-        $em->persist($friendship);
-
-        $em->flush();
+        $this->get('app.core.command_bus.default')->handle(new AcceptFriendshipRequestCommand($friendshipRequest));
 
         // neo4j stuff intentionally put here
         $client = $this->get('neo4j.client');

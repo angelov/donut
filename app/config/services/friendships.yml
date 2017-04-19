@@ -8,6 +8,12 @@ services:
         class: 'SocNet\Friendships\FriendshipRequests\Repositories\DoctrineFriendshipRequestsRepository'
         arguments: ['@doctrine.orm.entity_manager']
 
+    app.friendships.repositories.default: '@app.friendships.repositories.doctrine'
+
+    app.friendships.repositories.doctrine:
+        class: 'SocNet\Friendships\Repositories\DoctrineFriendshipsRepository'
+        arguments: ['@doctrine.orm.entity_manager']
+
 
     # handlers
 
@@ -28,3 +34,9 @@ services:
         arguments: ['@app.friendships.friendship_requests.repositories.default']
         tags:
             - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand' }
+
+    app.friendships.friendship_requests.handlers.accept:
+        class: 'SocNet\Friendships\FriendshipRequests\Handlers\AcceptFriendshipRequestCommandHandler'
+        arguments: ['@app.friendships.friendship_requests.repositories.default', '@app.friendships.repositories.default', '@app.core.event_bus.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand' }
