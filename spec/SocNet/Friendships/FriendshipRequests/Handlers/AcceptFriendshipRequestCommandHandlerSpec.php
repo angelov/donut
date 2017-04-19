@@ -5,6 +5,7 @@ namespace spec\SocNet\Friendships\FriendshipRequests\Handlers;
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 use SocNet\Core\EventBus\EventBusInterface;
+use SocNet\Friendships\Events\FriendshipWasCreatedEvent;
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
 use SocNet\Friendships\FriendshipRequests\Events\FriendshipRequestWasAcceptedEvent;
@@ -44,6 +45,7 @@ class AcceptFriendshipRequestCommandHandlerSpec extends ObjectBehavior
         $requestsRepository->destroy($request)->shouldBeCalled();
 
         $eventBus->fire(Argument::type(FriendshipRequestWasAcceptedEvent::class))->shouldBeCalled();
+        $eventBus->fire(Argument::type(FriendshipWasCreatedEvent::class))->shouldBeCalled();
 
         $this->handle($command);
     }

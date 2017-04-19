@@ -105,26 +105,6 @@ class FriendshipRequestsController extends Controller
 
         $this->get('app.core.command_bus.default')->handle(new AcceptFriendshipRequestCommand($friendshipRequest));
 
-        // neo4j stuff intentionally put here
-        $client = $this->get('neo4j.client');
-
-        $query = 'MERGE (n:User {id: {id}, name: {name}})';
-        $client->run($query, ['id' => $this->getUser()->getId(), 'name' => $this->getUser()->getName()]);
-        $client->run($query, ['id' => $user->getId(), 'name' => $user->getName()]);
-
-        $query = '
-            MATCH
-                (first:User {id:{first}}),
-                (second:User {id:{second}})
-            CREATE
-                (first)<-[:FRIEND]-(second), (first)-[:FRIEND]->(second)
-        ';
-
-        $client->run($query, [
-            'first' => $this->getUser()->getId(),
-            'second' => $user->getId()
-        ]);
-
         $this->addFlash('success', 'Friendship request successfully accepted!');
 
         return $this->redirectToRoute('app.friends.index');

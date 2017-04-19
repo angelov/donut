@@ -3,6 +3,7 @@
 namespace SocNet\Friendships\FriendshipRequests\Handlers;
 
 use SocNet\Core\EventBus\EventBusInterface;
+use SocNet\Friendships\Events\FriendshipWasCreatedEvent;
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
 use SocNet\Friendships\FriendshipRequests\Events\FriendshipRequestWasAcceptedEvent;
@@ -37,5 +38,6 @@ class AcceptFriendshipRequestCommandHandler
         $this->requests->destroy($request);
 
         $this->events->fire(new FriendshipRequestWasAcceptedEvent($request));
+        $this->events->fire(new FriendshipWasCreatedEvent($friendship));
     }
 }

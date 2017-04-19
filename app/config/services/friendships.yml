@@ -40,3 +40,19 @@ services:
         arguments: ['@app.friendships.friendship_requests.repositories.default', '@app.friendships.repositories.default', '@app.core.event_bus.default']
         tags:
             - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand' }
+
+
+    # event subscribers
+
+    app.friendships.event_subsribers.record_created_friendship:
+        class: 'SocNet\Friendships\EventSubscribers\RecordCreatedFriendship'
+        arguments: ['@app.friendships.friendships_recorder.neo4j']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'SocNet\Friendships\Events\FriendshipWasCreatedEvent' }
+
+
+    # friendships recorder
+
+    app.friendships.friendships_recorder.neo4j:
+        class: 'SocNet\Friendships\FriendshipsRecorder\Neo4jFriendshipsRecorder'
+        arguments: ['@neo4j.client.default']
