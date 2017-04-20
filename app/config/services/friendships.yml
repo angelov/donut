@@ -95,3 +95,10 @@ services:
         class: 'SocNet\Friendships\MutualFriendsResolver\UsersProvider\RepositoryUsersProvider'
         arguments:
             - '@app.users.repository.default'
+
+    app.friendships.mutual_friends_resolver.mutual_friends_exstension:
+          class: 'SocNet\Friendships\MutualFriendsResolver\Twig\MutualFriendsExtension'
+          arguments:
+              - '@app.mutual_friends_resolver.default'
+          tags:
+              - { name: 'twig.extension' }

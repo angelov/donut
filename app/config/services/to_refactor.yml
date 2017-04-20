@@ -5,9 +5,3 @@ services:
         tags:
             - { name: 'security.voter' }
 
-    app.mutual_friends_exstension:
-          class: 'AppBundle\Twig\Extension\MutualFriendsExtension'
-          arguments:
-              - '@app.mutual_friends_resolver.default'
-          tags:
-              - { name: 'twig.extension' }
