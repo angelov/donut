@@ -74,3 +74,19 @@ services:
     app.friendships.friendships_recorder.neo4j:
         class: 'SocNet\Friendships\FriendshipsRecorder\Neo4jFriendshipsRecorder'
         arguments: ['@neo4j.client.default']
+
+
+    # mutual friends resolver
+
+    app.mutual_friends_resolver.default: '@app.mutual_friends_resolver.neo4j'
+
+    app.mutual_friends_resolver.neo4j:
+        class: 'SocNet\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver'
+        arguments:
+            - '@neo4j.client.default'
+            - '@app.friendships.mutual_friends_resolver.users_provider.repository'
+
+    app.friendships.mutual_friends_resolver.users_provider.repository:
+        class: 'SocNet\Friendships\MutualFriendsResolver\UsersProvider\RepositoryUsersProvider'
+        arguments:
+            - '@app.users.repository.default'

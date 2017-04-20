@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\MutualFriendsResolver\UsersProvider;
+namespace SocNet\Friendships\MutualFriendsResolver\UsersProvider;
 
 use SocNet\Users\User;
 use SocNet\Users\Repositories\UsersRepositoryInterface;

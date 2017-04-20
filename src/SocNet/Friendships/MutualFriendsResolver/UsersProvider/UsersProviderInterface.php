@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\MutualFriendsResolver\UsersProvider;
+namespace SocNet\Friendships\MutualFriendsResolver\UsersProvider;
 
 use SocNet\Users\User;
 use SocNet\Core\Exceptions\ResourceNotFoundException;
@@ -8,7 +8,7 @@ use SocNet\Core\Exceptions\ResourceNotFoundException;
 interface UsersProviderInterface
 {
     /**
-     * @throws \SocNet\Core\Exceptions\ResourceNotFoundException
+     * @throws ResourceNotFoundException
      */
     public function getById(int $id) : User;
 }

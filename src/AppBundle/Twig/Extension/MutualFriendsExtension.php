@@ -3,7 +3,7 @@
 namespace AppBundle\Twig\Extension;
 
 use SocNet\Users\User;
-use AppBundle\MutualFriendsResolver\MutualFriendsResolverInterface;
+use SocNet\Friendships\MutualFriendsResolver\MutualFriendsResolverInterface;
 
 class MutualFriendsExtension extends \Twig_Extension
 {

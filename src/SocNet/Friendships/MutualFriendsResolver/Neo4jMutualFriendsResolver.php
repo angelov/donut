@@ -1,23 +1,26 @@
 <?php
 
-namespace AppBundle\MutualFriendsResolver;
+namespace SocNet\Friendships\MutualFriendsResolver;
 
-use SocNet\Users\User;
-use AppBundle\MutualFriendsResolver\UsersProvider\UsersProviderInterface;
-use GraphAware\Bolt\Result\Type\Node;
 use GraphAware\Neo4j\Client\Client;
+use SocNet\Friendships\MutualFriendsResolver\UsersProvider\UsersProviderInterface;
+use SocNet\Users\User;
 
 class Neo4jMutualFriendsResolver implements MutualFriendsResolverInterface
 {
     private $client;
-    private $users;
+    private $usersProvider;
 
-    public function __construct(Client $client, UsersProviderInterface $users)
+    public function __construct(Client $client, UsersProviderInterface $usersProvider)
     {
         $this->client = $client;
-        $this->users = $users;
+        $this->usersProvider = $usersProvider;
     }
 
+    /**
+     * @return User[]
+     * @todo refactor
+     */
     public function forUsers(User $first, User $second): array
     {
         if ($first->equals($second)) {
@@ -33,7 +36,7 @@ class Neo4jMutualFriendsResolver implements MutualFriendsResolverInterface
                 (first)-[:FRIEND]->(y),
                 (y)<-[:FRIEND]-(second)
             RETURN
-                y
+                y.id
        
         ';
 
@@ -42,23 +45,18 @@ class Neo4jMutualFriendsResolver implements MutualFriendsResolverInterface
             'second' => $second->getId()
         ]);
 
-        $ids = [];
-
-        foreach ($result->records() as $record) {
-            /** @var Node $value */
-            foreach ($record->values() as $value) {
-                $ids[] = $value->get('id');
-            }
+        if (count($result->records()) === 0) {
+            return [];
         }
-
-        $ids = array_unique($ids);
 
         $users = [];
 
-        foreach ($ids as $id) {
-            $users[] = $this->users->getById($id);
+        foreach ($result->records() as $record) {
+            $id = $record->get('y.id');
+            $users[] = $this->usersProvider->getById($id);
         }
 
         return $users;
     }
+
 }

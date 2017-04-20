@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\MutualFriendsResolver;
+namespace SocNet\Friendships\MutualFriendsResolver;
 
 use SocNet\Users\User;
 
 interface MutualFriendsResolverInterface
 {
     /**
-     * @return \SocNet\Users\User[]
+     * @return User[]
      */
     public function forUsers(User $first, User $second) : array;
 }
