@@ -81,10 +81,15 @@ services:
     app.mutual_friends_resolver.default: '@app.mutual_friends_resolver.neo4j'
 
     app.mutual_friends_resolver.neo4j:
-        class: 'SocNet\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver'
+        class: 'SocNet\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver\Neo4jMutualFriendsResolver'
+        arguments:
+            - '@app.mutual_friends_resolver.neo4j.ids_resolver'
+            - '@app.friendships.mutual_friends_resolver.users_provider.repository'
+
+    app.mutual_friends_resolver.neo4j.ids_resolver:
+        class: 'SocNet\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver\IdsResolver'
         arguments:
             - '@neo4j.client.default'
-            - '@app.friendships.mutual_friends_resolver.users_provider.repository'
 
     app.friendships.mutual_friends_resolver.users_provider.repository:
         class: 'SocNet\Friendships\MutualFriendsResolver\UsersProvider\RepositoryUsersProvider'
