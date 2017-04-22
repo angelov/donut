@@ -5,3 +5,6 @@ services:
         tags:
             - { name: 'security.voter' }
 
+    app.thoughts.thoughts_list:
+        class: 'AppBundle\ThoughtsList\DoctrineThoughtsList'
+        arguments: ['@doctrine.orm.entity_manager', '@app.users.security.current_user']

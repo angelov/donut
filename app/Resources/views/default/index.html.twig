@@ -24,7 +24,7 @@
 
     <h2>Shared thoughts:</h2>
 
-    {% for thought in pager.iterator %}
+    {% for thought in thoughts_list.results %}
 
         <div class="thought">
             <small>
@@ -45,8 +45,10 @@
 
     {% endfor %}
 
-    <div class="pagerfanta">
-        {{ pagerfanta(pager, 'twitter_bootstrap3') }}
-    </div>
+    <p>Total results: {{ thoughts_list.countTotal }}</p>
+
+    {#<div class="pagerfanta">#}
+        {#{{ pagerfanta(pager, 'twitter_bootstrap3') }}#}
+    {#</div>#}
 
 {% endblock %}

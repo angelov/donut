@@ -2,12 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\ThoughtsList\ThoughtsListInterface;
 use SocNet\Thoughts\Commands\DeleteThoughtCommand;
 use SocNet\Thoughts\Commands\StoreThoughtCommand;
 use SocNet\Thoughts\Thought;
 use SocNet\Thoughts\Form\ThoughtType;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,21 +19,6 @@ class ThoughtsController extends Controller
      */
     public function indexAction(Request $request) : Response
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $queryBuilder = $em
-            ->createQueryBuilder()
-            ->select('t')
-            ->from(Thought::class, 't')
-            ->orderBy('t.createdAt', 'DESC');
-
-        $adapter = new DoctrineORMAdapter($queryBuilder, false);
-
-        $page = $request->query->get('page', 1);
-        $pager = new Pagerfanta($adapter);
-        $pager->setMaxPerPage(10);
-        $pager->setCurrentPage($page);
-
         $form = $this->createForm(ThoughtType::class);
         $form->handleRequest($request);
 
@@ -50,9 +34,23 @@ class ThoughtsController extends Controller
             return $this->redirectToRoute('app.thoughts.index');
         }
 
+        /** @var ThoughtsListInterface $thoughtsList */
+        $thoughtsList = $this->get('app.thoughts.thoughts_list');
+
+        $page = $request->query->get('page', 1);
+        $perPage = 3;
+        $offset = ($page-1)*$perPage;
+
+        $thoughtsList
+            ->filterSource(ThoughtsListInterface::FROM_FRIENDS)
+            ->includeOwnThoughts()
+            ->orderBy('thought.createdAt', 'DESC')
+            ->setItemsPerPage($perPage)
+            ->setOffset($offset);
+
         return $this->render('default/index.html.twig', [
             'form' => $form->createView(),
-            'pager' => $pager
+            'thoughts_list' => $thoughtsList
         ]);
     }
 
