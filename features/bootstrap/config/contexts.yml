@@ -36,6 +36,12 @@ services:
         tags:
             - { name: fob.context_service }
 
+    app.feature_contexts.setup.movies:
+          class: 'AppBundle\FeatureContexts\Setup\MoviesContext'
+          arguments: ['@__symfony__.doctrine.orm.entity_manager']
+          tags:
+              - { name: fob.context_service }
+
     app.feature_contexts.setup.security:
         class: 'AppBundle\FeatureContexts\Setup\SecurityContext'
         arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.session', '@mink.default_session', '@app.behat.storage']
@@ -101,3 +107,9 @@ services:
         arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
+
+    app.feature_contexts.movies.browsing:
+        class: 'AppBundle\FeatureContexts\BrowsingMoviesContext'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+        tags:
+         - { name: fob.context_service }

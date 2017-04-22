@@ -86,6 +86,11 @@ doctrine:
                 is_bundle: false
                 dir: '%kernel.root_dir%/../src/SocNet/Friendships/FriendshipRequests'
                 prefix: 'SocNet\Friendships\FriendshipRequests'
+            Movies:
+                type: annotation
+                is_bundle: false
+                dir: '%kernel.root_dir%/../src/SocNet/Movies'
+                prefix: 'SocNet\Movies'
 
 doctrine_migrations:
     dir_name: '%kernel.root_dir%/Resources/migrations'
