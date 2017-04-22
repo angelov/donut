@@ -2,6 +2,7 @@
 
 namespace SocNet\Movies;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,11 +33,33 @@ class Movie
      */
     private $plot;
 
-    public function __construct(string $title, int $year, string $plot = '')
+    /**
+     * @ORM\ManyToMany(targetEntity="SocNet\Movies\Genre", inversedBy="movies")
+     * @ORM\JoinTable(
+     *     name="movie_has_genre",
+     *     joinColumns={
+     *          @ORM\JoinColumn(name="movie_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *          @ORM\JoinColumn(name="genre_id", referencedColumnName="id")
+     *      }
+     * )
+     */
+    private $genres;
+
+    /**
+     * @param $genres Genre[]
+     */
+    public function __construct(string $title, int $year, string $plot = '', array $genres = [])
     {
         $this->title = $title;
         $this->year = $year;
         $this->plot = $plot;
+        $this->genres = new ArrayCollection($genres);
+
+        foreach ($genres as $genre) {
+            $genre->addMovie($this);
+        }
     }
 
     public function getId() : string
@@ -72,5 +95,18 @@ class Movie
     public function setPlot(string $plot) : void
     {
         $this->plot = $plot;
+    }
+
+    public function getGenres() : array
+    {
+        return $this->genres->getValues();
+    }
+
+    public function addGenre(Genre $genre) : void
+    {
+        if (!$this->genres->contains($genre)) {
+            $this->genres->add($genre);
+            $genre->addMovie($this);
+        }
     }
 }

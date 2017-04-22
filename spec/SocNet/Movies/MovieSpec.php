@@ -3,6 +3,7 @@
 namespace spec\SocNet\Movies;
 
 use SocNet\Movies\Movie;
+use SocNet\Movies\Genre;
 use PhpSpec\ObjectBehavior;
 
 class MovieSpec extends ObjectBehavior
@@ -11,9 +12,11 @@ class MovieSpec extends ObjectBehavior
     const MOVIE_YEAR = 2017;
     const MOVIE_PLOT = 'This is just an example movie';
 
-    public function let()
+    public function let(Genre $genre)
     {
-        $this->beConstructedWith(self::MOVIE_TITLE, self::MOVIE_YEAR, self::MOVIE_PLOT);
+        $this->beConstructedWith(self::MOVIE_TITLE, self::MOVIE_YEAR, self::MOVIE_PLOT, [$genre]);
+
+        $genre->addMovie($this)->shouldHaveBeenCalled();
     }
 
     function it_is_initializable()
@@ -63,5 +66,28 @@ class MovieSpec extends ObjectBehavior
 
         $this->setPlot($newPlot);
         $this->getPlot()->shouldReturn($newPlot);
+    }
+
+    function it_has_genres_by_default(Genre $genre)
+    {
+        $this->getGenres()->shouldReturn([$genre]);
+    }
+
+    function it_can_have_multple_genres(Genre $genre, Genre $anotherGenre)
+    {
+        $this->addGenre($anotherGenre);
+
+        $anotherGenre->addMovie($this);
+        $this->getGenres()->shouldHaveCount(2);
+        $this->getGenres()->shouldContain($genre); // added in the constructor
+        $this->getGenres()->shouldContain($anotherGenre);
+    }
+
+    function it_does_not_add_existing_genres(Genre $anotherGenre)
+    {
+        $this->addGenre($anotherGenre);
+        $this->addGenre($anotherGenre);
+
+        $this->getGenres()->shouldHaveCount(2); // $anotherGenre plus $genre from constructor
     }
 }
