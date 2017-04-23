@@ -120,6 +120,7 @@ default:
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
                 - 'app.feature_contexts.setup.movies'
+                - 'app.feature_contexts.setup.movie_genres'
                 - 'app.feature_contexts.movies.browsing'
             filters:
                 tags: '@browsing_movies'

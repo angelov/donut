@@ -37,10 +37,16 @@ services:
             - { name: fob.context_service }
 
     app.feature_contexts.setup.movies:
-          class: 'AppBundle\FeatureContexts\Setup\MoviesContext'
-          arguments: ['@__symfony__.doctrine.orm.entity_manager']
-          tags:
-              - { name: fob.context_service }
+        class: 'AppBundle\FeatureContexts\Setup\MoviesContext'
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage']
+        tags:
+            - { name: fob.context_service }
+
+    app.feature_contexts.setup.movie_genres:
+        class: 'AppBundle\FeatureContexts\Setup\MovieGenresContext'
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage']
+        tags:
+            - { name: fob.context_service }
 
     app.feature_contexts.setup.security:
         class: 'AppBundle\FeatureContexts\Setup\SecurityContext'
