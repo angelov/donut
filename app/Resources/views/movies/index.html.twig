@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Movies</h1>
+
+    <div class="row">
+
+        <div class="col-md-3">
+
+            <legend>Genres</legend>
+
+            <div class="row">
+
+                {% set g = 0 %}
+                {% for genre in genres %}
+
+                <div class="col-md-6">
+                    <input type="checkbox" /> {{ genre.title }}<br />
+                </div>
+
+                {% set g = g + 1 %}
+                {% if g == 2 %}
+                {% set g = 0 %}
+            </div>
+            <div class="row">
+                {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+            <legend style="margin-top: 20px;">Years</legend>
+
+            <span style="margin-right: 7px;"><input type="radio" /> 2010s</span>
+            <span style="margin-right: 7px;"><input type="radio" /> 2000s</span>
+            <span style="margin-right: 7px;"><input type="radio" /> 1990s</span>
+            <span style="margin-right: 7px;"><input type="radio" /> 1980s</span><br />
+            <span style="margin-right: 7px;"><input type="radio" /> 1970s</span>
+            <span style="margin-right: 7px;"><input type="radio" /> 1960s</span>
+            <span style="margin-right: 7px;"><input type="radio" /> 1950s</span>
+            <span style="margin-right: 7px;"><input type="radio" /> 1940s</span>
+
+            <legend style="margin-top: 20px;">Additional filters</legend>
+
+            <input type="checkbox" checked /> Include movies I have watched
+
+            <br /><br />
+            <a href="" class="btn btn-success pull-right">Apply filters</a>
+
+        </div>
+
+        <div class="col-md-9">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="form-inline pull-right" style="margin-bottom: 10px;">
+                        Order by
+                        <select class="form-control" style="margin-left: 5px;">
+                            <option>Name</option>
+                            <option>Year</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+
+                {% set m = 0 %}
+
+                {% for movie in movies %}
+
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <img src="{{ asset('images/posters' ~ movie.poster) }}" width="100%"/>
+
+                            <div style="margin-top: 5px;">
+                                <strong>
+                                    <span class="movie-title">{{ movie.title }}</span>
+                                    <span class="movie-year text-muted small">({{ movie.year }})</span>
+                                </strong>
+                            </div>
+
+                            <hr style="margin: 5px; padding: 0" />
+
+                            <div>
+                                {% for genre in movie.genres %}
+                                    <span class="label label-info">{{ genre.title }}</span>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                {% set m = m + 1 %}
+                {% if m == 4 %}
+                {% set m = 0 %}
+            </div>
+            <div class="row">
+                {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+{% endblock %}

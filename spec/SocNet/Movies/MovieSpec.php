@@ -11,6 +11,7 @@ class MovieSpec extends ObjectBehavior
     const MOVIE_TITLE = 'Example Movie';
     const MOVIE_YEAR = 2017;
     const MOVIE_PLOT = 'This is just an example movie';
+    const MOVIE_POSTER = 'example.jpg';
 
     public function let(Genre $genre)
     {
@@ -66,6 +67,17 @@ class MovieSpec extends ObjectBehavior
 
         $this->setPlot($newPlot);
         $this->getPlot()->shouldReturn($newPlot);
+    }
+
+    function it_has_no_poster_by_default()
+    {
+        $this->getPoster()->shouldReturn('');
+    }
+
+    function it_has_mutable_poster()
+    {
+        $this->setPoster(self::MOVIE_POSTER);
+        $this->getPoster()->shouldReturn(self::MOVIE_POSTER);
     }
 
     function it_has_genres_by_default(Genre $genre)

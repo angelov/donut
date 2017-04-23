@@ -48,6 +48,11 @@ class Movie
     private $genres;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $poster = '';
+
+    /**
      * @param $genres Genre[]
      */
     public function __construct(string $title, int $year, string $plot = '', array $genres = [])
@@ -108,5 +113,15 @@ class Movie
             $this->genres->add($genre);
             $genre->addMovie($this);
         }
+    }
+
+    public function getPoster() : string
+    {
+        return $this->poster;
+    }
+
+    public function setPoster(string $poster) : void
+    {
+        $this->poster = $poster;
     }
 }
