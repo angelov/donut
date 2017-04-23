@@ -4,31 +4,40 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use SocNet\Movies\Genre;
-use SocNet\Movies\Movie;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class MoviesController extends Controller
 {
     /**
      * @Route("/movies", name="app.movies.index")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $movies = $this->getDoctrine()
-            ->getManager()
-            ->createQueryBuilder()
-            ->select('m')
-            ->from(Movie::class, 'm')
-            ->setFirstResult(40)
-            ->setMaxResults(20)
-            ->getQuery()
-            ->execute();
+        $selectedGenres = [];
+        foreach ($request->query->all() as $item => $value) {
+            $p = explode('genre_', $item);
+            if (count($p) > 1) {
+                $selectedGenres[] = $p[1];
+            }
+        }
+        $genresFilter = $this->getDoctrine()->getManager()->getRepository(Genre::class)->findBy(['id' => $selectedGenres]);
+
+        $selectedPeriod = $request->get('period', '1000-3000');
+        $periodFilter = explode('-', $selectedPeriod);
+
+        $moviesList = $this->get('app.movies.movies_list');
+        $moviesList->filterByGenres($genresFilter);
+        $moviesList->filterByPeriod($periodFilter[0], $periodFilter[1]);
+        $moviesList->setItemsPerPage(12);
 
         $genres = $this->getDoctrine()->getManager()->getRepository(Genre::class)->findAll();
 
         return $this->render('movies/index.html.twig', [
-            'movies' => $movies,
-            'genres' => $genres
+            'movies_list' => $moviesList,
+            'genres' => $genres,
+            'selected_genres' => $selectedGenres,
+            'selected_period' => $selectedPeriod
         ]);
     }
 }

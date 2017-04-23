@@ -8,52 +8,60 @@
 
         <div class="col-md-3">
 
-            <legend>Genres</legend>
+            <form method="get">
 
-            <div class="row">
+                <legend>Genres</legend>
 
-                {% set g = 0 %}
-                {% for genre in genres %}
+                <div class="row">
 
-                <div class="col-md-6">
-                    <input type="checkbox" /> {{ genre.title }}<br />
+                    {% set g = 0 %}
+                    {% for genre in genres %}
+
+                    <div class="col-md-6">
+                        <input type="checkbox" name="genre_{{ genre.id }}" value="1" {% if genre.id in selected_genres %}checked{% endif %} /> {{ genre.title }}<br />
+                    </div>
+
+                    {% set g = g + 1 %}
+                    {% if g == 2 %}
+                    {% set g = 0 %}
+                </div>
+                <div class="row">
+                    {% endif %}
+
+                    {% endfor %}
+
                 </div>
 
-                {% set g = g + 1 %}
-                {% if g == 2 %}
-                {% set g = 0 %}
-            </div>
-            <div class="row">
-                {% endif %}
+                <legend style="margin-top: 20px;">Years</legend>
 
-                {% endfor %}
+                <span style="margin-right: 6px;"><input type="radio" name="period" value="1000-3000" {% if selected_period == "1000-3000" %}checked{% endif %} /> All</span>
+                <span style="margin-right: 6px;"><input type="radio" name="period" value="2010-2017" {% if selected_period == "2010-2017" %}checked{% endif %} /> 2010s</span>
+                <span style="margin-right: 6px;"><input type="radio" name="period" value="2000-2009" {% if selected_period == "2000-2009" %}checked{% endif %} /> 2000s</span>
+                <span style="margin-right: 6px;"><input type="radio" name="period" value="1990-1999" {% if selected_period == "1990-1999" %}checked{% endif %} /> 1990s</span><br />
+                <span style="margin-right: 6px;"><input type="radio" name="period" value="1980-1989" {% if selected_period == "1980-1989" %}checked{% endif %} /> 1980s</span>
+                <span style="margin-right: 6px;"><input type="radio" name="period" value="1970-1979" {% if selected_period == "1970-1979" %}checked{% endif %} /> 1970s</span>
+                <span style="margin-right: 6px;"><input type="radio" name="period" value="1960-1969" {% if selected_period == "1960-1969" %}checked{% endif %} /> 1960s</span>
+                <span style="margin-right: 6px;"><input type="radio" name="period" value="1950-1959" {% if selected_period == "1950-1959" %}checked{% endif %} /> 1950s</span>
 
-            </div>
+                <legend style="margin-top: 20px;">Additional filters</legend>
 
-            <legend style="margin-top: 20px;">Years</legend>
+                <input type="checkbox" checked /> Include movies I have watched
 
-            <span style="margin-right: 7px;"><input type="radio" /> 2010s</span>
-            <span style="margin-right: 7px;"><input type="radio" /> 2000s</span>
-            <span style="margin-right: 7px;"><input type="radio" /> 1990s</span>
-            <span style="margin-right: 7px;"><input type="radio" /> 1980s</span><br />
-            <span style="margin-right: 7px;"><input type="radio" /> 1970s</span>
-            <span style="margin-right: 7px;"><input type="radio" /> 1960s</span>
-            <span style="margin-right: 7px;"><input type="radio" /> 1950s</span>
-            <span style="margin-right: 7px;"><input type="radio" /> 1940s</span>
+                <br /><br />
+                <button type="submit" class="btn btn-success pull-right">Apply filters</button>
 
-            <legend style="margin-top: 20px;">Additional filters</legend>
 
-            <input type="checkbox" checked /> Include movies I have watched
-
-            <br /><br />
-            <a href="" class="btn btn-success pull-right">Apply filters</a>
+            </form>
 
         </div>
 
         <div class="col-md-9">
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
+                    <p>Found <strong>{{ movies_list.countTotal }}</strong> results.</p>
+                </div>
+                <div class="col-md-6">
                     <form class="form-inline pull-right" style="margin-bottom: 10px;">
                         Order by
                         <select class="form-control" style="margin-left: 5px;">
@@ -68,7 +76,7 @@
 
                 {% set m = 0 %}
 
-                {% for movie in movies %}
+                {% for movie in movies_list.results %}
 
                 <div class="col-md-3">
                     <div class="panel panel-default">
