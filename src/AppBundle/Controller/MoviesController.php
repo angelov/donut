@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\MoviesList\OrderDirection;
+use AppBundle\MoviesList\OrderField;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use SocNet\Movies\Genre;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,10 +28,17 @@ class MoviesController extends Controller
         $selectedPeriod = $request->get('period', '1000-3000');
         $periodFilter = explode('-', $selectedPeriod);
 
-        $moviesList = $this->get('app.movies.movies_list');
-        $moviesList->filterByGenres($genresFilter);
-        $moviesList->filterByPeriod($periodFilter[0], $periodFilter[1]);
-        $moviesList->setItemsPerPage(12);
+        $moviesList = $this
+            ->get('app.movies.movies_list')
+            ->filterByGenres($genresFilter)
+            ->filterByPeriod($periodFilter[0], $periodFilter[1])
+            ->setItemsPerPage(12)
+//            ->orderBy(['movie.year' => 'DESC', 'movie.title' => 'ASC'])
+            ->orderBy([
+                new OrderField('movie.year', OrderDirection::DESC),
+                new OrderField('movie.title', OrderDirection::ASC)
+            ])
+            ->setOffset(2);
 
         $genres = $this->getDoctrine()->getManager()->getRepository(Genre::class)->findAll();
 

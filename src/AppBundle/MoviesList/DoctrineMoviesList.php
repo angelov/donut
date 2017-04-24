@@ -14,8 +14,8 @@ class DoctrineMoviesList implements MoviesListInterface
     private $genres = [];
     private $yearFrom;
     private $yearTo;
-    private $orderByField = 'movie.title';
-    private $orderByDirection = 'ASC';
+    /** @var OrderField[] */
+    private $orderByFields = [];
     private $offset = 0;
     private $perPage = 10;
 
@@ -55,10 +55,9 @@ class DoctrineMoviesList implements MoviesListInterface
         return $this;
     }
 
-    public function orderBy(string $field, string $direction = 'ASC'): MoviesListInterface
+    public function orderBy(array $fields): MoviesListInterface
     {
-        $this->orderByField = $field;
-        $this->orderByDirection = $direction;
+        $this->orderByFields = $fields;
 
         return $this;
     }
@@ -89,8 +88,11 @@ class DoctrineMoviesList implements MoviesListInterface
     {
         $qb = $this->em->createQueryBuilder()
             ->select('movie')
-            ->from(Movie::class, 'movie')
-            ->orderBy($this->orderByField, $this->orderByDirection);
+            ->from(Movie::class, 'movie');
+
+        foreach ($this->orderByFields as $order) {
+            $qb->addOrderBy($order->getField(), $order->getDirection());
+        }
 
         if (count($this->genres)) {
             foreach ($this->genres as $genre) {

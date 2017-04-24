@@ -18,7 +18,7 @@ interface MoviesListInterface
 
     public function setItemsPerPage(int $items) : MoviesListInterface;
 
-    public function orderBy(string $field, string $direction = 'ASC') : MoviesListInterface;
+    public function orderBy(array $fields) : MoviesListInterface;
 
     public function countTotal() : int;
 
