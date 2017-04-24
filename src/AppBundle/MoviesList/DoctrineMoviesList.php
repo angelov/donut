@@ -48,11 +48,21 @@ class DoctrineMoviesList implements MoviesListInterface
         return $this;
     }
 
+    public function getOffset(): int
+    {
+        return $this->offset;
+    }
+
     public function setItemsPerPage(int $items): MoviesListInterface
     {
         $this->perPage = $items;
 
         return $this;
+    }
+
+    public function getItemsPerPage(): int
+    {
+        return $this->perPage;
     }
 
     public function orderBy(array $fields): MoviesListInterface

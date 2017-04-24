@@ -16,7 +16,11 @@ interface MoviesListInterface
 
     public function setOffset(int $offset) : MoviesListInterface;
 
+    public function getOffset() : int;
+
     public function setItemsPerPage(int $items) : MoviesListInterface;
+
+    public function getItemsPerPage() : int;
 
     public function orderBy(array $fields) : MoviesListInterface;
 

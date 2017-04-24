@@ -28,17 +28,21 @@ class MoviesController extends Controller
         $selectedPeriod = $request->get('period', '1000-3000');
         $periodFilter = explode('-', $selectedPeriod);
 
+        $page = $request->query->get('page', 1);
+        $perPage = 12;
+        $offset = ($page-1)*$perPage;
+
         $moviesList = $this
             ->get('app.movies.movies_list')
             ->filterByGenres($genresFilter)
             ->filterByPeriod($periodFilter[0], $periodFilter[1])
-            ->setItemsPerPage(12)
+            ->setItemsPerPage($perPage)
 //            ->orderBy(['movie.year' => 'DESC', 'movie.title' => 'ASC'])
             ->orderBy([
                 new OrderField('movie.year', OrderDirection::DESC),
                 new OrderField('movie.title', OrderDirection::ASC)
             ])
-            ->setOffset(2);
+            ->setOffset($offset);
 
         $genres = $this->getDoctrine()->getManager()->getRepository(Genre::class)->findAll();
 
