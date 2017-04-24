@@ -122,5 +122,6 @@ default:
                 - 'app.feature_contexts.setup.movies'
                 - 'app.feature_contexts.setup.movie_genres'
                 - 'app.feature_contexts.movies.browsing'
+                - 'app.feature_contexts.setup.pagination'
             filters:
                 tags: '@browsing_movies'

@@ -44,7 +44,11 @@ class PaginationRenderer
 
     private function generateHtml($hasNext, $hasPrevious, $nextUrl, $prevUrl)
     {
-        $html = "<nav aria-label=\"...\"><ul class=\"pagination\">";
+        $html = '';
+
+        if ($hasNext || $hasPrevious) {
+            $html .= "<nav aria-label=\"...\"><ul class=\"pagination\">";
+        }
 
         if ($hasPrevious) {
             $html .= "<li class=\"\"><a href=\"". $prevUrl ."\">&larr; Previous page</a></li>";
@@ -54,10 +58,10 @@ class PaginationRenderer
             $html .= "<li class=\"\"><a href=\"". $nextUrl ."\">Next page &rarr;</a></li>";
         }
 
-        $html .= "</ul></nav>";
+        if ($hasNext || $hasPrevious) {
+            $html .= "</ul></nav>";
+        }
 
         return $html;
     }
-
-
 }

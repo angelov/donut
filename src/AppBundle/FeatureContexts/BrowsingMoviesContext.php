@@ -3,10 +3,11 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Symfony\Component\Routing\RouterInterface;
+use Webmozart\Assert\Assert;
 
 class BrowsingMoviesContext implements Context
 {
@@ -24,7 +25,8 @@ class BrowsingMoviesContext implements Context
      */
     public function iWantToBrowseTheMovies() : void
     {
-        throw new PendingException();
+        $url = $this->router->generate('app.movies.index');
+        $this->session->getDriver()->visit($url);
     }
 
     /**
@@ -32,15 +34,9 @@ class BrowsingMoviesContext implements Context
      */
     public function iShouldSeeListedMovies(int $count) : void
     {
-        throw new PendingException();
-    }
+        $found = $this->session->getPage()->findAll('css', '.movie-title');
 
-    /**
-     * @Then those movies should be :first and :second
-     */
-    public function thoseMoviesShouldBeAnd(string ...$movieTitles) : void
-    {
-        throw new PendingException();
+        Assert::same($count, count($found), 'Expected to find %s movies, found %s.');
     }
 
     /**
@@ -48,7 +44,23 @@ class BrowsingMoviesContext implements Context
      */
     public function thoseMoviesShouldBeTheFollowing(TableNode $table) : void
     {
-        throw new PendingException();
+        $expected = array_map(function ($row) : string {
+            return $row[0];
+        }, $table->getRows());
+        array_shift($expected);
+
+        $found = $this->session->getPage()->findAll('css', '.movie-title');
+        $found = array_map(function (NodeElement $el) : string {
+            return $el->getText();
+        }, $found);
+
+        sort($expected);
+        sort($found);
+
+        $expected = implode(', ', $expected);
+        $found = implode(', ', $found);
+
+        Assert::same($expected, $found);
     }
 
     /**
@@ -65,6 +77,23 @@ class BrowsingMoviesContext implements Context
      */
     public function iChooseTheGenre(string ...$genres) : void
     {
-        throw new PendingException();
+        foreach ($genres as $genre) {
+            $this->session->getPage()->find('css', sprintf('.checkbox:contains("%s") label input', $genre))->check();
+        }
+
+        $this->session->getPage()->find('css', 'button:contains("Apply filters")')->press();
+    }
+
+    /**
+     * @When I choose the :period period
+     */
+    public function iChooseThePeriod(string $period) : void
+    {
+        $btn = $radioButton = $this->session->getPage()->findField($period);
+        $opt = $btn->getAttribute('value');
+
+        $this->session->getPage()->find('css', sprintf('.radio-inline:contains("%s") input', $period))->selectOption($opt);
+
+        $this->session->getPage()->find('css', 'button:contains("Apply filters")')->press();
     }
 }
