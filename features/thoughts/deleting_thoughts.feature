@@ -8,6 +8,7 @@ Feature: Deleting thoughts
     Given I am logged in as "john@example.com"
     And I have shared a "What a beautiful day!" thought
     And there is a user James
+    And we are friends
     And he has shared a "Hello world!" thought
 
   Scenario: Deleting own thoughts

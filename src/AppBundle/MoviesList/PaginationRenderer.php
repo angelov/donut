@@ -17,7 +17,7 @@ class PaginationRenderer
         $this->router = $router;
     }
 
-    public function render(MoviesListInterface $list, string $pageAttribute = 'page') : string
+    public function render(/* MoviesListInterface */ $list, string $pageAttribute = 'page') : string
     {
         $request = $this->requestStack->getCurrentRequest();
 

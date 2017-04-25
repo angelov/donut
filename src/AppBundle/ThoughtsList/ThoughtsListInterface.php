@@ -13,9 +13,13 @@ interface ThoughtsListInterface
 
     public function includeOwnThoughts(bool $includeOwn = true) : ThoughtsListInterface;
 
+    public function getOffset() : int;
+
     public function setOffset(int $offset) : ThoughtsListInterface;
 
     public function setItemsPerPage(int $items) : ThoughtsListInterface;
+
+    public function getItemsPerPage() : int;
 
     public function orderBy(string $field, string $direction = 'ASC') : ThoughtsListInterface;
 

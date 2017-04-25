@@ -127,6 +127,19 @@ class ThoughtsContext implements Context
     }
 
     /**
+     * @Then I should see the :count thoughts of mine
+     */
+    public function iShouldSeeTheThoughtsOfMine(int $count)
+    {
+        $name = $this->storage->get('logged_user')->getName();
+
+        $thoughts = $this->session->getPage()->findAll('css', sprintf('.thought:contains("by %s")', $name));
+        $counted = count($thoughts);
+
+        Assert::same($counted, $count, 'Counted %d instead of %d');
+    }
+
+    /**
      * @When I delete the :content thought
      */
     public function iDeleteTheThought(string $content) : void

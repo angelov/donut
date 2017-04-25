@@ -41,6 +41,7 @@ class PaginationContext implements Context
 
     /**
      * @Given I am on the second page
+     * @When when I go to the second page
      */
     public function iAmOnTheSecondPage()
     {

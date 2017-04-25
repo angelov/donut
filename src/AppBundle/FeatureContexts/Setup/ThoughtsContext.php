@@ -44,6 +44,23 @@ class ThoughtsContext implements Context
     }
 
     /**
+     * @Given I have shared :count thoughts
+     */
+    public function iHaveSharedThoughts(int $count) : void
+    {
+        $author = $this->storage->get('logged_user');
+
+        for ($i=0; $i<$count; $i++) {
+            $thought = $this->createThought($author);
+            $this->em->persist($thought);
+
+            $this->thoughtsCounter->increase($author);
+        }
+
+        $this->em->flush();
+    }
+
+    /**
      * @Given I have shared a :content thought
      */
     public function iHaveSharedAThought(string $content) : void

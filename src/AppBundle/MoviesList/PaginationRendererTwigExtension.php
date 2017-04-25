@@ -20,7 +20,7 @@ class PaginationRendererTwigExtension extends Twig_Extension
         ];
     }
 
-    public function renderPagination(MoviesListInterface $list, string $pageAttribute = 'page') : string
+    public function renderPagination(/* MoviesListInterface */ $list, string $pageAttribute = 'page') : string
     {
         return (string) $this->renderer->render($list, $pageAttribute);
     }

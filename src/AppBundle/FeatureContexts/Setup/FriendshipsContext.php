@@ -95,6 +95,7 @@ class FriendshipsContext implements Context
 
     /**
      * @Given we are not friends
+     * @Given I am not friend with :name
      */
     public function weAreNotFriends() : void
     {

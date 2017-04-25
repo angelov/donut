@@ -38,7 +38,7 @@ class ThoughtsController extends Controller
         $thoughtsList = $this->get('app.thoughts.thoughts_list');
 
         $page = $request->query->get('page', 1);
-        $perPage = 3;
+        $perPage = 10;
         $offset = ($page-1)*$perPage;
 
         $thoughtsList

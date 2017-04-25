@@ -3,46 +3,40 @@
 namespace AppBundle\ThoughtsList;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use SocNet\Thoughts\Thought;
 use SocNet\Users\User;
 
 class DoctrineThoughtsList implements ThoughtsListInterface
 {
-    private $queryBuilder;
+    private $em;
     private $currentUser;
 
     private $offset;
     private $maxResults;
     private $includeOwnThoughts = true;
+    private $orderBy;
+    private $orderByDirection;
+    private $filterSource;
 
     public function __construct(EntityManagerInterface $entityManager, User $currentUser)
     {
-        $this->queryBuilder = $entityManager
-            ->createQueryBuilder()
-            ->select('thought')
-            ->from(Thought::class, 'thought')
-            ->join('thought.author', 'author');
+        $this->em = $entityManager;
         $this->currentUser = $currentUser;
     }
 
     public function orderBy(string $field, string $direction = 'ASC') : ThoughtsListInterface
     {
-        $this->queryBuilder->orderBy($field, $direction);
+        $this->orderBy = $field;
+        $this->orderByDirection = $direction;
 
         return $this;
     }
 
     public function filterSource(int $source) : ThoughtsListInterface
     {
-        switch ($source) {
-            case ThoughtsListInterface::FROM_FRIENDS:
-                $this->queryBuilder
-                    ->join('author.friendships', 'friendship')
-                    ->where('friendship.friend = :current')
-                    ->setParameter('current', $this->currentUser);
-                break;
-        }
+        $this->filterSource = $source;
 
         return $this;
     }
@@ -70,12 +64,8 @@ class DoctrineThoughtsList implements ThoughtsListInterface
 
     public function getResults() : array
     {
-        if ($this->includeOwnThoughts) {
-            $this->addIncludeOwnThoughtsConstraint();
-        }
-
         // http://stackoverflow.com/a/15077771
-        $query = $this->queryBuilder->getQuery();
+        $query = $this->prepareQuery();
 
         $paginator = new Paginator($query);
 
@@ -85,17 +75,46 @@ class DoctrineThoughtsList implements ThoughtsListInterface
         return $paginator->getIterator()->getArrayCopy();
     }
 
-    private function addIncludeOwnThoughtsConstraint() : void
+    private function prepareQuery() : Query
     {
-        $this->queryBuilder
-            ->orWhere('author = :current')
-            ->setParameter('current', $this->currentUser);
+        $queryBuilder = $this->em->createQueryBuilder()
+            ->select('thought')
+            ->from(Thought::class, 'thought')
+            ->join('thought.author', 'author');
+
+        switch ($this->filterSource) {
+            case ThoughtsListInterface::FROM_FRIENDS:
+                $queryBuilder
+                    ->where('author in (:friends)')
+                    ->setParameter('friends', $this->currentUser->getFriends());
+                break;
+        }
+
+        if ($this->includeOwnThoughts && $this->filterSource === ThoughtsListInterface::FROM_FRIENDS) {
+            $queryBuilder
+                ->orWhere('author = :current')
+                ->setParameter('current', $this->currentUser);
+        }
+
+        $queryBuilder->orderBy($this->orderBy, $this->orderByDirection);
+
+        return $queryBuilder->getQuery();
     }
 
     public function countTotal() : int
     {
-        $paginator = new Paginator($this->queryBuilder->getQuery());
+        $paginator = new Paginator($this->prepareQuery());
 
         return count($paginator);
+    }
+
+    public function getOffset(): int
+    {
+        return $this->offset;
+    }
+
+    public function getItemsPerPage(): int
+    {
+        return $this->maxResults;
     }
 }
