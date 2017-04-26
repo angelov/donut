@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "109280b3562e3c16a329e6b4ed421454",
-    "content-hash": "2e339b9dfe74dfe95212c3753ded60c2",
+    "hash": "4d52806711662a04fe710429802f5e1f",
+    "content-hash": "274468bf301e43b81064ebef75bc9b78",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1229,6 +1229,49 @@
                 "neo4j"
             ],
             "time": "2017-03-24 14:02:49"
+        },
+        {
+            "name": "graphaware/reco4php",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/graphaware/reco4php.git",
+                "reference": "d1ba99f41edfdeb9c8d032c8119cb1fcd2763c85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/graphaware/reco4php/zipball/d1ba99f41edfdeb9c8d032c8119cb1fcd2763c85",
+                "reference": "d1ba99f41edfdeb9c8d032c8119cb1fcd2763c85",
+                "shasum": ""
+            },
+            "require": {
+                "graphaware/neo4j-php-client": "^4.0",
+                "php": "^7.0",
+                "psr/log": "^1.0",
+                "symfony/event-dispatcher": "^2.7 || ^3.0",
+                "symfony/stopwatch": "^2.7 || ^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GraphAware\\Reco4PHP\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "ApacheV2"
+            ],
+            "authors": [
+                {
+                    "name": "GraphAware Limited",
+                    "email": "reco4php@graphaware.com"
+                }
+            ],
+            "description": "Neo4j based Recommendation Engine Framework for PHP",
+            "time": "2017-02-20 20:58:32"
         },
         {
             "name": "guzzlehttp/guzzle",
