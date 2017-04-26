@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\FriendsSuggestions\RecommenderService;
 use SocNet\Users\Commands\StoreUserCommand;
 use SocNet\Users\User;
 use SocNet\Users\Form\UserRegistrationForm;

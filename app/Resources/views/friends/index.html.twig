@@ -72,6 +72,22 @@
 
             </div>
 
+            <div id="friends-suggestions">
+
+                <h1>Sent friendship requests</h1>
+
+                {% for user in suggested_users %}
+
+                    {% include 'users/partials/user-card.html.twig' %}
+
+                {% else %}
+
+                    <li>No suggested friends for you. Sorry.</li>
+
+                {% endfor %}
+
+            </div>
+
         </div>
     </div>
 

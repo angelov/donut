@@ -247,4 +247,20 @@ class ManagingFriendshipsContext implements Context
 
         $button->press();
     }
+
+    /**
+     * @Then I should see suggestion to add :name as a friend
+     */
+    public function iShouldSeeSuggestionToAddAsAFriend(string $name) : void
+    {
+        Assert::true($this->session->getPage()->has('css', sprintf('#friends-suggestions .user-card .user-name:contains("%s")', $name)));
+    }
+
+    /**
+     * @Then I should see a message that there are no friends suggested for me
+     */
+    public function iShouldSeeAMessageThatThereAreNoFriendsSuggestedForMe()
+    {
+        Assert::true($this->session->getPage()->has('css', '#friends-suggestions li:contains("No suggested friends for you. Sorry.")'));
+    }
 }
