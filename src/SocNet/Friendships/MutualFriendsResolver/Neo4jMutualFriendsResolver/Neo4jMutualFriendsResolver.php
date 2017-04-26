@@ -27,9 +27,11 @@ class Neo4jMutualFriendsResolver implements MutualFriendsResolverInterface
         }
 
         $ids = $this->idsResolver->findMutualFriends($first->getId(), $second->getId());
+
         $users = [];
 
         foreach ($ids as $id) {
+            /** @var User */
             $users[] = $this->usersProvider->getById($id);
         }
 

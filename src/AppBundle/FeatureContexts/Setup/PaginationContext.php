@@ -43,7 +43,7 @@ class PaginationContext implements Context
      * @Given I am on the second page
      * @When when I go to the second page
      */
-    public function iAmOnTheSecondPage()
+    public function iAmOnTheSecondPage() : void
     {
         // @todo works for now, but find better solution
         $this->session->getPage()->clickLink('Next page');
@@ -52,7 +52,7 @@ class PaginationContext implements Context
     /**
      * @Then I should be able to go to next page
      */
-    public function iShouldBeAbleToGoToNextPage()
+    public function iShouldBeAbleToGoToNextPage() : void
     {
         Assert::true($this->session->getPage()->has('css', 'a:contains("Next page")'));
     }
@@ -60,7 +60,7 @@ class PaginationContext implements Context
     /**
      * @Then I should not be able to go to next page
      */
-    public function iShouldNotBeAbleToGoToNextPage()
+    public function iShouldNotBeAbleToGoToNextPage() : void
     {
         Assert::false($this->session->getPage()->has('css', 'a:contains("Next page")'));
     }
@@ -68,7 +68,7 @@ class PaginationContext implements Context
     /**
      * @Then I should not be able to go to previous page
      */
-    public function iShouldNotBeAbleToGoToPreviousPage()
+    public function iShouldNotBeAbleToGoToPreviousPage() : void
     {
         Assert::false($this->session->getPage()->has('css', 'a:contains("Previous page")'));
     }
@@ -76,7 +76,7 @@ class PaginationContext implements Context
     /**
      * @Then I should be able to go to previous page
      */
-    public function iShouldBeAbleToGoToPreviousPage()
+    public function iShouldBeAbleToGoToPreviousPage() : void
     {
         Assert::true($this->session->getPage()->has('css', 'a:contains("Previous page")'));
     }

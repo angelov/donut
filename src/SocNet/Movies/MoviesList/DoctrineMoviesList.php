@@ -22,6 +22,9 @@ class DoctrineMoviesList extends AbstractDoctrineResultsList implements MoviesLi
         $this->em = $entityManager;
     }
 
+    /**
+     * @param Genre[] $genres
+     */
     public function filterByGenres(array $genres) : void
     {
         $this->genres = $genres;

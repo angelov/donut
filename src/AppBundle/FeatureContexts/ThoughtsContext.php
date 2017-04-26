@@ -129,7 +129,7 @@ class ThoughtsContext implements Context
     /**
      * @Then I should see the :count thoughts of mine
      */
-    public function iShouldSeeTheThoughtsOfMine(int $count)
+    public function iShouldSeeTheThoughtsOfMine(int $count) : void
     {
         $name = $this->storage->get('logged_user')->getName();
 

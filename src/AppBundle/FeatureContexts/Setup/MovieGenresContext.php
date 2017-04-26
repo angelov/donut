@@ -22,7 +22,7 @@ class MovieGenresContext implements Context
     /**
      * @Given there are the following genres:
      */
-    public function thereAreTheFollowingGenres(TableNode $table)
+    public function thereAreTheFollowingGenres(TableNode $table) : void
     {
         foreach ($table as $genre) {
             $genreObj = new Genre($genre['Title']);

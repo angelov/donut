@@ -34,12 +34,12 @@ class MoviesContext implements Context
     /**
      * @Given there are the following movies
      */
-    public function thereAreTheFollowingMovies(TableNode $table)
+    public function thereAreTheFollowingMovies(TableNode $table) : void
     {
         foreach ($table as $movie) {
 
             $genres = explode(', ', $movie['Genres']);
-            $genres = array_map(function($genre) {
+            $genres = array_map(function($genre) : Genre {
                 return $this->storage->get('created_genres')[$genre];
             }, $genres);
 
@@ -61,7 +61,7 @@ class MoviesContext implements Context
      * @Given there are :count movies from the :genre genre
      * @Given there are :count movies
      */
-    public function thereAreMoviesFromTheActionGenreReleasedIn(int $count, string $genre = '', int $year = 2017)
+    public function thereAreMoviesFromTheActionGenreReleasedIn(int $count, string $genre = '', int $year = 2017) : void
     {
         $genres = $this->storage->get('created_genres');
 

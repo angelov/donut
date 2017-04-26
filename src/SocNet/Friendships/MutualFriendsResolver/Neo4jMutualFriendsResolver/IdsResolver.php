@@ -37,7 +37,7 @@ class IdsResolver
         $ids = [];
 
         foreach ($result->records() as $record) {
-            $ids[] = $record->get('y.id');
+            $ids[] = (string) $record->get('y.id');
         }
 
         return $ids;

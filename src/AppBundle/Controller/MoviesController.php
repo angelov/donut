@@ -8,13 +8,14 @@ use SocNet\Core\ResultLists\Sorting\OrderField;
 use SocNet\Movies\Genre;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class MoviesController extends Controller
 {
     /**
      * @Route("/movies", name="app.movies.index")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request) : Response
     {
         $selectedGenres = [];
         foreach ($request->query->all() as $item => $value) {

@@ -17,7 +17,7 @@ class RequestCurrentPageResolver implements CurrentPageResolverInterface
     {
         $queryValue = $this->request->get($pageAttribute);
 
-        if (is_numeric($queryValue)) {
+        if (is_int($queryValue)) {
             return $queryValue;
         }
 
