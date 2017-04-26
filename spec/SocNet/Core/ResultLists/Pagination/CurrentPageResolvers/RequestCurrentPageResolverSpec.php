@@ -46,7 +46,7 @@ class RequestCurrentPageResolverSpec extends ObjectBehavior
     function it_reads_the_page_from_request_query_attributes(RequestStack $requestStack)
     {
         $request = new Request();
-        $request->query->set('page', 3);
+        $request->query->set('page', '3');
 
         $requestStack->getCurrentRequest()->willReturn($request);
 
@@ -56,7 +56,7 @@ class RequestCurrentPageResolverSpec extends ObjectBehavior
     function it_resolves_the_page_with_different_page_query_attributes(RequestStack $requestStack)
     {
         $request = new Request();
-        $request->query->set('pageNumber', 4);
+        $request->query->set('pageNumber', '4');
 
         $requestStack->getCurrentRequest()->willReturn($request);
 
