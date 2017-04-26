@@ -1,5 +1,12 @@
 services:
 
+    # feed
+
+    app.thoughts.feed:
+        class: 'SocNet\Thoughts\ThoughtsFeed\DoctrineThoughtsFeed'
+        arguments: ['@doctrine.orm.entity_manager', '@app.users.security.current_user']
+
+
     # repositories
 
     app.thoughts.repositories.default: '@app.thoughts.repositories.doctrine'

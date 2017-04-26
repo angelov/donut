@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\MoviesList;
+namespace SocNet\Core\ResultLists\Sorting;
 
 class OrderField
 {
@@ -9,6 +9,8 @@ class OrderField
 
     public function __construct(string $field, string $direction = OrderDirection::DESC)
     {
+        $this->ensureDirectionIsValid($direction);
+
         $this->field = $field;
         $this->direction = $direction;
     }
@@ -21,5 +23,12 @@ class OrderField
     public function getField(): string
     {
         return $this->field;
+    }
+
+    private function ensureDirectionIsValid(string $direction): void
+    {
+        if (!in_array($direction, [OrderDirection::DESC, OrderDirection::ASC])) {
+            throw new InvalidOrderDirectionException($direction);
+        }
     }
 }

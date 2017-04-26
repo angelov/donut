@@ -1,14 +1,15 @@
 <?php
 
-namespace AppBundle\MoviesList;
+namespace SocNet\Core\ResultLists\Pagination;
 
+use SocNet\Core\ResultLists\Pagination\Renderers\PaginationRendererInterface;
 use Twig_Extension;
 
 class PaginationRendererTwigExtension extends Twig_Extension
 {
     private $renderer;
 
-    public function __construct(PaginationRenderer $renderer)
+    public function __construct(PaginationRendererInterface $renderer)
     {
         $this->renderer = $renderer;
     }
@@ -20,7 +21,7 @@ class PaginationRendererTwigExtension extends Twig_Extension
         ];
     }
 
-    public function renderPagination(/* MoviesListInterface */ $list, string $pageAttribute = 'page') : string
+    public function renderPagination(PaginatableResultsInterface $list, string $pageAttribute = 'page') : string
     {
         return (string) $this->renderer->render($list, $pageAttribute);
     }

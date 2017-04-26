@@ -6,3 +6,4 @@ imports:
     - { resource: 'services/thoughts.yml' }
     - { resource: 'services/communities.yml' }
     - { resource: 'services/friendships.yml' }
+    - { resource: 'services/movies.yml' }

@@ -16,3 +16,43 @@ services:
     app.core.event_bus.simplebus:
         class: 'SocNet\Core\EventBus\SimpleBusAdapter'
         arguments: ['@simple_bus.event_bus']
+
+
+    # result lists
+
+    app.core.result_lists.pagination.url_generator:
+        class: 'SocNet\Core\ResultLists\Pagination\UrlGenerators\RoutingPaginationUrlGenerator\RoutingPaginationUrlGenerator'
+        arguments:
+            - '@router'
+            - '@app.core.result_lists.current_page_resolver'
+            - '@app.core.result_lists.pagination.url_generator.routing_url_generator.route_name_resolver'
+            - '@app.core.result_lists.pagination.url_generator.routing_url_generator.url_properties_resolver'
+
+    app.core.result_lists.current_page_resolver:
+        class: 'SocNet\Core\ResultLists\Pagination\CurrentPageResolvers\RequestCurrentPageResolver'
+        arguments: ['@request_stack']
+
+    app.core.result_lists.pagination.url_generator.routing_url_generator.url_properties_resolver:
+        class: 'SocNet\Core\ResultLists\Pagination\UrlGenerators\RoutingPaginationUrlGenerator\UrlPropertiesResolver\RequestUrlPropertiesResolver'
+        arguments: ['@request_stack']
+
+    app.core.result_lists.pagination.url_generator.routing_url_generator.route_name_resolver:
+        class: 'SocNet\Core\ResultLists\Pagination\UrlGenerators\RoutingPaginationUrlGenerator\RouteNameResolver\RequestRouteNameResolver'
+        arguments: ['@request_stack']
+
+    app.core.result_lists.pagination.page_existence_checker:
+        class: 'SocNet\Core\ResultLists\Pagination\PageExistenceChecker\PageExistenceChecker'
+
+    app.core.result_lists.pagination.renderers.twig:
+        class: 'SocNet\Core\ResultLists\Pagination\Renderers\TwigPaginationRenderer'
+        arguments:
+            - '@twig'
+            - '@app.core.result_lists.pagination.url_generator'
+            - '@app.core.result_lists.current_page_resolver'
+            - '@app.core.result_lists.pagination.page_existence_checker'
+
+    app.core.result_lists.pagination.twig.extension:
+        class: 'SocNet\Core\ResultLists\Pagination\PaginationRendererTwigExtension'
+        arguments: ['@app.core.result_lists.pagination.renderers.twig']
+        tags:
+            - { name: 'twig.extension' }

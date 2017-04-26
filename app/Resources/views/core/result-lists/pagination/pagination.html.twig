@@ -1,0 +1,19 @@
+{% set should_render = has_next_page or has_previous_page %}
+
+{% if should_render %}
+
+    <nav aria-label="">
+        <ul class="pagination">
+
+            {% if has_previous_page %}
+                <li class=""><a href="{{ previous_page_url }}">&larr; Previous page</a></li>
+            {% endif %}
+
+            {% if has_next_page %}
+                <li class=""><a href="{{ next_page_url }}">Next page &rarr;</a></li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+{% endif %}

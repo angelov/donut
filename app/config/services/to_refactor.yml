@@ -5,20 +5,5 @@ services:
         tags:
             - { name: 'security.voter' }
 
-    app.thoughts.thoughts_list:
-        class: 'AppBundle\ThoughtsList\DoctrineThoughtsList'
-        arguments: ['@doctrine.orm.entity_manager', '@app.users.security.current_user']
 
-    app.movies.movies_list:
-        class: 'AppBundle\MoviesList\DoctrineMoviesList'
-        arguments: ['@doctrine.orm.entity_manager']
 
-    app.movies.pagination_renderer:
-        class: 'AppBundle\MoviesList\PaginationRenderer'
-        arguments: ['@request_stack', '@router']
-
-    app.movies.pagination_renderer.twig:
-        class: 'AppBundle\MoviesList\PaginationRendererTwigExtension'
-        arguments: ['@app.movies.pagination_renderer']
-        tags:
-            - { name: 'twig.extension' }

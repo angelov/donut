@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\MoviesList;
+namespace SocNet\Core\ResultLists\Sorting;
 
 final class OrderDirection
 {

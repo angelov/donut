@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\ThoughtsList\ThoughtsListInterface;
+use SocNet\Core\ResultLists\Sorting\OrderDirection;
+use SocNet\Core\ResultLists\Sorting\OrderField;
+use SocNet\Thoughts\ThoughtsFeed\ThoughtsFeedInterface;
 use SocNet\Thoughts\Commands\DeleteThoughtCommand;
 use SocNet\Thoughts\Commands\StoreThoughtCommand;
 use SocNet\Thoughts\Thought;
@@ -34,19 +36,18 @@ class ThoughtsController extends Controller
             return $this->redirectToRoute('app.thoughts.index');
         }
 
-        /** @var ThoughtsListInterface $thoughtsList */
-        $thoughtsList = $this->get('app.thoughts.thoughts_list');
+        /** @var ThoughtsFeedInterface $thoughtsList */
+        $thoughtsList = $this->get('app.thoughts.feed');
 
         $page = $request->query->get('page', 1);
         $perPage = 10;
         $offset = ($page-1)*$perPage;
 
-        $thoughtsList
-            ->filterSource(ThoughtsListInterface::FROM_FRIENDS)
-            ->includeOwnThoughts()
-            ->orderBy('thought.createdAt', 'DESC')
-            ->setItemsPerPage($perPage)
-            ->setOffset($offset);
+        $thoughtsList->filterSource(ThoughtsFeedInterface::FROM_FRIENDS);
+        $thoughtsList->includeOwnThoughts();
+        $thoughtsList->orderBy([new OrderField('thought.createdAt', OrderDirection::DESC)]);
+        $thoughtsList->setItemsPerPage($perPage);
+        $thoughtsList->setOffset($offset);
 
         return $this->render('default/index.html.twig', [
             'form' => $form->createView(),

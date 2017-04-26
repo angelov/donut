@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\MoviesList\OrderDirection;
-use AppBundle\MoviesList\OrderField;
+use SocNet\Core\ResultLists\Sorting\OrderDirection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use SocNet\Core\ResultLists\Sorting\OrderField;
 use SocNet\Movies\Genre;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,17 +32,15 @@ class MoviesController extends Controller
         $perPage = 12;
         $offset = ($page-1)*$perPage;
 
-        $moviesList = $this
-            ->get('app.movies.movies_list')
-            ->filterByGenres($genresFilter)
-            ->filterByPeriod($periodFilter[0], $periodFilter[1])
-            ->setItemsPerPage($perPage)
-//            ->orderBy(['movie.year' => 'DESC', 'movie.title' => 'ASC'])
-            ->orderBy([
+        $moviesList = $this->get('app.movies.movies_list');
+        $moviesList->filterByGenres($genresFilter);
+        $moviesList->filterByPeriod($periodFilter[0], $periodFilter[1]);
+        $moviesList->setItemsPerPage($perPage);
+        $moviesList->orderBy([
                 new OrderField('movie.year', OrderDirection::DESC),
                 new OrderField('movie.title', OrderDirection::ASC)
-            ])
-            ->setOffset($offset);
+            ]);
+        $moviesList->setOffset($offset);
 
         $genres = $this->getDoctrine()->getManager()->getRepository(Genre::class)->findAll();
 
