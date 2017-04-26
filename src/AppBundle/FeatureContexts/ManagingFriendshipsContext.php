@@ -257,10 +257,27 @@ class ManagingFriendshipsContext implements Context
     }
 
     /**
+     * @Then I should not see suggestion to add :name as a friend
+     */
+    public function iShouldNotSeeSuggestionToAddAsAFriend(string $name) : void
+    {
+        Assert::false($this->session->getPage()->has('css', sprintf('#friends-suggestions .user-card .user-name:contains("%s")', $name)));
+    }
+
+    /**
      * @Then I should see a message that there are no friends suggested for me
      */
-    public function iShouldSeeAMessageThatThereAreNoFriendsSuggestedForMe()
+    public function iShouldSeeAMessageThatThereAreNoFriendsSuggestedForMe() : void
     {
         Assert::true($this->session->getPage()->has('css', '#friends-suggestions li:contains("No suggested friends for you. Sorry.")'));
+    }
+
+    /**
+     * @When I choose to ignore the suggestion to add :name as a friend
+     */
+    public function iChooseToIgnoreTheSuggestionToAddAsAFriend(string $name) : void
+    {
+        $button = $this->session->getPage()->find('css', sprintf('#friends-suggestions .user-card:contains("%s") .btn-ignore-friendship-suggestion', $name));
+        $button->press();
     }
 }

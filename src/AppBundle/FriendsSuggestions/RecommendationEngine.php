@@ -21,7 +21,8 @@ class RecommendationEngine extends BaseRecommendationEngine
     public function blacklistBuilders() : array
     {
         return array(
-            new FriendsOfMine()
+            new FriendsOfMine(),
+            new IgnoredSuggestions()
         );
     }
 

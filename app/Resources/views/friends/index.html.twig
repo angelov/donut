@@ -78,6 +78,8 @@
 
                 {% for user in suggested_users %}
 
+                    {% set suggested_user = true %}
+
                     {% include 'users/partials/user-card.html.twig' %}
 
                 {% else %}

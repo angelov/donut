@@ -42,6 +42,13 @@
 
         {% endif %}
 
+        {% if suggested_user is defined %}
+            <a href="{{ path('app.friendships.suggestions.ignore', {'id': user.id}) }}" class="btn btn-default btn-xs btn-ignore-friendship-suggestion">
+                <i class="glyphicon glyphicon-remove"></i>
+                Ignore suggestion
+            </a>
+        {% endif %}
+
     {% endif %}
 
 {% endif %}
