@@ -2,9 +2,11 @@
 
 namespace spec\SocNet\Users\Handlers;
 
+use SocNet\Core\EventBus\EventBusInterface;
 use SocNet\Core\Exceptions\ResourceNotFoundException;
 use SocNet\Places\City;
 use SocNet\Users\EmailAvailabilityChecker\EmailAvailabilityCheckerInterface;
+use SocNet\Users\Events\UserRegisteredEvent;
 use SocNet\Users\Exceptions\EmailTakenException;
 use SocNet\Users\Repositories\UsersRepositoryInterface;
 use Prophecy\Argument;
@@ -22,13 +24,14 @@ class StoreUserCommandHandlerSpec extends ObjectBehavior
     const USER_PASSWORD = '123456';
 
     function let(
+        EventBusInterface $eventBus,
         UsersRepositoryInterface $repository,
         UserPasswordEncoder $passwordEncoder,
         EmailAvailabilityCheckerInterface $emailAvailabilityChecker,
         StoreUserCommand $command,
         City $city
     ) {
-        $this->beConstructedWith($repository, $passwordEncoder, $emailAvailabilityChecker);
+        $this->beConstructedWith($repository, $passwordEncoder, $emailAvailabilityChecker, $eventBus);
 
         $command->getName()->willReturn(self::USER_NAME);
         $command->getEmail()->willReturn(self::USER_EMAIL);
@@ -45,7 +48,8 @@ class StoreUserCommandHandlerSpec extends ObjectBehavior
         StoreUserCommand $command,
         UsersRepositoryInterface $repository,
         UserPasswordEncoderInterface $passwordEncoder,
-        EmailAvailabilityCheckerInterface $emailAvailabilityChecker
+        EmailAvailabilityCheckerInterface $emailAvailabilityChecker,
+        EventBusInterface $eventBus
     ) {
         $emailAvailabilityChecker->isTaken(self::USER_EMAIL)->willReturn(false);
         $passwordEncoder->encodePassword(Argument::type(User::class), Argument::type('string'))->willReturn('encoded');
@@ -57,6 +61,8 @@ class StoreUserCommandHandlerSpec extends ObjectBehavior
 
         $passwordEncoder->encodePassword(Argument::type(User::class), Argument::type('string'))->shouldBeCalled();
         $repository->store(Argument::type(User::class))->shouldBeCalled();
+
+        $eventBus->fire(Argument::type(UserRegisteredEvent::class))->shouldBeCalled();
 
         $this->handle($command);
     }
