@@ -2,6 +2,7 @@
 
 namespace SocNet\Users\Commands;
 
+use SocNet\Places\City;
 use SocNet\Users\Validation\Constraints\UniqueEmail;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,11 +26,14 @@ class StoreUserCommand
      */
     private $password;
 
-    public function __construct(string $name, string $email, string $password)
+    private $city;
+
+    public function __construct(string $name, string $email, string $password, City $city)
     {
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
+        $this->city = $city;
     }
 
     public function getName() : string
@@ -45,5 +49,10 @@ class StoreUserCommand
     public function getPassword() : string
     {
         return $this->password;
+    }
+
+    public function getCity() : City
+    {
+        return $this->city;
     }
 }

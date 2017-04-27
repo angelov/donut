@@ -150,4 +150,20 @@ class RegistrationContext extends RawMinkContext
     {
         Assert::true($this->session->getPage()->hasContent('The password must be at least 6 characters long.'));
     }
+
+    /**
+     * @When I specify my city as :city
+     */
+    public function iSpecifyMyCityAsSkopje(string $city) : void
+    {
+        $this->session->getPage()->selectFieldOption('City', $city);
+    }
+
+    /**
+     * @When I don't specify my city
+     */
+    public function iDonTSpecifyMyCity()
+    {
+        $this->session->getPage()->selectFieldOption('City', '');
+    }
 }

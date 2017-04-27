@@ -4,6 +4,7 @@ namespace SocNet\Users;
 
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
+use SocNet\Places\City;
 use SocNet\Thoughts\Thought;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -64,7 +65,12 @@ class User implements UserInterface
      */
     private $friendships;
 
-    public function __construct(string $name, string $email, string $password)
+    /**
+     * @ORM\ManyToOne(targetEntity="SocNet\Places\City", inversedBy="residents")
+     */
+    private $city;
+
+    public function __construct(string $name, string $email, string $password, City $city)
     {
         $this->name = $name;
         $this->email = $email;
@@ -73,6 +79,7 @@ class User implements UserInterface
         $this->sentFriendshipRequests = new ArrayCollection();
         $this->receivedFriendshipRequests = new ArrayCollection();
         $this->friendships = new ArrayCollection();
+        $this->city = $city;
     }
 
     public function getId() : string
@@ -159,7 +166,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return \SocNet\Friendships\FriendshipRequests\FriendshipRequest[]
+     * @return FriendshipRequest[]
      */
     public function getSentFriendshipRequests() : array
     {
@@ -175,7 +182,7 @@ class User implements UserInterface
 
     public function hasSentFriendshipRequestTo(User $user) : bool
     {
-        /** @var \SocNet\Friendships\FriendshipRequests\FriendshipRequest $friendshipRequest */
+        /** @var FriendshipRequest $friendshipRequest */
         foreach ($this->sentFriendshipRequests as $friendshipRequest) {
             if ($friendshipRequest->getToUser()->equals($user)) {
                 return true;
@@ -186,7 +193,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return \SocNet\Friendships\FriendshipRequests\FriendshipRequest[]
+     * @return FriendshipRequest[]
      */
     public function getReceivedFriendshipRequests() : array
     {
@@ -218,7 +225,7 @@ class User implements UserInterface
     {
         $friends = [];
 
-        /** @var \SocNet\Friendships\Friendship $friendship */
+        /** @var Friendship $friendship */
         foreach ($this->friendships as $friendship) {
             $friends[] = $friendship->getFriend();
         }
@@ -234,7 +241,7 @@ class User implements UserInterface
     // @todo this will have a big effect on performance, use redis or something
     public function isFriendWith(User $user) : bool
     {
-        /** @var \SocNet\Friendships\Friendship $friendship */
+        /** @var Friendship $friendship */
         foreach ($this->friendships as $friendship) {
             $friend = $friendship->getFriend();
 
@@ -244,5 +251,15 @@ class User implements UserInterface
         }
 
         return false;
+    }
+
+    public function getCity() : City
+    {
+        return $this->city;
+    }
+
+    public function setCity(City $city) : void
+    {
+        $this->city = $city;
     }
 }

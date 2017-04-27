@@ -2,6 +2,7 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
+use SocNet\Places\City;
 use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
@@ -36,10 +37,14 @@ class SecurityContext implements Context
      */
     public function iAmLoggedInAs(string $email) : void
     {
+        $city = new City('Valandovo');
+        $this->entityManager->persist($city);
+
         $user = new User(
             $this->storage->get('user_name', 'John Smith'),
             $email,
-            '123456'
+            '123456',
+            $city
         );
 
         $this->entityManager->persist($user);

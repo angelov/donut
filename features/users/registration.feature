@@ -4,11 +4,15 @@ Feature: User registration
   As a visitor
   I need to create an user account
 
+  Background:
+    Given there are cities named Skopje and Ohrid
+
   Scenario: Registering with valid information
     When I want to create a new user account
     And I specify the name as "John Smith"
     And I specify the email as "john@example.com"
     And I specify the password as "johnny11"
+    And I specify my city as Ohrid
     And I confirm the password
     And I create the account
     Then I should be notified that my user account has been successfully created

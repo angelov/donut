@@ -34,6 +34,15 @@ services:
         arguments: ['@app.users.repository.default']
 
 
+    # form
+
+    app.users.form.registration:
+        class: 'SocNet\Users\Form\UserRegistrationForm'
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: 'form.type' }
+
+
     # validation
 
     app.users.validation.validators.unique_email:

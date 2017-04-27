@@ -91,6 +91,11 @@ doctrine:
                 is_bundle: false
                 dir: '%kernel.root_dir%/../src/SocNet/Movies'
                 prefix: 'SocNet\Movies'
+            Places:
+                type: annotation
+                is_bundle: false
+                dir: '%kernel.root_dir%/../src/SocNet/Places'
+                prefix: 'SocNet\Places'
 
 doctrine_migrations:
     dir_name: '%kernel.root_dir%/Resources/migrations'

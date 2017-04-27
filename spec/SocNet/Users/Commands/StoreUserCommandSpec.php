@@ -2,6 +2,7 @@
 
 namespace spec\SocNet\Users\Commands;
 
+use SocNet\Places\City;
 use SocNet\Users\Commands\StoreUserCommand;
 use PhpSpec\ObjectBehavior;
 
@@ -11,9 +12,9 @@ class StoreUserCommandSpec extends ObjectBehavior
     const USER_EMAIL = 'john@example.com';
     const USER_PASSWORD = '123456';
 
-    function let()
+    function let(City $city)
     {
-        $this->beConstructedWith(self::USER_NAME, self::USER_EMAIL, self::USER_PASSWORD);
+        $this->beConstructedWith(self::USER_NAME, self::USER_EMAIL, self::USER_PASSWORD, $city);
     }
 
     function it_is_initializable()
@@ -34,5 +35,10 @@ class StoreUserCommandSpec extends ObjectBehavior
     function it_holds_the_user_password()
     {
         $this->getPassword()->shouldReturn(self::USER_PASSWORD);
+    }
+
+    function it_holds_the_city(City $city)
+    {
+        $this->getCity()->shouldReturn($city);
     }
 }

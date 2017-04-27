@@ -32,7 +32,8 @@ class StoreUserCommandHandler
         $user = new User(
             $command->getName(),
             $command->getEmail(),
-            $command->getPassword()
+            $command->getPassword(),
+            $command->getCity()
         );
 
         $password = $this->passwordEncoder->encodePassword($user, $command->getPassword());

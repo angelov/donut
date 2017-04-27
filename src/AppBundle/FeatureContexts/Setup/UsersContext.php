@@ -2,6 +2,7 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
+use SocNet\Places\City;
 use SocNet\Users\User;
 use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
@@ -26,7 +27,10 @@ class UsersContext implements Context
      */
     public function thereIsAUserWithEmailAndPassword($name, $email, $password) : void
     {
-        $user = new User($name, $email, $password);
+        $city = new City('Valandovo');
+        $this->em->persist($city);
+
+        $user = new User($name, $email, $password, $city);
 
         $password = $this->passwordEncoder->encodePassword($user, $password);
         $user->setPassword($password);

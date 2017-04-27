@@ -4,6 +4,7 @@ namespace spec\SocNet\Users;
 
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
+use SocNet\Places\City;
 use SocNet\Thoughts\Thought;
 use SocNet\Users\User;
 use PhpSpec\ObjectBehavior;
@@ -15,9 +16,9 @@ class UserSpec extends ObjectBehavior
     const USER_EMAIL = 'john@example.com';
     const USER_PASSWORD = '123456';
 
-    function let()
+    function let(City $city)
     {
-        $this->beConstructedWith(self::USER_NAME, self::USER_EMAIL, self::USER_PASSWORD);
+        $this->beConstructedWith(self::USER_NAME, self::USER_EMAIL, self::USER_PASSWORD, $city);
     }
 
     function it_is_initializable()
@@ -61,6 +62,17 @@ class UserSpec extends ObjectBehavior
     function it_returns_email_as_username()
     {
         $this->getUsername()->shouldReturn(self::USER_EMAIL);
+    }
+
+    function it_has_a_city_by_default(City $city)
+    {
+        $this->getCity()->shouldReturn($city);
+    }
+
+    function it_has_a_mutable_city(City $anotherCity)
+    {
+        $this->setCity($anotherCity);
+        $this->getCity()->shouldReturn($anotherCity);
     }
 
     function it_has_no_thoughts_by_default()

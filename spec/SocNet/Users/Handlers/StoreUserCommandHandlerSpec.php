@@ -3,6 +3,7 @@
 namespace spec\SocNet\Users\Handlers;
 
 use SocNet\Core\Exceptions\ResourceNotFoundException;
+use SocNet\Places\City;
 use SocNet\Users\EmailAvailabilityChecker\EmailAvailabilityCheckerInterface;
 use SocNet\Users\Exceptions\EmailTakenException;
 use SocNet\Users\Repositories\UsersRepositoryInterface;
@@ -24,13 +25,15 @@ class StoreUserCommandHandlerSpec extends ObjectBehavior
         UsersRepositoryInterface $repository,
         UserPasswordEncoder $passwordEncoder,
         EmailAvailabilityCheckerInterface $emailAvailabilityChecker,
-        StoreUserCommand $command
+        StoreUserCommand $command,
+        City $city
     ) {
         $this->beConstructedWith($repository, $passwordEncoder, $emailAvailabilityChecker);
 
         $command->getName()->willReturn(self::USER_NAME);
         $command->getEmail()->willReturn(self::USER_EMAIL);
         $command->getPassword()->willReturn(self::USER_PASSWORD);
+        $command->getCity()->willReturn($city);
     }
 
     function it_is_initializable()
@@ -50,6 +53,7 @@ class StoreUserCommandHandlerSpec extends ObjectBehavior
         $command->getName()->shouldBeCalled();
         $command->getPassword()->shouldBeCalled();
         $command->getEmail()->shouldBeCalled();
+        $command->getCity()->shouldBeCalled();
 
         $passwordEncoder->encodePassword(Argument::type(User::class), Argument::type('string'))->shouldBeCalled();
         $repository->store(Argument::type(User::class))->shouldBeCalled();
