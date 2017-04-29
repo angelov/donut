@@ -56,6 +56,10 @@ services:
 
     app.users.handlers.store:
         class: 'SocNet\Users\Handlers\StoreUserCommandHandler'
-        arguments: ['@app.users.repository.default', '@security.password_encoder', '@app.users.email_availability_checker.default']
+        arguments:
+            - '@app.users.repository.default'
+            - '@security.password_encoder'
+            - '@app.users.email_availability_checker.default'
+            - '@app.core.event_bus.default'
         tags:
             - { name: 'command_handler', handles: 'SocNet\Users\Commands\StoreUserCommand' }

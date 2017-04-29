@@ -14,7 +14,8 @@ class RecommendationEngine extends BaseRecommendationEngine
     public function discoveryEngines() : array
     {
         return array(
-            new FriendsOfFriends()
+            new FriendsOfFriends(),
+            new LivingInSameCity()
         );
     }
 

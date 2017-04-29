@@ -5,5 +5,8 @@ services:
         tags:
             - { name: 'security.voter' }
 
-
-
+    app.users.register_residency:
+        class: 'AppBundle\FriendsSuggestions\RegisterUserResidencyInNeo4j'
+        arguments: ['@neo4j.client.default']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'SocNet\Users\Events\UserRegisteredEvent' }
