@@ -106,7 +106,6 @@ swiftmailer:
     host:      "%mailer_host%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
-    spool:     { type: memory }
 
 snc_redis:
     clients:
@@ -123,3 +122,45 @@ neo4j:
       port: "%neo4j_port%"
       username: "%neo4j_username%"
       password: "%neo4j_password%"
+
+simple_bus_asynchronous:
+    events:
+        logging: ~
+
+simple_bus_rabbit_mq_bundle_bridge:
+    events:
+        # this producer service will be defined by OldSoundRabbitMqBundle,
+        # its name is old_sound_rabbit_mq.%producer_name%_producer
+        producer_service_id: old_sound_rabbit_mq.asynchronous_events_producer
+
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host:     "%rabbit_mq_host%"
+            port:     "%rabbit_mq_port%"
+            user:     "%rabbit_mq_user%"
+            password: "%rabbit_mq_password%"
+            vhost:    "%rabbit_mq_vhost%"
+            lazy:     false
+            connection_timeout: 3
+            read_write_timeout: 3
+
+            # requires php-amqplib v2.4.1+ and PHP5.4+
+            keepalive: true
+
+            # requires php-amqplib v2.4.1+
+            heartbeat: 0
+
+            #requires php_sockets.dll
+            use_socket: true # default false
+    producers:
+        asynchronous_events:
+            connection:       default
+            exchange_options: { name: 'asynchronous_events', type: direct }
+    consumers:
+        asynchronous_events:
+            connection:       default
+            exchange_options: { name: 'asynchronous_events', type: direct }
+            queue_options:    { name: 'asynchronous_events' }
+            # use the consumer provided by SimpleBusRabbitMQBundleBridgeBundle
+            callback:         'simple_bus.rabbit_mq_bundle_bridge.events_consumer'

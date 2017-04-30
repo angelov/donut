@@ -22,3 +22,9 @@ parameters:
     neo4j_port: 7474
     neo4j_username: neo4j
     neo4j_password: neo4j
+
+    rabbit_mq_host: localhost
+    rabbit_mq_port: 5672
+    rabbit_mq_user: guest
+    rabbit_mq_password: guest
+    rabbit_mq_vhost: /

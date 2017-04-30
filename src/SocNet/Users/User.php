@@ -2,6 +2,7 @@
 
 namespace SocNet\Users;
 
+use JMS\Serializer\Annotation as Serializer;
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Places\City;
@@ -15,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="user")
  * @UniqueEntity(fields={"email"}, message="The email is already in use.")
+ * @Serializer\ExclusionPolicy("none")
  */
 class User implements UserInterface
 {
@@ -32,6 +34,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string")
+     * @Serializer\Exclude()
      */
     private $password;
 
