@@ -1,13 +1,13 @@
 services:
 
     app.feature_contexts.hooks.doctrine:
-        class: 'AppBundle\FeatureContexts\DoctrineHookContext'
+        class: 'SocNet\Behat\Hooks\PurgeDatabase'
         arguments: ['@__symfony__.doctrine.orm.entity_manager']
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.hooks.redis:
-        class: 'AppBundle\FeatureContexts\RedisDatabaseCleanerHookContext'
+        class: 'SocNet\Behat\Hooks\RedisDatabaseCleanerHookContext'
         arguments: ['@__symfony__.snc_redis.default']
         tags:
             - { name: fob.context_service }

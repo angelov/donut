@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\FeatureContexts;
+namespace SocNet\Behat\Hooks;
 
 use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 
-class DoctrineHookContext extends RawMinkContext
+class PurgeDatabase extends RawMinkContext
 {
     private $em;
 

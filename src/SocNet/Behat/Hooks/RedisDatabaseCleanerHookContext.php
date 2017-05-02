@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\FeatureContexts;
+namespace SocNet\Behat\Hooks;
 
 use Behat\Behat\Context\Context;
 use Predis\Client;
