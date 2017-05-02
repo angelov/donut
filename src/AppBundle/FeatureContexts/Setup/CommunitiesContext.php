@@ -3,23 +3,32 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Communities\Commands\JoinCommunityCommand;
+use SocNet\Communities\Commands\StoreCommunityCommand;
 use SocNet\Communities\Community;
+use SocNet\Communities\Repositories\CommunitiesRepositoryInterface;
+use SocNet\Core\CommandBus\CommandBusInterface;
 use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Users\User;
 use Behat\Behat\Context\Context;
-use Doctrine\ORM\EntityManager;
 
 class CommunitiesContext implements Context
 {
-    private $em;
+    private $commandBus;
     private $storage;
     private $uuidGenerator;
+    private $communities;
 
-    public function __construct(EntityManager $em, StorageInterface $storage, UuidGeneratorInterface $uuidGenerator)
-    {
-        $this->em = $em;
+    public function __construct(
+        CommandBusInterface $commandBus,
+        StorageInterface $storage,
+        UuidGeneratorInterface $uuidGenerator,
+        CommunitiesRepositoryInterface $communities
+    ) {
         $this->storage = $storage;
         $this->uuidGenerator = $uuidGenerator;
+        $this->commandBus = $commandBus;
+        $this->communities = $communities;
     }
 
     /**
@@ -45,10 +54,10 @@ class CommunitiesContext implements Context
 
     private function createCommunity(string $name, string $description, User $author) : Community
     {
-        $community = new Community($this->uuidGenerator->generate(), $name, $author, $description);
+        $id = $this->uuidGenerator->generate();
+        $this->commandBus->handle(new StoreCommunityCommand($id, $name, $author, $description));
 
-        $this->em->persist($community);
-        $this->em->flush();
+        $community = $this->communities->find($id);
 
         $this->storage->set('created_community', $community);
         $this->storage->set('community_' . $name, $community);
@@ -62,12 +71,9 @@ class CommunitiesContext implements Context
     public function iHaveJoinedTheCommunity(string $name) : void
     {
         $community = $this->storage->get('community_' . $name);
-
         $logged = $this->storage->get('logged_user');
-        $community->addMember($logged);
 
-        $this->em->persist($community);
-        $this->em->flush();
+        $this->commandBus->handle(new JoinCommunityCommand($logged, $community));
     }
 
     /**
@@ -75,13 +81,11 @@ class CommunitiesContext implements Context
      */
     public function iHaveJoinedIt() : void
     {
-        /** @var \SocNet\Communities\Community $community */
+        /** @var Community $community */
         $community = $this->storage->get('created_community');
         $user = $this->storage->get('logged_user');
 
-        $community->addMember($user);
-
-        $this->em->flush();
+        $this->commandBus->handle(new JoinCommunityCommand($user, $community));
     }
 
     /**
@@ -100,9 +104,7 @@ class CommunitiesContext implements Context
         $community = $this->storage->get('created_community');
         $user = $this->storage->get('last_created_user');
 
-        $community->addMember($user);
-
-        $this->em->flush();
+        $this->commandBus->handle(new JoinCommunityCommand($user, $community));
     }
 
     /**
