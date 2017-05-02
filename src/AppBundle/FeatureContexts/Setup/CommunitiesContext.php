@@ -4,6 +4,7 @@ namespace AppBundle\FeatureContexts\Setup;
 
 use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Communities\Community;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Users\User;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManager;
@@ -12,11 +13,13 @@ class CommunitiesContext implements Context
 {
     private $em;
     private $storage;
+    private $uuidGenerator;
 
-    public function __construct(EntityManager $em, StorageInterface $storage)
+    public function __construct(EntityManager $em, StorageInterface $storage, UuidGeneratorInterface $uuidGenerator)
     {
         $this->em = $em;
         $this->storage = $storage;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     /**
@@ -42,7 +45,7 @@ class CommunitiesContext implements Context
 
     private function createCommunity(string $name, string $description, User $author) : Community
     {
-        $community = new Community($name, $author, $description);
+        $community = new Community($this->uuidGenerator->generate(), $name, $author, $description);
 
         $this->em->persist($community);
         $this->em->flush();

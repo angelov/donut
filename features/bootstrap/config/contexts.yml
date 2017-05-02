@@ -26,7 +26,7 @@ services:
 
     app.feature_contexts.setup.communities:
         class: 'AppBundle\FeatureContexts\Setup\CommunitiesContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
         tags:
             - { name: fob.context_service }
 

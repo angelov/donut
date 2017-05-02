@@ -13,7 +13,7 @@ services:
 
     app.communities.form.community_type:
         class: 'SocNet\Communities\Form\CommunityType'
-        arguments: ['@app.users.security.current_user']
+        arguments: ['@app.users.security.current_user', '@app.core.uuid_generator']
         tags:
             - { name: 'form.type' }
 

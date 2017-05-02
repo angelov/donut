@@ -2,6 +2,7 @@
 
 namespace SocNet\Communities\Form;
 
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Users\User;
 use SocNet\Communities\Commands\StoreCommunityCommand;
 use SocNet\Core\Form\DataTransformers\NullToEmptyStringDataTransformer;
@@ -15,10 +16,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CommunityType extends BaseType
 {
     private $author;
+    private $uuidGenerator;
 
-    public function __construct(User $author)
+    public function __construct(User $author, UuidGeneratorInterface $uuidGenerator)
     {
         $this->author = $author;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) : void
@@ -36,10 +39,13 @@ class CommunityType extends BaseType
 
     public function configureOptions(OptionsResolver $resolver) : void
     {
+        $uuidGenerator = $this->uuidGenerator;
+
         $resolver->setDefaults([
             'data_class' => StoreCommunityCommand::class,
-            'empty_data' => function (FormInterface $form) : StoreCommunityCommand {
+            'empty_data' => function (FormInterface $form) use ($uuidGenerator) : StoreCommunityCommand {
                 return new StoreCommunityCommand(
+                    $uuidGenerator->generate(),
                     $form->get('name')->getData(),
                     $this->author,
                     $form->get('description')->getData()

@@ -56,3 +56,14 @@ services:
         arguments: ['@app.core.result_lists.pagination.renderers.twig']
         tags:
             - { name: 'twig.extension' }
+
+
+    # uuid generator
+
+    app.core.uuid_generator:
+        class: 'SocNet\Core\UuidGenerator\DoctrineUuidGeneratorAdapter'
+        arguments: ['@doctrine.orm.entity_manager', '@app.core.uuid_generator.base_doctrine_generator']
+
+    app.core.uuid_generator.base_doctrine_generator:
+        class: 'Doctrine\ORM\Id\UuidGenerator'
+        public: false

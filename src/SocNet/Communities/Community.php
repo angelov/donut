@@ -16,10 +16,10 @@ class Community
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="guid")
      */
-    private $id = '';
+    private $id;
 
     /**
      * @ORM\Column(type="string")
@@ -48,8 +48,9 @@ class Community
      */
     private $createdAt;
 
-    public function __construct(string $name, User $author, string $description = '')
+    public function __construct(string $id, string $name, User $author, string $description = '')
     {
+        $this->id = $id;
         $this->name = $name;
         $this->author = $author;
         $this->description = $description;
@@ -60,6 +61,11 @@ class Community
     public function getId() : string
     {
         return $this->id;
+    }
+
+    public function setId(string $id) : void
+    {
+        $this->id = $id;
     }
 
     public function getName() : string

@@ -13,12 +13,19 @@ class StoreCommunityCommand
     private $name;
     private $author;
     private $description;
+    private $id;
 
-    public function __construct(string $name, User $author, string $description = '')
+    public function __construct(string $id, string $name, User $author, string $description = '')
     {
         $this->name = $name;
         $this->author = $author;
         $this->description = $description;
+        $this->id = $id;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function getName() : string

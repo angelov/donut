@@ -8,20 +8,27 @@ use PhpSpec\ObjectBehavior;
 
 class StoreCommunityCommandSpec extends ObjectBehavior
 {
+    const COMMUNITY_ID = 'uuid value';
     const COMMUNITY_NAME = 'Example';
     const COMMUNITY_DESCRIPTION = 'Just an example community';
 
     function let(User $author)
     {
+        $id = self::COMMUNITY_ID;
         $name = self::COMMUNITY_NAME;
         $description = self::COMMUNITY_DESCRIPTION;
 
-        $this->beConstructedWith($name, $author, $description);
+        $this->beConstructedWith($id, $name, $author, $description);
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType(StoreCommunityCommand::class);
+    }
+
+    function it_holds_the_id()
+    {
+        $this->getId()->shouldReturn(self::COMMUNITY_ID);
     }
 
     function it_holds_the_community_name()

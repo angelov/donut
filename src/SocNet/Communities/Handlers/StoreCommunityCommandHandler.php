@@ -18,6 +18,7 @@ class StoreCommunityCommandHandler
     public function handle(StoreCommunityCommand $command) : void
     {
         $community = new Community(
+            $command->getId(),
             $command->getName(),
             $command->getAuthor(),
             $command->getDescription()

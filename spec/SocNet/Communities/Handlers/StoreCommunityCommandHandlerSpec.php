@@ -16,6 +16,7 @@ class StoreCommunityCommandHandlerSpec extends ObjectBehavior
     {
         $this->beConstructedWith($repository);
 
+        $command->getId()->willReturn('uuid value');
         $command->getName()->willReturn('name');
         $command->getDescription()->willReturn('');
         $command->getAuthor()->willReturn($user);
