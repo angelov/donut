@@ -2,6 +2,7 @@
 
 namespace AppBundle\FeatureContexts;
 
+use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Communities\Community;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
@@ -15,7 +16,7 @@ class ViewingCommunitiesContext implements Context
     private $router;
     private $storage;
 
-    public function __construct(EntityManager $em, Session $session, RouterInterface $router, Storage $storage)
+    public function __construct(EntityManager $em, Session $session, RouterInterface $router, StorageInterface $storage)
     {
         $this->session = $session;
         $this->router = $router;

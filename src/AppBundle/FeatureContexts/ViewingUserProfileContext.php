@@ -2,6 +2,7 @@
 
 namespace AppBundle\FeatureContexts;
 
+use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Users\User;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
@@ -16,7 +17,7 @@ class ViewingUserProfileContext implements Context
     private $router;
     private $storage;
 
-    public function __construct(Session $session, EntityManager $em, RouterInterface $router, Storage $storage)
+    public function __construct(Session $session, EntityManager $em, RouterInterface $router, StorageInterface $storage)
     {
         $this->em = $em;
         $this->router = $router;

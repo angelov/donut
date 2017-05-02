@@ -9,4 +9,4 @@ services:
         lazy: true
 
     app.behat.storage:
-        class: 'AppBundle\FeatureContexts\Storage'
+        class: 'SocNet\Behat\Service\Storage\InMemoryStorage'

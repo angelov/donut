@@ -2,6 +2,7 @@
 
 namespace AppBundle\FeatureContexts;
 
+use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Element\NodeElement;
@@ -15,7 +16,7 @@ class ManagingFriendshipsContext implements Context
     private $router;
     private $storage;
 
-    public function __construct(Session $session, RouterInterface $router, Storage $storage)
+    public function __construct(Session $session, RouterInterface $router, StorageInterface $storage)
     {
         $this->router = $router;
         $this->session = $session;

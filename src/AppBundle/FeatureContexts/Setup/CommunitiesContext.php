@@ -2,11 +2,10 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
+use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Communities\Community;
 use SocNet\Users\User;
-use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Doctrine\ORM\EntityManager;
 
 class CommunitiesContext implements Context
@@ -14,7 +13,7 @@ class CommunitiesContext implements Context
     private $em;
     private $storage;
 
-    public function __construct(EntityManager $em, Storage $storage)
+    public function __construct(EntityManager $em, StorageInterface $storage)
     {
         $this->em = $em;
         $this->storage = $storage;

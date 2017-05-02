@@ -2,10 +2,10 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
-use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\ORM\EntityManagerInterface;
+use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Movies\Genre;
 use SocNet\Movies\Movie;
 
@@ -14,7 +14,7 @@ class MoviesContext implements Context
     private $em;
     private $storage;
 
-    public function __construct(EntityManagerInterface $entityManager, Storage $storage)
+    public function __construct(EntityManagerInterface $entityManager, StorageInterface $storage)
     {
         $this->em = $entityManager;
         $this->storage = $storage;

@@ -2,10 +2,10 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
+use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Users\User;
-use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManager;
 use GraphAware\Neo4j\Client\Client;
@@ -16,7 +16,7 @@ class FriendshipsContext implements Context
     private $entityManager;
     private $neo4j;
 
-    public function __construct(Storage $storage, EntityManager $entityManager, Client $neo4j)
+    public function __construct(StorageInterface $storage, EntityManager $entityManager, Client $neo4j)
     {
         $this->storage = $storage;
         $this->entityManager = $entityManager; // @todo use a repository instead

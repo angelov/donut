@@ -2,9 +2,9 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
-use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
+use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Places\City;
 
 class CitiesContext implements Context
@@ -12,7 +12,7 @@ class CitiesContext implements Context
     private $entityManager;
     private $storage;
 
-    public function __construct(EntityManagerInterface $entityManager, Storage $storage)
+    public function __construct(EntityManagerInterface $entityManager, StorageInterface $storage)
     {
         $this->entityManager = $entityManager;
         $this->storage = $storage;

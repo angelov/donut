@@ -2,9 +2,9 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
+use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Places\City;
 use SocNet\Users\User;
-use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
@@ -15,7 +15,7 @@ class UsersContext implements Context
     private $storage;
     private $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoder $passwordEncoder, Storage $storage)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoder $passwordEncoder, StorageInterface $storage)
     {
         $this->em = $entityManager;
         $this->storage = $storage;

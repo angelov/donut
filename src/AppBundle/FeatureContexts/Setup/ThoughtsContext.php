@@ -2,9 +2,9 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
+use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Thoughts\Thought;
 use SocNet\Users\User;
-use AppBundle\FeatureContexts\Storage;
 use SocNet\Thoughts\ThoughtsCounter\ThoughtsCounterInterface;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManager;
@@ -15,7 +15,7 @@ class ThoughtsContext implements Context
     private $em;
     private $thoughtsCounter;
 
-    public function __construct(EntityManager $entityManager, Storage $storage, ThoughtsCounterInterface $thoughtsCounter)
+    public function __construct(EntityManager $entityManager, StorageInterface $storage, ThoughtsCounterInterface $thoughtsCounter)
     {
         $this->storage = $storage;
         $this->em = $entityManager;

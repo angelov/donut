@@ -2,9 +2,9 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
+use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Places\City;
 use SocNet\Users\User;
-use AppBundle\FeatureContexts\Storage;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
@@ -24,7 +24,7 @@ class SecurityContext implements Context
         EntityManager $entityManager,
         SessionInterface $session,
         Session $minkSession,
-        Storage $storage
+        StorageInterface $storage
     ) {
         $this->entityManager = $entityManager;
         $this->session = $session;

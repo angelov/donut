@@ -4,6 +4,7 @@ namespace AppBundle\FeatureContexts;
 
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
+use SocNet\Behat\Service\Storage\StorageInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
@@ -14,7 +15,7 @@ class RegistrationContext extends RawMinkContext
     private $session;
     private $storage;
 
-    public function __construct(Session $session, RouterInterface $router, Storage $storage)
+    public function __construct(Session $session, RouterInterface $router, StorageInterface $storage)
     {
         $this->session = $session;
         $this->router = $router;

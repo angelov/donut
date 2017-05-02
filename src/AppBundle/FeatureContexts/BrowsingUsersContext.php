@@ -5,6 +5,7 @@ namespace AppBundle\FeatureContexts;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use SocNet\Behat\Service\Storage\StorageInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
@@ -14,7 +15,7 @@ class BrowsingUsersContext implements Context
     private $router;
     private $storage;
 
-    public function __construct(Session $session, RouterInterface $router, Storage $storage)
+    public function __construct(Session $session, RouterInterface $router, StorageInterface $storage)
     {
         $this->session = $session;
         $this->router = $router;
