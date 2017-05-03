@@ -2,32 +2,31 @@
 
 namespace SocNet\Friendships\FriendshipRequests\Handlers;
 
+use SocNet\Core\CommandBus\CommandBusInterface;
 use SocNet\Core\EventBus\EventBusInterface;
 use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Friendships\Events\FriendshipWasCreatedEvent;
-use SocNet\Friendships\Friendship;
+use SocNet\Friendships\Commands\StoreFriendshipCommand;
 use SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
 use SocNet\Friendships\FriendshipRequests\Events\FriendshipRequestWasAcceptedEvent;
 use SocNet\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface;
-use SocNet\Friendships\Repositories\FriendshipsRepositoryInterface;
 
 class AcceptFriendshipRequestCommandHandler
 {
     private $requests;
-    private $friendships;
     private $events;
     private $uuidGenerator;
+    private $commandBus;
 
     public function __construct(
         FriendshipRequestsRepositoryInterface $requests,
-        FriendshipsRepositoryInterface $friendships,
         UuidGeneratorInterface $uuidGenerator,
+        CommandBusInterface $commandBus,
         EventBusInterface $events
     ) {
         $this->requests = $requests;
-        $this->friendships = $friendships;
         $this->events = $events;
         $this->uuidGenerator = $uuidGenerator;
+        $this->commandBus = $commandBus;
     }
 
     public function handle(AcceptFriendshipRequestCommand $command) : void
@@ -37,16 +36,13 @@ class AcceptFriendshipRequestCommandHandler
         $recipient = $request->getToUser();
 
         $id = $this->uuidGenerator->generate();
-        $friendship = new Friendship($id, $sender, $recipient);
-        $this->friendships->store($friendship);
+        $this->commandBus->handle(new StoreFriendshipCommand($id, $sender, $recipient));
 
         $id = $this->uuidGenerator->generate();
-        $friendship = new Friendship($id, $recipient, $sender);
-        $this->friendships->store($friendship);
+        $this->commandBus->handle(new StoreFriendshipCommand($id, $recipient, $sender));
 
         $this->requests->destroy($request);
 
         $this->events->fire(new FriendshipRequestWasAcceptedEvent($request));
-        $this->events->fire(new FriendshipWasCreatedEvent($friendship));
     }
 }

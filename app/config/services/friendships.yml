@@ -39,8 +39,8 @@ services:
         class: 'SocNet\Friendships\FriendshipRequests\Handlers\AcceptFriendshipRequestCommandHandler'
         arguments:
             - '@app.friendships.friendship_requests.repositories.default'
-            - '@app.friendships.repositories.default'
             - '@app.core.uuid_generator'
+            - '@app.core.command_bus.default'
             - '@app.core.event_bus.default'
         tags:
             - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand' }
@@ -50,6 +50,12 @@ services:
         arguments: ['@app.friendships.repositories.default', '@app.core.event_bus.default']
         tags:
             - { name: 'command_handler', handles: 'SocNet\Friendships\Commands\DeleteFriendshipCommand' }
+
+    app.friendships.handlers.store:
+        class: 'SocNet\Friendships\Handlers\StoreFriendshipCommandHandler'
+        arguments: ['@app.friendships.repositories.default', '@app.core.event_bus.default']
+        tags:
+            - { name: 'command_handler', handles: 'SocNet\Friendships\Commands\StoreFriendshipCommand' }
 
 
     # event subscribers
