@@ -3,6 +3,7 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Places\City;
 use SocNet\Users\User;
 use Behat\Behat\Context\Context;
@@ -14,12 +15,14 @@ class UsersContext implements Context
     private $em;
     private $storage;
     private $passwordEncoder;
+    private $uuidGenerator;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoder $passwordEncoder, StorageInterface $storage)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoder $passwordEncoder, StorageInterface $storage, UuidGeneratorInterface $uuidGenerator)
     {
         $this->em = $entityManager;
         $this->storage = $storage;
         $this->passwordEncoder = $passwordEncoder;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     /**
@@ -27,10 +30,12 @@ class UsersContext implements Context
      */
     public function thereIsAUserWithEmailAndPassword($name, $email, $password) : void
     {
-        $city = new City('Valandovo');
+        $id = $this->uuidGenerator->generate();
+        $city = new City($id, 'Valandovo');
         $this->em->persist($city);
 
-        $user = new User($name, $email, $password, $city);
+        $id = $this->uuidGenerator->generate();
+        $user = new User($id, $name, $email, $password, $city);
 
         $password = $this->passwordEncoder->encodePassword($user, $password);
         $user->setPassword($password);

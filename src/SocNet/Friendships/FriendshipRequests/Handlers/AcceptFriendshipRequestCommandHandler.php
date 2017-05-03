@@ -3,6 +3,7 @@
 namespace SocNet\Friendships\FriendshipRequests\Handlers;
 
 use SocNet\Core\EventBus\EventBusInterface;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Friendships\Events\FriendshipWasCreatedEvent;
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
@@ -15,12 +16,18 @@ class AcceptFriendshipRequestCommandHandler
     private $requests;
     private $friendships;
     private $events;
+    private $uuidGenerator;
 
-    public function __construct(FriendshipRequestsRepositoryInterface $requests, FriendshipsRepositoryInterface $friendships, EventBusInterface $events)
-    {
+    public function __construct(
+        FriendshipRequestsRepositoryInterface $requests,
+        FriendshipsRepositoryInterface $friendships,
+        UuidGeneratorInterface $uuidGenerator,
+        EventBusInterface $events
+    ) {
         $this->requests = $requests;
         $this->friendships = $friendships;
         $this->events = $events;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     public function handle(AcceptFriendshipRequestCommand $command) : void
@@ -29,10 +36,12 @@ class AcceptFriendshipRequestCommandHandler
         $sender = $request->getFromUser();
         $recipient = $request->getToUser();
 
-        $friendship = new Friendship($sender, $recipient);
+        $id = $this->uuidGenerator->generate();
+        $friendship = new Friendship($id, $sender, $recipient);
         $this->friendships->store($friendship);
 
-        $friendship = new Friendship($recipient, $sender);
+        $id = $this->uuidGenerator->generate();
+        $friendship = new Friendship($id, $recipient, $sender);
         $this->friendships->store($friendship);
 
         $this->requests->destroy($request);

@@ -47,8 +47,9 @@ class DoctrineMoviesList extends AbstractDoctrineResultsList implements MoviesLi
         }
 
         if (count($this->genres)) {
+            $i = 0;
             foreach ($this->genres as $genre) {
-                $param = 'genre_' . $genre->getId();
+                $param = 'genre_' . $i++;
                 $qb->andWhere(sprintf(':%s member of movie.genres', $param))->setParameter($param, $genre);
             }
         }

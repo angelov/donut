@@ -22,6 +22,7 @@ class StoreThoughtCommandHandler
     public function handle(StoreThoughtCommand $command) : void
     {
         $thought = new Thought(
+            $command->getId(),
             $command->getAuthor(),
             $command->getContent()
         );

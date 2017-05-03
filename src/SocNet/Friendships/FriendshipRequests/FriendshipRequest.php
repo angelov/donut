@@ -13,10 +13,10 @@ class FriendshipRequest
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="guid")
      */
-    private $id = '';
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="sentFriendshipRequests")
@@ -30,15 +30,21 @@ class FriendshipRequest
      */
     private $toUser;
 
-    public function __construct(User $sender, User $receiver)
+    public function __construct(string $id, User $sender, User $receiver)
     {
         $this->setFromUser($sender);
         $this->setToUser($receiver);
+        $this->setId($id);
     }
 
     public function getId() : string
     {
         return $this->id;
+    }
+
+    public function setId(string $id) : void
+    {
+        $this->id = $id;
     }
 
     public function getFromUser() : User

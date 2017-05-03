@@ -5,6 +5,7 @@ namespace spec\SocNet\Friendships\FriendshipRequests\Handlers;
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 use SocNet\Core\EventBus\EventBusInterface;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Friendships\Events\FriendshipWasCreatedEvent;
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
@@ -17,9 +18,13 @@ use SocNet\Users\User;
 
 class AcceptFriendshipRequestCommandHandlerSpec extends ObjectBehavior
 {
-    function let(FriendshipRequestsRepositoryInterface $requestsRepository, FriendshipsRepositoryInterface $friendshipsRepository, EventBusInterface $eventBus)
-    {
-        $this->beConstructedWith($requestsRepository, $friendshipsRepository, $eventBus);
+    function let(
+        FriendshipRequestsRepositoryInterface $requestsRepository,
+        FriendshipsRepositoryInterface $friendshipsRepository,
+        UuidGeneratorInterface $uuidGenerator,
+        EventBusInterface $eventBus
+    ) {
+        $this->beConstructedWith($requestsRepository, $friendshipsRepository, $uuidGenerator, $eventBus);
     }
 
     function it_is_initializable()
@@ -34,6 +39,7 @@ class AcceptFriendshipRequestCommandHandlerSpec extends ObjectBehavior
         User $recipient,
         FriendshipRequestsRepositoryInterface $requestsRepository,
         FriendshipsRepositoryInterface $friendshipsRepository,
+        UuidGeneratorInterface $uuidGenerator,
         EventBusInterface $eventBus
     ) {
         $command->getFriendshipRequest()->willReturn($request);
@@ -43,6 +49,7 @@ class AcceptFriendshipRequestCommandHandlerSpec extends ObjectBehavior
 
         $friendshipsRepository->store(Argument::type(Friendship::class))->shouldBeCalledTimes(2);
         $requestsRepository->destroy($request)->shouldBeCalled();
+        $uuidGenerator->generate()->shouldBeCalledTimes(2);
 
         $eventBus->fire(Argument::type(FriendshipRequestWasAcceptedEvent::class))->shouldBeCalled();
         $eventBus->fire(Argument::type(FriendshipWasCreatedEvent::class))->shouldBeCalled();

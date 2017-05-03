@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class StoreUserCommandHandlerSpec extends ObjectBehavior
 {
+    const USER_ID = 'uuid value';
     const USER_NAME = 'John';
     const USER_EMAIL = 'john@example.com';
     const USER_PASSWORD = '123456';
@@ -37,6 +38,7 @@ class StoreUserCommandHandlerSpec extends ObjectBehavior
         $command->getEmail()->willReturn(self::USER_EMAIL);
         $command->getPassword()->willReturn(self::USER_PASSWORD);
         $command->getCity()->willReturn($city);
+        $command->getId()->willReturn(self::USER_ID);
     }
 
     function it_is_initializable()
@@ -54,6 +56,7 @@ class StoreUserCommandHandlerSpec extends ObjectBehavior
         $emailAvailabilityChecker->isTaken(self::USER_EMAIL)->willReturn(false);
         $passwordEncoder->encodePassword(Argument::type(User::class), Argument::type('string'))->willReturn('encoded');
 
+        $command->getId()->shouldBeCalled();
         $command->getName()->shouldBeCalled();
         $command->getPassword()->shouldBeCalled();
         $command->getEmail()->shouldBeCalled();

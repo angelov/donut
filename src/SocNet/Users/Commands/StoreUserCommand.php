@@ -8,6 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class StoreUserCommand
 {
+    private $id;
+
     /**
      * @Assert\NotBlank(message="Please enter your name.")
      */
@@ -28,12 +30,18 @@ class StoreUserCommand
 
     private $city;
 
-    public function __construct(string $name, string $email, string $password, City $city)
+    public function __construct(string $id, string $name, string $email, string $password, City $city)
     {
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
         $this->city = $city;
+        $this->id = $id;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function getName() : string

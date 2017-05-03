@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\ORM\EntityManagerInterface;
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Movies\Genre;
 use SocNet\Movies\Movie;
 
@@ -13,11 +14,13 @@ class MoviesContext implements Context
 {
     private $em;
     private $storage;
+    private $uuidGenerator;
 
-    public function __construct(EntityManagerInterface $entityManager, StorageInterface $storage)
+    public function __construct(EntityManagerInterface $entityManager, StorageInterface $storage, UuidGeneratorInterface $uuidGenerator)
     {
         $this->em = $entityManager;
         $this->storage = $storage;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     /**
@@ -25,7 +28,8 @@ class MoviesContext implements Context
      */
     public function thereIsAMovieTitled(string $title) : void
     {
-        $movie = new Movie($title, 2017, 'Example plot');
+        $id = $this->uuidGenerator->generate();
+        $movie = new Movie($id, $title, 2017, 'Example plot');
 
         $this->em->persist($movie);
         $this->em->flush();
@@ -42,8 +46,10 @@ class MoviesContext implements Context
             $genres = array_map(function($genre) : Genre {
                 return $this->storage->get('created_genres')[$genre];
             }, $genres);
+            $id = $this->uuidGenerator->generate();
 
             $movie = new Movie(
+                $id,
                 $movie['Title'],
                 $movie['Year'],
                 '',
@@ -70,7 +76,9 @@ class MoviesContext implements Context
 
         for ($i=0; $i<$count; $i++) {
 
+            $id = $this->uuidGenerator->generate();
             $movie = new Movie(
+                $id,
                 sprintf('%s movie #%d', $genre->getTitle(), $i),
                 $year,
                 '',

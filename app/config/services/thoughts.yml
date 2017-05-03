@@ -20,7 +20,7 @@ services:
 
     app.thoughts.form.thought_type:
         class: 'SocNet\Thoughts\Form\ThoughtType'
-        arguments: ['@app.users.security.current_user']
+        arguments: ['@app.users.security.current_user', '@app.core.uuid_generator']
         tags:
             - { name: 'form.type' }
 

@@ -10,5 +10,5 @@ interface UsersProviderInterface
     /**
      * @throws ResourceNotFoundException
      */
-    public function getById(int $id) : User;
+    public function getById(string $id) : User;
 }

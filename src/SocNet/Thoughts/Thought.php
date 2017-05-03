@@ -14,10 +14,10 @@ class Thought
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="guid")
      */
-    private $id = '';
+    private $id;
 
     /**
      * @ORM\Column(type="string")
@@ -35,16 +35,22 @@ class Thought
      */
     private $createdAt;
 
-    public function __construct(User $author, string $content)
+    public function __construct(string $id, User $author, string $content)
     {
         $this->createdAt = new DateTime();
         $this->author = $author;
         $this->content = $content;
+        $this->id = $id;
     }
 
     public function getId() : string
     {
         return $this->id;
+    }
+
+    public function setId(string $id) : void
+    {
+        $this->id = $id;
     }
 
     public function getContent() : string

@@ -38,6 +38,7 @@ class StoreUserCommandHandler
         $this->assertEmailNotTaken($command->getEmail());
 
         $user = new User(
+            $command->getId(),
             $command->getName(),
             $command->getEmail(),
             $command->getPassword(),

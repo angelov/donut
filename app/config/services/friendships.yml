@@ -19,7 +19,7 @@ services:
 
     app.friendships.friendship_requests.handlers.send:
         class: 'SocNet\Friendships\FriendshipRequests\Handlers\SendFriendshipRequestCommandHandler'
-        arguments: ['@app.friendships.friendship_requests.repositories.default']
+        arguments: ['@app.friendships.friendship_requests.repositories.default', '@app.core.uuid_generator']
         tags:
             - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand' }
 
@@ -37,7 +37,11 @@ services:
 
     app.friendships.friendship_requests.handlers.accept:
         class: 'SocNet\Friendships\FriendshipRequests\Handlers\AcceptFriendshipRequestCommandHandler'
-        arguments: ['@app.friendships.friendship_requests.repositories.default', '@app.friendships.repositories.default', '@app.core.event_bus.default']
+        arguments:
+            - '@app.friendships.friendship_requests.repositories.default'
+            - '@app.friendships.repositories.default'
+            - '@app.core.uuid_generator'
+            - '@app.core.event_bus.default'
         tags:
             - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand' }
 

@@ -8,9 +8,11 @@ use SocNet\Users\User;
 
 class FriendshipRequestSpec extends ObjectBehavior
 {
-    public function let(User $sender, User $receiver)
+    const REQUEST_ID = 'uuid value';
+
+    function let(User $sender, User $receiver)
     {
-        $this->beConstructedWith($sender, $receiver);
+        $this->beConstructedWith(self::REQUEST_ID, $sender, $receiver);
     }
 
     function it_is_initializable()
@@ -18,9 +20,15 @@ class FriendshipRequestSpec extends ObjectBehavior
         $this->shouldHaveType(FriendshipRequest::class);
     }
 
-    function it_has_no_id_by_default()
+    function it_has_id_by_default()
     {
-        $this->getId()->shouldReturn('');
+        $this->getId()->shouldReturn(self::REQUEST_ID);
+    }
+
+    function it_has_mutable_id()
+    {
+        $this->setId('new value');
+        $this->getId()->shouldReturn('new value');
     }
 
     function it_holds_the_sender(User $sender)

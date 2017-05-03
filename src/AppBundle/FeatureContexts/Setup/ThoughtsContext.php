@@ -2,7 +2,9 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
+use Doctrine\ORM\Id\UuidGenerator;
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Thoughts\Thought;
 use SocNet\Users\User;
 use SocNet\Thoughts\ThoughtsCounter\ThoughtsCounterInterface;
@@ -14,12 +16,14 @@ class ThoughtsContext implements Context
     private $storage;
     private $em;
     private $thoughtsCounter;
+    private $uuidGenerator;
 
-    public function __construct(EntityManager $entityManager, StorageInterface $storage, ThoughtsCounterInterface $thoughtsCounter)
+    public function __construct(EntityManager $entityManager, StorageInterface $storage, ThoughtsCounterInterface $thoughtsCounter, UuidGeneratorInterface $uuidGenerator)
     {
         $this->storage = $storage;
         $this->em = $entityManager;
         $this->thoughtsCounter = $thoughtsCounter;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     /**
@@ -89,8 +93,10 @@ class ThoughtsContext implements Context
     private function createThought(User $author, string $content = '') : Thought
     {
         $latest = $this->storage->get('latest_thought_time', new \DateTime());
+        $id = $this->uuidGenerator->generate();
 
         $thought = new Thought(
+            $id,
             $author,
             $content ?? sprintf('Random content #%d', random_int(0, 10000))
         );

@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class StoreThoughtCommand
 {
+    private $id;
     private $author;
 
     /**
@@ -15,10 +16,16 @@ class StoreThoughtCommand
      */
     private $content;
 
-    public function __construct(User $author, string $content)
+    public function __construct(string $id, User $author, string $content)
     {
         $this->author = $author;
         $this->content = $content;
+        $this->id = $id;
+    }
+
+    public function getId() : string
+    {
+        return $this->id;
     }
 
     public function getAuthor() : User

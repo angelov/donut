@@ -8,11 +8,12 @@ use SocNet\Users\User;
 
 class CitySpec extends ObjectBehavior
 {
+    const CITY_ID = 'uuid value';
     const CITY_NAME = 'Skopje';
 
     function let()
     {
-        $this->beConstructedWith(self::CITY_NAME);
+        $this->beConstructedWith(self::CITY_ID, self::CITY_NAME);
     }
 
     function it_is_initializable()
@@ -20,9 +21,15 @@ class CitySpec extends ObjectBehavior
         $this->shouldHaveType(City::class);
     }
 
-    function it_has_no_id_by_default()
+    function it_has_id_by_default()
     {
-        $this->getId()->shouldReturn('');
+        $this->getId()->shouldReturn(self::CITY_ID);
+    }
+
+    function it_has_mutable_id()
+    {
+        $this->setId('a');
+        $this->getId()->shouldReturn('a');
     }
 
     function it_has_a_name_by_default()

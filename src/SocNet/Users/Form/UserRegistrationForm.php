@@ -4,6 +4,7 @@ namespace SocNet\Users\Form;
 
 use Doctrine\ORM\EntityManagerInterface;
 use SocNet\Core\Form\DataTransformers\NullToEmptyStringDataTransformer;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Places\City;
 use SocNet\Users\Commands\StoreUserCommand;
 use Symfony\Component\Form\AbstractType;
@@ -21,11 +22,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class UserRegistrationForm extends AbstractType implements DataMapperInterface
 {
     private $entityManager;
+    private $uuidGenerator;
 
     // @todo use repository instead of entity manager
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, UuidGeneratorInterface $uuidGenerator)
     {
         $this->entityManager = $entityManager;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) : void
@@ -76,6 +79,7 @@ class UserRegistrationForm extends AbstractType implements DataMapperInterface
         $forms = iterator_to_array($forms);
 
         $data = new StoreUserCommand(
+            $this->uuidGenerator->generate(),
             $forms['name']->getData(),
             $forms['email']->getData(),
             $forms['password']->get('second')->getData(),

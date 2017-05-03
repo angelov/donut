@@ -27,6 +27,7 @@ class StoreThoughtCommandHandlerSpec extends ObjectBehavior
     {
         $command->getAuthor()->shouldBeCalled();
         $command->getContent()->shouldBeCalled();
+        $command->getId()->shouldBeCalled();
 
         $repository->store(Argument::type(Thought::class))->shouldBeCalled();
 

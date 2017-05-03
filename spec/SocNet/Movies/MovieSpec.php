@@ -8,6 +8,7 @@ use PhpSpec\ObjectBehavior;
 
 class MovieSpec extends ObjectBehavior
 {
+    const MOVIE_ID = 'uuid value';
     const MOVIE_TITLE = 'Example Movie';
     const MOVIE_YEAR = 2017;
     const MOVIE_PLOT = 'This is just an example movie';
@@ -15,7 +16,7 @@ class MovieSpec extends ObjectBehavior
 
     public function let(Genre $genre)
     {
-        $this->beConstructedWith(self::MOVIE_TITLE, self::MOVIE_YEAR, self::MOVIE_PLOT, [$genre]);
+        $this->beConstructedWith(self::MOVIE_ID, self::MOVIE_TITLE, self::MOVIE_YEAR, self::MOVIE_PLOT, [$genre]);
 
         $genre->addMovie($this)->shouldHaveBeenCalled();
     }
@@ -25,9 +26,15 @@ class MovieSpec extends ObjectBehavior
         $this->shouldHaveType(Movie::class);
     }
 
-    function it_has_no_id_by_default()
+    function it_has_id_by_default()
     {
-        $this->getId()->shouldReturn('');
+        $this->getId()->shouldReturn(self::MOVIE_ID);
+    }
+
+    function it_has_mutable_id()
+    {
+        $this->setId('new id');
+        $this->getId()->shouldReturn('new id');
     }
 
     function it_has_title_by_default()

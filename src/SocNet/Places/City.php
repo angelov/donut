@@ -14,10 +14,10 @@ class City
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="string")
      */
-    private $id = '';
+    private $id;
 
     /**
      * @ORM\Column(type="string")
@@ -29,15 +29,21 @@ class City
      */
     private $residents;
 
-    public function __construct(string $name)
+    public function __construct(string $id, string $name)
     {
         $this->name = $name;
         $this->residents = new ArrayCollection();
+        $this->id = $id;
     }
 
     public function getId() : string
     {
         return $this->id;
+    }
+
+    public function setId(string $id) : void
+    {
+        $this->id = $id;
     }
 
     public function getName() : string

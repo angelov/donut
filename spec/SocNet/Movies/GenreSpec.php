@@ -9,11 +9,12 @@ use SocNet\Movies\Movie;
 
 class GenreSpec extends ObjectBehavior
 {
+    const GENRE_ID = 'uuid value';
     const GENRE_TITLE = 'Comedy';
 
     function let()
     {
-        $this->beConstructedWith(self::GENRE_TITLE);
+        $this->beConstructedWith(self::GENRE_ID, self::GENRE_TITLE);
     }
 
     function it_is_initializable()
@@ -21,9 +22,15 @@ class GenreSpec extends ObjectBehavior
         $this->shouldHaveType(Genre::class);
     }
 
-    function it_has_no_id_by_default()
+    function it_has_id_by_default()
     {
-        $this->getId()->shouldReturn('');
+        $this->getId()->shouldReturn(self::GENRE_ID);
+    }
+
+    function it_has_mutable_id()
+    {
+        $this->setId('new');
+        $this->getId()->shouldReturn('new');
     }
 
     function it_has_title_by_default()

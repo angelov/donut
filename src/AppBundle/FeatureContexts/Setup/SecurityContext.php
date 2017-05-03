@@ -3,6 +3,7 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Places\City;
 use SocNet\Users\User;
 use Behat\Behat\Context\Context;
@@ -19,17 +20,20 @@ class SecurityContext implements Context
     private $session;
     private $minkSession;
     private $storage;
+    private $uuidGenerator;
 
     public function __construct(
         EntityManager $entityManager,
         SessionInterface $session,
         Session $minkSession,
-        StorageInterface $storage
+        StorageInterface $storage,
+        UuidGeneratorInterface $uuidGenerator
     ) {
         $this->entityManager = $entityManager;
         $this->session = $session;
         $this->minkSession = $minkSession;
         $this->storage = $storage;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     /**
@@ -37,10 +41,13 @@ class SecurityContext implements Context
      */
     public function iAmLoggedInAs(string $email) : void
     {
-        $city = new City('Valandovo');
+        $id = $this->uuidGenerator->generate();
+        $city = new City($id, 'Valandovo');
         $this->entityManager->persist($city);
 
+        $id = $this->uuidGenerator->generate();
         $user = new User(
+            $id,
             $this->storage->get('user_name', 'John Smith'),
             $email,
             '123456',

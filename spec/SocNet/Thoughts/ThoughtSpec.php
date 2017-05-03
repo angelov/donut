@@ -9,9 +9,12 @@ use SocNet\Users\User;
 
 class ThoughtSpec extends ObjectBehavior
 {
+    const THOUGHT_ID = 'uuid value';
+    const THOUGHT_CONTENT = 'example';
+
     function let(User $user)
     {
-        $this->beConstructedWith($user, 'example');
+        $this->beConstructedWith(self::THOUGHT_ID, $user, self::THOUGHT_CONTENT);
     }
 
     function it_is_initializable()
@@ -19,15 +22,31 @@ class ThoughtSpec extends ObjectBehavior
         $this->shouldHaveType(Thought::class);
     }
 
-    function it_has_no_id_by_default()
+    function it_has_id_by_default()
     {
-        $this->getId()->shouldReturn('');
+        $this->getId()->shouldReturn(self::THOUGHT_ID);
+    }
+
+    function it_has_mutable_id()
+    {
+        $this->setId('new id');
+        $this->getId()->shouldReturn('new id');
+    }
+
+    function it_has_content_by_default()
+    {
+        $this->getContent()->shouldReturn(self::THOUGHT_CONTENT);
     }
 
     function it_has_mutable_content()
     {
-        $this->setContent('example');
-        $this->getContent()->shouldReturn('example');
+        $this->setContent('example 2');
+        $this->getContent()->shouldReturn('example 2');
+    }
+
+    function it_has_created_at_date_by_default()
+    {
+        $this->getCreatedAt()->shouldBeAnInstanceOf(\DateTime::class);
     }
 
     function it_has_mutable_created_at_date(\DateTime $dateTime)
@@ -36,9 +55,14 @@ class ThoughtSpec extends ObjectBehavior
         $this->getCreatedAt()->shouldReturn($dateTime);
     }
 
-    function it_has_mutable_author(User $user)
+    function it_has_author_by_default(User $user)
     {
-        $this->setAuthor($user);
         $this->getAuthor()->shouldReturn($user);
+    }
+
+    function it_has_mutable_author(User $user2)
+    {
+        $this->setAuthor($user2);
+        $this->getAuthor()->shouldReturn($user2);
     }
 }

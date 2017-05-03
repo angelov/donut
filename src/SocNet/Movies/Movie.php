@@ -13,10 +13,10 @@ class Movie
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="guid")
      */
-    private $id = '';
+    private $id;
 
     /**
      * @ORM\Column(type="string")
@@ -55,8 +55,9 @@ class Movie
     /**
      * @param $genres Genre[]
      */
-    public function __construct(string $title, int $year, string $plot = '', array $genres = [])
+    public function __construct(string $id, string $title, int $year, string $plot = '', array $genres = [])
     {
+        $this->id = $id;
         $this->title = $title;
         $this->year = $year;
         $this->plot = $plot;
@@ -70,6 +71,11 @@ class Movie
     public function getId() : string
     {
         return $this->id;
+    }
+
+    public function setId(string $id) : void
+    {
+        $this->id = $id;
     }
 
     public function getTitle() : string

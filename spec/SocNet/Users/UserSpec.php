@@ -12,13 +12,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserSpec extends ObjectBehavior
 {
+    const USER_ID = 'uuid value';
     const USER_NAME = 'John';
     const USER_EMAIL = 'john@example.com';
     const USER_PASSWORD = '123456';
 
     function let(City $city)
     {
-        $this->beConstructedWith(self::USER_NAME, self::USER_EMAIL, self::USER_PASSWORD, $city);
+        $this->beConstructedWith(self::USER_ID, self::USER_NAME, self::USER_EMAIL, self::USER_PASSWORD, $city);
     }
 
     function it_is_initializable()
@@ -31,9 +32,20 @@ class UserSpec extends ObjectBehavior
         $this->shouldImplement(UserInterface::class);
     }
 
-    function it_has_no_id_by_default()
+    function it_has_id_by_default()
     {
-        $this->getId()->shouldReturn('');
+        $this->getId()->shouldReturn(self::USER_ID);
+    }
+
+    function it_has_mutable_id()
+    {
+        $this->setId('a');
+        $this->getId()->shouldReturn('a');
+    }
+
+    function it_has_email_by_default()
+    {
+        $this->getEmail()->shouldReturn(self::USER_EMAIL);
     }
 
     function it_has_mutable_email()
@@ -42,10 +54,20 @@ class UserSpec extends ObjectBehavior
         $this->getEmail()->shouldReturn('john@example.com');
     }
 
+    function it_has_password_by_default()
+    {
+        $this->getPassword()->shouldReturn(self::USER_PASSWORD);
+    }
+
     function it_has_mutable_password()
     {
         $this->setPassword('123456');
         $this->getPassword()->shouldReturn('123456');
+    }
+
+    function it_has_name_by_default()
+    {
+        $this->getName()->shouldReturn(self::USER_NAME);
     }
 
     function it_has_mutable_name()

@@ -13,10 +13,10 @@ class Genre
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="guid")
      */
-    private $id = '';
+    private $id;
 
     /**
      * @ORM\Column(type="string")
@@ -28,15 +28,21 @@ class Genre
      */
     private $movies;
 
-    public function __construct(string $title)
+    public function __construct(string $id, string $title)
     {
         $this->title = $title;
+        $this->id = $id;
         $this->movies = new ArrayCollection();
     }
 
     public function getId() : string
     {
         return $this->id;
+    }
+
+    public function setId(string $id) : void
+    {
+        $this->id = $id;
     }
 
     public function getTitle() : string

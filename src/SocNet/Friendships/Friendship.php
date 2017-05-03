@@ -14,10 +14,10 @@ class Friendship
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="guid")
      */
-    private $id = '';
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="friendships")
@@ -35,16 +35,22 @@ class Friendship
      */
     private $createdAt;
 
-    public function __construct(User $user, User $friend)
+    public function __construct(string $id, User $user, User $friend)
     {
         $this->createdAt = new DateTime();
         $this->user = $user;
         $this->friend = $friend;
+        $this->id = $id;
     }
 
     public function getId() : string
     {
         return $this->id;
+    }
+
+    public function setId(string $id) : void
+    {
+        $this->id = $id;
     }
 
     public function getUser() : User

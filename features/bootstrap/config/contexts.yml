@@ -14,13 +14,13 @@ services:
 
     app.feature_contexts.setup.users:
         class: 'AppBundle\FeatureContexts\Setup\UsersContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.security.password_encoder', '@app.behat.storage']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.security.password_encoder', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.setup.thoughts:
         class: 'AppBundle\FeatureContexts\Setup\ThoughtsContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.thoughts.thoughts_counter.default']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.thoughts.thoughts_counter.default', '@__symfony__.app.core.uuid_generator']
         tags:
             - { name: fob.context_service }
 
@@ -36,31 +36,35 @@ services:
 
     app.feature_contexts.setup.friendships:
         class: 'AppBundle\FeatureContexts\Setup\FriendshipsContext'
-        arguments: ['@app.behat.storage', '@__symfony__.doctrine.orm.entity_manager', '@__symfony__.neo4j.client']
+        arguments:
+            - '@app.behat.storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.neo4j.client'
+            - '@__symfony__.app.core.uuid_generator'
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.setup.movies:
         class: 'AppBundle\FeatureContexts\Setup\MoviesContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.setup.movie_genres:
         class: 'AppBundle\FeatureContexts\Setup\MovieGenresContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.setup.cities:
         class: 'AppBundle\FeatureContexts\Setup\CitiesContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.setup.security:
         class: 'AppBundle\FeatureContexts\Setup\SecurityContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.session', '@mink.default_session', '@app.behat.storage']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.session', '@mink.default_session', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
         tags:
             - { name: fob.context_service }
 

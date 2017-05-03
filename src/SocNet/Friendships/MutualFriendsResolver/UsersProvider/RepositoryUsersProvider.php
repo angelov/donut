@@ -17,7 +17,7 @@ class RepositoryUsersProvider implements UsersProviderInterface
     /**
      * @inheritdoc
      */
-    public function getById(int $id): User
+    public function getById(string $id): User
     {
         return $this->repository->find($id);
     }

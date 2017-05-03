@@ -5,17 +5,20 @@ namespace AppBundle\FeatureContexts\Setup;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Places\City;
 
 class CitiesContext implements Context
 {
     private $entityManager;
     private $storage;
+    private $uuidGenerator;
 
-    public function __construct(EntityManagerInterface $entityManager, StorageInterface $storage)
+    public function __construct(EntityManagerInterface $entityManager, StorageInterface $storage, UuidGeneratorInterface $uuidGenerator)
     {
         $this->entityManager = $entityManager;
         $this->storage = $storage;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     /**
@@ -24,7 +27,8 @@ class CitiesContext implements Context
     public function thereAreCitiesNamedSkopjeAndOhrid(string... $names)
     {
         foreach ($names as $name) {
-            $city = new City($name);
+            $id = $this->uuidGenerator->generate();
+            $city = new City($id, $name);
             $this->entityManager->persist($city);
         }
 

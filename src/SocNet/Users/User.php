@@ -22,10 +22,10 @@ class User implements UserInterface
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="guid")
      */
-    private $id = '';
+    private $id;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -73,8 +73,9 @@ class User implements UserInterface
      */
     private $city;
 
-    public function __construct(string $name, string $email, string $password, City $city)
+    public function __construct(string $id, string $name, string $email, string $password, City $city)
     {
+        $this->id = $id;
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
@@ -88,6 +89,11 @@ class User implements UserInterface
     public function getId() : string
     {
         return $this->id;
+    }
+
+    public function setId(string $id) : void
+    {
+        $this->id = $id;
     }
 
     public function getUsername() : string

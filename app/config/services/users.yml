@@ -38,7 +38,7 @@ services:
 
     app.users.form.registration:
         class: 'SocNet\Users\Form\UserRegistrationForm'
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '@app.core.uuid_generator']
         tags:
             - { name: 'form.type' }
 

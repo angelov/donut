@@ -3,6 +3,7 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Users\User;
@@ -15,12 +16,14 @@ class FriendshipsContext implements Context
     private $storage;
     private $entityManager;
     private $neo4j;
+    private $uuidGenerator;
 
-    public function __construct(StorageInterface $storage, EntityManager $entityManager, Client $neo4j)
+    public function __construct(StorageInterface $storage, EntityManager $entityManager, Client $neo4j, UuidGeneratorInterface $uuidGenerator)
     {
         $this->storage = $storage;
         $this->entityManager = $entityManager; // @todo use a repository instead
         $this->neo4j = $neo4j;
+        $this->uuidGenerator = $uuidGenerator;
     }
 
     /**
@@ -65,10 +68,12 @@ class FriendshipsContext implements Context
 
     private function storeFriendshipBetweenUsers(User $first, User $second) : void
     {
-        $friendship = new Friendship($first, $second);
+        $id = $this->uuidGenerator->generate();
+        $friendship = new Friendship($id, $first, $second);
         $this->entityManager->persist($friendship);
 
-        $friendship = new Friendship($second, $first);
+        $id = $this->uuidGenerator->generate();
+        $friendship = new Friendship($id, $second, $first);
         $this->entityManager->persist($friendship);
 
         $this->entityManager->flush();
@@ -110,7 +115,8 @@ class FriendshipsContext implements Context
         $friend = $this->storage->get('created_user_' . $name);
         $user = $this->storage->get('logged_user');
 
-        $request = new FriendshipRequest($friend, $user);
+        $id = $this->uuidGenerator->generate();
+        $request = new FriendshipRequest($id, $friend, $user);
 
         $this->entityManager->persist($request);
         $this->entityManager->flush();
@@ -126,7 +132,8 @@ class FriendshipsContext implements Context
         $friend = $this->storage->get('created_user_' . $name);
         $user = $this->storage->get('logged_user');
 
-        $request = new FriendshipRequest($user, $friend);
+        $id = $this->uuidGenerator->generate();
+        $request = new FriendshipRequest($id, $user, $friend);
 
         $this->entityManager->persist($request);
         $this->entityManager->flush();

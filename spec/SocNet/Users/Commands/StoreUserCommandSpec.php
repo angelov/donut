@@ -8,18 +8,24 @@ use PhpSpec\ObjectBehavior;
 
 class StoreUserCommandSpec extends ObjectBehavior
 {
+    const USER_ID = 'uuid value';
     const USER_NAME = 'John';
     const USER_EMAIL = 'john@example.com';
     const USER_PASSWORD = '123456';
 
     function let(City $city)
     {
-        $this->beConstructedWith(self::USER_NAME, self::USER_EMAIL, self::USER_PASSWORD, $city);
+        $this->beConstructedWith(self::USER_ID, self::USER_NAME, self::USER_EMAIL, self::USER_PASSWORD, $city);
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType(StoreUserCommand::class);
+    }
+
+    function it_holds_the_id()
+    {
+        $this->getId()->shouldReturn(self::USER_ID);
     }
 
     function it_holds_the_user_name()
