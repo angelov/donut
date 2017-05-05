@@ -24,7 +24,8 @@ class StoreThoughtCommandHandler
         $thought = new Thought(
             $command->getId(),
             $command->getAuthor(),
-            $command->getContent()
+            $command->getContent(),
+            $command->getCreatedAt()
         );
 
         $this->thoughts->store($thought);

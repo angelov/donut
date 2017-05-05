@@ -3,6 +3,7 @@
 namespace SocNet\Friendships\FriendshipRequests\Repositories;
 
 use Doctrine\ORM\EntityManagerInterface;
+use SocNet\Core\Exceptions\ResourceNotFoundException;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 
 class DoctrineFriendshipRequestsRepository implements FriendshipRequestsRepositoryInterface
@@ -24,5 +25,20 @@ class DoctrineFriendshipRequestsRepository implements FriendshipRequestsReposito
     {
         $this->em->remove($request);
         $this->em->flush();
+    }
+
+    /**
+     * @throws ResourceNotFoundException
+     * @todo write phpunit test
+     */
+    public function find(string $id) : FriendshipRequest
+    {
+        $found = $this->em->find(FriendshipRequest::class, $id);
+
+        if (!$found) {
+            throw new ResourceNotFoundException();
+        }
+
+        return $found;
     }
 }

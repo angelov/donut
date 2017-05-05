@@ -39,7 +39,8 @@ class Neo4jFriendshipsRecorder implements FriendshipsRecorderInterface
     {
         $query = '
             MATCH
-                (first:User {id:{first}})
+                (first:User {id:{first}}),
+                (second:User {id:{second}})
             CREATE
                 (first)<-[:FRIEND]-(second)
         ';

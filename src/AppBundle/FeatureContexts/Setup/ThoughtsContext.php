@@ -4,7 +4,9 @@ namespace AppBundle\FeatureContexts\Setup;
 
 use Doctrine\ORM\Id\UuidGenerator;
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Core\CommandBus\CommandBusInterface;
 use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
+use SocNet\Thoughts\Commands\StoreThoughtCommand;
 use SocNet\Thoughts\Thought;
 use SocNet\Users\User;
 use SocNet\Thoughts\ThoughtsCounter\ThoughtsCounterInterface;
@@ -14,16 +16,14 @@ use Doctrine\ORM\EntityManager;
 class ThoughtsContext implements Context
 {
     private $storage;
-    private $em;
-    private $thoughtsCounter;
     private $uuidGenerator;
+    private $commandBus;
 
-    public function __construct(EntityManager $entityManager, StorageInterface $storage, ThoughtsCounterInterface $thoughtsCounter, UuidGeneratorInterface $uuidGenerator)
+    public function __construct(StorageInterface $storage, UuidGeneratorInterface $uuidGenerator, CommandBusInterface $commandBus)
     {
         $this->storage = $storage;
-        $this->em = $entityManager;
-        $this->thoughtsCounter = $thoughtsCounter;
         $this->uuidGenerator = $uuidGenerator;
+        $this->commandBus = $commandBus;
     }
 
     /**
@@ -38,13 +38,8 @@ class ThoughtsContext implements Context
         }
 
         for ($i=0; $i<$count; $i++) {
-            $thought = $this->createThought($author);
-            $this->em->persist($thought);
-
-            $this->thoughtsCounter->increase($author);
+            $this->createThought($author);
         }
-
-        $this->em->flush();
     }
 
     /**
@@ -55,13 +50,8 @@ class ThoughtsContext implements Context
         $author = $this->storage->get('logged_user');
 
         for ($i=0; $i<$count; $i++) {
-            $thought = $this->createThought($author);
-            $this->em->persist($thought);
-
-            $this->thoughtsCounter->increase($author);
+            $this->createThought($author);
         }
-
-        $this->em->flush();
     }
 
     /**
@@ -70,12 +60,7 @@ class ThoughtsContext implements Context
     public function iHaveSharedAThought(string $content) : void
     {
         $logged = $this->storage->get('logged_user');
-        $thought = $this->createThought($logged, $content);
-
-        $this->em->persist($thought);
-        $this->em->flush();
-
-        $this->thoughtsCounter->increase($logged);
+        $this->createThought($logged, $content);
     }
 
     /**
@@ -84,28 +69,23 @@ class ThoughtsContext implements Context
     public function heHasSharedAThought(string $content) : void
     {
         $author = $this->storage->get('last_created_user');
-        $thought = $this->createThought($author, $content);
-
-        $this->em->persist($thought);
-        $this->em->flush();
+        $this->createThought($author, $content);
     }
 
-    private function createThought(User $author, string $content = '') : Thought
+    private function createThought(User $author, string $content = '') : void
     {
         $latest = $this->storage->get('latest_thought_time', new \DateTime());
         $id = $this->uuidGenerator->generate();
 
-        $thought = new Thought(
-            $id,
-            $author,
-            $content ?? sprintf('Random content #%d', random_int(0, 10000))
-        );
-
         $latest = (clone $latest)->add(new \DateInterval('PT1S')); // add one second to the latest
 
-        $thought->setCreatedAt($latest);
-        $this->storage->set('latest_thought_time', $latest);
+        $this->commandBus->handle(new StoreThoughtCommand(
+            $id,
+            $author,
+            $content ?? sprintf('Random content #%d', random_int(0, 10000)),
+            $latest
+        ));
 
-        return $thought;
+        $this->storage->set('latest_thought_time', $latest);
     }
 }

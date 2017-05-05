@@ -2,7 +2,6 @@
 
 namespace spec\SocNet\Friendships\FriendshipRequests\Handlers;
 
-use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Friendships\FriendshipRequests\Handlers\SendFriendshipRequestCommandHandler;
@@ -13,9 +12,11 @@ use SocNet\Users\User;
 
 class SendFriendshipRequestCommandHandlerSpec extends ObjectBehavior
 {
-    function let(FriendshipRequestsRepositoryInterface $repository, UuidGeneratorInterface $uuidGenerator)
+    const FRIENDSHIP_REQUEST_ID = 'uuid value';
+
+    function let(FriendshipRequestsRepositoryInterface $repository)
     {
-        $this->beConstructedWith($repository, $uuidGenerator);
+        $this->beConstructedWith($repository);
     }
 
     function it_is_initializable()
@@ -27,13 +28,11 @@ class SendFriendshipRequestCommandHandlerSpec extends ObjectBehavior
         SendFriendshipRequestCommand $command,
         User $sender,
         User $recipient,
-        FriendshipRequestsRepositoryInterface $repository,
-        UuidGeneratorInterface $uuidGenerator
+        FriendshipRequestsRepositoryInterface $repository
     ) {
         $command->getRecipient()->willReturn($recipient);
         $command->getSender()->willReturn($sender);
-
-        $uuidGenerator->generate()->willReturn('uuid value');
+        $command->getId()->willReturn(self::FRIENDSHIP_REQUEST_ID);
 
         $repository->store(Argument::type(FriendshipRequest::class))->shouldBeCalled();
 

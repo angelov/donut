@@ -55,6 +55,13 @@ class ThoughtSpec extends ObjectBehavior
         $this->getCreatedAt()->shouldReturn($dateTime);
     }
 
+    function it_can_be_constructed_with_created_at_date(User $user, \DateTime $dateTime)
+    {
+        $this->beConstructedWith(self::THOUGHT_ID, $user, self::THOUGHT_CONTENT, $dateTime);
+
+        $this->getCreatedAt()->shouldReturn($dateTime);
+    }
+
     function it_has_author_by_default(User $user)
     {
         $this->getAuthor()->shouldReturn($user);

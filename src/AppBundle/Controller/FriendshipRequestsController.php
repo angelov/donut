@@ -22,7 +22,9 @@ class FriendshipRequestsController extends Controller
     {
         $currentUser = $this->getUser();
 
-        $this->get('app.core.command_bus.default')->handle(new SendFriendshipRequestCommand($currentUser, $user));
+        $id = $this->get('app.core.uuid_generator')->generate();
+
+        $this->get('app.core.command_bus.default')->handle(new SendFriendshipRequestCommand($id, $currentUser, $user));
 
         $this->addFlash('success', 'Friendship request successfully sent!');
 

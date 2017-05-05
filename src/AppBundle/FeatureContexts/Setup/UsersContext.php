@@ -3,9 +3,11 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Core\CommandBus\CommandBusInterface;
 use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Places\City;
-use SocNet\Users\User;
+use SocNet\Users\Commands\StoreUserCommand;
+use SocNet\Users\Repositories\UsersRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
@@ -16,13 +18,23 @@ class UsersContext implements Context
     private $storage;
     private $passwordEncoder;
     private $uuidGenerator;
+    private $users;
+    private $commandBus;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoder $passwordEncoder, StorageInterface $storage, UuidGeneratorInterface $uuidGenerator)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UserPasswordEncoder $passwordEncoder,
+        StorageInterface $storage,
+        UuidGeneratorInterface $uuidGenerator,
+        UsersRepositoryInterface $users,
+        CommandBusInterface $commandBus
+    ) {
         $this->em = $entityManager;
         $this->storage = $storage;
         $this->passwordEncoder = $passwordEncoder;
         $this->uuidGenerator = $uuidGenerator;
+        $this->users = $users;
+        $this->commandBus = $commandBus;
     }
 
     /**
@@ -35,14 +47,9 @@ class UsersContext implements Context
         $this->em->persist($city);
 
         $id = $this->uuidGenerator->generate();
-        $user = new User($id, $name, $email, $password, $city);
+        $this->commandBus->handle(new StoreUserCommand($id, $name, $email, $password, $city));
 
-        $password = $this->passwordEncoder->encodePassword($user, $password);
-        $user->setPassword($password);
-
-        $this->em->persist($user);
-        $this->em->flush();
-        // @todo refactor
+        $user = $this->users->find($id);
 
         $key = 'created_user_' . $name;
         $this->storage->set($key, $user);

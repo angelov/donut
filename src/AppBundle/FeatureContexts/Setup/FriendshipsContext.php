@@ -3,27 +3,27 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Core\CommandBus\CommandBusInterface;
 use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Friendships\Friendship;
-use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
+use SocNet\Friendships\Commands\StoreFriendshipCommand;
+use SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
+use SocNet\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface;
 use SocNet\Users\User;
 use Behat\Behat\Context\Context;
-use Doctrine\ORM\EntityManager;
-use GraphAware\Neo4j\Client\Client;
 
 class FriendshipsContext implements Context
 {
     private $storage;
-    private $entityManager;
-    private $neo4j;
     private $uuidGenerator;
+    private $commandBus;
+    private $friendshipRequests;
 
-    public function __construct(StorageInterface $storage, EntityManager $entityManager, Client $neo4j, UuidGeneratorInterface $uuidGenerator)
+    public function __construct(StorageInterface $storage, UuidGeneratorInterface $uuidGenerator, CommandBusInterface $commandBus, FriendshipRequestsRepositoryInterface $friendshipRequests)
     {
         $this->storage = $storage;
-        $this->entityManager = $entityManager; // @todo use a repository instead
-        $this->neo4j = $neo4j;
         $this->uuidGenerator = $uuidGenerator;
+        $this->commandBus = $commandBus;
+        $this->friendshipRequests = $friendshipRequests;
     }
 
     /**
@@ -43,7 +43,7 @@ class FriendshipsContext implements Context
     public function iAmFriendWith(string $name) : void
     {
         $current = $this->storage->get('logged_user');
-        $friend = $this->entityManager->getRepository(User::class)->findOneBy(['name' => $name]);
+        $friend = $this->storage->get('created_user_' . $name);
 
         $this->storeFriendshipBetweenUsers($current, $friend);
     }
@@ -53,15 +53,13 @@ class FriendshipsContext implements Context
      */
     public function somebodyIsFriendWithSomebody(string $first, string $second) : void
     {
-        $repo = $this->entityManager->getRepository(User::class);
-
         if (in_array($first, ['she', 'he'])) {
             $firstUser = $this->storage->get('last_created_user');
         } else {
             $firstUser = $this->storage->get('created_user_' . $first);
         }
 
-        $secondUser = $repo->findOneBy(['name' => $second]);
+        $secondUser = $this->storage->get('created_user_' . $second);
 
         $this->storeFriendshipBetweenUsers($firstUser, $secondUser);
     }
@@ -69,33 +67,10 @@ class FriendshipsContext implements Context
     private function storeFriendshipBetweenUsers(User $first, User $second) : void
     {
         $id = $this->uuidGenerator->generate();
-        $friendship = new Friendship($id, $first, $second);
-        $this->entityManager->persist($friendship);
+        $this->commandBus->handle(new StoreFriendshipCommand($id, $first, $second));
 
         $id = $this->uuidGenerator->generate();
-        $friendship = new Friendship($id, $second, $first);
-        $this->entityManager->persist($friendship);
-
-        $this->entityManager->flush();
-
-        $client = $this->neo4j;
-
-        $query = 'MERGE (n:User {id: {id}, name: {name}})';
-        $client->run($query, ['id' => $first->getId(), 'name' => $first->getName()]);
-        $client->run($query, ['id' => $second->getId(), 'name' => $second->getName()]);
-
-        $query = '
-            MATCH
-                (first:User {id:{first}}),
-                (second:User {id:{second}})
-            CREATE
-                (first)<-[:FRIEND]-(second), (first)-[:FRIEND]->(second)
-        ';
-
-        $client->run($query, [
-            'first' => $first->getId(),
-            'second' => $second->getId()
-        ]);
+        $this->commandBus->handle(new StoreFriendshipCommand($id, $second, $first));
     }
 
     /**
@@ -116,10 +91,9 @@ class FriendshipsContext implements Context
         $user = $this->storage->get('logged_user');
 
         $id = $this->uuidGenerator->generate();
-        $request = new FriendshipRequest($id, $friend, $user);
+        $this->commandBus->handle(new SendFriendshipRequestCommand($id, $friend, $user));
 
-        $this->entityManager->persist($request);
-        $this->entityManager->flush();
+        $request = $this->friendshipRequests->find($id);
 
         $this->storage->set('current_friendship_request', $request);
     }
@@ -133,10 +107,9 @@ class FriendshipsContext implements Context
         $user = $this->storage->get('logged_user');
 
         $id = $this->uuidGenerator->generate();
-        $request = new FriendshipRequest($id, $user, $friend);
+        $this->commandBus->handle(new SendFriendshipRequestCommand($id, $user, $friend));
 
-        $this->entityManager->persist($request);
-        $this->entityManager->flush();
+        $request = $this->friendshipRequests->find($id);
 
         $this->storage->set('current_friendship_request', $request);
     }

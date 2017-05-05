@@ -10,18 +10,16 @@ use SocNet\Friendships\FriendshipRequests\Repositories\FriendshipRequestsReposit
 class SendFriendshipRequestCommandHandler
 {
     private $friendshipRequests;
-    private $uuidGenerator;
 
-    public function __construct(FriendshipRequestsRepositoryInterface $friendshipRequests, UuidGeneratorInterface $uuidGenerator)
+    public function __construct(FriendshipRequestsRepositoryInterface $friendshipRequests)
     {
         $this->friendshipRequests = $friendshipRequests;
-        $this->uuidGenerator = $uuidGenerator;
     }
 
     public function handle(SendFriendshipRequestCommand $command) : void
     {
         $friendshipRequest = new FriendshipRequest(
-            $this->uuidGenerator->generate(),
+            $command->getId(),
             $command->getSender(),
             $command->getRecipient()
         );

@@ -35,12 +35,12 @@ class Thought
      */
     private $createdAt;
 
-    public function __construct(string $id, User $author, string $content)
+    public function __construct(string $id, User $author, string $content, \DateTime $createdAt = null)
     {
-        $this->createdAt = new DateTime();
         $this->author = $author;
         $this->content = $content;
         $this->id = $id;
+        $this->createdAt = $createdAt ?? new DateTime();
     }
 
     public function getId() : string

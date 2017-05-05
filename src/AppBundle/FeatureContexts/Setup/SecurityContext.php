@@ -3,9 +3,11 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Core\CommandBus\CommandBusInterface;
 use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Places\City;
-use SocNet\Users\User;
+use SocNet\Users\Commands\StoreUserCommand;
+use SocNet\Users\Repositories\UsersRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;
@@ -21,19 +23,25 @@ class SecurityContext implements Context
     private $minkSession;
     private $storage;
     private $uuidGenerator;
+    private $commandBus;
+    private $users;
 
     public function __construct(
         EntityManager $entityManager,
         SessionInterface $session,
         Session $minkSession,
         StorageInterface $storage,
-        UuidGeneratorInterface $uuidGenerator
+        UuidGeneratorInterface $uuidGenerator,
+        CommandBusInterface $commandBus,
+        UsersRepositoryInterface $users
     ) {
         $this->entityManager = $entityManager;
         $this->session = $session;
         $this->minkSession = $minkSession;
         $this->storage = $storage;
         $this->uuidGenerator = $uuidGenerator;
+        $this->commandBus = $commandBus;
+        $this->users = $users;
     }
 
     /**
@@ -46,16 +54,10 @@ class SecurityContext implements Context
         $this->entityManager->persist($city);
 
         $id = $this->uuidGenerator->generate();
-        $user = new User(
-            $id,
-            $this->storage->get('user_name', 'John Smith'),
-            $email,
-            '123456',
-            $city
-        );
+        $name = $this->storage->get('user_name', 'John Smith');
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $this->commandBus->handle(new StoreUserCommand($id, $name, $email, '123456', $city));
+        $user = $this->users->find($id);
 
         $token = new UsernamePasswordToken($user, $user->getPassword(), 'randomstringbutnotnull', $user->getRoles());
 

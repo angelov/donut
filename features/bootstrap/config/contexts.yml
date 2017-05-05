@@ -14,13 +14,19 @@ services:
 
     app.feature_contexts.setup.users:
         class: 'AppBundle\FeatureContexts\Setup\UsersContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.security.password_encoder', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
+        arguments:
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.security.password_encoder'
+            - '@app.behat.storage'
+            - '@__symfony__.app.core.uuid_generator'
+            - '@__symfony__.app.users.repository.default'
+            - '@__symfony__.app.core.command_bus.default'
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.setup.thoughts:
         class: 'AppBundle\FeatureContexts\Setup\ThoughtsContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.thoughts.thoughts_counter.default', '@__symfony__.app.core.uuid_generator']
+        arguments: ['@app.behat.storage', '@__symfony__.app.core.uuid_generator', '@__symfony__.app.core.command_bus.default']
         tags:
             - { name: fob.context_service }
 
@@ -38,9 +44,9 @@ services:
         class: 'AppBundle\FeatureContexts\Setup\FriendshipsContext'
         arguments:
             - '@app.behat.storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.neo4j.client'
             - '@__symfony__.app.core.uuid_generator'
+            - '@__symfony__.app.core.command_bus.default'
+            - '@__symfony__.app.friendships.friendship_requests.repositories.default'
         tags:
             - { name: fob.context_service }
 
@@ -64,7 +70,14 @@ services:
 
     app.feature_contexts.setup.security:
         class: 'AppBundle\FeatureContexts\Setup\SecurityContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@__symfony__.session', '@mink.default_session', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
+        arguments:
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.session'
+            - '@mink.default_session'
+            - '@app.behat.storage'
+            - '@__symfony__.app.core.uuid_generator'
+            - '@__symfony__.app.core.command_bus.default'
+            - '@__symfony__.app.users.repository.default'
         tags:
             - { name: fob.context_service }
 

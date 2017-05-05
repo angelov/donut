@@ -35,4 +35,11 @@ class StoreThoughtCommandSpec extends ObjectBehavior
     {
         $this->getContent()->shouldReturn(self::THOUGHT_CONTENT);
     }
+
+    function it_can_hold_the_created_at_date(User $author, \DateTime $dateTime)
+    {
+        $this->beConstructedWith(self::THOUGHT_ID, $author, self::THOUGHT_CONTENT, $dateTime);
+
+        $this->getCreatedAt()->shouldReturn($dateTime);
+    }
 }

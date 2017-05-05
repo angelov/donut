@@ -8,14 +8,21 @@ use SocNet\Users\User;
 
 class SendFriendshipRequestCommandSpec extends ObjectBehavior
 {
+    const FRIENDSHIP_REQUEST_ID = 'uuid value';
+
     function let(User $sender, User $recipient)
     {
-        $this->beConstructedWith($sender, $recipient);
+        $this->beConstructedWith(self::FRIENDSHIP_REQUEST_ID, $sender, $recipient);
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType(SendFriendshipRequestCommand::class);
+    }
+
+    function it_holds_the_id()
+    {
+        $this->getId()->shouldReturn(self::FRIENDSHIP_REQUEST_ID);
     }
 
     function it_holds_the_sender(User $sender)
