@@ -28,3 +28,7 @@ snc_redis:
     clients:
         default:
             dsn: redis://localhost/1
+
+security:
+    encoders:
+        SocNet\Users\User: 'plaintext'
