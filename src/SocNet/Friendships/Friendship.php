@@ -5,6 +5,7 @@ namespace SocNet\Friendships;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use SocNet\Users\User;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -16,6 +17,7 @@ class Friendship
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\Column(type="guid")
+     * @Serializer\Type(name="string")
      */
     private $id;
 

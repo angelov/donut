@@ -24,6 +24,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\Column(type="guid")
+     * @Serializer\Type(name="string")
      */
     private $id;
 
