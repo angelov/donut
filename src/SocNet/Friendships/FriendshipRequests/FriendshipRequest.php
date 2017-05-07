@@ -21,13 +21,13 @@ class FriendshipRequest
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="sentFriendshipRequests")
+     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="sentFriendshipRequests", cascade={"persist"})
      * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id", nullable=false, onDelete="cascade")
      */
     private $fromUser;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="receivedFriendshipRequests")
+     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="receivedFriendshipRequests", cascade={"persist"})
      * @ORM\JoinColumn(name="to_user_id", referencedColumnName="id", nullable=false, onDelete="cascade")
      */
     private $toUser;

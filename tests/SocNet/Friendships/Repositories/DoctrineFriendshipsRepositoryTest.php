@@ -2,6 +2,8 @@
 
 namespace SocNet\Tests\Friendships\FriendshipRequests\Repositories;
 
+use AppBundle\Factories\FriendshipsFactory;
+use AppBundle\Factories\UsersFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
@@ -15,11 +17,17 @@ class DoctrineFriendshipsRepositoryTest extends KernelTestCase
     /** @var DoctrineFriendshipsRepository */
     private $repository;
 
-    /** @var UsersRepositoryInterface */
-    private $usersRepository;
-
     /** @var EntityManagerInterface */
     private $entityManager;
+
+    /** @var FriendshipsFactory */
+    private $friendshipsFactory;
+
+    /** @var UsersFactory */
+    private $usersFactory;
+
+    /** @var UsersRepositoryInterface */
+    private $usersRepository;
 
     public function setUp()
     {
@@ -27,20 +35,16 @@ class DoctrineFriendshipsRepositoryTest extends KernelTestCase
         $kernel->boot();
 
         $this->repository = $kernel->getContainer()->get('app.friendships.repositories.doctrine');
-        $this->usersRepository = $kernel->getContainer()->get('app.users.repository.default');
         $this->entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->friendshipsFactory = $kernel->getContainer()->get('app.factories.friendships');
+        $this->usersFactory =  $kernel->getContainer()->get('app.factories.users.faker');
+        $this->usersRepository = $kernel->getContainer()->get('app.users.repository.default');
     }
 
     /** @test */
     public function it_stores_friendships()
     {
-        $sender = new User('John', 'john@example.com', '123456');
-        $this->usersRepository->store($sender);
-
-        $recipient = new User('James', 'james@example.com', '123456');
-        $this->usersRepository->store($recipient);
-
-        $friendship = new Friendship($sender, $recipient);
+        $friendship = $this->friendshipsFactory->get();
 
         $this->repository->store($friendship);
 
@@ -54,13 +58,7 @@ class DoctrineFriendshipsRepositoryTest extends KernelTestCase
     /** @test */
     public function it_deletes_friendships()
     {
-        $sender = new User('John', 'john@example.com', '123456');
-        $this->usersRepository->store($sender);
-
-        $recipient = new User('James', 'james@example.com', '123456');
-        $this->usersRepository->store($recipient);
-
-        $friendship = new Friendship($sender, $recipient);
+        $friendship = $this->friendshipsFactory->get();
 
         $this->repository->store($friendship);
 
@@ -76,16 +74,13 @@ class DoctrineFriendshipsRepositoryTest extends KernelTestCase
     /** @test */
     public function it_finds_friendships_between_users()
     {
-        $sender = new User('John', 'john@example.com', '123456');
-        $this->usersRepository->store($sender);
+        $sender = $this->usersFactory->get();
+        $recipient = $this->usersFactory->get();
 
-        $recipient = new User('James', 'james@example.com', '123456');
-        $this->usersRepository->store($recipient);
-
-        $friendship = new Friendship($sender, $recipient);
+        $friendship = $this->friendshipsFactory->from($sender)->to($recipient)->get();
         $this->repository->store($friendship);
 
-        $friendship2 = new Friendship($recipient, $sender);
+        $friendship2 = $this->friendshipsFactory->from($recipient)->to($sender)->get();
         $this->repository->store($friendship2);
 
         $res = $this->repository->findBetweenUsers($sender, $recipient);
@@ -98,10 +93,10 @@ class DoctrineFriendshipsRepositoryTest extends KernelTestCase
     /** @test */
     public function it_returns_empty_array_when_no_friendships_between_users()
     {
-        $sender = new User('John', 'john@example.com', '123456');
-        $this->usersRepository->store($sender);
+        $sender = $this->usersFactory->get();
+        $recipient = $this->usersFactory->get();
 
-        $recipient = new User('James', 'james@example.com', '123456');
+        $this->usersRepository->store($sender);
         $this->usersRepository->store($recipient);
 
         $res = $this->repository->findBetweenUsers($sender, $recipient);

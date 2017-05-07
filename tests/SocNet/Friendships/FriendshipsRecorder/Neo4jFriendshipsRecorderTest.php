@@ -2,10 +2,11 @@
 
 namespace SocNet\Tests\Friendships\FriendshipsRecorder;
 
+use AppBundle\Factories\FriendshipsFactory;
+use AppBundle\Factories\UsersFactory;
 use GraphAware\Neo4j\Client\Client;
 use SocNet\Friendships\Friendship;
 use SocNet\Friendships\FriendshipsRecorder\Neo4jFriendshipsRecorder;
-use SocNet\Users\Repositories\UsersRepositoryInterface;
 use SocNet\Users\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -17,8 +18,11 @@ class Neo4jFriendshipsRecorderTest extends KernelTestCase
     /** @var Client */
     private $client;
 
-    /** @var UsersRepositoryInterface */
-    private $users;
+    /** @var FriendshipsFactory */
+    private $friendshipsFactory;
+
+    /** @var $usersFactory UsersFactory */
+    private $usersFactory;
 
     public function setUp()
     {
@@ -27,19 +31,17 @@ class Neo4jFriendshipsRecorderTest extends KernelTestCase
 
         $this->recorder = $kernel->getContainer()->get('app.friendships.friendships_recorder.neo4j');
         $this->client = $kernel->getContainer()->get('neo4j.client.default');
-        $this->users = $kernel->getContainer()->get('app.users.repository.default');
+        $this->friendshipsFactory = $kernel->getContainer()->get('app.factories.friendships');
+        $this->usersFactory = $kernel->getContainer()->get('app.factories.users.faker');
     }
 
     /** @test */
     public function it_stores_friendships_in_neo4j()
     {
-        $sender = new User('John', 'john@example.com', '123456');
-        $this->users->store($sender);
+        $sender = $this->usersFactory->get();
+        $recipient = $this->usersFactory->get();
 
-        $recipient = new User('James', 'james@example.com', '123456');
-        $this->users->store($recipient);
-
-        $friendship = new Friendship($sender, $recipient);
+        $friendship = $this->friendshipsFactory->from($sender)->to($recipient)->get();
 
         $this->recorder->recordCreated($friendship);
 
@@ -47,7 +49,7 @@ class Neo4jFriendshipsRecorderTest extends KernelTestCase
             MATCH
                 (first: User {id: {first}}),
                 (second: User {id: {second}}),
-                (first)-[f: FRIEND]-(second)
+                (first)-[f: FRIEND]->(second)
             RETURN f
         ';
 
@@ -58,18 +60,16 @@ class Neo4jFriendshipsRecorderTest extends KernelTestCase
 
         $records = $result->records();
 
-        $this->assertCount(2, $records);
+        $this->assertCount(1, $records);
     }
 
+    /** @test */
     public function it_removed_friendships_from_neo4j()
     {
-        $sender = new User('John', 'john@example.com', '123456');
-        $this->users->store($sender);
+        $sender = $this->usersFactory->get();
+        $recipient = $this->usersFactory->get();
 
-        $recipient = new User('James', 'james@example.com', '123456');
-        $this->users->store($recipient);
-
-        $friendship = new Friendship($sender, $recipient);
+        $friendship = $this->friendshipsFactory->from($sender)->to($recipient)->get();
 
         $this->recorder->recordCreated($friendship);
 

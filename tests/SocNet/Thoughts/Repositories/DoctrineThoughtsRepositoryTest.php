@@ -2,10 +2,10 @@
 
 namespace SocNet\Tests\Thoughts\Repositories;
 
+use AppBundle\Factories\ThoughtsFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use SocNet\Thoughts\Repositories\DoctrineThoughtsRepository;
 use SocNet\Thoughts\Thought;
-use SocNet\Users\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class DoctrineThoughtsRepositoryTest extends KernelTestCase
@@ -16,6 +16,9 @@ class DoctrineThoughtsRepositoryTest extends KernelTestCase
     /** @var DoctrineThoughtsRepository */
     private $repository;
 
+    /** @var ThoughtsFactory */
+    private $thoughtsFactory;
+
     public function setUp()
     {
         $kernel = self::createKernel();
@@ -23,18 +26,13 @@ class DoctrineThoughtsRepositoryTest extends KernelTestCase
 
         $this->repository = $kernel->getContainer()->get('app.thoughts.repositories.doctrine');
         $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->thoughtsFactory = $kernel->getContainer()->get('app.factories.thoughts.faker');
     }
 
     /** @test */
     public function it_stores_new_thoughts()
     {
-        // @todo extract user creating
-        $author = new User('John', 'john@example.net', '123456');
-
-        $this->em->persist($author);
-        $this->em->flush();
-
-        $thought = new Thought($author, 'something');
+        $thought = $this->thoughtsFactory->get();
 
         $this->repository->store($thought);
 
@@ -43,19 +41,12 @@ class DoctrineThoughtsRepositoryTest extends KernelTestCase
         $found = $this->em->find(Thought::class, $id);
 
         $this->assertInstanceOf(Thought::class, $found);
-        $this->assertSame($thought->getContent(), $found->getContent());
     }
 
     /** @test */
     public function it_removes_thoughts_from_database()
     {
-        // @todo extract user creating
-        $author = new User('John', 'john@example.net', '123456');
-
-        $this->em->persist($author);
-        $this->em->flush();
-
-        $thought = new Thought($author, 'something');
+        $thought = $this->thoughtsFactory->get();
 
         $this->repository->store($thought);
 

@@ -45,8 +45,7 @@ To run them, use `vendor/bin/phpspec run`.
 I'm using PHPUnit for integration tests. They are placed in the `tests/` directory. 
 To run them, use `vendor/bin/phpunit`.
 
-*Note:* The integration tests may be broken at the moment, as I didn't 
-pay much attention to them lately :(
+More integration tests need to be written and the existing ones can be refactored.
 
 ### Behat (acceptance tests)
 

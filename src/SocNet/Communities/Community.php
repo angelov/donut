@@ -32,7 +32,7 @@ class Community
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", cascade={"remove"}, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", cascade={"remove", "persist"}, fetch="EAGER")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
      */
     private $author;

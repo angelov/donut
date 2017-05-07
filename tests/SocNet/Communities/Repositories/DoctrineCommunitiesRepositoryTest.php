@@ -2,7 +2,9 @@
 
 namespace SocNet\Tests\Communities\Repositories;
 
-use SocNet\Users\User;
+use AppBundle\Factories\CommunitiesFactory;
+use AppBundle\Factories\UsersFactory;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Core\Exceptions\ResourceNotFoundException;
 use Doctrine\ORM\EntityManager;
 use SocNet\Communities\Community;
@@ -21,6 +23,16 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
      */
     private $em;
 
+    /**
+     * @var UsersFactory
+     */
+    private $usersFactory;
+
+    /**
+     * @var CommunitiesFactory
+     */
+    private $communitiesFactory;
+
     public function setUp()
     {
         $kernel = static::createKernel();
@@ -28,45 +40,28 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
 
         $this->repository = $kernel->getContainer()->get('app.communities.repositories.doctrine');
         $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->usersFactory = $kernel->getContainer()->get('app.factories.users.faker');
+        $this->communitiesFactory = $kernel->getContainer()->get('app.factories.communities.faker');
     }
 
     /** @test */
     public function it_stores_communities()
     {
-        // @todo extract user creating
-        $author = new User('John', 'john@example.net', '123456');
-
-        $this->em->persist($author);
-        $this->em->flush();
-
-        $community = new Community('Example community', $author, 'This is just an example');
+        $community = $this->communitiesFactory->get();
 
         $this->repository->store($community);
 
         $id = $community->getId();
 
-        $this->assertTrue(is_numeric($id));
-
-        /** @var Community $found */
         $found = $this->em->find(Community::class, $id);
 
         $this->assertInstanceOf(Community::class, $found);
-
-        $this->assertSame('Example community', $found->getName());
-        $this->assertSame('This is just an example', $found->getDescription());
-        $this->assertSame($author, $found->getAuthor());
     }
 
     /** @test */
     public function it_updates_existing_communities()
     {
-        // @todo extract user creating
-        $author = new User('John', 'john@example.net', '123456');
-
-        $this->em->persist($author);
-        $this->em->flush();
-
-        $community = new Community('Example community', $author, 'This is just an example');
+        $community = $this->communitiesFactory->get();
 
         $this->repository->store($community);
 
@@ -82,14 +77,15 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
     /** @test */
     public function it_finds_communities_by_id()
     {
-        // @todo extract user creating
-        $author = new User('John', 'john@example.net', '123456');
+        $author = $this->usersFactory->get();
 
-        $this->em->persist($author);
+        $community = $this->communitiesFactory
+            ->withName('Example community')
+            ->withDescription('This is just an example')
+            ->createdBy($author)
+            ->get();
 
-        $community = new Community('Example community', $author, 'This is just an example');
         $this->em->persist($community);
-
         $this->em->flush();
 
         $id = $community->getId();
@@ -114,15 +110,10 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
     /** @test */
     public function it_returns_array_of_all_communities()
     {
-        // @todo extract user creating
-        $author = new User('John', 'john@example.net', '123456');
+        $community = $this->communitiesFactory->get();
+        $secondCommunity = $this->communitiesFactory->get();
 
-        $this->em->persist($author);
-
-        $community = new Community('Example community', $author, 'This is just an example');
         $this->em->persist($community);
-
-        $secondCommunity = new Community('Example community 2', $author, 'This is just an example 2');
         $this->em->persist($secondCommunity);
 
         $this->em->flush();

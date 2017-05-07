@@ -2,7 +2,9 @@
 
 namespace SocNet\Tests\Friendships\FriendshipRequests\Repositories;
 
+use AppBundle\Factories\UsersFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
 use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
 use SocNet\Friendships\FriendshipRequests\Repositories\DoctrineFriendshipRequestsRepository;
 use SocNet\Users\Repositories\UsersRepositoryInterface;
@@ -14,11 +16,14 @@ class DoctrineFriendshipRequestsRepositoryTest extends KernelTestCase
     /** @var DoctrineFriendshipRequestsRepository */
     private $repository;
 
-    /** @var UsersRepositoryInterface */
-    private $usersRepository;
-
     /** @var EntityManagerInterface */
     private $entityManager;
+
+    /** @var UsersFactory */
+    private $usersFactory;
+
+    /** @var UuidGeneratorInterface */
+    private $uuidGenerator;
 
     public function setUp()
     {
@@ -26,20 +31,18 @@ class DoctrineFriendshipRequestsRepositoryTest extends KernelTestCase
         $kernel->boot();
 
         $this->repository = $kernel->getContainer()->get('app.friendships.friendship_requests.repositories.doctrine');
-        $this->usersRepository = $kernel->getContainer()->get('app.users.repository.default');
         $this->entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->usersFactory = $kernel->getContainer()->get('app.factories.users.faker');
+        $this->uuidGenerator = $kernel->getContainer()->get('app.core.uuid_generator');
     }
 
     /** @test */
     public function it_stores_friendship_requests()
     {
-        $sender = new User('John', 'john@example.com', '123456');
-        $this->usersRepository->store($sender);
+        $sender = $this->usersFactory->get();
+        $recipient = $this->usersFactory->get();
 
-        $recipient = new User('James', 'james@example.com', '123456');
-        $this->usersRepository->store($recipient);
-
-        $friendshipRequest = new FriendshipRequest($sender, $recipient);
+        $friendshipRequest = new FriendshipRequest($this->uuidGenerator->generate(), $sender, $recipient);
 
         $this->repository->store($friendshipRequest);
 
@@ -53,13 +56,10 @@ class DoctrineFriendshipRequestsRepositoryTest extends KernelTestCase
     /** @test */
     public function it_destroys_friendship_requests()
     {
-        $sender = new User('John', 'john@example.com', '123456');
-        $this->usersRepository->store($sender);
+        $sender = $this->usersFactory->get();
+        $recipient = $this->usersFactory->get();
 
-        $recipient = new User('James', 'james@example.com', '123456');
-        $this->usersRepository->store($recipient);
-
-        $friendshipRequest = new FriendshipRequest($sender, $recipient);
+        $friendshipRequest = new FriendshipRequest($this->uuidGenerator->generate(), $sender, $recipient);
 
         $this->repository->store($friendshipRequest);
 

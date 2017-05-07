@@ -2,6 +2,7 @@
 
 namespace SocNet\Tests\Users\Repositories;
 
+use AppBundle\Factories\UsersFactory;
 use SocNet\Core\Exceptions\ResourceNotFoundException;
 use SocNet\Users\Repositories\DoctrineUsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +17,9 @@ class DoctrineUsersRepositoryTest extends KernelTestCase
     /** @var EntityManagerInterface */
     private $entityManager;
 
+    /** @var UsersFactory */
+    private $usersFactory;
+
     public function setUp()
     {
         $kernel = static::createKernel();
@@ -23,12 +27,13 @@ class DoctrineUsersRepositoryTest extends KernelTestCase
 
         $this->repository = $kernel->getContainer()->get('app.users.repository.doctrine');
         $this->entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->usersFactory = $kernel->getContainer()->get('app.factories.users.faker');
     }
 
     /** @test */
     public function it_stores_users()
     {
-        $user = new User('John', 'john@example.net', '123456');
+        $user = $this->usersFactory->get();
 
         $this->repository->store($user);
 
@@ -42,12 +47,15 @@ class DoctrineUsersRepositoryTest extends KernelTestCase
     /** @test */
     public function it_finds_users_by_email()
     {
-        $this->repository->store(new User('John', 'john@example.net', '123456'));
-        $this->repository->store($user = new User('James', 'james@example.net', '123456'));
+        $nonImportant = $this->usersFactory->withEmail('something@example.net')->get();
+        $toBeFound = $this->usersFactory->withEmail('james@example.net')->get();
+
+        $this->repository->store($nonImportant);
+        $this->repository->store($toBeFound);
 
         $found = $this->repository->findByEmail('james@example.net');
 
-        $this->assertTrue($user->equals($found));
+        $this->assertTrue($found->equals($toBeFound));
     }
 
     /** @test */
@@ -61,12 +69,15 @@ class DoctrineUsersRepositoryTest extends KernelTestCase
     /** @test */
     public function it_finds_users_by_id()
     {
-        $this->repository->store(new User('John', 'john@example.net', '123456'));
-        $this->repository->store($user = new User('James', 'james@example.net', '123456'));
+        $nonImportant = $this->usersFactory->get();
+        $toBeFound = $this->usersFactory->get();
 
-        $found = $this->repository->find($user->getId());
+        $this->repository->store($nonImportant);
+        $this->repository->store($toBeFound);
 
-        $this->assertTrue($user->equals($found));
+        $found = $this->repository->find($toBeFound->getId());
+
+        $this->assertTrue($found->equals($toBeFound));
     }
 
     /** @test */
@@ -80,13 +91,16 @@ class DoctrineUsersRepositoryTest extends KernelTestCase
     /** @test */
     public function it_returns_array_of_all_users()
     {
-        $this->repository->store($user = new User('John', 'john@example.net', '123456'));
-        $this->repository->store($second = new User('James', 'james@example.net', '123456'));
+        $first = $this->usersFactory->get();
+        $second = $this->usersFactory->get();
+
+        $this->repository->store($first);
+        $this->repository->store($second);
 
         $all = $this->repository->all();
 
         $this->assertCount(2, $all);
-        $this->assertContains($user, $all);
+        $this->assertContains($first, $all);
         $this->assertContains($second, $all);
     }
 

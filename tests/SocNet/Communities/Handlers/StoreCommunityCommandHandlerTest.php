@@ -2,6 +2,9 @@
 
 namespace SocNet\Tests\Communities\Handlers;
 
+use AppBundle\Factories\UsersFactory;
+use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
+use SocNet\Places\City;
 use SocNet\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SimpleBus\Message\Bus\MessageBus;
@@ -16,6 +19,12 @@ class StoreCommunityCommandHandlerTest extends KernelTestCase
     /** @var EntityManagerInterface */
     private $em;
 
+    /** @var UuidGeneratorInterface $uuidGenerator */
+    private $uuidGenerator;
+
+    /** @var UsersFactory */
+    private $usersFactory;
+
     public function setUp()
     {
         $kernel = static::createKernel();
@@ -23,18 +32,19 @@ class StoreCommunityCommandHandlerTest extends KernelTestCase
 
         $this->commandBus = $kernel->getContainer()->get('command_bus');
         $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->uuidGenerator = $kernel->getContainer()->get('app.core.uuid_generator');
+        $this->usersFactory = $kernel->getContainer()->get('app.factories.users.faker');
     }
 
     /** @test */
     public function it_handles_store_community_comands()
     {
-        // @todo extract user creating
-        $author = new User('John', 'john@example.net', '123456');
-
+        $author = $this->usersFactory->get();
         $this->em->persist($author);
         $this->em->flush();
 
-        $command = new StoreCommunityCommand('Example', $author);
+        $id = $this->uuidGenerator->generate();
+        $command = new StoreCommunityCommand($id, 'Example', $author);
 
         $this->commandBus->handle($command);
 

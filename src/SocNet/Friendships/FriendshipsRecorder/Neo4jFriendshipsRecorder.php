@@ -42,7 +42,7 @@ class Neo4jFriendshipsRecorder implements FriendshipsRecorderInterface
                 (first:User {id:{first}}),
                 (second:User {id:{second}})
             CREATE
-                (first)<-[:FRIEND]-(second)
+                (first)-[:FRIEND]->(second)
         ';
 
         $this->client->run($query, [

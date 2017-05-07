@@ -22,12 +22,13 @@ class Friendship
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="friendships")
+     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="friendships", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-     */private $user;
+     */
+    private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Users\User")
+     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", cascade={"persist"})
      * @ORM\JoinColumn(name="friend_id", referencedColumnName="id", nullable=false)
      */
     private $friend;

@@ -72,7 +72,7 @@ class User implements UserInterface
     private $friendships;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Places\City", inversedBy="residents")
+     * @ORM\ManyToOne(targetEntity="SocNet\Places\City", inversedBy="residents", cascade={"persist"})
      */
     private $city;
 
