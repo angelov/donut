@@ -74,4 +74,4 @@ intentionally left unhandled. Some of them are marked as `todos`, some of  them 
 
 ## Acknowledges
 
-I have learned a lot, especially about Behat, by browing and digging inside the Sylius project.
+I have learned a lot, especially about Behat, by browsing and digging inside the Sylius project.
