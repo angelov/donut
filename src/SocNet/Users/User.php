@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="user")
  * @UniqueEntity(fields={"email"}, message="The email is already in use.")
- * @Serializer\ExclusionPolicy("none")
+ * @Serializer\ExclusionPolicy("all")
  */
 class User implements UserInterface
 {
@@ -30,17 +30,18 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", unique=true)
+     * @Serializer\Expose()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string")
-     * @Serializer\Exclude()
      */
     private $password;
 
     /**
      * @ORM\Column(type="string")
+     * @Serializer\Expose()
      */
     private $name;
 
@@ -51,6 +52,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
+     * @Serializer\Expose()
      */
     private $isAdmin = false;
 
