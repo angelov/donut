@@ -89,13 +89,13 @@ services:
 
     app.feature_contexts.users.registration:
         class: 'AppBundle\FeatureContexts\RegistrationContext'
-        arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
+        arguments: ['@app.behat.pages.users.register', '@app.behat.pages.users.login', '@mink.default_session', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.users.login:
         class: 'AppBundle\FeatureContexts\LoginContext'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        arguments: ['@app.behat.pages.users.login', '@app.behat.pages.users.register', '@mink.default_session']
         tags:
             - { name: fob.context_service }
 

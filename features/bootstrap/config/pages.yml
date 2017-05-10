@@ -1,0 +1,9 @@
+services:
+
+    app.behat.pages.users.register:
+        class: 'SocNet\Behat\Pages\Users\RegistrationPage'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+
+    app.behat.pages.users.login:
+        class: 'SocNet\Behat\Pages\Users\LoginPage'
+        arguments: ['@mink.default_session', '@__symfony__.router']

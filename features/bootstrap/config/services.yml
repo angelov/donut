@@ -1,4 +1,5 @@
 imports:
+    - { resource: 'pages.yml' }
     - { resource: 'contexts.yml' }
 
 services:

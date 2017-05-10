@@ -4,19 +4,21 @@ namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
-use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\RouterInterface;
+use SocNet\Behat\Pages\Users\LoginPage;
+use SocNet\Behat\Pages\Users\RegistrationPage;
 use Webmozart\Assert\Assert;
 
 class LoginContext implements Context
 {
     private $session;
-    private $router;
+    private $loginPage;
+    private $registrationPage;
 
-    public function __construct(Session $session, RouterInterface $router)
+    public function __construct(LoginPage $loginPage, RegistrationPage $registrationPage, Session $session)
     {
         $this->session = $session;
-        $this->router = $router;
+        $this->loginPage = $loginPage;
+        $this->registrationPage = $registrationPage;
     }
 
     /**
@@ -24,8 +26,7 @@ class LoginContext implements Context
      */
     public function iWantToLogIn() : void
     {
-        $url = $this->router->generate('security_login');
-        $this->session->getDriver()->visit($url);
+        $this->loginPage->open();
     }
 
     /**
@@ -34,7 +35,7 @@ class LoginContext implements Context
      */
     public function iSpecifyTheEmailAs(string $email = '') : void
     {
-        $this->session->getPage()->fillField('Username', $email); // @todo change label to E-mail
+        $this->loginPage->specifyEmail($email);
     }
 
     /**
@@ -43,7 +44,7 @@ class LoginContext implements Context
      */
     public function iSpecifyThePasswordAs(string $password = '') : void
     {
-        $this->session->getPage()->fillField('Password', $password);
+        $this->loginPage->specifyPassword($password);
     }
 
     /**
@@ -51,7 +52,7 @@ class LoginContext implements Context
      */
     public function iTryToLogIn() : void
     {
-        $this->session->getPage()->pressButton('Login');
+        $this->loginPage->login();
     }
 
     /**
@@ -59,10 +60,10 @@ class LoginContext implements Context
      */
     public function iShouldBeLoggedIn() : void
     {
-        $homepage = $this->router->generate('app.thoughts.index', [], UrlGenerator::ABSOLUTE_URL);
-        $currentUrl = $this->session->getCurrentUrl();
-
-        Assert::same($currentUrl, $homepage);
+        // @todo not safe, refactor
+        Assert::false(
+            $this->registrationPage->isOpen() || $this->loginPage->isOpen()
+        );
     }
 
     /**
@@ -78,9 +79,9 @@ class LoginContext implements Context
      */
     public function iShouldNotBeLoggedIn() : void
     {
-        $url = $this->router->generate('security_login', [], UrlGenerator::ABSOLUTE_URL);
-        $currentUrl = $this->session->getDriver()->getCurrentUrl();
-
-        Assert::same($url, $currentUrl, 'Expected to be on the login page.');
+        // @todo refactor
+        Assert::true(
+            $this->registrationPage->isOpen() || $this->loginPage->isOpen()
+        );
     }
 }

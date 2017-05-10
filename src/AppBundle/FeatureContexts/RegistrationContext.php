@@ -4,22 +4,24 @@ namespace AppBundle\FeatureContexts;
 
 use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
+use SocNet\Behat\Pages\Users\LoginPage;
+use SocNet\Behat\Pages\Users\RegistrationPage;
 use SocNet\Behat\Service\Storage\StorageInterface;
-use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
 class RegistrationContext extends RawMinkContext
 {
-    private $router;
     private $session;
     private $storage;
+    private $registrationPage;
+    private $loginPage;
 
-    public function __construct(Session $session, RouterInterface $router, StorageInterface $storage)
+    public function __construct(RegistrationPage $registrationPage, LoginPage $loginPage, Session $session, StorageInterface $storage)
     {
         $this->session = $session;
-        $this->router = $router;
         $this->storage = $storage;
+        $this->registrationPage = $registrationPage;
+        $this->loginPage = $loginPage;
     }
 
     /**
@@ -27,9 +29,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iWantToCreateANewUserAccount() : void
     {
-        $url = $this->router->generate('app.users.register');
-
-        $this->session->getDriver()->visit($url);
+        $this->registrationPage->open();
     }
 
     /**
@@ -38,7 +38,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iSpecifyTheNameAs(string $name = '') : void
     {
-        $this->session->getPage()->fillField('Name', $name);
+        $this->registrationPage->specifyName($name);
     }
 
     /**
@@ -47,7 +47,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iSpecifyTheEmailAs(string $email = '') : void
     {
-        $this->session->getPage()->fillField('Email', $email);
+        $this->registrationPage->specifyEmail($email);
     }
 
     /**
@@ -56,8 +56,8 @@ class RegistrationContext extends RawMinkContext
      */
     public function iSpecifyThePasswordAs(string $password = '') : void
     {
-        $this->session->getPage()->fillField('Password', $password);
-        $this->session->getPage()->fillField('Repeat Password', $password);
+        $this->registrationPage->specifyPassword($password);
+
         $this->storage->set('password', $password);
     }
 
@@ -67,7 +67,8 @@ class RegistrationContext extends RawMinkContext
     public function iConfirmThePassword() : void
     {
         $password = $this->storage->get('password');
-        $this->session->getPage()->fillField('Repeat Password', $password);
+
+        $this->registrationPage->confirmPassword($password);
     }
 
     /**
@@ -75,7 +76,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iDonTConfirmThePassword() : void
     {
-        $this->session->getPage()->fillField('Repeat Password', '');
+        $this->registrationPage->confirmPassword('');
     }
 
     /**
@@ -83,7 +84,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iCreateTheAccount() : void
     {
-        $this->session->getPage()->pressButton('Register');
+        $this->registrationPage->register();
     }
 
     /**
@@ -99,19 +100,9 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldNotBeLoggedIn() : void
     {
-        // @todo refactor
-        $url = $this->router->generate('security_login', [], UrlGenerator::ABSOLUTE_URL);
-        $registrationUrl = $this->router->generate('app.users.register', [], UrlGenerator::ABSOLUTE_URL);
-
-        $currentUrl = $this->session->getDriver()->getCurrentUrl();
-
-        if ($currentUrl !== $url && $currentUrl !== $registrationUrl) {
-            throw new \RuntimeException(sprintf(
-                'Expected to be on [%s], but ended up on [%s] instead.',
-                $url,
-                $currentUrl
-            ));
-        }
+        Assert::true(
+            $this->registrationPage->isOpen() || $this->loginPage->isOpen()
+        );
     }
 
     /**
@@ -157,7 +148,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iSpecifyMyCityAsSkopje(string $city) : void
     {
-        $this->session->getPage()->selectFieldOption('City', $city);
+        $this->registrationPage->chooseCity($city);
     }
 
     /**
@@ -165,6 +156,6 @@ class RegistrationContext extends RawMinkContext
      */
     public function iDonTSpecifyMyCity()
     {
-        $this->session->getPage()->selectFieldOption('City', '');
+        $this->registrationPage->chooseCity('');
     }
 }
