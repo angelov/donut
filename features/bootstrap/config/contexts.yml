@@ -89,7 +89,7 @@ services:
 
     app.feature_contexts.users.registration:
         class: 'AppBundle\FeatureContexts\RegistrationContext'
-        arguments: ['@app.behat.pages.users.register', '@app.behat.pages.users.login', '@mink.default_session', '@app.behat.storage']
+        arguments: ['@app.behat.pages.users.register', '@app.behat.pages.users.login', '@mink.default_session', '@app.behat.storage', '@app.behat.validation_errors_checker']
         tags:
             - { name: fob.context_service }
 

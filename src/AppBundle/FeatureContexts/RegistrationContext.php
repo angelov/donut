@@ -7,6 +7,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use SocNet\Behat\Pages\Users\LoginPage;
 use SocNet\Behat\Pages\Users\RegistrationPage;
 use SocNet\Behat\Service\Storage\StorageInterface;
+use SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
 use Webmozart\Assert\Assert;
 
 class RegistrationContext extends RawMinkContext
@@ -15,13 +16,20 @@ class RegistrationContext extends RawMinkContext
     private $storage;
     private $registrationPage;
     private $loginPage;
+    private $validationErrorsChecker;
 
-    public function __construct(RegistrationPage $registrationPage, LoginPage $loginPage, Session $session, StorageInterface $storage)
-    {
+    public function __construct(
+        RegistrationPage $registrationPage,
+        LoginPage $loginPage,
+        Session $session,
+        StorageInterface $storage,
+        ValidationErrorsCheckerInterface $validationErrorsChecker
+    ) {
         $this->session = $session;
         $this->storage = $storage;
         $this->registrationPage = $registrationPage;
         $this->loginPage = $loginPage;
+        $this->validationErrorsChecker = $validationErrorsChecker;
     }
 
     /**
@@ -110,10 +118,9 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatAFieldIsRequired(string $field) : void
     {
-        Assert::true(
-            $this->session->getPage()->hasContent(sprintf('Please enter your %s.', $field)),
-            'Could not find the proper validation message.'
-        );
+        $message = sprintf('Please enter your %s.', $field);
+
+        $this->assertValidationError($field, $message);
     }
 
     /**
@@ -121,10 +128,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatThePasswordMustBeConfirmed() : void
     {
-        Assert::true(
-            $this->session->getPage()->hasContent('Please confirm your password.'),
-            'Could not find the proper validation message.'
-        );
+        $this->assertValidationError('password', 'Please confirm your password.');
     }
 
     /**
@@ -132,7 +136,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatTheSpecifiedEmailIsAlreadyInUse() : void
     {
-        Assert::true($this->session->getPage()->hasContent('The email is already in use.'));
+        $this->assertValidationError('email', 'The email is already in use.');
     }
 
     /**
@@ -140,7 +144,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatThePasswordIsTooShort() : void
     {
-        Assert::true($this->session->getPage()->hasContent('The password must be at least 6 characters long.'));
+        $this->assertValidationError('password', 'The password must be at least 6 characters long.');
     }
 
     /**
@@ -157,5 +161,13 @@ class RegistrationContext extends RawMinkContext
     public function iDonTSpecifyMyCity()
     {
         $this->registrationPage->chooseCity('');
+    }
+
+    private function assertValidationError(string $field, string $message) : void
+    {
+        Assert::true(
+            $this->validationErrorsChecker->checkMessageForField($field, $message),
+            sprintf('Could not find the "%s" validation message for the "%s" field', $message, $field)
+        );
     }
 }

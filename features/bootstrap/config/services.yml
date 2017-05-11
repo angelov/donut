@@ -11,3 +11,11 @@ services:
 
     app.behat.storage:
         class: 'SocNet\Behat\Service\Storage\InMemoryStorage'
+
+    app.behat.validation_errors_parser:
+        class: 'SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsParser'
+        arguments: ['@mink.default_session']
+
+    app.behat.validation_errors_checker:
+        class: 'SocNet\Behat\Service\ValidationErrorsChecker\GlobalValidationErrorsChecker'
+        arguments: ['@app.behat.validation_errors_parser']
