@@ -2,34 +2,34 @@
 
 namespace AppBundle\FeatureContexts;
 
-use Behat\Mink\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SocNet\Behat\Pages\Users\LoginPage;
 use SocNet\Behat\Pages\Users\RegistrationPage;
+use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
 use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
 use Webmozart\Assert\Assert;
 
 class RegistrationContext extends RawMinkContext
 {
-    private $session;
     private $storage;
     private $registrationPage;
     private $loginPage;
     private $validationErrorsChecker;
+    private $alertsChecker;
 
     public function __construct(
         RegistrationPage $registrationPage,
         LoginPage $loginPage,
-        Session $session,
         StorageInterface $storage,
-        ValidationErrorsCheckerInterface $validationErrorsChecker
+        ValidationErrorsCheckerInterface $validationErrorsChecker,
+        AlertsCheckerInterface $alertsChecker
     ) {
-        $this->session = $session;
         $this->storage = $storage;
         $this->registrationPage = $registrationPage;
         $this->loginPage = $loginPage;
         $this->validationErrorsChecker = $validationErrorsChecker;
+        $this->alertsChecker = $alertsChecker;
     }
 
     /**
@@ -100,7 +100,7 @@ class RegistrationContext extends RawMinkContext
      */
     public function iShouldBeNotifiedThatMyUserAccountHasBeenSuccessfullyCreated() : void
     {
-        Assert::true($this->session->getPage()->hasContent('Registration was successful. You many now login.'));
+        Assert::true($this->alertsChecker->hasAlert('Registration was successful. You many now login.', AlertsCheckerInterface::TYPE_SUCCESS));
     }
 
     /**

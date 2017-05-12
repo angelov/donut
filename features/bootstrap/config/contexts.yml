@@ -89,13 +89,18 @@ services:
 
     app.feature_contexts.users.registration:
         class: 'AppBundle\FeatureContexts\RegistrationContext'
-        arguments: ['@app.behat.pages.users.register', '@app.behat.pages.users.login', '@mink.default_session', '@app.behat.storage', '@app.behat.validation_errors_checker']
+        arguments:
+            - '@app.behat.pages.users.register'
+            - '@app.behat.pages.users.login'
+            - '@app.behat.storage'
+            - '@app.behat.validation_errors_checker'
+            - '@app.behat.alerts_checker'
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.users.login:
         class: 'AppBundle\FeatureContexts\LoginContext'
-        arguments: ['@app.behat.pages.users.login', '@app.behat.pages.users.register', '@mink.default_session']
+        arguments: ['@app.behat.pages.users.login', '@app.behat.pages.users.register', '@app.behat.alerts_checker']
         tags:
             - { name: fob.context_service }
 

@@ -4,7 +4,6 @@ namespace spec\SocNet\Behat\Service\ValidationErrorsChecker;
 
 use SocNet\Behat\Service\ValidationErrorsChecker\GlobalValidationErrorsChecker;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
 use SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsParserInterface;
 
@@ -34,8 +33,10 @@ class GlobalValidationErrorsCheckerSpec extends ObjectBehavior
         $this->checkMessageForField(self::FIELD, 'msg2')->shouldReturn(true);
     }
 
-    function it_returns_false_when_the_message_is_not_found()
+    function it_returns_false_when_the_message_is_not_found(ValidationErrorsParserInterface $errorsParser)
     {
+        $errorsParser->getMessages()->willReturn([]);
+
         $this->checkMessageForField(self::FIELD, 'msg')->shouldReturn(false);
     }
 }

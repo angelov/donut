@@ -3,22 +3,22 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use Behat\Mink\Session;
 use SocNet\Behat\Pages\Users\LoginPage;
 use SocNet\Behat\Pages\Users\RegistrationPage;
+use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
 use Webmozart\Assert\Assert;
 
 class LoginContext implements Context
 {
-    private $session;
     private $loginPage;
     private $registrationPage;
+    private $alertsChecker;
 
-    public function __construct(LoginPage $loginPage, RegistrationPage $registrationPage, Session $session)
+    public function __construct(LoginPage $loginPage, RegistrationPage $registrationPage, AlertsCheckerInterface $alertsChecker)
     {
-        $this->session = $session;
         $this->loginPage = $loginPage;
         $this->registrationPage = $registrationPage;
+        $this->alertsChecker = $alertsChecker;
     }
 
     /**
@@ -71,7 +71,7 @@ class LoginContext implements Context
      */
     public function iShouldBeNotifiedAboutBadCredentials() : void
     {
-        Assert::true($this->session->getPage()->hasContent('Invalid credentials.'));
+        Assert::true($this->alertsChecker->hasAlert('Invalid credentials.', AlertsCheckerInterface::TYPE_ERROR));
     }
 
     /**
