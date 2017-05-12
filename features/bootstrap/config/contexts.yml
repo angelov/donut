@@ -106,7 +106,7 @@ services:
 
     app.feature_contexts.thoughts:
         class: 'AppBundle\FeatureContexts\ThoughtsContext'
-        arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
+        arguments: ['@app.behat.pages.thoughts.index', '@app.behat.pages.users.index', '@app.behat.storage', '@app.behat.validation_errors_checker']
         tags:
             - { name: fob.context_service }
 
@@ -130,13 +130,13 @@ services:
 
     app.feature_contexts.users.viewing_user_profile:
         class: 'AppBundle\FeatureContexts\ViewingUserProfileContext'
-        arguments: ['@mink.default_session', '@__symfony__.doctrine.orm.entity_manager', '@__symfony__.router', '@app.behat.storage']
         tags:
             - { name: fob.context_service }
+        arguments: ['@app.behat.storage', '@app.behat.pages.users.show']
 
     app.feature_contexts.users.browsing:
         class: 'AppBundle\FeatureContexts\BrowsingUsersContext'
-        arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
+        arguments: ['@app.behat.storage', '@app.behat.pages.users.index']
         tags:
          - { name: fob.context_service }
 

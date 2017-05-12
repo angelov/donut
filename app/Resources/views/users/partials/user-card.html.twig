@@ -20,7 +20,7 @@
 
                <div class="row">
                    <div class="col-md-12">
-                       <span class="badge">{{ user.email }}</span>
+                       <span class="badge" data-type="email">{{ user.email }}</span>
                        <span class="badge">{{ count_thoughts(user) }} thoughts</span>
                        <span class="badge">{{ user.friends|length }} friends</span>
                        <span class="badge">{{ mutual_friends(app.user, user)|length }} mutual friends</span>

@@ -3,32 +3,39 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use Behat\Mink\Session;
+use SocNet\Behat\Pages\Thoughts\HomePage;
+use SocNet\Behat\Pages\Users\BrowsingUsersPage;
 use SocNet\Behat\Service\Storage\StorageInterface;
-use Symfony\Component\Routing\RouterInterface;
+use SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
 use Webmozart\Assert\Assert;
 
 class ThoughtsContext implements Context
 {
-    private $session;
-    private $router;
     private $storage;
+    private $homePage;
+    private $validationErrorsChecker;
+    private $browsingUsersPage;
 
-    public function __construct(Session $session, RouterInterface $router, StorageInterface $storage)
-    {
-        $this->session = $session;
-        $this->router = $router;
+    public function __construct(
+        HomePage $homePage,
+        BrowsingUsersPage $browsingUsersPage,
+        StorageInterface $storage,
+        ValidationErrorsCheckerInterface $validationErrorsChecker
+    ) {
         $this->storage = $storage;
+        $this->homePage = $homePage;
+        $this->validationErrorsChecker = $validationErrorsChecker;
+        $this->browsingUsersPage = $browsingUsersPage;
     }
 
     /**
      * @When I want to share a thought
+     * @When I want to browse the thoughts
+     * @Given I am browsing the thoughts
      */
     public function iWantToShareAThought() : void
     {
-        $url = $this->router->generate('app.thoughts.index');
-
-        $this->session->getDriver()->visit($url);
+        $this->homePage->open();
     }
 
     /**
@@ -37,7 +44,7 @@ class ThoughtsContext implements Context
      */
     public function iSpecifyItsContentAs($content = '') : void
     {
-        $this->session->getPage()->fillField('Content', $content);
+        $this->homePage->specifyThoughtContent($content);
 
         $this->storage->set('thought_content', $content);
     }
@@ -65,7 +72,7 @@ class ThoughtsContext implements Context
      */
     public function iTryToShareIt() : void
     {
-        $this->session->getPage()->pressButton('Submit');
+        $this->homePage->shareThought();
     }
 
     /**
@@ -73,10 +80,11 @@ class ThoughtsContext implements Context
      */
     public function iShouldSeeItInTheListOfLatestThoughts() : void
     {
-        $page = $this->session->getPage();
         $shared = $this->storage->get('thought_content');
 
-        Assert::true($page->has('css', sprintf('.thought pre:contains("%s")', $shared)));
+        Assert::true(
+            $this->homePage->containsThought($shared)
+        );
     }
 
     /**
@@ -86,7 +94,9 @@ class ThoughtsContext implements Context
     {
         $content = $this->storage->get('deleted_thought_content');
 
-        Assert::false($this->session->getPage()->has('css', sprintf('pre:contains("%s")', $content)));
+        Assert::false(
+            $this->homePage->containsThought($content)
+        );
     }
 
     /**
@@ -94,7 +104,11 @@ class ThoughtsContext implements Context
      */
     public function iShouldBeNotifiedThatTheMaximumLengthIsCharacters(int $length) : void
     {
-        Assert::true($this->session->getPage()->hasContent(sprintf('Thoughts can\'t be longer than %d characters.', $length)));
+        $message = sprintf('Thoughts can\'t be longer than %d characters.', $length);
+
+        Assert::true(
+            $this->validationErrorsChecker->checkMessageForField('Content', $message)
+        );
     }
 
     /**
@@ -102,18 +116,9 @@ class ThoughtsContext implements Context
      */
     public function iShouldBeNotifiedThatTheThoughtMustHaveContent() : void
     {
-        Assert::true($this->session->getPage()->hasContent('Please write the content of your thought.'));
-    }
-
-    /**
-     * @When I want to browse the thoughts
-     * @Given I am browsing the thoughts
-     */
-    public function iWantToBrowseTheThoughts() : void
-    {
-        $url = $this->router->generate('app.thoughts.index');
-
-        $this->session->getDriver()->visit($url);
+        Assert::true(
+            $this->validationErrorsChecker->checkMessageForField('Content', 'Please write the content of your thought.')
+        );
     }
 
     /**
@@ -121,8 +126,7 @@ class ThoughtsContext implements Context
      */
     public function iShouldSeeThoughtsFrom(int $count, string $name) : void
     {
-        $thoughts = $this->session->getPage()->findAll('css', sprintf('.thought:contains("by %s")', $name));
-        $counted = count($thoughts);
+        $counted = $this->homePage->countThoughtsFromAuthor($name);
 
         Assert::same($counted, $count, 'Counted %d instead of %d');
     }
@@ -133,9 +137,7 @@ class ThoughtsContext implements Context
     public function iShouldSeeTheThoughtsOfMine(int $count) : void
     {
         $name = $this->storage->get('logged_user')->getName();
-
-        $thoughts = $this->session->getPage()->findAll('css', sprintf('.thought:contains("by %s")', $name));
-        $counted = count($thoughts);
+        $counted = $this->homePage->countThoughtsFromAuthor($name);
 
         Assert::same($counted, $count, 'Counted %d instead of %d');
     }
@@ -145,9 +147,7 @@ class ThoughtsContext implements Context
      */
     public function iDeleteTheThought(string $content) : void
     {
-        $thought = $this->session->getPage()->find('css', sprintf('pre:contains("%s")', $content));
-
-        $thought->getParent()->pressButton('delete');
+        $this->homePage->deleteThought($content);
 
         $this->storage->set('deleted_thought_content', $content);
     }
@@ -157,10 +157,13 @@ class ThoughtsContext implements Context
      */
     public function iShouldNotBeAllowedToDeleteTheThought(string $content) : void
     {
-        $thought = $this->session->getPage()->find('css', sprintf('pre:contains("%s")', $content));
-        $parent = $thought->getParent();
+        try {
+            $this->homePage->deleteThought($content);
 
-        Assert::false($parent->hasButton('delete'), 'Found a forbidden delete button.');
+            throw new \Exception('Found a forbidden delete button.');
+        } catch (\Exception $e) {
+            // it's alright
+        }
     }
 
     /**
@@ -168,15 +171,10 @@ class ThoughtsContext implements Context
      */
     public function myNumberOfSharedThoughtsShouldBe(int $number) : void
     {
-        $usersPage = $this->router->generate('app.users.index');
-        $this->session->getDriver()->visit($usersPage);
-
+        $this->browsingUsersPage->open();
         $name = $this->storage->get('logged_user')->getName();
+        $card = $this->browsingUsersPage->getUserCard($name);
 
-        // @todo this should be extracted using Page classes
-        $card = $this->session->getPage()->find('css', sprintf('#users-list .user-card:contains("%s")', $name));
-
-        // @todo provide a better feedback message
-        Assert::true($card->has('css', sprintf('.badge:contains("%d thoughts")', $number)));
+        Assert::eq($number, $card->getNumberOfThoughts(), 'Expected number of thoughts to be %s, but it is %s.');
     }
 }

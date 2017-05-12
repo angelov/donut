@@ -2,27 +2,21 @@
 
 namespace AppBundle\FeatureContexts;
 
+use SocNet\Behat\Pages\Users\UserProfilePage;
 use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Users\User;
 use Behat\Behat\Context\Context;
-use Behat\Mink\Session;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
 class ViewingUserProfileContext implements Context
 {
-    private $session;
-    private $em;
-    private $router;
     private $storage;
+    private $userProfilePage;
 
-    public function __construct(Session $session, EntityManager $em, RouterInterface $router, StorageInterface $storage)
+    public function __construct(StorageInterface $storage, UserProfilePage $userProfilePage)
     {
-        $this->em = $em;
-        $this->router = $router;
-        $this->session = $session;
         $this->storage = $storage;
+        $this->userProfilePage = $userProfilePage;
     }
 
     /**
@@ -31,10 +25,10 @@ class ViewingUserProfileContext implements Context
      */
     public function iWantToViewUserSProfile(string $name) : void
     {
-        $user = $this->em->getRepository(User::class)->findOneBy(['name' => $name]);
-        $url = $this->router->generate('app.users.show', ['id' => $user->getId()]);
+        /** @var User $user */
+        $user = $this->storage->get('created_user_' . $name);
 
-        $this->session->getDriver()->visit($url);
+        $this->userProfilePage->open(['id' => $user->getId()]);
     }
 
     /**
@@ -42,10 +36,9 @@ class ViewingUserProfileContext implements Context
      */
     public function iShouldSeeThatHeHasFriends(int $count) : void
     {
-        $list = $this->session->getPage()->findAll('css', '#friends-list li a');
-        $existing = count($list);
+        $found = $this->userProfilePage->countFriends();
 
-        Assert::same($count, $existing, 'Expected to find %d friends, but found %d');
+        Assert::eq($count, $found, 'Expected to find %d friends, but found %d');
     }
 
     /**
@@ -54,6 +47,7 @@ class ViewingUserProfileContext implements Context
     public function iShouldBeOnTheListOfFriends() : void
     {
         $myName = $this->storage->get('logged_user')->getName();
+
         $this->checkIfUserIsInFriendsList($myName);
     }
 
@@ -68,7 +62,7 @@ class ViewingUserProfileContext implements Context
     private function checkIfUserIsInFriendsList(string $name) : void
     {
         Assert::true(
-            $this->session->getPage()->has('css', sprintf('#friends-list li a:contains("%s")', $name)),
+            $this->userProfilePage->friendsListContainsUser($name),
             'Could not find %s in the friends list.'
         );
     }
@@ -78,9 +72,9 @@ class ViewingUserProfileContext implements Context
      */
     public function iShouldSeeThatWeHaveMutualFriends(int $count) : void
     {
-        $list = $this->session->getPage()->findAll('css', '#mutual-friends-list li a');
+        $found = $this->userProfilePage->countMutualFriends();
 
-        Assert::same($count, count($list), 'Expected %s mutual friends, found %s.');
+        Assert::same($count, $found, 'Expected %s mutual friends, found %s.');
     }
 
     /**
@@ -88,9 +82,9 @@ class ViewingUserProfileContext implements Context
      */
     public function thatFriendShouldBe(string $name) : void
     {
-        $mutualFriend = $this->session->getPage()->find('css', '#mutual-friends-list li a');
-
-        Assert::same($name, $mutualFriend->getText());
+        Assert::true(
+            $this->userProfilePage->mutualFriendsListContainsUser($name)
+        );
     }
 
     /**
@@ -98,9 +92,10 @@ class ViewingUserProfileContext implements Context
      */
     public function iShouldSeeThatSheHasSharedThoughts(int $count) : void
     {
-        $list = $this->session->getPage()->findAll('css', '#thoughts-list pre');
-
-        Assert::same($count, count($list), 'Expected to find %d thoughts, found %d instead.');
+        Assert::eq(
+            $count, $this->userProfilePage->countThoughts(),
+            'Expected to find %d thoughts, found %d instead.'
+        );
     }
 
     /**
@@ -108,7 +103,7 @@ class ViewingUserProfileContext implements Context
      */
     public function iShouldSeeAMessageThatHeHasNoFriends() : void
     {
-        Assert::true($this->session->getPage()->has('css', '#friends-list li:contains("The user has no friends.")'));
+        Assert::true($this->userProfilePage->hasNoFriendsMessage());
     }
 
     /**
@@ -116,7 +111,7 @@ class ViewingUserProfileContext implements Context
      */
     public function iShouldSeeAMessageThatWeDonTHaveAnyMutualFriends() : void
     {
-        Assert::true($this->session->getPage()->has('css', '#mutual-friends-list li:contains("You don\'t have any mutual friends.")'));
+        Assert::true($this->userProfilePage->hasNoMutualFriendsMessage());
     }
 
     /**
@@ -124,6 +119,6 @@ class ViewingUserProfileContext implements Context
      */
     public function iShouldSeeAMessageThatSheHasnTSharedAnythingYet() : void
     {
-        Assert::true($this->session->getPage()->has('css', '#thoughts-list p:contains("The user hasn\'t shared any thoughts yet.")'));
+        Assert::true($this->userProfilePage->hasNoSharedThoughtsMessage());
     }
 }

@@ -3,23 +3,20 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Session;
+use SocNet\Behat\Pages\Elements\UserCard;
+use SocNet\Behat\Pages\Users\BrowsingUsersPage;
 use SocNet\Behat\Service\Storage\StorageInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
 class BrowsingUsersContext implements Context
 {
-    private $session;
-    private $router;
     private $storage;
+    private $browsingUsersPage;
 
-    public function __construct(Session $session, RouterInterface $router, StorageInterface $storage)
+    public function __construct(StorageInterface $storage, BrowsingUsersPage $browsingUsersPage)
     {
-        $this->session = $session;
-        $this->router = $router;
         $this->storage = $storage;
+        $this->browsingUsersPage = $browsingUsersPage;
     }
 
     /**
@@ -28,8 +25,7 @@ class BrowsingUsersContext implements Context
      */
     public function iWantToBrowseTheUsers() : void
     {
-        $url = $this->router->generate('app.users.index');
-        $this->session->getDriver()->visit($url);
+        $this->browsingUsersPage->open();
     }
 
     /**
@@ -37,9 +33,9 @@ class BrowsingUsersContext implements Context
      */
     public function iShouldSeeUsersInTheList(int $count) : void
     {
-        $found = $this->session->getPage()->findAll('css', '#users-list .user-card');
+        $found = $this->browsingUsersPage->countDisplayedUsers();
 
-        Assert::same($count, count($found), 'Expected to find %s listed users, found %s');
+        Assert::same($count, $found, 'Expected to find %s listed users, found %s');
     }
 
     /**
@@ -47,11 +43,7 @@ class BrowsingUsersContext implements Context
      */
     public function thoseUsersShouldBe(string ...$names) : void
     {
-        $found = $this->session->getPage()->findAll('css', '#users-list .user-card .user-name');
-
-        $found = array_map(function(NodeElement $element) : string {
-            return $element->getText();
-        }, $found);
+        $found = $this->browsingUsersPage->getDisplayedUserNames();
 
         sort($names);
         sort($found);
@@ -67,7 +59,10 @@ class BrowsingUsersContext implements Context
      */
     public function iShouldSeeThatUserHasSharedThoughts(string $name, int $count) : void
     {
-        $this->checkIfUserHasBadge($name, sprintf('%d thoughts', $count));
+        $found = $this->browsingUsersPage->getUserCard($name)->getNumberOfThoughts();
+
+        Assert::eq($count, $found, 'Expected number of thoughts for user to be %s, but it is %s');
+
         $this->storage->set('current_user_name', $name);
     }
 
@@ -77,7 +72,10 @@ class BrowsingUsersContext implements Context
     public function iShouldSeeThatHisEmailIs(string $email) : void
     {
         $name = $this->storage->get('current_user_name');
-        $this->checkIfUserHasBadge($name, $email);
+
+        $found = $this->getCurrentUserCard()->getEmail();
+
+        Assert::same($email, $found, 'Expected displayed e-mail for user to be %s, but it is %s');
     }
 
     /**
@@ -85,8 +83,9 @@ class BrowsingUsersContext implements Context
      */
     public function iShouldSeeThatHeHasFriends(int $count) : void
     {
-        $name = $this->storage->get('current_user_name');
-        $this->checkIfUserHasBadge($name, sprintf('%d friends', $count));
+        $found = $this->getCurrentUserCard()->getNumberOfFriends();
+
+        Assert::eq($count, $found, 'Expected number of user\'s friends to be %s, but it is %s');
     }
 
     /**
@@ -94,15 +93,9 @@ class BrowsingUsersContext implements Context
      */
     public function iShouldSeeThatWeHaveMutualFriends(int $count) : void
     {
-        $name = $this->storage->get('current_user_name');
-        $this->checkIfUserHasBadge($name, sprintf('%d mutual friends', $count));
-    }
+        $found = $this->getCurrentUserCard()->getNumberOfMutualFriends();
 
-    private function checkIfUserHasBadge(string $name, string $badgeContent) : void
-    {
-        $card = $this->session->getPage()->find('css', sprintf('#users-list .user-card:contains("%s")', $name));
-
-        Assert::true($card->has('css', sprintf('.badge:contains("%s")', $badgeContent)));
+        Assert::eq($count, $found, 'Expected number of mutual friends to be %s, but it is %s');
     }
 
     /**
@@ -110,11 +103,16 @@ class BrowsingUsersContext implements Context
      */
     public function thatFriendShouldBe(string $name) : void
     {
-        $currentUserName = $this->storage->get('current_user_name');
-
-        $card = $this->session->getPage()->find('css', sprintf('#users-list .user-card:contains("%s")', $currentUserName));
-        $mutualFriend = $card->find('css', '.mutual-friends-list .mutual-friend-name')->getText();
+        $names = $this->getCurrentUserCard()->getMutualFriendsNames();
+        $mutualFriend = $names[0];
 
         Assert::same($mutualFriend, $name);
+    }
+
+    private function getCurrentUserCard(): UserCard
+    {
+        $name = $this->storage->get('current_user_name');
+
+        return $this->browsingUsersPage->getUserCard($name);
     }
 }

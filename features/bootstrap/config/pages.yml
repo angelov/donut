@@ -1,9 +1,26 @@
 services:
 
+    # users
+
     app.behat.pages.users.register:
         class: 'SocNet\Behat\Pages\Users\RegistrationPage'
         arguments: ['@mink.default_session', '@__symfony__.router']
 
     app.behat.pages.users.login:
         class: 'SocNet\Behat\Pages\Users\LoginPage'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+
+    app.behat.pages.users.index:
+        class: 'SocNet\Behat\Pages\Users\BrowsingUsersPage'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+
+    app.behat.pages.users.show:
+        class: 'SocNet\Behat\Pages\Users\UserProfilePage'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+
+
+    # thoughts
+
+    app.behat.pages.thoughts.index:
+        class: 'SocNet\Behat\Pages\Thoughts\HomePage'
         arguments: ['@mink.default_session', '@__symfony__.router']
