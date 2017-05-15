@@ -9,3 +9,6 @@ before_script:
 
 script:
   - vendor/bin/phpspec run --format=dot
+
+notifications:
+  email: false
