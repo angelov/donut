@@ -3,7 +3,7 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use SocNet\Behat\Pages\Elements\UserCard;
+use SocNet\Behat\Pages\Users\UserCard;
 use SocNet\Behat\Pages\Users\BrowsingUsersPage;
 use SocNet\Behat\Service\Storage\StorageInterface;
 use Webmozart\Assert\Assert;

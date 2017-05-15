@@ -3,7 +3,7 @@
 namespace SocNet\Behat\Pages\Communities;
 
 use Behat\Mink\Element\NodeElement;
-use SocNet\Behat\Pages\Elements\CommunityCard;
+use SocNet\Behat\Pages\Communities\CommunityCard;
 use SocNet\Behat\Pages\Page;
 
 class BrowsingCommunitiesPage extends Page

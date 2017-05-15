@@ -1,6 +1,6 @@
 <?php
 
-namespace SocNet\Behat\Pages\Elements;
+namespace SocNet\Behat\Pages\Communities;
 
 use Behat\Mink\Element\NodeElement;
 

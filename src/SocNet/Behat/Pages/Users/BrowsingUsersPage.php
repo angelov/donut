@@ -3,7 +3,7 @@
 namespace SocNet\Behat\Pages\Users;
 
 use Behat\Mink\Element\NodeElement;
-use SocNet\Behat\Pages\Elements\UserCard;
+use SocNet\Behat\Pages\Users\UserCard;
 use SocNet\Behat\Pages\Page;
 
 class BrowsingUsersPage extends Page
