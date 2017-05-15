@@ -21,6 +21,9 @@ class ValidationErrorsParser implements ValidationErrorsParserInterface
         );
     }
 
+    /**
+     * @return NodeElement[]
+     */
     private function findValidationErrorElements() : array
     {
         return $this->session->getPage()->findAll('css', '.validation_error');

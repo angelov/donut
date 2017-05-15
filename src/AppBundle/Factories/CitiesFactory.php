@@ -21,7 +21,7 @@ class CitiesFactory
         $this->generateInitialObject();
     }
 
-    private function generateInitialObject()
+    private function generateInitialObject() : void
     {
         $id = $this->uuidGenerator->generate();
         $name = $this->faker->city;
@@ -29,7 +29,7 @@ class CitiesFactory
         $this->generated = new City($id, $name);
     }
 
-    public function get()
+    public function get() : City
     {
         return $this->generated;
     }

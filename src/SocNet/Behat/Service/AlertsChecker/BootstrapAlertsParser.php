@@ -25,6 +25,11 @@ class BootstrapAlertsParser implements AlertsParserInterface
         $alert = $this->findAlertElement();
 
         $classes = $alert->getAttribute('class');
+
+        if (!$classes) {
+            throw new CouldNotDetermineAlertTypeException();
+        }
+
         $classes = explode(' ', $classes);
 
         $types = [

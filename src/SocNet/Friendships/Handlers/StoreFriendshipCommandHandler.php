@@ -19,7 +19,7 @@ class StoreFriendshipCommandHandler
         $this->eventBus = $eventBus;
     }
 
-    public function handle(StoreFriendshipCommand $command)
+    public function handle(StoreFriendshipCommand $command) : void
     {
         $friendship = new Friendship(
             $command->getId(),

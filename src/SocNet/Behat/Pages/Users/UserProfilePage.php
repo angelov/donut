@@ -42,7 +42,7 @@ class UserProfilePage extends Page
 
     public function hasNoFriendsMessage() : bool
     {
-        return $this->getDocument()->has('css', '#friends-list li:contains("The user has no friends.")');
+        return (bool) $this->getDocument()->has('css', '#friends-list li:contains("The user has no friends.")');
     }
 
     public function hasNoMutualFriendsMessage() : bool

@@ -25,27 +25,28 @@ class UsersFactory
         $this->citiesFactory = $citiesFactory;
     }
 
-    public function withName(string $name)
+    public function withName(string $name) : UsersFactory
     {
         $this->name = $name;
         return $this;
     }
 
-    public function withEmail(string $email)
+    public function withEmail(string $email) : UsersFactory
     {
         $this->email = $email;
         return $this;
     }
 
-    public function withPassword(string $password)
+    public function withPassword(string $password) : UsersFactory
     {
         $this->password = $password;
         return $this;
     }
 
-    public function fromCity(City $city)
+    public function fromCity(City $city) : UsersFactory
     {
         $this->city = $city;
+        return $this;
     }
 
     public function get() : User

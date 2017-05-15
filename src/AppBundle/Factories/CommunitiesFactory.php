@@ -24,25 +24,25 @@ class CommunitiesFactory
         $this->usersFactory = $usersFactory;
     }
 
-    public function withName(string $name)
+    public function withName(string $name) : CommunitiesFactory
     {
         $this->name = $name;
         return $this;
     }
 
-    public function withDescription(string $description)
+    public function withDescription(string $description) : CommunitiesFactory
     {
         $this->description = $description;
         return $this;
     }
 
-    public function createdBy(User $author)
+    public function createdBy(User $author) : CommunitiesFactory
     {
         $this->author = $author;
         return $this;
     }
 
-    public function get()
+    public function get() : Community
     {
         return new Community(
             $this->uuidGenerator->generate(),

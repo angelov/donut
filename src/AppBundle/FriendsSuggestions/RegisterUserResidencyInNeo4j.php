@@ -14,7 +14,7 @@ class RegisterUserResidencyInNeo4j
         $this->client = $client;
     }
 
-    public function notify(UserRegisteredEvent $event)
+    public function notify(UserRegisteredEvent $event) : void
     {
         $user = $event->getUser();
         $city = $user->getCity();

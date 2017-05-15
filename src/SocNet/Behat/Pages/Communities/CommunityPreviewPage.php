@@ -12,16 +12,25 @@ class CommunityPreviewPage extends Page
         return 'app.communities.show';
     }
 
+    /**
+     * @psalm-suppress PossiblyNullReference
+     */
     public function getDescription() : string
     {
         return $this->getDocument()->find('css', '#community-description')->getText();
     }
 
+    /**
+     * @psalm-suppress PossiblyNullReference
+     */
     public function getAuthorName() : string
     {
         return $this->getDocument()->find('css', '#community-author')->getText();
     }
 
+    /**
+     * @psalm-suppress PossiblyNullReference
+     */
     public function getCreationDate() : string
     {
         return $this->getDocument()->find('css', '#community-creation-date')->getText();
@@ -43,19 +52,19 @@ class CommunityPreviewPage extends Page
         return array_map($mapper, $elements);
     }
 
-    public function countDisplayedMembers()
+    public function countDisplayedMembers() : int
     {
         return count(
             $this->getDocument()->findAll('css', 'ul.community-members li')
         );
     }
 
-    public function join()
+    public function join() : void
     {
         $this->getDocument()->pressButton('Join');
     }
 
-    public function leave()
+    public function leave() : void
     {
         $this->getDocument()->pressButton('Leave');
     }

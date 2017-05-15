@@ -22,19 +22,19 @@ class FriendshipsFactory
         $this->usersFactory = $usersFactory;
     }
 
-    public function from(User $user)
+    public function from(User $user) : FriendshipsFactory
     {
         $this->user = $user;
         return $this;
     }
 
-    public function to(User $user)
+    public function to(User $user) : FriendshipsFactory
     {
         $this->friend = $user;
         return $this;
     }
 
-    public function get()
+    public function get() : Friendship
     {
         return new Friendship(
             $this->uuidGenerator->generate(),

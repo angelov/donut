@@ -64,7 +64,7 @@ class City
         return $this->residents->getValues();
     }
 
-    public function addResident(User $user)
+    public function addResident(User $user) : void
     {
         if (! $this->residents->contains($user)) {
             $this->residents->add($user);

@@ -23,19 +23,19 @@ class ThoughtsFactory
         $this->usersFactory = $usersFactory;
     }
 
-    public function sharedBy(User $user)
+    public function sharedBy(User $user) : ThoughtsFactory
     {
         $this->author = $user;
         return $this;
     }
 
-    public function withContent(string $content)
+    public function withContent(string $content) : ThoughtsFactory
     {
         $this->content = $content;
         return $this;
     }
 
-    public function get()
+    public function get() : Thought
     {
         return new Thought(
             $this->uuidGenerator->generate(),

@@ -33,6 +33,10 @@ class HomePage extends Page
         return count($thoughts);
     }
 
+    /**
+     * @todo create an ThoughtCard element?
+     * @psalm-suppress PossiblyNullReference
+     */
     public function deleteThought(string $thought) : void
     {
         $thought = $this->getDocument()->find('css', sprintf('pre:contains("%s")', $thought));

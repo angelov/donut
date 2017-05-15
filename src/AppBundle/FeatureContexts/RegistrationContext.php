@@ -158,7 +158,7 @@ class RegistrationContext extends RawMinkContext
     /**
      * @When I don't specify my city
      */
-    public function iDonTSpecifyMyCity()
+    public function iDonTSpecifyMyCity() : void
     {
         $this->registrationPage->chooseCity('');
     }

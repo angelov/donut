@@ -24,7 +24,7 @@ class CitiesContext implements Context
     /**
      * @Given there are cities named :first and :second
      */
-    public function thereAreCitiesNamedSkopjeAndOhrid(string... $names)
+    public function thereAreCitiesNamedSkopjeAndOhrid(string... $names) : void
     {
         foreach ($names as $name) {
             $id = $this->uuidGenerator->generate();

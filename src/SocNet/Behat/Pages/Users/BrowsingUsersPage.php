@@ -13,9 +13,14 @@ class BrowsingUsersPage extends Page
         return 'app.users.index';
     }
 
+    /**
+     * @psalm-suppress PossiblyNullReference
+     */
     public function getUserCard(string $name) : UserCard
     {
         $card = $this->getDocument()->find('css', sprintf('#users-list .user-card:contains("%s")', $name));
+
+        // @todo throw an exception if user is not found and remove psalm suppression
 
         return new UserCard($card);
     }
