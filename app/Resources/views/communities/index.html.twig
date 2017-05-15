@@ -9,7 +9,7 @@
     {% for message in app.session.flashBag.get('success') %}
 
         <div class="alert alert-success">
-            <strong>Success!</strong> {{ message }}
+            {{ message }}
         </div>
 
     {% endfor %}
@@ -25,10 +25,10 @@
             <div class="media-body">
                 <h4 class="media-heading community-name">{{ community.name }}</h4>
                 <small>
-                    Created by <strong>{{ community.author.name }}</strong> on <strong>{{ community.createdAt | date('Y-m-d H:i:s') }}</strong>
+                    Created by <span class="community-author"><strong>{{ community.author.name }}</strong></span> on <strong>{{ community.createdAt | date('Y-m-d H:i:s') }}</strong>
                 </small>
                 <br />
-                {{ community.description }}<br />
+                <span class="community-description">{{ community.description }}</span><br />
 
                 {% if community.hasMember(app.user) %}
 

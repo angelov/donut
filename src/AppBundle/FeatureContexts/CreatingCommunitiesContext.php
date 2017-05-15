@@ -3,19 +3,25 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use Behat\Mink\Session;
-use Symfony\Component\Routing\RouterInterface;
+use SocNet\Behat\Pages\Communities\CreateCommunityPage;
+use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
+use SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
 use Webmozart\Assert\Assert;
 
 class CreatingCommunitiesContext implements Context
 {
-    private $router;
-    private $session;
+    private $createCommunityPage;
+    private $alertsChecker;
+    private $validationErrorsChecker;
 
-    public function __construct(Session $session, RouterInterface $router)
-    {
-        $this->session = $session;
-        $this->router = $router;
+    public function __construct(
+        CreateCommunityPage $createCommunityPage,
+        AlertsCheckerInterface $alertsChecker,
+        ValidationErrorsCheckerInterface $validationErrorsChecker
+    ) {
+        $this->createCommunityPage = $createCommunityPage;
+        $this->alertsChecker = $alertsChecker;
+        $this->validationErrorsChecker = $validationErrorsChecker;
     }
 
     /**
@@ -23,9 +29,7 @@ class CreatingCommunitiesContext implements Context
      */
     public function iWantToCreateANewCommunity() : void
     {
-        $url = $this->router->generate('app.communities.create');
-
-        $this->session->getDriver()->visit($url);
+        $this->createCommunityPage->open();
     }
 
     /**
@@ -34,7 +38,7 @@ class CreatingCommunitiesContext implements Context
      */
     public function iSpecifyTheNameAs(string $name = '') : void
     {
-        $this->session->getPage()->fillField('Name', $name);
+        $this->createCommunityPage->specifyName($name);
     }
 
     /**
@@ -42,7 +46,7 @@ class CreatingCommunitiesContext implements Context
      */
     public function iTryToCreateIt() : void
     {
-        $this->session->getPage()->pressButton('Submit');
+        $this->createCommunityPage->create();
     }
 
     /**
@@ -50,7 +54,9 @@ class CreatingCommunitiesContext implements Context
      */
     public function iShouldBeNotifiedThatTheCommunityIsCreated() : void
     {
-        Assert::true($this->session->getPage()->hasContent('Community was successfully created!'));
+        Assert::true(
+            $this->alertsChecker->hasAlert('Community was successfully created!', AlertsCheckerInterface::TYPE_SUCCESS)
+        );
     }
 
     /**
@@ -58,7 +64,7 @@ class CreatingCommunitiesContext implements Context
      */
     public function iSpecifyTheDescriptionAs(string $description) : void
     {
-        $this->session->getPage()->fillField('Description', $description);
+        $this->createCommunityPage->specifyDescription($description);
     }
 
     /**
@@ -67,7 +73,7 @@ class CreatingCommunitiesContext implements Context
     public function iShouldBeNotifiedThatTheNameIsRequired() : void
     {
         Assert::true(
-            $this->session->getPage()->hasContent('Please enter a name for the community.'),
+            $this->validationErrorsChecker->checkMessageForField('name', 'Please enter a name for the community.'),
             'Could not find the proper validation message.'
         );
     }

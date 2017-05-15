@@ -24,3 +24,18 @@ services:
     app.behat.pages.thoughts.index:
         class: 'SocNet\Behat\Pages\Thoughts\HomePage'
         arguments: ['@mink.default_session', '@__symfony__.router']
+
+
+    # communities
+
+    app.behat.pages.communities.index:
+        class: 'SocNet\Behat\Pages\Communities\BrowsingCommunitiesPage'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+
+    app.behat.pages.communities.create:
+        class: 'SocNet\Behat\Pages\Communities\CreateCommunityPage'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+
+    app.behat.pages.communities.show:
+        class: 'SocNet\Behat\Pages\Communities\CommunityPreviewPage'
+        arguments: ['@mink.default_session', '@__symfony__.router']

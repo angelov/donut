@@ -2,25 +2,25 @@
 
 namespace AppBundle\FeatureContexts;
 
+use SocNet\Behat\Pages\Communities\CommunityPreviewPage;
+use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
 use SocNet\Behat\Service\Storage\StorageInterface;
 use SocNet\Communities\Community;
 use Behat\Behat\Context\Context;
-use Behat\Mink\Session;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Routing\RouterInterface;
+use SocNet\Users\User;
 use Webmozart\Assert\Assert;
 
 class ViewingCommunitiesContext implements Context
 {
-    private $session;
-    private $router;
     private $storage;
+    private $communityPreviewPage;
+    private $alertsChecker;
 
-    public function __construct(EntityManager $em, Session $session, RouterInterface $router, StorageInterface $storage)
+    public function __construct(StorageInterface $storage, CommunityPreviewPage $communityPreviewPage, AlertsCheckerInterface $alertsChecker)
     {
-        $this->session = $session;
-        $this->router = $router;
         $this->storage = $storage;
+        $this->communityPreviewPage = $communityPreviewPage;
+        $this->alertsChecker = $alertsChecker;
     }
 
     /**
@@ -29,8 +29,12 @@ class ViewingCommunitiesContext implements Context
      */
     public function iWantToViewTheCommunity(string $name) : void
     {
+        /** @var Community $community */
         $community = $this->storage->get('community_' . $name);
-        $this->openCommunityPage($community);
+
+        $this->communityPreviewPage->open(['id' => $community->getId()]);
+
+        $this->storage->set('current_community', $community);
     }
 
     /**
@@ -39,14 +43,11 @@ class ViewingCommunitiesContext implements Context
      */
     public function iWantToViewIt() : void
     {
+        /** @var Community $community */
         $community = $this->storage->get('created_community');
-        $this->openCommunityPage($community);
-    }
 
-    private function openCommunityPage(Community $community) : void
-    {
-        $url = $this->router->generate('app.communities.show', ['id' => $community->getId()]);
-        $this->session->getDriver()->visit($url);
+        $this->communityPreviewPage->open(['id' => $community->getId()]);
+
         $this->storage->set('current_community', $community);
     }
 
@@ -55,9 +56,10 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldSeeItsDescription() : void
     {
-        /** @var \SocNet\Communities\Community $community */
+        /** @var Community $community */
         $community = $this->storage->get('current_community');
-        $description = $this->session->getPage()->find('css', '#community-description')->getText();
+
+        $description = $this->communityPreviewPage->getDescription();
 
         Assert::same($community->getDescription(), $description, 'The displayed community description is not correct. Got [%s] instead of [%s]');
     }
@@ -69,7 +71,7 @@ class ViewingCommunitiesContext implements Context
     {
         /** @var Community $community */
         $community = $this->storage->get('current_community');
-        $author = $this->session->getPage()->find('css', '#community-author')->getText();
+        $author = $this->communityPreviewPage->getAuthorName();
 
         Assert::same($author, $community->getAuthor()->getName(), 'The displayed community author is not correct. Got [%s] instead of [%s]');
     }
@@ -79,9 +81,9 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldSeeItsCreationDate() : void
     {
-        /** @var \SocNet\Communities\Community $community */
+        /** @var Community $community */
         $community = $this->storage->get('current_community');
-        $creationDate = $this->session->getPage()->find('css', '#community-creation-date')->getText();
+        $creationDate = $this->communityPreviewPage->getCreationDate();
 
         $expected = $community->getCreatedAt()->format('Y-m-d');
 
@@ -93,7 +95,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldSeeAListOfItsMembers() : void
     {
-        Assert::true($this->session->getPage()->has('css', 'ul.community-members'));
+        Assert::true($this->communityPreviewPage->hasMembersList());
     }
 
     /**
@@ -101,7 +103,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldnTSeeAListOfItsMembers() : void
     {
-        Assert::false($this->session->getPage()->has('css', 'ul.community-members'));
+        Assert::false($this->communityPreviewPage->hasMembersList());
     }
 
     /**
@@ -109,10 +111,13 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldBePartOfIt() : void
     {
-        $list = $this->session->getPage()->find('css', 'ul.community-members');
+        /** @var User $user */
         $user = $this->storage->get('logged_user');
+        $list = $this->communityPreviewPage->getDisplayedMembers();
 
-        Assert::true($list->has('css', sprintf('li:contains("%s")', $user->getName())));
+        Assert::true(
+            in_array($user->getName(), $list, true)
+        );
     }
 
     /**
@@ -120,10 +125,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function itShouldHaveMember(int $count) : void
     {
-        $list = $this->session->getPage()->find('css', 'ul.community-members');
-        $members = $list->findAll('css', 'li');
-
-        Assert::same($count, count($members));
+        Assert::eq($this->communityPreviewPage->countDisplayedMembers(), $count);
     }
 
     /**
@@ -131,7 +133,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function iTryToJoinIt() : void
     {
-        $this->session->getPage()->pressButton('Join');
+        $this->communityPreviewPage->join();
     }
 
     /**
@@ -139,7 +141,9 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldBeNotifiedThatIHaveJoinedIt() : void
     {
-        Assert::true($this->session->getPage()->hasContent('Successfully joined the community'));
+        Assert::true(
+            $this->alertsChecker->hasAlert('Successfully joined the community', AlertsCheckerInterface::TYPE_SUCCESS)
+        );
     }
 
     /**
@@ -147,7 +151,7 @@ class ViewingCommunitiesContext implements Context
      */
     public function iTryToLeaveIt() : void
     {
-        $this->session->getPage()->pressButton('Leave');
+        $this->communityPreviewPage->leave();
     }
 
     /**
@@ -155,6 +159,8 @@ class ViewingCommunitiesContext implements Context
      */
     public function iShouldBeNotifiedThatIHaveLeftIt() : void
     {
-        Assert::true($this->session->getPage()->hasContent('Successfully left the community'));
+        Assert::true(
+            $this->alertsChecker->hasAlert('Successfully left the community', AlertsCheckerInterface::TYPE_SUCCESS)
+        );
     }
 }

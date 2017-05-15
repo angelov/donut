@@ -3,23 +3,22 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Session;
+use SocNet\Behat\Pages\Communities\BrowsingCommunitiesPage;
+use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
 use SocNet\Behat\Service\Storage\StorageInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Webmozart\Assert\Assert;
 
 class BrowsingCommunitiesContext implements Context
 {
-    private $session;
-    private $router;
     private $storage;
+    private $browsingCommunitiesPage;
+    private $alertsChecker;
 
-    public function __construct(Session $session, RouterInterface $router, StorageInterface $storage)
+    public function __construct(StorageInterface $storage, BrowsingCommunitiesPage $browsingCommunitiesPage, AlertsCheckerInterface $alertsChecker)
     {
-        $this->session = $session;
-        $this->router = $router;
         $this->storage = $storage;
+        $this->browsingCommunitiesPage = $browsingCommunitiesPage;
+        $this->alertsChecker = $alertsChecker;
     }
 
     /**
@@ -28,8 +27,7 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iWantToBrowseTheCommunities() : void
     {
-        $url = $this->router->generate('app.communities.index');
-        $this->session->getDriver()->visit($url);
+        $this->browsingCommunitiesPage->open();
     }
 
     /**
@@ -37,9 +35,9 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iShouldSeeListedCommunities(int $count) : void
     {
-        $items = $this->session->getPage()->findAll('css', '.community');
+        $found = $this->browsingCommunitiesPage->countDisplayedCommunities();
 
-        Assert::same(count($items), $count, 'Counted %d communities instead of %s');
+        Assert::eq($found, $count, 'Counted %d communities instead of %s');
     }
 
     /**
@@ -47,10 +45,11 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iShouldHaveAnOptionToJoinTheCommunity(string $name) : void
     {
-        $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
         $this->storage->set('current_community_name', $name);
 
-        Assert::true($item->hasButton('Join'));
+        Assert::true(
+            $this->browsingCommunitiesPage->getCommunityCard($name)->hasJoinButton()
+        );
     }
 
     /**
@@ -59,9 +58,10 @@ class BrowsingCommunitiesContext implements Context
     public function iShouldNotHaveAnOptionToJoinIt() : void
     {
         $name = $this->storage->get('current_community_name');
-        $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
 
-        Assert::false($item->hasButton('Join'));
+        Assert::false(
+            $this->browsingCommunitiesPage->getCommunityCard($name)->hasJoinButton()
+        );
     }
 
     /**
@@ -69,10 +69,11 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iShouldHaveAnOptionToViewTheCommunity(string $name) : void
     {
-        $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
         $this->storage->set('current_community_name', $name);
 
-        Assert::true($item->hasLink('View'));
+        Assert::true(
+            $this->browsingCommunitiesPage->getCommunityCard($name)->hasViewButton()
+        );
     }
 
     /**
@@ -81,9 +82,10 @@ class BrowsingCommunitiesContext implements Context
     public function iShouldNotHaveAnOptionToViewIt() : void
     {
         $name = $this->storage->get('current_community_name');
-        $item = $this->session->getPage()->find('css', sprintf('.community:contains("%s")', $name));
 
-        Assert::false($item->hasLink('View'));
+        Assert::false(
+            $this->browsingCommunitiesPage->getCommunityCard($name)->hasViewButton()
+        );
     }
 
     /**
@@ -91,8 +93,7 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iTryToJoinTheCommunity(string $name) : void
     {
-        $button = $this->session->getPage()->find('css', sprintf('.community:contains("%s") .btn:contains("Join")', $name));
-        $button->press();
+        $this->browsingCommunitiesPage->joinCommunity($name);
     }
 
     /**
@@ -100,7 +101,9 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iShouldBeNotifiedThatIHaveJoinedTheCommunity() : void
     {
-        Assert::true($this->session->getPage()->hasContent('Successfully joined the community'));
+        Assert::true(
+            $this->alertsChecker->hasAlert('Successfully joined the community', AlertsCheckerInterface::TYPE_SUCCESS)
+        );
     }
 
     /**
@@ -109,10 +112,7 @@ class BrowsingCommunitiesContext implements Context
      */
     public function thoseCommunitiesShouldBeAnd(string ...$names) : void
     {
-        $found = $this->session->getPage()->findAll('css', '.community-name');
-        $found = array_map(function (NodeElement $element) : string {
-            return $element->getText();
-        }, $found);
+        $found = $this->browsingCommunitiesPage->getDisplayedCommunityNames();
 
         $this->storage->set('current_community_name', $names[count($names)-1]);
 
@@ -128,11 +128,10 @@ class BrowsingCommunitiesContext implements Context
     public function itShouldBeDescribedAs(string $description) : void
     {
         $community = $this->storage->get('current_community_name');
-        $nameElement = $this->session->getPage()->find('css', sprintf('.community .media-body .community-name:contains("%s")', $community));
 
-        $communityElement = $nameElement->getParent()->getParent();
+        $found = $this->browsingCommunitiesPage->getCommunityCard($community)->getDescription();
 
-        Assert::true($communityElement->has('css', sprintf('.media-body:contains("%s")', $description)));
+        Assert::same($found, $description);
     }
 
     /**
@@ -141,13 +140,11 @@ class BrowsingCommunitiesContext implements Context
     public function iShouldSeeThatItIsCreatedByMe() : void
     {
         $community = $this->storage->get('current_community_name');
-        $nameElement = $this->session->getPage()->find('css', sprintf('.community .media-body .community-name:contains("%s")', $community));
-
-        $communityElement = $nameElement->getParent()->getParent();
-
         $logged = $this->storage->get('logged_user')->getName();
 
-        Assert::true($communityElement->has('css', sprintf('.media-body:contains("%s")', $logged)));
+        $found = $this->browsingCommunitiesPage->getCommunityCard($community)->getAuthorName();
+
+        Assert::same($found, $logged);
     }
 
     /**
@@ -155,11 +152,9 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iShouldSeeThatTheCommunityIsCreatedBy(string $name, string $author) : void
     {
-        $nameElement = $this->session->getPage()->find('css', sprintf('.community .media-body .community-name:contains("%s")', $name));
+        $found = $this->browsingCommunitiesPage->getCommunityCard($name)->getAuthorName();
 
-        $communityElement = $nameElement->getParent()->getParent();
-
-        Assert::true($communityElement->has('css', sprintf('.media-body:contains("%s")', $author)));
+        Assert::same($found, $author);
     }
 
     /**
@@ -167,8 +162,8 @@ class BrowsingCommunitiesContext implements Context
      */
     public function iShouldSeeAMessageThatThereArenTAnyExistingCommunities() : void
     {
-        $message = 'There aren\'t any communities available for you. Want to create one?';
-
-        Assert::true($this->session->getPage()->has('css', sprintf('p:contains("%s")', $message)));
+        Assert::true(
+            $this->browsingCommunitiesPage->hasNoCommunitiesMessage()
+        );
     }
 }

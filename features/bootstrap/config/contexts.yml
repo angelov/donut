@@ -112,19 +112,19 @@ services:
 
     app.feature_contexts.communities.creating:
         class: 'AppBundle\FeatureContexts\CreatingCommunitiesContext'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        arguments: ['@app.behat.pages.communities.create', '@app.behat.alerts_checker', '@app.behat.validation_errors_checker']
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.communities.browsing:
         class: 'AppBundle\FeatureContexts\BrowsingCommunitiesContext'
-        arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
+        arguments: ['@app.behat.storage', '@app.behat.pages.communities.index', '@app.behat.alerts_checker']
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.communities.viewing:
         class: 'AppBundle\FeatureContexts\ViewingCommunitiesContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@mink.default_session', '@__symfony__.router', '@app.behat.storage']
+        arguments: ['@app.behat.storage', '@app.behat.pages.communities.show', '@app.behat.alerts_checker']
         tags:
             - { name: fob.context_service }
 
