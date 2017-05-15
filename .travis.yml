@@ -4,11 +4,27 @@ php:
   - '7.1'
   - nightly
 
-before_script:
+services:
+  - mysql
+  - redis-server
+  - rabbitmq
+
+cache:
+  directories:
+    - vendor/
+
+install:
   - composer install
+
+before_script:
+  - mv etc/travis/parameters.yml app/config/parameters.yml
+  - ./bin/console doctrine:database:create --env=test
+  - ./bin/console doctrine:migrations:migrate --env=test --no-interaction --quiet
 
 script:
   - vendor/bin/phpspec run --format=dot
+  - vendor/bin/phpunit
+  - vendor/bin/behat --format=progress
 
 notifications:
   email: false

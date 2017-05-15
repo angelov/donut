@@ -1,0 +1,20 @@
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: socnet
+    database_user: root
+    database_password:
+    mailer_transport: smtp
+    mailer_host:
+    mailer_user:
+    mailer_password:
+    secret: e047d62b055dd6d7afa272d5f28a49fd7885129b
+    neo4j_host: localhost
+    neo4j_port: 7687
+    neo4j_username: neo4j
+    neo4j_password: neo4j
+    rabbit_mq_host: localhost
+    rabbit_mq_port: 5672
+    rabbit_mq_user: guest
+    rabbit_mq_password: guest
+    rabbit_mq_vhost: /
