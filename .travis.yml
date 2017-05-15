@@ -13,6 +13,11 @@ cache:
   directories:
     - vendor/
 
+before_install:
+  - sudo apt-get update > /dev/null
+  - sh -c ./etc/travis/install-jdk8.sh
+  - sh -c ./etc/travis/install-neo4j.sh
+
 install:
   - composer install
 
