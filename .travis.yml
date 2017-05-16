@@ -22,7 +22,8 @@ install:
 
 before_script:
   - mv etc/travis/parameters.yml app/config/parameters.yml
-  - ./bin/console doctrine:database:create --env=test
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS socnet_test;'
+# - ./bin/console doctrine:database:create --env=test
   - ./bin/console doctrine:migrations:migrate --env=test --no-interaction --quiet
 
 script:
