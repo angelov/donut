@@ -4,6 +4,7 @@ namespace SocNet\Behat\Pages\Movies;
 
 use Behat\Mink\Element\NodeElement;
 use SocNet\Behat\Pages\Page;
+use SocNet\Behat\Service\ElementsTextExtractor;
 
 class BrowsingMoviesPage extends Page
 {
@@ -21,11 +22,7 @@ class BrowsingMoviesPage extends Page
     {
         $titles = $this->getDocument()->findAll('css', '.movie-title');
 
-        $mapper = function (NodeElement $element) : string {
-            return $element->getText();
-        };
-
-        return array_map($mapper, $titles);
+        return ElementsTextExtractor::fromElements($titles);
     }
 
     public function checkGenre(string $genre) : void

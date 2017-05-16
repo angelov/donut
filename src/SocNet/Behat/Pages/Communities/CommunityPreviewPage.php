@@ -4,6 +4,7 @@ namespace SocNet\Behat\Pages\Communities;
 
 use Behat\Mink\Element\NodeElement;
 use SocNet\Behat\Pages\Page;
+use SocNet\Behat\Service\ElementsTextExtractor;
 
 class CommunityPreviewPage extends Page
 {
@@ -45,11 +46,7 @@ class CommunityPreviewPage extends Page
     {
         $elements = $this->getDocument()->findAll('css', 'ul.community-members li');
 
-        $mapper = function (NodeElement $element) : string {
-            return $element->getText();
-        };
-
-        return array_map($mapper, $elements);
+        return ElementsTextExtractor::fromElements($elements);
     }
 
     public function countDisplayedMembers() : int

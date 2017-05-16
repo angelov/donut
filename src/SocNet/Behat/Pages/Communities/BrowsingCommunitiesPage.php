@@ -5,6 +5,7 @@ namespace SocNet\Behat\Pages\Communities;
 use Behat\Mink\Element\NodeElement;
 use SocNet\Behat\Pages\Communities\CommunityCard;
 use SocNet\Behat\Pages\Page;
+use SocNet\Behat\Service\ElementsTextExtractor;
 
 class BrowsingCommunitiesPage extends Page
 {
@@ -37,11 +38,7 @@ class BrowsingCommunitiesPage extends Page
     {
         $elements = $this->getDocument()->findAll('css', '.community-name');
 
-        $mapper = function (NodeElement $element) : string {
-            return $element->getText();
-        };
-
-        return array_map($mapper, $elements);
+        return ElementsTextExtractor::fromElements($elements);
     }
 
     public function hasNoCommunitiesMessage() : bool

@@ -4,6 +4,7 @@ namespace SocNet\Behat\Pages\Friendships;
 
 use Behat\Mink\Element\NodeElement;
 use SocNet\Behat\Pages\Page;
+use SocNet\Behat\Service\ElementsTextExtractor;
 
 class FriendshipsManagementPage extends Page
 {
@@ -23,11 +24,7 @@ class FriendshipsManagementPage extends Page
     {
         $list = $this->getDocument()->findAll('css', '#friends-list .user-name');
 
-        $mapper = function (NodeElement $element) : string {
-            return $element->getText();
-        };
-
-        return array_map($mapper, $list);
+        return ElementsTextExtractor::fromElements($list);
     }
 
     public function countReceivedFriendshipRequests() : int
@@ -41,11 +38,7 @@ class FriendshipsManagementPage extends Page
     {
         $list = $this->getDocument()->findAll('css', '#received-friendship-requests-list .panel .user-name');
 
-        $mapper = function (NodeElement $element) : string {
-            return $element->getText();
-        };
-
-        return array_map($mapper, $list);
+        return ElementsTextExtractor::fromElements($list);
     }
 
     public function hasReceivedFriendshipRequestFrom(string $name) : bool
@@ -64,11 +57,7 @@ class FriendshipsManagementPage extends Page
     {
         $list = $this->getDocument()->findAll('css', '#sent-friendship-requests-list .panel .user-name');
 
-        $mapper = function (NodeElement $element) : string {
-            return $element->getText();
-        };
-
-        return array_map($mapper, $list);
+        return ElementsTextExtractor::fromElements($list);
     }
 
     public function hasSentFriendshipRequestTo(string $name) : bool

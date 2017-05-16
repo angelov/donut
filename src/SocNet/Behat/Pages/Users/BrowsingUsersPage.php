@@ -5,6 +5,7 @@ namespace SocNet\Behat\Pages\Users;
 use Behat\Mink\Element\NodeElement;
 use SocNet\Behat\Pages\Users\UserCard;
 use SocNet\Behat\Pages\Page;
+use SocNet\Behat\Service\ElementsTextExtractor;
 
 class BrowsingUsersPage extends Page
 {
@@ -34,10 +35,6 @@ class BrowsingUsersPage extends Page
     {
         $found = $this->getDocument()->findAll('css', '#users-list .user-card .user-name');
 
-        $mapper = function(NodeElement $element) : string {
-            return $element->getText();
-        };
-
-        return array_map($mapper, $found);
+        return ElementsTextExtractor::fromElements($found);
     }
 }
