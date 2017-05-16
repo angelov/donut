@@ -136,18 +136,18 @@ services:
 
     app.feature_contexts.users.browsing:
         class: 'AppBundle\FeatureContexts\BrowsingUsersContext'
-        arguments: ['@app.behat.storage', '@app.behat.pages.users.index']
+        arguments: ['@app.behat.storage', '@app.behat.pages.users.index', '@app.behat.alerts_checker']
         tags:
          - { name: fob.context_service }
 
     app.feature_contexts.friends.managing:
         class: 'AppBundle\FeatureContexts\ManagingFriendshipsContext'
-        arguments: ['@mink.default_session', '@__symfony__.router', '@app.behat.storage']
+        arguments: ['@app.behat.storage', '@app.behat.pages.friendships.index', '@app.behat.alerts_checker']
         tags:
             - { name: fob.context_service }
 
     app.feature_contexts.movies.browsing:
         class: 'AppBundle\FeatureContexts\BrowsingMoviesContext'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        arguments: ['@app.behat.pages.movies.index']
         tags:
          - { name: fob.context_service }

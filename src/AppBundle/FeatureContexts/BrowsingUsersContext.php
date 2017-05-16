@@ -5,6 +5,7 @@ namespace AppBundle\FeatureContexts;
 use Behat\Behat\Context\Context;
 use SocNet\Behat\Pages\Users\UserCard;
 use SocNet\Behat\Pages\Users\BrowsingUsersPage;
+use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
 use SocNet\Behat\Service\Storage\StorageInterface;
 use Webmozart\Assert\Assert;
 
@@ -12,11 +13,13 @@ class BrowsingUsersContext implements Context
 {
     private $storage;
     private $browsingUsersPage;
+    private $alertsChecker;
 
-    public function __construct(StorageInterface $storage, BrowsingUsersPage $browsingUsersPage)
+    public function __construct(StorageInterface $storage, BrowsingUsersPage $browsingUsersPage, AlertsCheckerInterface $alertsChecker)
     {
         $this->storage = $storage;
         $this->browsingUsersPage = $browsingUsersPage;
+        $this->alertsChecker = $alertsChecker;
     }
 
     /**
@@ -107,6 +110,24 @@ class BrowsingUsersContext implements Context
         $mutualFriend = $names[0];
 
         Assert::same($mutualFriend, $name);
+    }
+
+    /**
+     * @When I want to be friends with :name
+     */
+    public function iWantToBeFriendsWith(string $name) : void
+    {
+        $this->browsingUsersPage->getUserCard($name)->addAsFriend();
+    }
+
+    /**
+     * @Then I should be notified that a friendship request is sent
+     */
+    public function iShouldBeNotifiedThatAFriendshipRequestIsSent() : void
+    {
+        Assert::true(
+            $this->alertsChecker->hasAlert('Friendship request successfully sent!', AlertsCheckerInterface::TYPE_SUCCESS)
+        );
     }
 
     private function getCurrentUserCard(): UserCard

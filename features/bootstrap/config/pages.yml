@@ -19,6 +19,13 @@ services:
         arguments: ['@mink.default_session', '@__symfony__.router']
 
 
+    # friendships
+
+    app.behat.pages.friendships.index:
+        class: 'SocNet\Behat\Pages\Friendships\FriendshipsManagementPage'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+
+
     # thoughts
 
     app.behat.pages.thoughts.index:
@@ -38,4 +45,11 @@ services:
 
     app.behat.pages.communities.show:
         class: 'SocNet\Behat\Pages\Communities\CommunityPreviewPage'
+        arguments: ['@mink.default_session', '@__symfony__.router']
+
+
+    # movies
+
+    app.behat.pages.movies.index:
+        class: 'SocNet\Behat\Pages\Movies\BrowsingMoviesPage'
         arguments: ['@mink.default_session', '@__symfony__.router']

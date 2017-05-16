@@ -46,4 +46,14 @@ class UserCard
 
         return explode(' ', $badge->getText())[0];
     }
+
+    public function addAsFriend() : void
+    {
+        $this->element->clickLink('Add friend');
+    }
+
+    protected function getElement() : NodeElement
+    {
+        return $this->element;
+    }
 }

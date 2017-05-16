@@ -4,20 +4,16 @@ namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Session;
-use Symfony\Component\Routing\RouterInterface;
+use SocNet\Behat\Pages\Movies\BrowsingMoviesPage;
 use Webmozart\Assert\Assert;
 
 class BrowsingMoviesContext implements Context
 {
-    private $session;
-    private $router;
+    private $browsingMoviesPage;
 
-    public function __construct(Session $session, RouterInterface $router)
+    public function __construct(BrowsingMoviesPage $browsingMoviesPage)
     {
-        $this->session = $session;
-        $this->router = $router;
+        $this->browsingMoviesPage = $browsingMoviesPage;
     }
 
     /**
@@ -25,8 +21,7 @@ class BrowsingMoviesContext implements Context
      */
     public function iWantToBrowseTheMovies() : void
     {
-        $url = $this->router->generate('app.movies.index');
-        $this->session->getDriver()->visit($url);
+        $this->browsingMoviesPage->open();
     }
 
     /**
@@ -34,9 +29,9 @@ class BrowsingMoviesContext implements Context
      */
     public function iShouldSeeListedMovies(int $count) : void
     {
-        $found = $this->session->getPage()->findAll('css', '.movie-title');
-
-        Assert::same($count, count($found), 'Expected to find %s movies, found %s.');
+        Assert::eq(
+            $count, $this->browsingMoviesPage->countDisplayedMovies(), 'Expected to find %s movies, found %s.'
+        );
     }
 
     /**
@@ -49,10 +44,7 @@ class BrowsingMoviesContext implements Context
         }, $table->getRows());
         array_shift($expected);
 
-        $found = $this->session->getPage()->findAll('css', '.movie-title');
-        $found = array_map(function (NodeElement $el) : string {
-            return $el->getText();
-        }, $found);
+        $found = $this->browsingMoviesPage->getDisplayedMovieTitles();
 
         sort($expected);
         sort($found);
@@ -78,10 +70,10 @@ class BrowsingMoviesContext implements Context
     public function iChooseTheGenre(string ...$genres) : void
     {
         foreach ($genres as $genre) {
-            $this->session->getPage()->find('css', sprintf('.checkbox:contains("%s") label input', $genre))->check();
+            $this->browsingMoviesPage->checkGenre($genre);
         }
 
-        $this->session->getPage()->find('css', 'button:contains("Apply filters")')->press();
+        $this->browsingMoviesPage->applyFilters();
     }
 
     /**
@@ -89,11 +81,7 @@ class BrowsingMoviesContext implements Context
      */
     public function iChooseThePeriod(string $period) : void
     {
-        $btn = $radioButton = $this->session->getPage()->findField($period);
-        $opt = $btn->getAttribute('value');
-
-        $this->session->getPage()->find('css', sprintf('.radio-inline:contains("%s") input', $period))->selectOption($opt);
-
-        $this->session->getPage()->find('css', 'button:contains("Apply filters")')->press();
+        $this->browsingMoviesPage->choosePeriod($period);
+        $this->browsingMoviesPage->applyFilters();
     }
 }

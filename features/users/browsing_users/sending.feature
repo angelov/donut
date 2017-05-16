@@ -1,4 +1,4 @@
-@managing_friendships
+@browsing_users
 Feature: Sending friendship request
   In order to become a friend with somebody
   As a user

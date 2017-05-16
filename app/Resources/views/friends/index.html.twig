@@ -5,7 +5,7 @@
     {% for message in app.session.flashBag.get('success') %}
 
         <div class="alert alert-success">
-            <strong>Success!</strong> {{ message }}
+            {{ message }}
         </div>
 
     {% endfor %}
@@ -13,7 +13,7 @@
     {% for message in app.session.flashBag.get('error') %}
 
         <div class="alert alert-warning">
-            <strong>Error!</strong> {{ message }}
+            {{ message }}
         </div>
 
     {% endfor %}
