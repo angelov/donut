@@ -1,55 +1,59 @@
 services:
 
+    app.behat.pages.abstract:
+        abstract: true
+        arguments: ['@mink.default_session', '@__symfony__.router']
+
     # users
 
     app.behat.pages.users.register:
         class: 'SocNet\Behat\Pages\Users\RegistrationPage'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        parent: 'app.behat.pages.abstract'
 
     app.behat.pages.users.login:
         class: 'SocNet\Behat\Pages\Users\LoginPage'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        parent: 'app.behat.pages.abstract'
 
     app.behat.pages.users.index:
         class: 'SocNet\Behat\Pages\Users\BrowsingUsersPage'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        parent: 'app.behat.pages.abstract'
 
     app.behat.pages.users.show:
         class: 'SocNet\Behat\Pages\Users\UserProfilePage'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        parent: 'app.behat.pages.abstract'
 
 
     # friendships
 
     app.behat.pages.friendships.index:
         class: 'SocNet\Behat\Pages\Friendships\FriendshipsManagementPage'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        parent: 'app.behat.pages.abstract'
 
 
     # thoughts
 
     app.behat.pages.thoughts.index:
         class: 'SocNet\Behat\Pages\Thoughts\HomePage'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        parent: 'app.behat.pages.abstract'
 
 
     # communities
 
     app.behat.pages.communities.index:
         class: 'SocNet\Behat\Pages\Communities\BrowsingCommunitiesPage'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        parent: 'app.behat.pages.abstract'
 
     app.behat.pages.communities.create:
         class: 'SocNet\Behat\Pages\Communities\CreateCommunityPage'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        parent: 'app.behat.pages.abstract'
 
     app.behat.pages.communities.show:
         class: 'SocNet\Behat\Pages\Communities\CommunityPreviewPage'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        parent: 'app.behat.pages.abstract'
 
 
     # movies
 
     app.behat.pages.movies.index:
         class: 'SocNet\Behat\Pages\Movies\BrowsingMoviesPage'
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        parent: 'app.behat.pages.abstract'
