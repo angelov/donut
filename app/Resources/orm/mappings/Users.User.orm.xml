@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="SocNet\Users\User" table="user">
+
+    <id name="id" type="guid" column="id"/>
+
+    <field name="email" type="string" column="email" precision="0" scale="0" unique="true" nullable="false"/>
+    <field name="password" type="string" column="password" precision="0" scale="0" nullable="false"/>
+    <field name="name" type="string" column="name" precision="0" scale="0" nullable="false"/>
+    <field name="isAdmin" type="boolean" column="is_admin" precision="0" scale="0" nullable="false" >
+      <options>
+        <option name="default">0</option>
+      </options>
+    </field>
+
+    <one-to-many field="thoughts" target-entity="SocNet\Thoughts\Thought" mapped-by="author" fetch="LAZY"/>
+
+    <one-to-many field="sentFriendshipRequests" target-entity="SocNet\Friendships\FriendshipRequests\FriendshipRequest" mapped-by="fromUser" fetch="LAZY"/>
+
+    <one-to-many field="receivedFriendshipRequests" target-entity="SocNet\Friendships\FriendshipRequests\FriendshipRequest" mapped-by="toUser" fetch="LAZY"/>
+
+    <one-to-many field="friendships" target-entity="SocNet\Friendships\Friendship" mapped-by="user" fetch="LAZY">
+      <cascade>
+        <cascade-remove/>
+      </cascade>
+    </one-to-many>
+
+    <many-to-one field="city" target-entity="SocNet\Places\City" inversed-by="residents" fetch="LAZY">
+      <cascade>
+        <cascade-persist/>
+      </cascade>
+      <join-columns>
+        <join-column name="city_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+
+  </entity>
+</doctrine-mapping>

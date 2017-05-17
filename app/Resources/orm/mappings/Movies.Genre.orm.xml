@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="SocNet\Movies\Genre" table="movie_genre">
+
+    <id name="id" type="guid" column="id"/>
+
+    <field name="title" type="string" column="title" precision="0" scale="0" nullable="false"/>
+
+    <many-to-many field="movies" target-entity="SocNet\Movies\Movie" mapped-by="genres" fetch="LAZY"/>
+
+  </entity>
+</doctrine-mapping>
