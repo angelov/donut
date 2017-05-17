@@ -3,53 +3,19 @@
 namespace SocNet\Movies;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="movie")
- */
 class Movie
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\Column(type="guid")
-     */
     private $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     private $title;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
     private $year;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     private $plot;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="SocNet\Movies\Genre", inversedBy="movies")
-     * @ORM\JoinTable(
-     *     name="movie_has_genre",
-     *     joinColumns={
-     *          @ORM\JoinColumn(name="movie_id", referencedColumnName="id")
-     *     },
-     *     inverseJoinColumns={
-     *          @ORM\JoinColumn(name="genre_id", referencedColumnName="id")
-     *      }
-     * )
-     */
     private $genres;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     private $poster = '';
 
     /**

@@ -3,30 +3,14 @@
 namespace SocNet\Places;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use SocNet\Users\User;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="city")
- */
 class City
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\Column(type="string")
-     */
     private $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SocNet\Users\User", mappedBy="city")
-     */
     private $residents;
 
     public function __construct(string $id, string $name)
