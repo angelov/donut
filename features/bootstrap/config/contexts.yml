@@ -1,16 +1,15 @@
 services:
 
+    _defaults:
+        tags: ['fob.context_service']
+
     app.feature_contexts.hooks.doctrine:
         class: 'SocNet\Behat\Hooks\PurgeDatabase'
         arguments: ['@__symfony__.doctrine.orm.entity_manager']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.hooks.redis:
         class: 'SocNet\Behat\Hooks\RedisDatabaseCleanerHookContext'
         arguments: ['@__symfony__.snc_redis.default']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.setup.users:
         class: 'AppBundle\FeatureContexts\Setup\UsersContext'
@@ -21,14 +20,10 @@ services:
             - '@__symfony__.app.core.uuid_generator'
             - '@__symfony__.app.users.repository.default'
             - '@__symfony__.app.core.command_bus.default'
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.setup.thoughts:
         class: 'AppBundle\FeatureContexts\Setup\ThoughtsContext'
         arguments: ['@app.behat.storage', '@__symfony__.app.core.uuid_generator', '@__symfony__.app.core.command_bus.default']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.setup.communities:
         class: 'AppBundle\FeatureContexts\Setup\CommunitiesContext'
@@ -37,8 +32,6 @@ services:
             - '@app.behat.storage'
             - '@__symfony__.app.core.uuid_generator'
             - '@__symfony__.app.communities.repositories.default'
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.setup.friendships:
         class: 'AppBundle\FeatureContexts\Setup\FriendshipsContext'
@@ -47,26 +40,18 @@ services:
             - '@__symfony__.app.core.uuid_generator'
             - '@__symfony__.app.core.command_bus.default'
             - '@__symfony__.app.friendships.friendship_requests.repositories.default'
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.setup.movies:
         class: 'AppBundle\FeatureContexts\Setup\MoviesContext'
         arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.setup.movie_genres:
         class: 'AppBundle\FeatureContexts\Setup\MovieGenresContext'
         arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.setup.cities:
         class: 'AppBundle\FeatureContexts\Setup\CitiesContext'
         arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.setup.security:
         class: 'AppBundle\FeatureContexts\Setup\SecurityContext'
@@ -78,14 +63,10 @@ services:
             - '@__symfony__.app.core.uuid_generator'
             - '@__symfony__.app.core.command_bus.default'
             - '@__symfony__.app.users.repository.default'
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.setup.pagination:
         class: 'AppBundle\FeatureContexts\Setup\PaginationContext'
         arguments: ['@mink.default_session']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.users.registration:
         class: 'AppBundle\FeatureContexts\RegistrationContext'
@@ -95,59 +76,39 @@ services:
             - '@app.behat.storage'
             - '@app.behat.validation_errors_checker'
             - '@app.behat.alerts_checker'
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.users.login:
         class: 'AppBundle\FeatureContexts\LoginContext'
         arguments: ['@app.behat.pages.users.login', '@app.behat.pages.users.register', '@app.behat.alerts_checker']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.thoughts:
         class: 'AppBundle\FeatureContexts\ThoughtsContext'
         arguments: ['@app.behat.pages.thoughts.index', '@app.behat.pages.users.index', '@app.behat.storage', '@app.behat.validation_errors_checker']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.communities.creating:
         class: 'AppBundle\FeatureContexts\CreatingCommunitiesContext'
         arguments: ['@app.behat.pages.communities.create', '@app.behat.alerts_checker', '@app.behat.validation_errors_checker']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.communities.browsing:
         class: 'AppBundle\FeatureContexts\BrowsingCommunitiesContext'
         arguments: ['@app.behat.storage', '@app.behat.pages.communities.index', '@app.behat.alerts_checker']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.communities.viewing:
         class: 'AppBundle\FeatureContexts\ViewingCommunitiesContext'
         arguments: ['@app.behat.storage', '@app.behat.pages.communities.show', '@app.behat.alerts_checker']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.users.viewing_user_profile:
         class: 'AppBundle\FeatureContexts\ViewingUserProfileContext'
-        tags:
-            - { name: fob.context_service }
         arguments: ['@app.behat.storage', '@app.behat.pages.users.show']
 
     app.feature_contexts.users.browsing:
         class: 'AppBundle\FeatureContexts\BrowsingUsersContext'
         arguments: ['@app.behat.storage', '@app.behat.pages.users.index', '@app.behat.alerts_checker']
-        tags:
-         - { name: fob.context_service }
 
     app.feature_contexts.friends.managing:
         class: 'AppBundle\FeatureContexts\ManagingFriendshipsContext'
         arguments: ['@app.behat.storage', '@app.behat.pages.friendships.index', '@app.behat.alerts_checker']
-        tags:
-            - { name: fob.context_service }
 
     app.feature_contexts.movies.browsing:
         class: 'AppBundle\FeatureContexts\BrowsingMoviesContext'
         arguments: ['@app.behat.pages.movies.index']
-        tags:
-         - { name: fob.context_service }
