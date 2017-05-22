@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e7e0dbc052fa69c237f3b0c60ec1451b",
-    "content-hash": "10fa404607ea5b35c7b71e225d40cde1",
+    "hash": "5de6f62a0f2f72b6d42ac6233a57497d",
+    "content-hash": "0da11010a75c2f897ce8e6ccd7ae7f95",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4349,16 +4349,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.3.0-BETA1",
+            "version": "v3.3.0-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "0fa394005cd49e0001b3b095ecdaf3a35a5eca27"
+                "reference": "a66d56bfde7edd0f3b9e2857131561348234832b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/0fa394005cd49e0001b3b095ecdaf3a35a5eca27",
-                "reference": "0fa394005cd49e0001b3b095ecdaf3a35a5eca27",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/a66d56bfde7edd0f3b9e2857131561348234832b",
+                "reference": "a66d56bfde7edd0f3b9e2857131561348234832b",
                 "shasum": ""
             },
             "require": {
@@ -4498,7 +4498,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-05-01 18:30:51"
+            "time": "2017-05-17 18:10:19"
         },
         {
             "name": "twig/twig",
@@ -7902,9 +7902,10 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "beta",
     "stability-flags": {
-        "symfony/symfony": 10
+        "symfony/symfony": 10,
+        "symfony/web-server-bundle": 5
     },
     "prefer-stable": false,
     "prefer-lowest": false,

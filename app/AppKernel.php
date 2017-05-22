@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new SimpleBus\JMSSerializerBundleBridge\SimpleBusJMSSerializerBundleBridgeBundle(),
             new SimpleBus\RabbitMQBundleBridge\SimpleBusRabbitMQBundleBridgeBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
+            new Symfony\Bundle\WebServerBundle\WebServerBundle(),
             new AppBundle\AppBundle(),
         ];
 

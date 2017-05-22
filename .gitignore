@@ -16,3 +16,4 @@
 /vendor/
 /web/bundles/
 /web/images/posters/
+.web-server-pid
