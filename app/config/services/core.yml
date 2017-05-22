@@ -2,12 +2,15 @@ services:
 
     # command bus
 
-    app.core.command_bus.default: '@app.core.command_bus.simplebus'
+    app.core.command_bus.default: '@app.core.command_bus.tactician'
 
     app.core.command_bus.simplebus:
         class: 'SocNet\Core\CommandBus\SimpleBusAdapter'
         arguments: ['@command_bus']
 
+    app.core.command_bus.tactician:
+        class: 'SocNet\Core\CommandBus\TacticianAdapter\TacticianCommandBusAdapter'
+        arguments: ['@tactician.commandbus']
 
     # event bus
 
