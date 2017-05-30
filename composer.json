@@ -20,7 +20,7 @@
         "php": ">=7.1",
         "ext-bcmath": "*",
         "ext-mbstring": "*",
-        "symfony/symfony": "3.3.*@beta",
+        "symfony/symfony": "^3.3",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
@@ -40,7 +40,7 @@
         "simple-bus/asynchronous-bundle": "^2.3",
         "simple-bus/jms-serializer-bundle-bridge": "^2.0",
         "simple-bus/rabbitmq-bundle-bridge": "^3.1",
-        "symfony/web-server-bundle": "^3.3@RC"
+        "symfony/web-server-bundle": "^3.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -91,6 +91,5 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": null
-    },
-    "minimum-stability": "beta"
+    }
 }
