@@ -2,34 +2,18 @@
 
 namespace SocNet\Friendships\FriendshipRequests;
 
-use Doctrine\ORM\Mapping as ORM;
 use SocNet\Users\User;
 use JMS\Serializer\Annotation as Serializer;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="friendship_request")
- */
 class FriendshipRequest
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\Column(type="guid")
      * @Serializer\Type(name="string")
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="sentFriendshipRequests", cascade={"persist"})
-     * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id", nullable=false, onDelete="cascade")
-     */
     private $fromUser;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="receivedFriendshipRequests", cascade={"persist"})
-     * @ORM\JoinColumn(name="to_user_id", referencedColumnName="id", nullable=false, onDelete="cascade")
-     */
     private $toUser;
 
     public function __construct(string $id, User $sender, User $receiver)

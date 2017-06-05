@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="SocNet\Friendships\FriendshipRequests\FriendshipRequest" table="friendship_request">
+
+    <id name="id" type="guid" column="id"/>
+
+    <many-to-one field="fromUser" target-entity="SocNet\Users\User" inversed-by="sentFriendshipRequests" fetch="LAZY">
+      <cascade>
+        <cascade-persist/>
+      </cascade>
+      <join-columns>
+        <join-column name="from_user_id" referenced-column-name="id" on-delete="cascade" nullable=""/>
+      </join-columns>
+    </many-to-one>
+
+    <many-to-one field="toUser" target-entity="SocNet\Users\User" inversed-by="receivedFriendshipRequests" fetch="LAZY">
+      <cascade>
+        <cascade-persist/>
+      </cascade>
+      <join-columns>
+        <join-column name="to_user_id" referenced-column-name="id" on-delete="cascade" nullable=""/>
+      </join-columns>
+    </many-to-one>
+
+  </entity>
+</doctrine-mapping>

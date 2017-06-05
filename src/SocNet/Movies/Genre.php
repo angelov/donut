@@ -3,29 +3,13 @@
 namespace SocNet\Movies;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="movie_genre")
- */
 class Genre
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\Column(type="guid")
-     */
     private $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     private $title;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="SocNet\Movies\Movie", mappedBy="genres")
-     */
     private $movies;
 
     public function __construct(string $id, string $title)

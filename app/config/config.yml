@@ -62,41 +62,11 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
         mappings:
-            Community:
-                type: annotation
+            SocNet:
+                type: 'xml'
                 is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Communities'
-                prefix: 'SocNet\Communities'
-            User:
-                type: annotation
-                is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Users'
-                prefix: 'SocNet\Users'
-            Thought:
-                type: annotation
-                is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Thoughts'
-                prefix: 'SocNet\Thoughts'
-            Friendships:
-                type: annotation
-                is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Friendships'
-                prefix: 'SocNet\Friendships'
-            FriendshipRequests:
-                type: annotation
-                is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Friendships/FriendshipRequests'
-                prefix: 'SocNet\Friendships\FriendshipRequests'
-            Movies:
-                type: annotation
-                is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Movies'
-                prefix: 'SocNet\Movies'
-            Places:
-                type: annotation
-                is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Places'
-                prefix: 'SocNet\Places'
+                dir: '%kernel.root_dir%/Resources/orm/mappings/'
+                prefix: 'SocNet'
 
 doctrine_migrations:
     dir_name: '%kernel.root_dir%/Resources/migrations'

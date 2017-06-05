@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="SocNet\Friendships\Friendship" table="friendship">
+
+    <id name="id" type="guid" column="id"/>
+
+    <field name="createdAt" type="datetime" column="created_at" precision="0" scale="0" nullable="false"/>
+
+    <many-to-one field="user" target-entity="SocNet\Users\User" inversed-by="friendships" fetch="LAZY">
+      <cascade>
+        <cascade-persist/>
+      </cascade>
+      <join-columns>
+        <join-column name="user_id" referenced-column-name="id" nullable=""/>
+      </join-columns>
+    </many-to-one>
+
+    <many-to-one field="friend" target-entity="SocNet\Users\User" fetch="LAZY">
+      <cascade>
+        <cascade-persist/>
+      </cascade>
+      <join-columns>
+        <join-column name="friend_id" referenced-column-name="id" nullable=""/>
+      </join-columns>
+    </many-to-one>
+
+  </entity>
+</doctrine-mapping>

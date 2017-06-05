@@ -3,38 +3,20 @@
 namespace SocNet\Thoughts;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 use SocNet\Users\User;
 use JMS\Serializer\Annotation as Serializer;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="thought")
- */
 class Thought
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\Column(type="guid")
      * @Serializer\Type(name="string")
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     private $content;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", inversedBy="thoughts", fetch="EAGER", cascade={"persist"})
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     */
     private $author;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
     private $createdAt;
 
     public function __construct(string $id, User $author, string $content, \DateTime $createdAt = null)

@@ -10,70 +10,43 @@ use SocNet\Thoughts\Thought;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(name="user")
  * @UniqueEntity(fields={"email"}, message="The email is already in use.")
  * @Serializer\ExclusionPolicy("all")
  */
 class User implements UserInterface
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\Column(type="guid")
      * @Serializer\Type(name="string")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", unique=true)
      * @Serializer\Expose()
      */
     private $email;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     private $password;
 
     /**
-     * @ORM\Column(type="string")
      * @Serializer\Expose()
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SocNet\Thoughts\Thought", mappedBy="author")
-     */
     private $thoughts;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
      * @Serializer\Expose()
      */
     private $isAdmin = false;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SocNet\Friendships\FriendshipRequests\FriendshipRequest", mappedBy="fromUser")
-     */
     private $sentFriendshipRequests;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SocNet\Friendships\FriendshipRequests\FriendshipRequest", mappedBy="toUser")
-     */
     private $receivedFriendshipRequests;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SocNet\Friendships\Friendship", mappedBy="user", cascade={"remove"})
-     */
     private $friendships;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Places\City", inversedBy="residents", cascade={"persist"})
-     */
     private $city;
 
     public function __construct(string $id, string $name, string $email, string $password, City $city)

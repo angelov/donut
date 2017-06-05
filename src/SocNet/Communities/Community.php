@@ -5,47 +5,20 @@ namespace SocNet\Communities;
 use DateTime;
 use SocNet\Users\User;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use SocNet\Communities\Exceptions\CommunityMemberNotFoundException;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="community")
- */
 class Community
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\Column(type="guid")
-     */
     private $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
     private $name;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
     private $description;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SocNet\Users\User", cascade={"remove", "persist"}, fetch="EAGER")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
-     */
     private $author;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="SocNet\Users\User")
-     * @ORM\JoinTable(name="community_member")
-     */
     private $members;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
     private $createdAt;
 
     public function __construct(string $id, string $name, User $author, string $description = '')
