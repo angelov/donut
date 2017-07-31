@@ -59,7 +59,7 @@
         "friends-of-behat/cross-container-extension": "^0.2.1",
         "friends-of-behat/variadic-extension": "^0.1.0",
         "webmozart/assert": "^1.2",
-        "phpspec/phpspec": "^3.2",
+        "phpspec/phpspec": "^4.0",
         "phpunit/phpunit": "^6.0",
         "dama/doctrine-test-bundle": "^2.0",
         "fzaninotto/faker": "^1.6"
