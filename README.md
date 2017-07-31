@@ -52,8 +52,7 @@ More integration tests need to be written and the existing ones can be refactore
 All application's functionalities are described using Gherkin and the feature files
 are placed in the `features/` directory. 
 
-The feature contexts are placed in the `src/AppBundle/FeatureContexts` folder. I plan to give them 
-some additional love soon and refactor them to use separate Page classes that will represent the application's web pages.
+The feature contexts are placed in the `src/AppBundle/FeatureContexts` folder.
 
 To execute the features using Behat, run `vendor/bin/behat`.
 
