@@ -5,84 +5,84 @@ services:
     app.friendships.friendship_requests.repositories.default: '@app.friendships.friendship_requests.repositories.doctrine'
 
     app.friendships.friendship_requests.repositories.doctrine:
-        class: 'SocNet\Friendships\FriendshipRequests\Repositories\DoctrineFriendshipRequestsRepository'
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Repositories\DoctrineFriendshipRequestsRepository'
         arguments: ['@doctrine.orm.entity_manager']
 
     app.friendships.repositories.default: '@app.friendships.repositories.doctrine'
 
     app.friendships.repositories.doctrine:
-        class: 'SocNet\Friendships\Repositories\DoctrineFriendshipsRepository'
+        class: 'Angelov\Donut\Friendships\Repositories\DoctrineFriendshipsRepository'
         arguments: ['@doctrine.orm.entity_manager']
 
 
     # handlers
 
     app.friendships.friendship_requests.handlers.send:
-        class: 'SocNet\Friendships\FriendshipRequests\Handlers\SendFriendshipRequestCommandHandler'
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\SendFriendshipRequestCommandHandler'
         arguments: ['@app.friendships.friendship_requests.repositories.default', '@app.core.uuid_generator']
         tags:
-            - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand' }
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand' }
 
     app.friendships.friendship_requests.handlers.cancel:
-        class: 'SocNet\Friendships\FriendshipRequests\Handlers\CancelFriendshipRequestCommandHandler'
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\CancelFriendshipRequestCommandHandler'
         arguments: ['@app.friendships.friendship_requests.repositories.default']
         tags:
-            - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand' }
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand' }
 
     app.friendships.friendship_requests.handlers.decline:
-        class: 'SocNet\Friendships\FriendshipRequests\Handlers\DeclineFriendshipRequestCommandHandler'
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\DeclineFriendshipRequestCommandHandler'
         arguments: ['@app.friendships.friendship_requests.repositories.default']
         tags:
-            - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand' }
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand' }
 
     app.friendships.friendship_requests.handlers.accept:
-        class: 'SocNet\Friendships\FriendshipRequests\Handlers\AcceptFriendshipRequestCommandHandler'
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\AcceptFriendshipRequestCommandHandler'
         arguments:
             - '@app.friendships.friendship_requests.repositories.default'
             - '@app.core.uuid_generator'
             - '@app.core.command_bus.default'
             - '@app.core.event_bus.default'
         tags:
-            - { name: 'command_handler', handles: 'SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand' }
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand' }
 
     app.friendships.handlers.delete:
-        class: 'SocNet\Friendships\Handlers\DeleteFriendshipCommandHandler'
+        class: 'Angelov\Donut\Friendships\Handlers\DeleteFriendshipCommandHandler'
         arguments: ['@app.friendships.repositories.default', '@app.core.event_bus.default']
         tags:
-            - { name: 'command_handler', handles: 'SocNet\Friendships\Commands\DeleteFriendshipCommand' }
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\Commands\DeleteFriendshipCommand' }
 
     app.friendships.handlers.store:
-        class: 'SocNet\Friendships\Handlers\StoreFriendshipCommandHandler'
+        class: 'Angelov\Donut\Friendships\Handlers\StoreFriendshipCommandHandler'
         arguments: ['@app.friendships.repositories.default', '@app.core.event_bus.default']
         tags:
-            - { name: 'command_handler', handles: 'SocNet\Friendships\Commands\StoreFriendshipCommand' }
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\Commands\StoreFriendshipCommand' }
 
 
     # event subscribers
 
     app.friendships.event_subsribers.record_created_friendship:
-        class: 'SocNet\Friendships\EventSubscribers\RecordCreatedFriendship'
+        class: 'Angelov\Donut\Friendships\EventSubscribers\RecordCreatedFriendship'
         arguments: ['@app.friendships.friendships_recorder.neo4j']
         tags:
-            - { name: 'event_subscriber', subscribes_to: 'SocNet\Friendships\Events\FriendshipWasCreatedEvent' }
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasCreatedEvent' }
 
     app.friendships.event_subscribers.record_deleted_friendship:
-        class: 'SocNet\Friendships\EventSubscribers\RecordDeletedFriendship'
+        class: 'Angelov\Donut\Friendships\EventSubscribers\RecordDeletedFriendship'
         arguments: ['@app.friendships.friendships_recorder.neo4j']
         tags:
-            - { name: 'event_subscriber', subscribes_to: 'SocNet\Friendships\Events\FriendshipWasDeletedEvent' }
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasDeletedEvent' }
 
     app.friendships.event_subscribers.delete_inverse_friendship:
-        class: 'SocNet\Friendships\EventSubscribers\DeleteInverseFriendship'
+        class: 'Angelov\Donut\Friendships\EventSubscribers\DeleteInverseFriendship'
         arguments: ['@app.friendships.repositories.default']
         tags:
-            - { name: 'event_subscriber', subscribes_to: 'SocNet\Friendships\Events\FriendshipWasDeletedEvent' }
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasDeletedEvent' }
 
 
     # friendships recorder
 
     app.friendships.friendships_recorder.neo4j:
-        class: 'SocNet\Friendships\FriendshipsRecorder\Neo4jFriendshipsRecorder'
+        class: 'Angelov\Donut\Friendships\FriendshipsRecorder\Neo4jFriendshipsRecorder'
         arguments: ['@neo4j.client.default']
 
 
@@ -91,23 +91,23 @@ services:
     app.mutual_friends_resolver.default: '@app.mutual_friends_resolver.neo4j'
 
     app.mutual_friends_resolver.neo4j:
-        class: 'SocNet\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver\Neo4jMutualFriendsResolver'
+        class: 'Angelov\Donut\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver\Neo4jMutualFriendsResolver'
         arguments:
             - '@app.mutual_friends_resolver.neo4j.ids_resolver'
             - '@app.friendships.mutual_friends_resolver.users_provider.repository'
 
     app.mutual_friends_resolver.neo4j.ids_resolver:
-        class: 'SocNet\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver\IdsResolver'
+        class: 'Angelov\Donut\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver\IdsResolver'
         arguments:
             - '@neo4j.client.default'
 
     app.friendships.mutual_friends_resolver.users_provider.repository:
-        class: 'SocNet\Friendships\MutualFriendsResolver\UsersProvider\RepositoryUsersProvider'
+        class: 'Angelov\Donut\Friendships\MutualFriendsResolver\UsersProvider\RepositoryUsersProvider'
         arguments:
             - '@app.users.repository.default'
 
     app.friendships.mutual_friends_resolver.mutual_friends_exstension:
-          class: 'SocNet\Friendships\MutualFriendsResolver\Twig\MutualFriendsExtension'
+          class: 'Angelov\Donut\Friendships\MutualFriendsResolver\Twig\MutualFriendsExtension'
           arguments:
               - '@app.mutual_friends_resolver.default'
           tags:

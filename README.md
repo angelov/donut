@@ -1,4 +1,4 @@
-# SocNet
+# Donut
 ### A social network without future.
 
 Developed by [Dejan Angelov](http://angelovdejan.me)
@@ -59,12 +59,12 @@ To execute the features using Behat, run `vendor/bin/behat`.
 ## Notes about directories structure
 
 The application is primarily divided in two subdirectories inside the `src/` directory: `src/AppBundle` 
-and `src/SocNet`.
+and `src/Donut`.
 
 The `AppBundle` contains some dirty parts of the code that are just experimental, doesn't have 
 specs or integration tests and probably sit there crying to be refactored.
 
-The `SocNet` is the cleaner part of the code. Everything here has specs or integration tests.
+The `Donut` is the cleaner part of the code. Everything here has specs or integration tests.
 
 Note that, as the application is not meant to be used in production, there are some edge cases and 
  possible errors that are 

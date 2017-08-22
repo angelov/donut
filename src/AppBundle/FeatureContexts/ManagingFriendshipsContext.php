@@ -2,12 +2,12 @@
 
 namespace AppBundle\FeatureContexts;
 
-use SocNet\Behat\Pages\Friendships\FriendshipsManagementPage;
-use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
+use Angelov\Donut\Behat\Pages\Friendships\FriendshipsManagementPage;
+use Angelov\Donut\Behat\Service\AlertsChecker\AlertsCheckerInterface;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
 use Behat\Behat\Context\Context;
-use SocNet\Users\User;
+use Angelov\Donut\Users\User;
 use Webmozart\Assert\Assert;
 
 class ManagingFriendshipsContext implements Context
@@ -195,7 +195,8 @@ class ManagingFriendshipsContext implements Context
     public function iShouldBeNotifiedThatTheFriendshipIsDeleted() : void
     {
         Assert::true(
-            $this->alertsChecker->hasAlert('Sorry to see broken friendships.', AlertsCheckerInterface::TYPE_SUCCESS)
+            $this->alertsChecker->hasAlert('Sorry to see broken friendships.', AlertsCheckerInterface::TYPE_SUCCESS),
+            'Could not find a notification about deleted friendship.'
         );
     }
 

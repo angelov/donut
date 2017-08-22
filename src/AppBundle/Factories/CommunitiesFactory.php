@@ -3,9 +3,9 @@
 namespace AppBundle\Factories;
 
 use Faker\Generator as Faker;
-use SocNet\Communities\Community;
-use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Users\User;
+use Angelov\Donut\Communities\Community;
+use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
+use Angelov\Donut\Users\User;
 
 class CommunitiesFactory
 {

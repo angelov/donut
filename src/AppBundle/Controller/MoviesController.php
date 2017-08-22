@@ -2,10 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use SocNet\Core\ResultLists\Sorting\OrderDirection;
+use Angelov\Donut\Core\ResultLists\Sorting\OrderDirection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use SocNet\Core\ResultLists\Sorting\OrderField;
-use SocNet\Movies\Genre;
+use Angelov\Donut\Core\ResultLists\Sorting\OrderField;
+use Angelov\Donut\Movies\Genre;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

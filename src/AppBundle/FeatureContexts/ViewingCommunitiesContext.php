@@ -2,12 +2,12 @@
 
 namespace AppBundle\FeatureContexts;
 
-use SocNet\Behat\Pages\Communities\CommunityPreviewPage;
-use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Communities\Community;
+use Angelov\Donut\Behat\Pages\Communities\CommunityPreviewPage;
+use Angelov\Donut\Behat\Service\AlertsChecker\AlertsCheckerInterface;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Communities\Community;
 use Behat\Behat\Context\Context;
-use SocNet\Users\User;
+use Angelov\Donut\Users\User;
 use Webmozart\Assert\Assert;
 
 class ViewingCommunitiesContext implements Context

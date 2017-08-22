@@ -3,9 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\FriendsSuggestions\RecommenderService;
-use SocNet\Users\Commands\StoreUserCommand;
-use SocNet\Users\User;
-use SocNet\Users\Form\UserRegistrationForm;
+use Angelov\Donut\Users\Commands\StoreUserCommand;
+use Angelov\Donut\Users\User;
+use Angelov\Donut\Users\Form\UserRegistrationForm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

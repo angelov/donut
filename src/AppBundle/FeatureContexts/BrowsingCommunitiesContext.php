@@ -3,9 +3,9 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use SocNet\Behat\Pages\Communities\BrowsingCommunitiesPage;
-use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
-use SocNet\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Behat\Pages\Communities\BrowsingCommunitiesPage;
+use Angelov\Donut\Behat\Service\AlertsChecker\AlertsCheckerInterface;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
 use Webmozart\Assert\Assert;
 
 class BrowsingCommunitiesContext implements Context

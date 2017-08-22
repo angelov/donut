@@ -2,10 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use SocNet\Communities\Commands\JoinCommunityCommand;
-use SocNet\Communities\Commands\LeaveCommunityCommand;
-use SocNet\Communities\Commands\StoreCommunityCommand;
-use SocNet\Communities\Form\CommunityType;
+use Angelov\Donut\Communities\Commands\JoinCommunityCommand;
+use Angelov\Donut\Communities\Commands\LeaveCommunityCommand;
+use Angelov\Donut\Communities\Commands\StoreCommunityCommand;
+use Angelov\Donut\Communities\Form\CommunityType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

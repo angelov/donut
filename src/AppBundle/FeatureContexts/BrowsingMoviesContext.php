@@ -4,7 +4,7 @@ namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use SocNet\Behat\Pages\Movies\BrowsingMoviesPage;
+use Angelov\Donut\Behat\Pages\Movies\BrowsingMoviesPage;
 use Webmozart\Assert\Assert;
 
 class BrowsingMoviesContext implements Context

@@ -5,7 +5,7 @@ services:
     app.users.repository.default: '@app.users.repository.doctrine'
 
     app.users.repository.doctrine:
-        class: 'SocNet\Users\Repositories\DoctrineUsersRepository'
+        class: 'Angelov\Donut\Users\Repositories\DoctrineUsersRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
 
@@ -15,29 +15,29 @@ services:
     app.users.email_availability_checker.default: '@app.users.email_availability_checker.repository'
 
     app.users.email_availability_checker.repository:
-        class: 'SocNet\Users\EmailAvailabilityChecker\EmailAvailabilityChecker'
+        class: 'Angelov\Donut\Users\EmailAvailabilityChecker\EmailAvailabilityChecker'
         arguments: ['@app.users.repository.default']
 
 
     # security
 
     app.users.security.current_user_resolver:
-        class: 'SocNet\Users\Security\CurrentUserResolver\CurrentUserResolver'
+        class: 'Angelov\Donut\Users\Security\CurrentUserResolver\CurrentUserResolver'
         arguments: ['@security.token_storage']
 
     app.users.security.current_user:
-        class: 'SocNet\Users\User'
+        class: 'Angelov\Donut\Users\User'
         factory: ['@app.users.security.current_user_resolver', 'getUser']
 
     app.users.security.user_provider:
-        class: 'SocNet\Users\Security\Provider\RepositoryUserProvider'
+        class: 'Angelov\Donut\Users\Security\Provider\RepositoryUserProvider'
         arguments: ['@app.users.repository.default']
 
 
     # form
 
     app.users.form.registration:
-        class: 'SocNet\Users\Form\UserRegistrationForm'
+        class: 'Angelov\Donut\Users\Form\UserRegistrationForm'
         arguments: ['@doctrine.orm.entity_manager', '@app.core.uuid_generator']
         tags:
             - { name: 'form.type' }
@@ -46,7 +46,7 @@ services:
     # validation
 
     app.users.validation.validators.unique_email:
-        class: 'SocNet\Users\Validation\Validators\UniqueEmailValidator'
+        class: 'Angelov\Donut\Users\Validation\Validators\UniqueEmailValidator'
         arguments: ['@app.users.email_availability_checker.repository']
         tags:
             - { name: 'validator.constraint_validator' }
@@ -55,11 +55,11 @@ services:
     # command handlers
 
     app.users.handlers.store:
-        class: 'SocNet\Users\Handlers\StoreUserCommandHandler'
+        class: 'Angelov\Donut\Users\Handlers\StoreUserCommandHandler'
         arguments:
             - '@app.users.repository.default'
             - '@security.password_encoder'
             - '@app.users.email_availability_checker.default'
             - '@app.core.event_bus.default'
         tags:
-            - { name: 'command_handler', handles: 'SocNet\Users\Commands\StoreUserCommand' }
+            - { name: 'command_handler', handles: 'Angelov\Donut\Users\Commands\StoreUserCommand' }

@@ -3,9 +3,9 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use SocNet\Behat\Pages\Users\LoginPage;
-use SocNet\Behat\Pages\Users\RegistrationPage;
-use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
+use Angelov\Donut\Behat\Pages\Users\LoginPage;
+use Angelov\Donut\Behat\Pages\Users\RegistrationPage;
+use Angelov\Donut\Behat\Service\AlertsChecker\AlertsCheckerInterface;
 use Webmozart\Assert\Assert;
 
 class LoginContext implements Context

@@ -1,5 +1,5 @@
 services:
 
     app.movies.movies_list:
-        class: 'SocNet\Movies\MoviesList\DoctrineMoviesList'
+        class: 'Angelov\Donut\Movies\MoviesList\DoctrineMoviesList'
         arguments: ['@doctrine.orm.entity_manager']

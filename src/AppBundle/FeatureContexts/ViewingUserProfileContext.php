@@ -2,9 +2,9 @@
 
 namespace AppBundle\FeatureContexts;
 
-use SocNet\Behat\Pages\Users\UserProfilePage;
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Users\User;
+use Angelov\Donut\Behat\Pages\Users\UserProfilePage;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Users\User;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 

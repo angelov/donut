@@ -3,13 +3,13 @@
 namespace AppBundle\FeatureContexts\Setup;
 
 use Doctrine\ORM\Id\UuidGenerator;
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Core\CommandBus\CommandBusInterface;
-use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Thoughts\Commands\StoreThoughtCommand;
-use SocNet\Thoughts\Thought;
-use SocNet\Users\User;
-use SocNet\Thoughts\ThoughtsCounter\ThoughtsCounterInterface;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Core\CommandBus\CommandBusInterface;
+use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
+use Angelov\Donut\Thoughts\Commands\StoreThoughtCommand;
+use Angelov\Donut\Thoughts\Thought;
+use Angelov\Donut\Users\User;
+use Angelov\Donut\Thoughts\ThoughtsCounter\ThoughtsCounterInterface;
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManager;
 

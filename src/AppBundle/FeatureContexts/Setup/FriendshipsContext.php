@@ -2,13 +2,13 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Core\CommandBus\CommandBusInterface;
-use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Friendships\Commands\StoreFriendshipCommand;
-use SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
-use SocNet\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface;
-use SocNet\Users\User;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Core\CommandBus\CommandBusInterface;
+use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
+use Angelov\Donut\Friendships\Commands\StoreFriendshipCommand;
+use Angelov\Donut\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
+use Angelov\Donut\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface;
+use Angelov\Donut\Users\User;
 use Behat\Behat\Context\Context;
 
 class FriendshipsContext implements Context

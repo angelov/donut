@@ -31,4 +31,4 @@ snc_redis:
 
 security:
     encoders:
-        SocNet\Users\User: 'plaintext'
+        Angelov\Donut\Users\User: 'plaintext'

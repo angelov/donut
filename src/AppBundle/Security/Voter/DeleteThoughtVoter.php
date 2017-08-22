@@ -2,8 +2,8 @@
 
 namespace AppBundle\Security\Voter;
 
-use SocNet\Thoughts\Thought;
-use SocNet\Users\User;
+use Angelov\Donut\Thoughts\Thought;
+use Angelov\Donut\Users\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 

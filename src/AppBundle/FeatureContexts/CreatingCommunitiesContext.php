@@ -3,9 +3,9 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use SocNet\Behat\Pages\Communities\CreateCommunityPage;
-use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
-use SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
+use Angelov\Donut\Behat\Pages\Communities\CreateCommunityPage;
+use Angelov\Donut\Behat\Service\AlertsChecker\AlertsCheckerInterface;
+use Angelov\Donut\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
 use Webmozart\Assert\Assert;
 
 class CreatingCommunitiesContext implements Context

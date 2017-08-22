@@ -3,11 +3,11 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\MinkExtension\Context\RawMinkContext;
-use SocNet\Behat\Pages\Users\LoginPage;
-use SocNet\Behat\Pages\Users\RegistrationPage;
-use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
+use Angelov\Donut\Behat\Pages\Users\LoginPage;
+use Angelov\Donut\Behat\Pages\Users\RegistrationPage;
+use Angelov\Donut\Behat\Service\AlertsChecker\AlertsCheckerInterface;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
 use Webmozart\Assert\Assert;
 
 class RegistrationContext extends RawMinkContext

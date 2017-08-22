@@ -3,8 +3,8 @@
 namespace AppBundle\Factories;
 
 use Faker\Generator;
-use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Places\City;
+use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
+use Angelov\Donut\Places\City;
 
 class CitiesFactory
 {

@@ -7,53 +7,53 @@ services:
     # users
 
     app.behat.pages.users.register:
-        class: 'SocNet\Behat\Pages\Users\RegistrationPage'
+        class: 'Angelov\Donut\Behat\Pages\Users\RegistrationPage'
         parent: 'app.behat.pages.abstract'
 
     app.behat.pages.users.login:
-        class: 'SocNet\Behat\Pages\Users\LoginPage'
+        class: 'Angelov\Donut\Behat\Pages\Users\LoginPage'
         parent: 'app.behat.pages.abstract'
 
     app.behat.pages.users.index:
-        class: 'SocNet\Behat\Pages\Users\BrowsingUsersPage'
+        class: 'Angelov\Donut\Behat\Pages\Users\BrowsingUsersPage'
         parent: 'app.behat.pages.abstract'
 
     app.behat.pages.users.show:
-        class: 'SocNet\Behat\Pages\Users\UserProfilePage'
+        class: 'Angelov\Donut\Behat\Pages\Users\UserProfilePage'
         parent: 'app.behat.pages.abstract'
 
 
     # friendships
 
     app.behat.pages.friendships.index:
-        class: 'SocNet\Behat\Pages\Friendships\FriendshipsManagementPage'
+        class: 'Angelov\Donut\Behat\Pages\Friendships\FriendshipsManagementPage'
         parent: 'app.behat.pages.abstract'
 
 
     # thoughts
 
     app.behat.pages.thoughts.index:
-        class: 'SocNet\Behat\Pages\Thoughts\HomePage'
+        class: 'Angelov\Donut\Behat\Pages\Thoughts\HomePage'
         parent: 'app.behat.pages.abstract'
 
 
     # communities
 
     app.behat.pages.communities.index:
-        class: 'SocNet\Behat\Pages\Communities\BrowsingCommunitiesPage'
+        class: 'Angelov\Donut\Behat\Pages\Communities\BrowsingCommunitiesPage'
         parent: 'app.behat.pages.abstract'
 
     app.behat.pages.communities.create:
-        class: 'SocNet\Behat\Pages\Communities\CreateCommunityPage'
+        class: 'Angelov\Donut\Behat\Pages\Communities\CreateCommunityPage'
         parent: 'app.behat.pages.abstract'
 
     app.behat.pages.communities.show:
-        class: 'SocNet\Behat\Pages\Communities\CommunityPreviewPage'
+        class: 'Angelov\Donut\Behat\Pages\Communities\CommunityPreviewPage'
         parent: 'app.behat.pages.abstract'
 
 
     # movies
 
     app.behat.pages.movies.index:
-        class: 'SocNet\Behat\Pages\Movies\BrowsingMoviesPage'
+        class: 'Angelov\Donut\Behat\Pages\Movies\BrowsingMoviesPage'
         parent: 'app.behat.pages.abstract'

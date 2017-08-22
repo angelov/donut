@@ -1,7 +1,7 @@
 parameters:
     database_host: 127.0.0.1
     database_port: null
-    database_name: socnet
+    database_name: donut
     database_user: root
     database_password:
     mailer_transport: smtp

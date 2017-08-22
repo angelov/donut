@@ -2,14 +2,14 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Communities\Commands\JoinCommunityCommand;
-use SocNet\Communities\Commands\StoreCommunityCommand;
-use SocNet\Communities\Community;
-use SocNet\Communities\Repositories\CommunitiesRepositoryInterface;
-use SocNet\Core\CommandBus\CommandBusInterface;
-use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Users\User;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Communities\Commands\JoinCommunityCommand;
+use Angelov\Donut\Communities\Commands\StoreCommunityCommand;
+use Angelov\Donut\Communities\Community;
+use Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface;
+use Angelov\Donut\Core\CommandBus\CommandBusInterface;
+use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
+use Angelov\Donut\Users\User;
 use Behat\Behat\Context\Context;
 
 class CommunitiesContext implements Context

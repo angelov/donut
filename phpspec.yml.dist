@@ -1,0 +1,4 @@
+suites:
+    donut:
+        namespace: Angelov
+        psr4_prefix: Angelov

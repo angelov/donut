@@ -6,7 +6,7 @@ use GraphAware\Neo4j\Client\Client;
 use GraphAware\Reco4PHP\Context\SimpleContext;
 use GraphAware\Reco4PHP\RecommenderService as BaseRecommenderService;
 use GraphAware\Reco4PHP\Result\Recommendations;
-use SocNet\Users\User;
+use Angelov\Donut\Users\User;
 
 class RecommenderService
 {

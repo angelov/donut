@@ -9,7 +9,7 @@ use GraphAware\Common\Type\Node;
 use GraphAware\Reco4PHP\Context\Context;
 use GraphAware\Reco4PHP\Engine\SingleDiscoveryEngine;
 use GraphAware\Reco4PHP\Result\SingleScore;
-use SocNet\Users\User;
+use Angelov\Donut\Users\User;
 
 class FriendsOfFriends extends SingleDiscoveryEngine
 {

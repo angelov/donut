@@ -1,0 +1,38 @@
+<?php
+
+namespace Angelov\Donut\Behat\Pages\Users;
+
+use Angelov\Donut\Behat\Pages\Page;
+use Angelov\Donut\Behat\Service\ElementsTextExtractor;
+
+class BrowsingUsersPage extends Page
+{
+    protected function getRoute(): string
+    {
+        return 'app.users.index';
+    }
+
+    /**
+     * @psalm-suppress PossiblyNullReference
+     */
+    public function getUserCard(string $name) : UserCard
+    {
+        $card = $this->getDocument()->find('css', sprintf('#users-list .user-card:contains("%s")', $name));
+
+        // @todo throw an exception if user is not found and remove psalm suppression
+
+        return new UserCard($card);
+    }
+
+    public function countDisplayedUsers() : int
+    {
+        return count($this->getDocument()->findAll('css', '#users-list .user-card'));
+    }
+
+    public function getDisplayedUserNames() : array
+    {
+        $found = $this->getDocument()->findAll('css', '#users-list .user-card .user-name');
+
+        return ElementsTextExtractor::fromElements($found);
+    }
+}

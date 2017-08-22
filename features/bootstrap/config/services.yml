@@ -10,20 +10,20 @@ services:
         lazy: true
 
     app.behat.storage:
-        class: 'SocNet\Behat\Service\Storage\InMemoryStorage'
+        class: 'Angelov\Donut\Behat\Service\Storage\InMemoryStorage'
 
     app.behat.validation_errors_parser:
-        class: 'SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsParser'
+        class: 'Angelov\Donut\Behat\Service\ValidationErrorsChecker\ValidationErrorsParser'
         arguments: ['@mink.default_session']
 
     app.behat.validation_errors_checker:
-        class: 'SocNet\Behat\Service\ValidationErrorsChecker\GlobalValidationErrorsChecker'
+        class: 'Angelov\Donut\Behat\Service\ValidationErrorsChecker\GlobalValidationErrorsChecker'
         arguments: ['@app.behat.validation_errors_parser']
 
     app.behat.alerts_parser:
-        class: 'SocNet\Behat\Service\AlertsChecker\BootstrapAlertsParser'
+        class: 'Angelov\Donut\Behat\Service\AlertsChecker\BootstrapAlertsParser'
         arguments: ['@mink.default_session']
 
     app.behat.alerts_checker:
-        class: 'SocNet\Behat\Service\AlertsChecker\AlertsChecker'
+        class: 'Angelov\Donut\Behat\Service\AlertsChecker\AlertsChecker'
         arguments: ['@app.behat.alerts_parser']

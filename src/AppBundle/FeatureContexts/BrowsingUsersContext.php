@@ -3,10 +3,10 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use SocNet\Behat\Pages\Users\UserCard;
-use SocNet\Behat\Pages\Users\BrowsingUsersPage;
-use SocNet\Behat\Service\AlertsChecker\AlertsCheckerInterface;
-use SocNet\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Behat\Pages\Users\UserCard;
+use Angelov\Donut\Behat\Pages\Users\BrowsingUsersPage;
+use Angelov\Donut\Behat\Service\AlertsChecker\AlertsCheckerInterface;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
 use Webmozart\Assert\Assert;
 
 class BrowsingUsersContext implements Context

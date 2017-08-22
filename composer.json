@@ -1,9 +1,10 @@
 {
-    "name": "angelov/sf-socnet",
+    "name": "angelov/donut",
     "license": "proprietary",
     "type": "project",
     "autoload": {
         "psr-4": {
+            "Angelov\\Donut\\": "src/Donut",
             "": "src/"
         },
         "classmap": [

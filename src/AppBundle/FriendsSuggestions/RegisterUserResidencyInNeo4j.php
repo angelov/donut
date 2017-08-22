@@ -3,7 +3,7 @@
 namespace AppBundle\FriendsSuggestions;
 
 use GraphAware\Neo4j\Client\Client;
-use SocNet\Users\Events\UserRegisteredEvent;
+use Angelov\Donut\Users\Events\UserRegisteredEvent;
 
 class RegisterUserResidencyInNeo4j
 {

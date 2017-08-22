@@ -3,10 +3,10 @@
 namespace AppBundle\Factories;
 
 use Faker\Generator;
-use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Friendships\Friendship;
-use SocNet\Places\City;
-use SocNet\Users\User;
+use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
+use Angelov\Donut\Friendships\Friendship;
+use Angelov\Donut\Places\City;
+use Angelov\Donut\Users\User;
 
 class FriendshipsFactory
 {

@@ -65,38 +65,38 @@ doctrine:
             Community:
                 type: annotation
                 is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Communities'
-                prefix: 'SocNet\Communities'
+                dir: '%kernel.root_dir%/../src/Donut/Communities'
+                prefix: 'Angelov\Donut\Communities'
             User:
                 type: annotation
                 is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Users'
-                prefix: 'SocNet\Users'
+                dir: '%kernel.root_dir%/../src/Donut/Users'
+                prefix: 'Angelov\Donut\Users'
             Thought:
                 type: annotation
                 is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Thoughts'
-                prefix: 'SocNet\Thoughts'
+                dir: '%kernel.root_dir%/../src/Donut/Thoughts'
+                prefix: 'Angelov\Donut\Thoughts'
             Friendships:
                 type: annotation
                 is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Friendships'
-                prefix: 'SocNet\Friendships'
+                dir: '%kernel.root_dir%/../src/Donut/Friendships'
+                prefix: 'Angelov\Donut\Friendships'
             FriendshipRequests:
                 type: annotation
                 is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Friendships/FriendshipRequests'
-                prefix: 'SocNet\Friendships\FriendshipRequests'
+                dir: '%kernel.root_dir%/../src/Donut/Friendships/FriendshipRequests'
+                prefix: 'Angelov\Donut\Friendships\FriendshipRequests'
             Movies:
                 type: annotation
                 is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Movies'
-                prefix: 'SocNet\Movies'
+                dir: '%kernel.root_dir%/../src/Donut/Movies'
+                prefix: 'Angelov\Donut\Movies'
             Places:
                 type: annotation
                 is_bundle: false
-                dir: '%kernel.root_dir%/../src/SocNet/Places'
-                prefix: 'SocNet\Places'
+                dir: '%kernel.root_dir%/../src/Donut/Places'
+                prefix: 'Angelov\Donut\Places'
 
 doctrine_migrations:
     dir_name: '%kernel.root_dir%/Resources/migrations'

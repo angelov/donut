@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use SocNet\Core\ResultLists\Sorting\OrderDirection;
-use SocNet\Core\ResultLists\Sorting\OrderField;
-use SocNet\Thoughts\ThoughtsFeed\ThoughtsFeedInterface;
-use SocNet\Thoughts\Commands\DeleteThoughtCommand;
-use SocNet\Thoughts\Commands\StoreThoughtCommand;
-use SocNet\Thoughts\Thought;
-use SocNet\Thoughts\Form\ThoughtType;
+use Angelov\Donut\Core\ResultLists\Sorting\OrderDirection;
+use Angelov\Donut\Core\ResultLists\Sorting\OrderField;
+use Angelov\Donut\Thoughts\ThoughtsFeed\ThoughtsFeedInterface;
+use Angelov\Donut\Thoughts\Commands\DeleteThoughtCommand;
+use Angelov\Donut\Thoughts\Commands\StoreThoughtCommand;
+use Angelov\Donut\Thoughts\Thought;
+use Angelov\Donut\Thoughts\Form\ThoughtType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

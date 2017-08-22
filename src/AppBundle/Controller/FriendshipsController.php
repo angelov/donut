@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use SocNet\Friendships\Commands\DeleteFriendshipCommand;
-use SocNet\Friendships\Friendship;
-use SocNet\Users\User;
+use Angelov\Donut\Friendships\Commands\DeleteFriendshipCommand;
+use Angelov\Donut\Friendships\Friendship;
+use Angelov\Donut\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

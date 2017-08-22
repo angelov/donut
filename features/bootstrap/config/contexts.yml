@@ -4,11 +4,11 @@ services:
         tags: ['fob.context_service']
 
     app.feature_contexts.hooks.doctrine:
-        class: 'SocNet\Behat\Hooks\PurgeDatabase'
+        class: 'Angelov\Donut\Behat\Hooks\PurgeDatabase'
         arguments: ['@__symfony__.doctrine.orm.entity_manager']
 
     app.feature_contexts.hooks.redis:
-        class: 'SocNet\Behat\Hooks\RedisDatabaseCleanerHookContext'
+        class: 'Angelov\Donut\Behat\Hooks\RedisDatabaseCleanerHookContext'
         arguments: ['@__symfony__.snc_redis.default']
 
     app.feature_contexts.setup.users:

@@ -4,9 +4,9 @@ namespace AppBundle\FeatureContexts\Setup;
 
 use Behat\Behat\Context\Context;
 use Doctrine\ORM\EntityManagerInterface;
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Places\City;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
+use Angelov\Donut\Places\City;
 
 class CitiesContext implements Context
 {

@@ -3,10 +3,10 @@
 namespace AppBundle\FeatureContexts;
 
 use Behat\Behat\Context\Context;
-use SocNet\Behat\Pages\Thoughts\HomePage;
-use SocNet\Behat\Pages\Users\BrowsingUsersPage;
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
+use Angelov\Donut\Behat\Pages\Thoughts\HomePage;
+use Angelov\Donut\Behat\Pages\Users\BrowsingUsersPage;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Behat\Service\ValidationErrorsChecker\ValidationErrorsCheckerInterface;
 use Webmozart\Assert\Assert;
 
 class ThoughtsContext implements Context

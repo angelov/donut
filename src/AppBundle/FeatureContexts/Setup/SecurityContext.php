@@ -2,12 +2,12 @@
 
 namespace AppBundle\FeatureContexts\Setup;
 
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Core\CommandBus\CommandBusInterface;
-use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Places\City;
-use SocNet\Users\Commands\StoreUserCommand;
-use SocNet\Users\Repositories\UsersRepositoryInterface;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Core\CommandBus\CommandBusInterface;
+use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
+use Angelov\Donut\Places\City;
+use Angelov\Donut\Users\Commands\StoreUserCommand;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Doctrine\ORM\EntityManager;

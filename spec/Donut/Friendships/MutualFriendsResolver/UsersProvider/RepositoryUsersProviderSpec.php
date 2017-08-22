@@ -1,0 +1,34 @@
+<?php
+
+namespace spec\Angelov\Donut\Friendships\MutualFriendsResolver\UsersProvider;
+
+use Angelov\Donut\Friendships\MutualFriendsResolver\UsersProvider\RepositoryUsersProvider;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Angelov\Donut\Friendships\MutualFriendsResolver\UsersProvider\UsersProviderInterface;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
+
+class RepositoryUsersProviderSpec extends ObjectBehavior
+{
+    function let(UsersRepositoryInterface $users)
+    {
+        $this->beConstructedWith($users);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(RepositoryUsersProvider::class);
+    }
+
+    function it_is_users_provider()
+    {
+        $this->shouldImplement(UsersProviderInterface::class);
+    }
+
+    function it_passes_get_by_id_calls_to_repository(UsersRepositoryInterface $users)
+    {
+        $users->find('5')->shouldBeCalled();
+
+        $this->getById('5');
+    }
+}

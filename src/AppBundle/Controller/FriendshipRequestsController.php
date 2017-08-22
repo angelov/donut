@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use SocNet\Friendships\Friendship;
-use SocNet\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
-use SocNet\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand;
-use SocNet\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand;
-use SocNet\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
-use SocNet\Friendships\FriendshipRequests\FriendshipRequest;
-use SocNet\Users\User;
+use Angelov\Donut\Friendships\Friendship;
+use Angelov\Donut\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
+use Angelov\Donut\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand;
+use Angelov\Donut\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand;
+use Angelov\Donut\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
+use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
+use Angelov\Donut\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

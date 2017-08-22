@@ -2,7 +2,7 @@
 
 namespace AppBundle\EventSubscribers\Users;
 
-use SocNet\Users\Events\UserRegisteredEvent;
+use Angelov\Donut\Users\Events\UserRegisteredEvent;
 use Swift_Mailer;
 use Twig_Environment;
 

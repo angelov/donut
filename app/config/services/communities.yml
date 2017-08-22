@@ -5,14 +5,14 @@ services:
     app.communities.repositories.default: '@app.communities.repositories.doctrine'
 
     app.communities.repositories.doctrine:
-        class: 'SocNet\Communities\Repositories\DoctrineCommunitiesRepository'
+        class: 'Angelov\Donut\Communities\Repositories\DoctrineCommunitiesRepository'
         arguments: ['@doctrine.orm.entity_manager']
 
 
     # form
 
     app.communities.form.community_type:
-        class: 'SocNet\Communities\Form\CommunityType'
+        class: 'Angelov\Donut\Communities\Form\CommunityType'
         arguments: ['@app.users.security.current_user', '@app.core.uuid_generator']
         tags:
             - { name: 'form.type' }
@@ -21,19 +21,19 @@ services:
     # command handlers
 
     app.communities.handlers.store:
-        class: 'SocNet\Communities\Handlers\StoreCommunityCommandHandler'
+        class: 'Angelov\Donut\Communities\Handlers\StoreCommunityCommandHandler'
         arguments: ['@app.communities.repositories.default']
         tags:
-            - { name: 'command_handler', handles: 'SocNet\Communities\Commands\StoreCommunityCommand' }
+            - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\StoreCommunityCommand' }
 
     app.communities.handlers.join:
-        class: 'SocNet\Communities\Handlers\JoinCommunityCommandHandler'
+        class: 'Angelov\Donut\Communities\Handlers\JoinCommunityCommandHandler'
         arguments: ['@app.communities.repositories.default']
         tags:
-            - { name: 'command_handler', handles: 'SocNet\Communities\Commands\JoinCommunityCommand' }
+            - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\JoinCommunityCommand' }
 
     app.communities.handlers.leave:
-        class: 'SocNet\Communities\Handlers\LeaveCommunityCommandHandler'
+        class: 'Angelov\Donut\Communities\Handlers\LeaveCommunityCommandHandler'
         arguments: ['@app.communities.repositories.default']
         tags:
-            - { name: 'command_handler', handles: 'SocNet\Communities\Commands\LeaveCommunityCommand' }
+            - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\LeaveCommunityCommand' }

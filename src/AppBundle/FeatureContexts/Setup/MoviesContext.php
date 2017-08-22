@@ -5,10 +5,10 @@ namespace AppBundle\FeatureContexts\Setup;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\ORM\EntityManagerInterface;
-use SocNet\Behat\Service\Storage\StorageInterface;
-use SocNet\Core\UuidGenerator\UuidGeneratorInterface;
-use SocNet\Movies\Genre;
-use SocNet\Movies\Movie;
+use Angelov\Donut\Behat\Service\Storage\StorageInterface;
+use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
+use Angelov\Donut\Movies\Genre;
+use Angelov\Donut\Movies\Movie;
 
 class MoviesContext implements Context
 {
