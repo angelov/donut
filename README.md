@@ -7,7 +7,9 @@ Developed by [Dejan Angelov](http://angelovdejan.me)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/angelov/donut/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/angelov/donut/?branch=master) 
 
 **Caution:** This is just an experimental project developed only for educational purposes.
-It is not, and never will be, production ready software.
+It is not, and never will be, production ready software. Because of that, there are some edge cases and 
+possible errors that are intentionally left unhandled. Some of them are marked as `todos`, some of  them are not. 
+Also, some things are intentionally done in a (possibly) wrong way, just for experimental purposes.
 
 ## Requirements
 
@@ -68,10 +70,6 @@ The `AppBundle` contains some dirty parts of the code that are just experimental
 specs or integration tests and probably sit there crying to be refactored.
 
 The `Donut` is the cleaner part of the code. Everything here has specs or integration tests.
-
-Note that, as the application is not meant to be used in production, there are some edge cases and 
- possible errors that are 
-intentionally left unhandled. Some of them are marked as `todos`, some of  them are not.
 
 ## Acknowledges
 
