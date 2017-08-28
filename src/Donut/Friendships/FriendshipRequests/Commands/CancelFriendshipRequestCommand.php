@@ -27,18 +27,16 @@
 
 namespace Angelov\Donut\Friendships\FriendshipRequests\Commands;
 
-use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
-
 class CancelFriendshipRequestCommand
 {
     private $friendshipRequest;
 
-    public function __construct(FriendshipRequest $friendshipRequest)
+    public function __construct(string $requestId)
     {
-        $this->friendshipRequest = $friendshipRequest;
+        $this->friendshipRequest = $requestId;
     }
 
-    public function getFriendshipRequest() : FriendshipRequest
+    public function getFriendshipRequestId() : string
     {
         return $this->friendshipRequest;
     }

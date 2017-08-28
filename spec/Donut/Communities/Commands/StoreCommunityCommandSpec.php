@@ -27,23 +27,19 @@
 
 namespace spec\Angelov\Donut\Communities\Commands;
 
-use Angelov\Donut\Users\User;
 use Angelov\Donut\Communities\Commands\StoreCommunityCommand;
 use PhpSpec\ObjectBehavior;
 
 class StoreCommunityCommandSpec extends ObjectBehavior
 {
+    const AUTHOR_ID = 'user id';
     const COMMUNITY_ID = 'uuid value';
     const COMMUNITY_NAME = 'Example';
     const COMMUNITY_DESCRIPTION = 'Just an example community';
 
-    function let(User $author)
+    function let()
     {
-        $id = self::COMMUNITY_ID;
-        $name = self::COMMUNITY_NAME;
-        $description = self::COMMUNITY_DESCRIPTION;
-
-        $this->beConstructedWith($id, $name, $author, $description);
+        $this->beConstructedWith(self::COMMUNITY_ID, self::COMMUNITY_NAME, self::AUTHOR_ID, self::COMMUNITY_DESCRIPTION);
     }
 
     function it_is_initializable()
@@ -61,9 +57,9 @@ class StoreCommunityCommandSpec extends ObjectBehavior
         $this->getName()->shouldReturn('Example');
     }
 
-    function it_holds_the_community_author(User $author)
+    function it_holds_the_community_author_id()
     {
-        $this->getAuthor()->shouldReturn($author);
+        $this->getAuthorId()->shouldReturn(self::AUTHOR_ID);
     }
 
     function it_holds_the_community_description()

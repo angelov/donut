@@ -29,16 +29,16 @@ namespace spec\Angelov\Donut\Thoughts\Commands;
 
 use Angelov\Donut\Thoughts\Commands\StoreThoughtCommand;
 use PhpSpec\ObjectBehavior;
-use Angelov\Donut\Users\User;
 
 class StoreThoughtCommandSpec extends ObjectBehavior
 {
     const THOUGHT_CONTENT = 'something to say';
     const THOUGHT_ID = 'uuid value';
+    const THOUGHT_AUTHOR_ID = 'author id';
 
-    public function let(User $author)
+    public function let()
     {
-        $this->beConstructedWith(self::THOUGHT_ID, $author, self::THOUGHT_CONTENT);
+        $this->beConstructedWith(self::THOUGHT_ID, self::THOUGHT_AUTHOR_ID, self::THOUGHT_CONTENT);
     }
 
     function it_is_initializable()
@@ -51,9 +51,9 @@ class StoreThoughtCommandSpec extends ObjectBehavior
         $this->getId()->shouldReturn(self::THOUGHT_ID);
     }
 
-    function it_holds_the_author(User $author)
+    function it_holds_the_author_id()
     {
-        $this->getAuthor()->shouldReturn($author);
+        $this->getAuthorId()->shouldReturn(self::THOUGHT_AUTHOR_ID);
     }
 
     function it_holds_the_content()
@@ -61,10 +61,15 @@ class StoreThoughtCommandSpec extends ObjectBehavior
         $this->getContent()->shouldReturn(self::THOUGHT_CONTENT);
     }
 
-    function it_can_hold_the_created_at_date(User $author, \DateTime $dateTime)
+    function it_can_hold_the_created_at_date(\DateTime $dateTime)
     {
-        $this->beConstructedWith(self::THOUGHT_ID, $author, self::THOUGHT_CONTENT, $dateTime);
+        $this->beConstructedWith(self::THOUGHT_ID, self::THOUGHT_AUTHOR_ID, self::THOUGHT_CONTENT, $dateTime);
 
         $this->getCreatedAt()->shouldReturn($dateTime);
+    }
+
+    function it_holds_the_current_date_if_no_created_at_date_is_specified()
+    {
+        $this->getCreatedAt()->shouldReturnAnInstanceOf(\DateTime::class);
     }
 }

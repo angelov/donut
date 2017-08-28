@@ -27,6 +27,7 @@
 
 namespace spec\Angelov\Donut\Friendships\FriendshipRequests\Handlers;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 use Angelov\Donut\Core\CommandBus\CommandBusInterface;
@@ -46,9 +47,12 @@ class AcceptFriendshipRequestCommandHandlerSpec extends ObjectBehavior
         FriendshipRequestsRepositoryInterface $requestsRepository,
         CommandBusInterface $commandBus,
         UuidGeneratorInterface $uuidGenerator,
-        EventBusInterface $eventBus
+        EventBusInterface $eventBus,
+        AcceptFriendshipRequestCommand $command
     ) {
         $this->beConstructedWith($requestsRepository, $uuidGenerator, $commandBus, $eventBus);
+
+        $command->getFriendshipRequestId()->willReturn('request id');
     }
 
     function it_is_initializable()
@@ -56,7 +60,16 @@ class AcceptFriendshipRequestCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(AcceptFriendshipRequestCommandHandler::class);
     }
 
-    function it_handles_accept_friendship_request_commands(
+    function it_throws_exception_if_the_request_is_not_found(
+        FriendshipRequestsRepositoryInterface $requestsRepository,
+        AcceptFriendshipRequestCommand $command
+    ) {
+        $requestsRepository->find('request id')->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_creates_new_frienship_when_the_request_is_accepted(
         AcceptFriendshipRequestCommand $command,
         FriendshipRequest $request,
         User $sender,
@@ -66,12 +79,16 @@ class AcceptFriendshipRequestCommandHandlerSpec extends ObjectBehavior
         CommandBusInterface $commandBus,
         EventBusInterface $eventBus
     ) {
-        $command->getFriendshipRequest()->willReturn($request);
+        $requestsRepository->find('request id')->shouldBeCalled()->willReturn($request);
 
         $request->getFromUser()->willReturn($sender);
         $request->getToUser()->willReturn($recipient);
 
+        $sender->getId()->willReturn('sender id');
+        $recipient->getId()->willReturn('recipient id');
+
         $requestsRepository->destroy($request)->shouldBeCalled();
+
         $commandBus->handle(Argument::type(StoreFriendshipCommand::class))->shouldBeCalledTimes(2);
         $uuidGenerator->generate()->shouldBeCalledTimes(2);
 

@@ -45,7 +45,7 @@ class DeleteFriendshipCommandHandler
 
     public function handle(DeleteFriendshipCommand $command) : void
     {
-        $friendship = $command->getFriendship();
+        $friendship = $this->friendships->find($command->getFriendshipId());
 
         $this->friendships->destroy($friendship);
 

@@ -27,26 +27,23 @@
 
 namespace Angelov\Donut\Communities\Commands;
 
-use Angelov\Donut\Users\User;
-use Angelov\Donut\Communities\Community;
-
 class LeaveCommunityCommand
 {
     private $user;
     private $community;
 
-    public function __construct(User $user, Community $community)
+    public function __construct(string $userId, string $communityId)
     {
-        $this->user = $user;
-        $this->community = $community;
+        $this->user = $userId;
+        $this->community = $communityId;
     }
 
-    public function getUser() : User
+    public function getUserId() : string
     {
         return $this->user;
     }
 
-    public function getCommunity() : Community
+    public function getCommunityId() : string
     {
         return $this->community;
     }

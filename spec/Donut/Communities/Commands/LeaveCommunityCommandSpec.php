@@ -27,16 +27,17 @@
 
 namespace spec\Angelov\Donut\Communities\Commands;
 
-use Angelov\Donut\Users\User;
 use Angelov\Donut\Communities\Commands\LeaveCommunityCommand;
 use PhpSpec\ObjectBehavior;
-use Angelov\Donut\Communities\Community;
 
 class LeaveCommunityCommandSpec extends ObjectBehavior
 {
-    function let(User $user, Community $community)
+    const USER_ID = 'user id';
+    const COMMUNITY_ID = 'community id';
+
+    function let()
     {
-        $this->beConstructedWith($user, $community);
+        $this->beConstructedWith(self::USER_ID, self::COMMUNITY_ID);
     }
 
     function it_is_initializable()
@@ -44,13 +45,13 @@ class LeaveCommunityCommandSpec extends ObjectBehavior
         $this->shouldHaveType(LeaveCommunityCommand::class);
     }
 
-    function it_holds_the_user(User $user)
+    function it_holds_the_user_id()
     {
-        $this->getUser()->shouldReturn($user);
+        $this->getUserId()->shouldReturn(self::USER_ID);
     }
 
-    function it_holds_the_community(Community $community)
+    function it_holds_the_community_id()
     {
-        $this->getCommunity()->shouldReturn($community);
+        $this->getCommunityId()->shouldReturn(self::COMMUNITY_ID);
     }
 }

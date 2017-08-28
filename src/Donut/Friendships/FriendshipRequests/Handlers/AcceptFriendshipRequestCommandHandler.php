@@ -29,6 +29,7 @@ namespace Angelov\Donut\Friendships\FriendshipRequests\Handlers;
 
 use Angelov\Donut\Core\CommandBus\CommandBusInterface;
 use Angelov\Donut\Core\EventBus\EventBusInterface;
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
 use Angelov\Donut\Friendships\Commands\StoreFriendshipCommand;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
@@ -54,17 +55,21 @@ class AcceptFriendshipRequestCommandHandler
         $this->commandBus = $commandBus;
     }
 
+    /**
+     * @throws ResourceNotFoundException
+     */
     public function handle(AcceptFriendshipRequestCommand $command) : void
     {
-        $request = $command->getFriendshipRequest();
+        $request = $this->requests->find($command->getFriendshipRequestId());
+
         $sender = $request->getFromUser();
         $recipient = $request->getToUser();
 
         $id = $this->uuidGenerator->generate();
-        $this->commandBus->handle(new StoreFriendshipCommand($id, $sender, $recipient));
+        $this->commandBus->handle(new StoreFriendshipCommand($id, $sender->getId(), $recipient->getId()));
 
         $id = $this->uuidGenerator->generate();
-        $this->commandBus->handle(new StoreFriendshipCommand($id, $recipient, $sender));
+        $this->commandBus->handle(new StoreFriendshipCommand($id, $recipient->getId(), $sender->getId()));
 
         $this->requests->destroy($request);
 

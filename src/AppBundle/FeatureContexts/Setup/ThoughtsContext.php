@@ -106,7 +106,7 @@ class ThoughtsContext implements Context
 
         $this->commandBus->handle(new StoreThoughtCommand(
             $id,
-            $author,
+            $author->getId(),
             $content ?? sprintf('Random content #%d', random_int(0, 10000)),
             $latest
         ));

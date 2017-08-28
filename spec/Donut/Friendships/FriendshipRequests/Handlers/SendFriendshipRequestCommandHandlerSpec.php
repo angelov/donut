@@ -27,9 +27,11 @@
 
 namespace spec\Angelov\Donut\Friendships\FriendshipRequests\Handlers;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
 use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
 use Angelov\Donut\Friendships\FriendshipRequests\Handlers\SendFriendshipRequestCommandHandler;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Angelov\Donut\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface;
@@ -39,9 +41,25 @@ class SendFriendshipRequestCommandHandlerSpec extends ObjectBehavior
 {
     const FRIENDSHIP_REQUEST_ID = 'uuid value';
 
-    function let(FriendshipRequestsRepositoryInterface $repository)
-    {
-        $this->beConstructedWith($repository);
+    function let(
+        FriendshipRequestsRepositoryInterface $repository,
+        UsersRepositoryInterface $users,
+        SendFriendshipRequestCommand $command,
+        User $sender,
+        User $recipient
+    ) {
+        $this->beConstructedWith($repository, $users);
+
+        $command->getId()->willReturn(self::FRIENDSHIP_REQUEST_ID);
+
+        $command->getSenderId()->willReturn('sender id');
+        $users->find('sender id')->willReturn($sender);
+
+        $command->getRecipientId()->willReturn('recipient id');
+        $users->find('recipient id')->willReturn($recipient);
+
+        $sender->equals($recipient)->willReturn(false);
+        $recipient->equals($sender)->willReturn(false);
     }
 
     function it_is_initializable()
@@ -49,15 +67,51 @@ class SendFriendshipRequestCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SendFriendshipRequestCommandHandler::class);
     }
 
+    function it_throws_exception_when_the_sender_is_not_found(
+        UsersRepositoryInterface $users,
+        SendFriendshipRequestCommand $command
+    ) {
+        $users->find('sender id')->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_throws_exception_when_the_recipient_is_not_found(
+        UsersRepositoryInterface $users,
+        SendFriendshipRequestCommand $command
+    ) {
+        $users->find('recipient id')->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_throws_exception_when_the_sender_and_recipient_are_same_person(
+        User $sender,
+        User $recipient,
+        SendFriendshipRequestCommand $command
+    ) {
+        $sender->equals($recipient)->shouldBeCalled()->willReturn(true);
+
+        // @todo throw more specific exception
+        $this->shouldThrow(\Exception::class)->during('handle', [$command]);
+    }
+
     function it_stores_new_friendship_requests(
         SendFriendshipRequestCommand $command,
+        UsersRepositoryInterface $users,
         User $sender,
         User $recipient,
         FriendshipRequestsRepositoryInterface $repository
     ) {
-        $command->getRecipient()->willReturn($recipient);
-        $command->getSender()->willReturn($sender);
-        $command->getId()->willReturn(self::FRIENDSHIP_REQUEST_ID);
+        $command->getRecipientId()->shouldBeCalled();
+        $command->getSenderId()->shouldBeCalled();
+        $command->getId()->shouldBeCalled();
+
+        $users->find('sender id')->shouldBeCalled()->willReturn($sender);
+        $users->find('recipient id')->shouldBeCalled()->willReturn($recipient);
+
+        $sender->addSentFriendshipRequest(Argument::type(FriendshipRequest::class))->shouldBeCalled();
+        $recipient->addReceivedFriendshipRequest(Argument::type(FriendshipRequest::class))->shouldBeCalled();
 
         $repository->store(Argument::type(FriendshipRequest::class))->shouldBeCalled();
 

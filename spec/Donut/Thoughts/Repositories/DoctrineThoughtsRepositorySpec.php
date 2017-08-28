@@ -27,10 +27,10 @@
 
 namespace spec\Angelov\Donut\Thoughts\Repositories;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Angelov\Donut\Thoughts\Repositories\DoctrineThoughtsRepository;
-use PhpSpec\ObjectBehavior;
 use Angelov\Donut\Thoughts\Repositories\ThoughtsRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use PhpSpec\ObjectBehavior;
 
 class DoctrineThoughtsRepositorySpec extends ObjectBehavior
 {

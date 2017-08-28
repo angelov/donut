@@ -32,23 +32,28 @@ use Angelov\Donut\Thoughts\Commands\StoreThoughtCommand;
 use Angelov\Donut\Thoughts\Events\ThoughtWasPublishedEvent;
 use Angelov\Donut\Thoughts\Repositories\ThoughtsRepositoryInterface;
 use Angelov\Donut\Thoughts\Thought;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 
 class StoreThoughtCommandHandler
 {
     private $thoughts;
     private $events;
+    private $users;
 
-    public function __construct(ThoughtsRepositoryInterface $thoughts, EventBusInterface $events)
+    public function __construct(ThoughtsRepositoryInterface $thoughts, UsersRepositoryInterface $users, EventBusInterface $events)
     {
         $this->thoughts = $thoughts;
         $this->events = $events;
+        $this->users = $users;
     }
 
     public function handle(StoreThoughtCommand $command) : void
     {
+        $author = $this->users->find($command->getAuthorId());
+
         $thought = new Thought(
             $command->getId(),
-            $command->getAuthor(),
+            $author,
             $command->getContent(),
             $command->getCreatedAt()
         );

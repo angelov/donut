@@ -28,29 +28,38 @@
 namespace Angelov\Donut\Friendships\Handlers;
 
 use Angelov\Donut\Core\EventBus\EventBusInterface;
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Friendships\Commands\StoreFriendshipCommand;
 use Angelov\Donut\Friendships\Events\FriendshipWasCreatedEvent;
 use Angelov\Donut\Friendships\Friendship;
 use Angelov\Donut\Friendships\Repositories\FriendshipsRepositoryInterface;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 
 class StoreFriendshipCommandHandler
 {
     private $friendships;
+    private $users;
     private $eventBus;
 
-    public function __construct(FriendshipsRepositoryInterface $friendships, EventBusInterface $eventBus)
-    {
+    public function __construct(
+        FriendshipsRepositoryInterface $friendships,
+        UsersRepositoryInterface $users,
+        EventBusInterface $eventBus
+    ) {
         $this->friendships = $friendships;
         $this->eventBus = $eventBus;
+        $this->users = $users;
     }
 
+    /**
+     * @throws ResourceNotFoundException
+     */
     public function handle(StoreFriendshipCommand $command) : void
     {
-        $friendship = new Friendship(
-            $command->getId(),
-            $command->getUser(),
-            $command->getFriend()
-        );
+        $user = $this->users->find($command->getUserId());
+        $friend = $this->users->find($command->getFriendId());
+
+        $friendship = new Friendship($command->getId(), $user, $friend);
 
         $this->friendships->store($friendship);
 

@@ -27,7 +27,7 @@
 
 namespace AppBundle\Controller;
 
-use Angelov\Donut\Friendships\Friendship;
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand;
@@ -49,7 +49,7 @@ class FriendshipRequestsController extends Controller
 
         $id = $this->get('app.core.uuid_generator')->generate();
 
-        $this->get('app.core.command_bus.default')->handle(new SendFriendshipRequestCommand($id, $currentUser, $user));
+        $this->get('app.core.command_bus.default')->handle(new SendFriendshipRequestCommand($id, $currentUser->getId(), $user->getId()));
 
         $this->addFlash('success', 'Friendship request successfully sent!');
 
@@ -72,13 +72,12 @@ class FriendshipRequestsController extends Controller
             'toUser' => $user
         ]);
 
-        if (!$friendshipRequest) {
+        try {
+            $this->get('app.core.command_bus.default')->handle(new CancelFriendshipRequestCommand($friendshipRequest->getId()));
+        } catch (ResourceNotFoundException $e) {
             $this->addFlash('error', 'Something went wrong!');
-
             return $this->redirectToRoute('app.friends.index');
         }
-
-        $this->get('app.core.command_bus.default')->handle(new CancelFriendshipRequestCommand($friendshipRequest));
 
         $this->addFlash('success', 'Friendship request successfully cancelled!');
 
@@ -98,13 +97,12 @@ class FriendshipRequestsController extends Controller
             'toUser' => $this->getUser()
         ]);
 
-        if (!$friendshipRequest) {
+        try {
+            $this->get('app.core.command_bus.default')->handle(new DeclineFriendshipRequestCommand($friendshipRequest->getId()));
+        } catch (ResourceNotFoundException $e) {
             $this->addFlash('error', 'Something went wrong!');
-
             return $this->redirectToRoute('app.friends.index');
         }
-
-        $this->get('app.core.command_bus.default')->handle(new DeclineFriendshipRequestCommand($friendshipRequest));
 
         $this->addFlash('success', 'Friendship request successfully declined!');
 
@@ -124,13 +122,12 @@ class FriendshipRequestsController extends Controller
             'toUser' => $this->getUser()
         ]);
 
-        if (!$friendshipRequest) {
+        try {
+            $this->get('app.core.command_bus.default')->handle(new AcceptFriendshipRequestCommand($friendshipRequest->getId()));
+        } catch (ResourceNotFoundException $e) {
             $this->addFlash('error', 'Something went wrong!');
-
             return $this->redirectToRoute('app.friends.index');
         }
-
-        $this->get('app.core.command_bus.default')->handle(new AcceptFriendshipRequestCommand($friendshipRequest));
 
         $this->addFlash('success', 'Friendship request successfully accepted!');
 

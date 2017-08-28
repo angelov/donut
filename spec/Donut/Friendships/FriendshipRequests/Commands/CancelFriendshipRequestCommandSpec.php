@@ -29,13 +29,14 @@ namespace spec\Angelov\Donut\Friendships\FriendshipRequests\Commands;
 
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand;
 use PhpSpec\ObjectBehavior;
-use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
 
 class CancelFriendshipRequestCommandSpec extends ObjectBehavior
 {
-    function let(FriendshipRequest $friendshipRequest)
+    const FRIENDSHIP_REQUEST_ID = 'req id';
+
+    function let()
     {
-        $this->beConstructedWith($friendshipRequest);
+        $this->beConstructedWith(self::FRIENDSHIP_REQUEST_ID);
     }
 
     function it_is_initializable()
@@ -43,8 +44,8 @@ class CancelFriendshipRequestCommandSpec extends ObjectBehavior
         $this->shouldHaveType(CancelFriendshipRequestCommand::class);
     }
 
-    function it_holds_the_friendship_request(FriendshipRequest $friendshipRequest)
+    function it_holds_the_friendship_request_id()
     {
-        $this->getFriendshipRequest()->shouldReturn($friendshipRequest);
+        $this->getFriendshipRequestId()->shouldReturn(self::FRIENDSHIP_REQUEST_ID);
     }
 }

@@ -108,7 +108,7 @@ class UserRegistrationForm extends AbstractType implements DataMapperInterface
             $forms['name']->getData(),
             $forms['email']->getData(),
             $forms['password']->get('second')->getData(),
-            $forms['city']->getData()
+            $forms['city']->getData()->getId()
         );
     }
 }

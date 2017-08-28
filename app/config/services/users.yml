@@ -58,6 +58,7 @@ services:
         class: 'Angelov\Donut\Users\Handlers\StoreUserCommandHandler'
         arguments:
             - '@app.users.repository.default'
+            - '@app.places.cities.repository.default'
             - '@security.password_encoder'
             - '@app.users.email_availability_checker.default'
             - '@app.core.event_bus.default'

@@ -27,6 +27,7 @@
 
 namespace Angelov\Donut\Thoughts\Repositories;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Angelov\Donut\Thoughts\Thought;
 
@@ -49,5 +50,16 @@ class DoctrineThoughtsRepository implements ThoughtsRepositoryInterface
     {
         $this->em->remove($thought);
         $this->em->flush();
+    }
+
+    public function find(string $id) : Thought
+    {
+        $found = $this->em->find(Thought::class, $id);
+
+        if ($found) {
+            return $found;
+        }
+
+        throw new ResourceNotFoundException();
     }
 }

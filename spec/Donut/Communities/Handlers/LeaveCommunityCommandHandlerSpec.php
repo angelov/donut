@@ -27,8 +27,9 @@
 
 namespace spec\Angelov\Donut\Communities\Handlers;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 use Angelov\Donut\Users\User;
-use Prophecy\Argument;
 use Angelov\Donut\Communities\Commands\LeaveCommunityCommand;
 use Angelov\Donut\Communities\Community;
 use Angelov\Donut\Communities\Exceptions\CommunityMemberNotFoundException;
@@ -38,12 +39,20 @@ use Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface;
 
 class LeaveCommunityCommandHandlerSpec extends ObjectBehavior
 {
-    function let(CommunitiesRepositoryInterface $repository, LeaveCommunityCommand $command, User $user, Community $community)
-    {
-        $this->beConstructedWith($repository);
+    function let(
+        CommunitiesRepositoryInterface $communities,
+        UsersRepositoryInterface $users,
+        LeaveCommunityCommand $command,
+        User $user,
+        Community $community
+    ) {
+        $this->beConstructedWith($communities, $users);
 
-        $command->getUser()->willReturn($user);
-        $command->getCommunity()->willReturn($community);
+        $command->getUserId()->willReturn('user id');
+        $command->getCommunityId()->willReturn('community id');
+
+        $communities->find('community id')->willReturn($community);
+        $users->find('user id')->willReturn($user);
     }
 
     function it_is_initializable()
@@ -51,19 +60,39 @@ class LeaveCommunityCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(LeaveCommunityCommandHandler::class);
     }
 
-    function it_removes_the_member_from_the_community(LeaveCommunityCommand $command, CommunitiesRepositoryInterface $repository, Community $community, User $user)
+    function it_throws_exception_if_the_user_is_not_found(LeaveCommunityCommand $command, UsersRepositoryInterface $users)
     {
+        $users->find('user id')->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_throws_exception_if_the_community_is_not_found(LeaveCommunityCommand $command, CommunitiesRepositoryInterface $communities)
+    {
+        $communities->find('community id')->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_removes_the_member_from_the_community(
+        LeaveCommunityCommand $command,
+        CommunitiesRepositoryInterface $communities,
+        Community $community,
+        User $user
+    ) {
         $community->removeMember($user)->shouldBeCalled();
-        $repository->store($community)->shouldBeCalled();
+        $communities->store($community)->shouldBeCalled();
 
         $this->handle($command);
     }
 
-    function it_throws_member_not_found_exception_when_trying_to_remove_non_member(LeaveCommunityCommand $command, Community $community)
-    {
-        $community->removeMember(Argument::type(User::class))->willThrow(CommunityMemberNotFoundException::class);
+    function it_throws_member_not_found_exception_when_trying_to_remove_non_member(
+        LeaveCommunityCommand $command,
+        Community $community,
+        User $user
+    ) {
+        $community->removeMember($user)->willThrow(CommunityMemberNotFoundException::class);
 
         $this->shouldThrow(CommunityMemberNotFoundException::class)->during('handle', [$command]);
-
     }
 }

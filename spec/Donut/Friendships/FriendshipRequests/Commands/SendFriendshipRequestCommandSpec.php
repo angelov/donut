@@ -34,10 +34,12 @@ use Angelov\Donut\Users\User;
 class SendFriendshipRequestCommandSpec extends ObjectBehavior
 {
     const FRIENDSHIP_REQUEST_ID = 'uuid value';
+    const USER_ID = 'u id';
+    const FRIEND_ID = 'f id';
 
-    function let(User $sender, User $recipient)
+    function let()
     {
-        $this->beConstructedWith(self::FRIENDSHIP_REQUEST_ID, $sender, $recipient);
+        $this->beConstructedWith(self::FRIENDSHIP_REQUEST_ID, self::USER_ID, self::FRIEND_ID);
     }
 
     function it_is_initializable()
@@ -50,13 +52,13 @@ class SendFriendshipRequestCommandSpec extends ObjectBehavior
         $this->getId()->shouldReturn(self::FRIENDSHIP_REQUEST_ID);
     }
 
-    function it_holds_the_sender(User $sender)
+    function it_holds_the_sender_id()
     {
-        $this->getSender()->shouldReturn($sender);
+        $this->getSenderId()->shouldReturn(self::USER_ID);
     }
 
-    function it_holds_the_recipient(User $recipient)
+    function it_holds_the_recipient()
     {
-        $this->getRecipient()->shouldReturn($recipient);
+        $this->getRecipientId()->shouldReturn(self::FRIEND_ID);
     }
 }

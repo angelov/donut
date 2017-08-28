@@ -1,0 +1,10 @@
+services:
+
+    # repositories
+
+    app.places.cities.repository.default: '@app.places.cities.repository.doctrine'
+
+    app.places.cities.repository.doctrine:
+        class: 'Angelov\Donut\Places\Repositories\DoctrineCitiesRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'

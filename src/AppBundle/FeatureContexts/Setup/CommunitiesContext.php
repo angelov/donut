@@ -80,7 +80,7 @@ class CommunitiesContext implements Context
     private function createCommunity(string $name, string $description, User $author) : Community
     {
         $id = $this->uuidGenerator->generate();
-        $this->commandBus->handle(new StoreCommunityCommand($id, $name, $author, $description));
+        $this->commandBus->handle(new StoreCommunityCommand($id, $name, $author->getId(), $description));
 
         $community = $this->communities->find($id);
 
@@ -92,25 +92,17 @@ class CommunitiesContext implements Context
 
     /**
      * @Given I have joined the :name community
-     */
-    public function iHaveJoinedTheCommunity(string $name) : void
-    {
-        $community = $this->storage->get('community_' . $name);
-        $logged = $this->storage->get('logged_user');
-
-        $this->commandBus->handle(new JoinCommunityCommand($logged, $community));
-    }
-
-    /**
      * @Given I have joined it
      */
-    public function iHaveJoinedIt() : void
+    public function iHaveJoinedTheCommunity(string $name = '') : void
     {
         /** @var Community $community */
-        $community = $this->storage->get('created_community');
-        $user = $this->storage->get('logged_user');
+        $community = ($name !== '' ) ? $this->storage->get('community_' . $name) : $this->storage->get('created_community');
 
-        $this->commandBus->handle(new JoinCommunityCommand($user, $community));
+        /** @var User $logged */
+        $logged = $this->storage->get('logged_user');
+
+        $this->commandBus->handle(new JoinCommunityCommand($logged->getId(), $community->getId()));
     }
 
     /**
@@ -126,10 +118,13 @@ class CommunitiesContext implements Context
      */
     public function heAlsoHasJoinedIt() : void
     {
+        /** @var Community $community */
         $community = $this->storage->get('created_community');
+
+        /** @var User $user */
         $user = $this->storage->get('last_created_user');
 
-        $this->commandBus->handle(new JoinCommunityCommand($user, $community));
+        $this->commandBus->handle(new JoinCommunityCommand($user->getId(), $community->getId()));
     }
 
     /**

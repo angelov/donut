@@ -27,18 +27,16 @@
 
 namespace Angelov\Donut\Thoughts\Commands;
 
-use Angelov\Donut\Thoughts\Thought;
-
 class DeleteThoughtCommand
 {
     private $thought;
 
-    public function __construct(Thought $thought)
+    public function __construct(string $thoughtId)
     {
-        $this->thought = $thought;
+        $this->thought = $thoughtId;
     }
 
-    public function getThought() : Thought
+    public function getThoughtId() : string
     {
         return $this->thought;
     }

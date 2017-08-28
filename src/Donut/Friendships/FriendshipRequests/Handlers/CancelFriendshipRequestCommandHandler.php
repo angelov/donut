@@ -27,6 +27,7 @@
 
 namespace Angelov\Donut\Friendships\FriendshipRequests\Handlers;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand;
 use Angelov\Donut\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface;
 
@@ -39,10 +40,13 @@ class CancelFriendshipRequestCommandHandler
         $this->requests = $requests;
     }
 
+    /**
+     * @throws ResourceNotFoundException
+     */
     public function handle(CancelFriendshipRequestCommand $command) : void
     {
         $this->requests->destroy(
-            $command->getFriendshipRequest()
+            $this->requests->find($command->getFriendshipRequestId())
         );
     }
 }

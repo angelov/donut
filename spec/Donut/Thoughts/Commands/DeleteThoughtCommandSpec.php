@@ -29,13 +29,14 @@ namespace spec\Angelov\Donut\Thoughts\Commands;
 
 use Angelov\Donut\Thoughts\Commands\DeleteThoughtCommand;
 use PhpSpec\ObjectBehavior;
-use Angelov\Donut\Thoughts\Thought;
 
 class DeleteThoughtCommandSpec extends ObjectBehavior
 {
-    public function let(Thought $thought)
+    const ID = 'thought id';
+
+    public function let()
     {
-        $this->beConstructedWith($thought);
+        $this->beConstructedWith(self::ID);
     }
 
     function it_is_initializable()
@@ -43,8 +44,8 @@ class DeleteThoughtCommandSpec extends ObjectBehavior
         $this->shouldHaveType(DeleteThoughtCommand::class);
     }
 
-    function it_holds_the_thought(Thought $thought)
+    function it_holds_the_thought_id()
     {
-        $this->getThought()->shouldReturn($thought);
+        $this->getThoughtId()->shouldReturn(self::ID);
     }
 }

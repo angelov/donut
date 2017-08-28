@@ -31,6 +31,7 @@ use Angelov\Donut\Communities\Commands\JoinCommunityCommand;
 use Angelov\Donut\Communities\Commands\LeaveCommunityCommand;
 use Angelov\Donut\Communities\Commands\StoreCommunityCommand;
 use Angelov\Donut\Communities\Form\CommunityType;
+use Angelov\Donut\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,11 +96,10 @@ class CommunitiesController extends Controller
      */
     public function joinAction($id) : Response
     {
-        $repository = $this->get('app.communities.repositories.default');
-        $community = $repository->find($id);
+        /** @var User $user */
         $user = $this->getUser();
 
-        $this->get('app.core.command_bus.default')->handle(new JoinCommunityCommand($user, $community));
+        $this->get('app.core.command_bus.default')->handle(new JoinCommunityCommand($user->getId(), $id));
 
         $this->addFlash('success', 'Successfully joined the community');
 
@@ -111,11 +111,10 @@ class CommunitiesController extends Controller
      */
     public function leaveAction($id) : Response
     {
-        $repository = $this->get('app.communities.repositories.default');
-        $community = $repository->find($id);
+        /** @var User $user */
         $user = $this->getUser();
 
-        $this->get('app.core.command_bus.default')->handle(new LeaveCommunityCommand($user, $community));
+        $this->get('app.core.command_bus.default')->handle(new LeaveCommunityCommand($user->getId(), $id));
 
         $this->addFlash('success', 'Successfully left the community');
 

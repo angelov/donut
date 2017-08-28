@@ -27,7 +27,6 @@
 
 namespace Angelov\Donut\Users\Commands;
 
-use Angelov\Donut\Places\City;
 use Angelov\Donut\Users\Validation\Constraints\UniqueEmail;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -53,14 +52,14 @@ class StoreUserCommand
      */
     private $password;
 
-    private $city;
+    private $cityId;
 
-    public function __construct(string $id, string $name, string $email, string $password, City $city)
+    public function __construct(string $id, string $name, string $email, string $password, string $cityId)
     {
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
-        $this->city = $city;
+        $this->city = $cityId;
         $this->id = $id;
     }
 
@@ -84,7 +83,7 @@ class StoreUserCommand
         return $this->password;
     }
 
-    public function getCity() : City
+    public function getCityId() : string
     {
         return $this->city;
     }

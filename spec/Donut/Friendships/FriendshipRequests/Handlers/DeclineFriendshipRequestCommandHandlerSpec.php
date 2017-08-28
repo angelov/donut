@@ -27,17 +27,20 @@
 
 namespace spec\Angelov\Donut\Friendships\FriendshipRequests\Handlers;
 
-use Angelov\Donut\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand;
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
+use Angelov\Donut\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand;
 use Angelov\Donut\Friendships\FriendshipRequests\Handlers\DeclineFriendshipRequestCommandHandler;
-use PhpSpec\ObjectBehavior;
 use Angelov\Donut\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 
 class DeclineFriendshipRequestCommandHandlerSpec extends ObjectBehavior
 {
-    function let(FriendshipRequestsRepositoryInterface $repository)
+    function let(FriendshipRequestsRepositoryInterface $requests, DeclineFriendshipRequestCommand $command)
     {
-        $this->beConstructedWith($repository);
+        $this->beConstructedWith($requests);
+
+        $command->getFriendshipRequestId()->willReturn('request id');
     }
 
     function it_is_initializable()
@@ -45,11 +48,23 @@ class DeclineFriendshipRequestCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(DeclineFriendshipRequestCommandHandler::class);
     }
 
-    function it_deletes_friendship_requests(DeclineFriendshipRequestCommand $command, FriendshipRequest $request, FriendshipRequestsRepositoryInterface $repository)
-    {
-        $command->getFriendshipRequest()->willReturn($request);
+    function it_throws_exception_if_the_request_is_not_found(
+        FriendshipRequestsRepositoryInterface $requests,
+        DeclineFriendshipRequestCommand $command
+    ) {
+        $requests->find('request id')->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
 
-        $repository->destroy($request)->shouldBeCalled();
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_deletes_friendship_requests(
+        DeclineFriendshipRequestCommand $command,
+        FriendshipRequest $request,
+        FriendshipRequestsRepositoryInterface $requests
+    ) {
+        $requests->find('request id')->shouldBeCalled()->willReturn($request);
+
+        $requests->destroy($request)->shouldBeCalled();
 
         $this->handle($command);
     }

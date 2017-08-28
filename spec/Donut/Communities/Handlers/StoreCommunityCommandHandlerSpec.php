@@ -27,6 +27,8 @@
 
 namespace spec\Angelov\Donut\Communities\Handlers;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 use Angelov\Donut\Users\User;
 use Prophecy\Argument;
 use Angelov\Donut\Communities\Commands\StoreCommunityCommand;
@@ -37,14 +39,20 @@ use Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface;
 
 class StoreCommunityCommandHandlerSpec extends ObjectBehavior
 {
-    function let(CommunitiesRepositoryInterface $repository, StoreCommunityCommand $command, User $user)
-    {
-        $this->beConstructedWith($repository);
+    function let(
+        CommunitiesRepositoryInterface $communities,
+        UsersRepositoryInterface $users,
+        StoreCommunityCommand $command,
+        User $author
+    ) {
+        $this->beConstructedWith($communities, $users);
 
         $command->getId()->willReturn('uuid value');
         $command->getName()->willReturn('name');
         $command->getDescription()->willReturn('');
-        $command->getAuthor()->willReturn($user);
+        $command->getAuthorId()->willReturn('author id');
+
+        $users->find('author id')->willReturn($author);
     }
 
     function it_is_initializable()
@@ -52,9 +60,21 @@ class StoreCommunityCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(StoreCommunityCommandHandler::class);
     }
 
-    function it_stores_new_communities(StoreCommunityCommand $command, CommunitiesRepositoryInterface $repository)
+    function it_throws_exception_if_the_author_is_not_found(UsersRepositoryInterface $users, StoreCommunityCommand $command)
     {
-        $repository->store(Argument::type(Community::class))->shouldBeCalled();
+        $users->find('author id')->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_stores_new_communities(StoreCommunityCommand $command, CommunitiesRepositoryInterface $communities)
+    {
+        $command->getId()->shouldBeCalled();
+        $command->getName()->shouldBeCalled();
+        $command->getDescription()->shouldBeCalled();
+        $command->getAuthorId()->shouldBeCalled();
+
+        $communities->store(Argument::type(Community::class))->shouldBeCalled();
 
         $this->handle($command);
     }

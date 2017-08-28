@@ -30,22 +30,27 @@ namespace Angelov\Donut\Communities\Handlers;
 use Angelov\Donut\Communities\Commands\StoreCommunityCommand;
 use Angelov\Donut\Communities\Community;
 use Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 
 class StoreCommunityCommandHandler
 {
     private $communities;
+    private $users;
 
-    public function __construct(CommunitiesRepositoryInterface $communities)
+    public function __construct(CommunitiesRepositoryInterface $communities, UsersRepositoryInterface $users)
     {
         $this->communities = $communities;
+        $this->users = $users;
     }
 
     public function handle(StoreCommunityCommand $command) : void
     {
+        $author = $this->users->find($command->getAuthorId());
+
         $community = new Community(
             $command->getId(),
             $command->getName(),
-            $command->getAuthor(),
+            $author,
             $command->getDescription()
         );
 

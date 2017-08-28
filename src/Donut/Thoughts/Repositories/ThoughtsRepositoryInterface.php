@@ -27,10 +27,16 @@
 
 namespace Angelov\Donut\Thoughts\Repositories;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Thoughts\Thought;
 
 interface ThoughtsRepositoryInterface
 {
+    /**
+     * @throws ResourceNotFoundException
+     */
+    public function find(string $id) : Thought;
+
     public function store(Thought $thought) : void;
 
     public function destroy(Thought $thought) : void;

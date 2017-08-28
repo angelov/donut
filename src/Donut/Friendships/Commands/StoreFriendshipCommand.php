@@ -27,19 +27,17 @@
 
 namespace Angelov\Donut\Friendships\Commands;
 
-use Angelov\Donut\Users\User;
-
 class StoreFriendshipCommand
 {
     private $id;
     private $user;
     private $friend;
 
-    public function __construct(string $id, User $user, User $friend)
+    public function __construct(string $id, string $userId, string $friendId)
     {
         $this->id = $id;
-        $this->user = $user;
-        $this->friend = $friend;
+        $this->user = $userId;
+        $this->friend = $friendId;
     }
 
     public function getId() : string
@@ -47,12 +45,12 @@ class StoreFriendshipCommand
         return $this->id;
     }
 
-    public function getUser() : User
+    public function getUserId() : string
     {
         return $this->user;
     }
 
-    public function getFriend() : User
+    public function getFriendId() : string
     {
         return $this->friend;
     }

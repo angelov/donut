@@ -19,7 +19,7 @@ services:
 
     app.friendships.friendship_requests.handlers.send:
         class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\SendFriendshipRequestCommandHandler'
-        arguments: ['@app.friendships.friendship_requests.repositories.default', '@app.core.uuid_generator']
+        arguments: ['@app.friendships.friendship_requests.repositories.default', '@app.users.repository.default']
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand' }
 
@@ -53,7 +53,7 @@ services:
 
     app.friendships.handlers.store:
         class: 'Angelov\Donut\Friendships\Handlers\StoreFriendshipCommandHandler'
-        arguments: ['@app.friendships.repositories.default', '@app.core.event_bus.default']
+        arguments: ['@app.friendships.repositories.default', '@app.users.repository.default', '@app.core.event_bus.default']
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\Commands\StoreFriendshipCommand' }
 

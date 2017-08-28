@@ -28,10 +28,12 @@
 namespace spec\Angelov\Donut\Friendships\Handlers;
 
 use Angelov\Donut\Core\EventBus\EventBusInterface;
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Friendships\Commands\StoreFriendshipCommand;
 use Angelov\Donut\Friendships\Events\FriendshipWasCreatedEvent;
 use Angelov\Donut\Friendships\Friendship;
 use Angelov\Donut\Friendships\Handlers\StoreFriendshipCommandHandler;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Angelov\Donut\Friendships\Repositories\FriendshipsRepositoryInterface;
@@ -39,11 +41,26 @@ use Angelov\Donut\Users\User;
 
 class StoreFriendshipCommandHandlerSpec extends ObjectBehavior
 {
+    const USER_ID = 'u id';
+    const FRIEND_ID = 'f id';
     const FRIENDSHIP_ID = 'uuid value';
 
-    function let(FriendshipsRepositoryInterface $friendships, EventBusInterface $eventBus)
-    {
-        $this->beConstructedWith($friendships, $eventBus);
+    function let(
+        FriendshipsRepositoryInterface $friendships,
+        UsersRepositoryInterface $users,
+        EventBusInterface $eventBus,
+        StoreFriendshipCommand $command,
+        User $user,
+        User $friend
+    ) {
+        $this->beConstructedWith($friendships, $users, $eventBus);
+
+        $command->getId()->willReturn(self::FRIENDSHIP_ID);
+        $command->getUserId()->willReturn(self::USER_ID);
+        $command->getFriendId()->willReturn(self::FRIEND_ID);
+
+        $users->find(self::USER_ID)->willReturn($user);
+        $users->find(self::FRIEND_ID)->willReturn($friend);
     }
 
     function it_is_initializable()
@@ -51,17 +68,25 @@ class StoreFriendshipCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(StoreFriendshipCommandHandler::class);
     }
 
+    function it_throws_exception_if_the_user_is_not_found(UsersRepositoryInterface $users, StoreFriendshipCommand $command)
+    {
+        $users->find(self::USER_ID)->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_throws_exception_if_the_friend_is_not_found(UsersRepositoryInterface $users, StoreFriendshipCommand $command)
+    {
+        $users->find(self::FRIEND_ID)->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
     function it_stores_friendships(
         StoreFriendshipCommand $command,
         FriendshipsRepositoryInterface $friendships,
-        User $friend,
-        User $user,
         EventBusInterface $eventBus
     ) {
-        $command->getId()->shouldBeCalled()->willReturn(self::FRIENDSHIP_ID);
-        $command->getUser()->shouldBeCalled()->willReturn($user);
-        $command->getFriend()->shouldBeCalled()->willReturn($friend);
-
         $friendships->store(Argument::type(Friendship::class))->shouldBeCalled();
         $eventBus->fire(Argument::type(FriendshipWasCreatedEvent::class))->shouldBeCalled();
 

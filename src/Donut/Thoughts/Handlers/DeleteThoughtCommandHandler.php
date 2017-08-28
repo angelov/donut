@@ -28,6 +28,7 @@
 namespace Angelov\Donut\Thoughts\Handlers;
 
 use Angelov\Donut\Core\EventBus\EventBusInterface;
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Thoughts\Commands\DeleteThoughtCommand;
 use Angelov\Donut\Thoughts\Events\ThoughtWasDeletedEvent;
 use Angelov\Donut\Thoughts\Repositories\ThoughtsRepositoryInterface;
@@ -43,9 +44,12 @@ class DeleteThoughtCommandHandler
         $this->events = $events;
     }
 
+    /**
+     * @throws ResourceNotFoundException
+     */
     public function handle(DeleteThoughtCommand $command) : void
     {
-        $thought = $command->getThought();
+        $thought = $this->thoughts->find($command->getThoughtId());
 
         $this->thoughts->destroy($thought);
 

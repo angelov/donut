@@ -62,7 +62,7 @@ class ThoughtType extends AbstractType
             'empty_data' => function (FormInterface $form) : StoreThoughtCommand {
                 return new StoreThoughtCommand(
                     $this->uuidGenerator->generate(),
-                    $this->author,
+                    $this->author->getId(),
                     $form->get('content')->getData()
                 );
             }

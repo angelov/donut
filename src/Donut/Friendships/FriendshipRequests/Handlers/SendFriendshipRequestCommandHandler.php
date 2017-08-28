@@ -27,29 +27,34 @@
 
 namespace Angelov\Donut\Friendships\FriendshipRequests\Handlers;
 
-use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand;
 use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
 use Angelov\Donut\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 
 class SendFriendshipRequestCommandHandler
 {
     private $friendshipRequests;
+    private $users;
 
-    public function __construct(FriendshipRequestsRepositoryInterface $friendshipRequests)
+    public function __construct(FriendshipRequestsRepositoryInterface $friendshipRequests, UsersRepositoryInterface $users)
     {
         $this->friendshipRequests = $friendshipRequests;
+        $this->users = $users;
     }
 
     public function handle(SendFriendshipRequestCommand $command) : void
     {
-        $friendshipRequest = new FriendshipRequest(
-            $command->getId(),
-            $command->getSender(),
-            $command->getRecipient()
-        );
+        $sender = $this->users->find($command->getSenderId());
+        $recipient = $this->users->find($command->getRecipientId());
+
+        if ($sender->equals($recipient)) {
+            // @todo more concrete exception
+            throw new \Exception();
+        }
+
+        $friendshipRequest = new FriendshipRequest($command->getId(), $sender, $recipient);
 
         $this->friendshipRequests->store($friendshipRequest);
     }
-
 }

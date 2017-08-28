@@ -28,12 +28,14 @@
 namespace Angelov\Donut\Users\Handlers;
 
 use Angelov\Donut\Core\EventBus\EventBusInterface;
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
+use Angelov\Donut\Users\Commands\StoreUserCommand;
 use Angelov\Donut\Users\EmailAvailabilityChecker\EmailAvailabilityCheckerInterface;
 use Angelov\Donut\Users\Events\UserRegisteredEvent;
 use Angelov\Donut\Users\Exceptions\EmailTakenException;
 use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
-use Angelov\Donut\Users\Commands\StoreUserCommand;
 use Angelov\Donut\Users\User;
+use Donut\Places\Repositories\CitiesRepositoryInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class StoreUserCommandHandler
@@ -42,9 +44,11 @@ class StoreUserCommandHandler
     private $passwordEncoder;
     private $emailAvailabilityChecker;
     private $eventBus;
+    private $cities;
 
     public function __construct(
         UsersRepositoryInterface $users,
+        CitiesRepositoryInterface $cities,
         UserPasswordEncoder $passwordEncoder,
         EmailAvailabilityCheckerInterface $emailAvailabilityChecker,
         EventBusInterface $eventBus
@@ -53,21 +57,25 @@ class StoreUserCommandHandler
         $this->passwordEncoder = $passwordEncoder;
         $this->emailAvailabilityChecker = $emailAvailabilityChecker;
         $this->eventBus = $eventBus;
+        $this->cities = $cities;
     }
 
     /**
      * @throws EmailTakenException
+     * @throws ResourceNotFoundException
      */
     public function handle(StoreUserCommand $command) : void
     {
         $this->assertEmailNotTaken($command->getEmail());
+
+        $city = $this->cities->find($command->getCityId());
 
         $user = new User(
             $command->getId(),
             $command->getName(),
             $command->getEmail(),
             $command->getPassword(),
-            $command->getCity()
+            $city
         );
 
         $password = $this->passwordEncoder->encodePassword($user, $command->getPassword());

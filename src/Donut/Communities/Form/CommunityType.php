@@ -72,7 +72,7 @@ class CommunityType extends BaseType
                 return new StoreCommunityCommand(
                     $uuidGenerator->generate(),
                     $form->get('name')->getData(),
-                    $this->author,
+                    $this->author->getId(),
                     $form->get('description')->getData()
                 );
             }

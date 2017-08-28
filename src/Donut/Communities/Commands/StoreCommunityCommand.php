@@ -28,7 +28,6 @@
 namespace Angelov\Donut\Communities\Commands;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Angelov\Donut\Users\User;
 
 class StoreCommunityCommand
 {
@@ -40,10 +39,10 @@ class StoreCommunityCommand
     private $description;
     private $id;
 
-    public function __construct(string $id, string $name, User $author, string $description = '')
+    public function __construct(string $id, string $name, string $authorId, string $description = '')
     {
         $this->name = $name;
-        $this->author = $author;
+        $this->author = $authorId;
         $this->description = $description;
         $this->id = $id;
     }
@@ -58,7 +57,7 @@ class StoreCommunityCommand
         return $this->name;
     }
 
-    public function getAuthor() : User
+    public function getAuthorId() : string
     {
         return $this->author;
     }

@@ -90,7 +90,7 @@ class ThoughtsController extends Controller
             return $this->redirectToRoute('app.thoughts.index');
         }
 
-        $this->get('app.core.command_bus.default')->handle(new DeleteThoughtCommand($thought));
+        $this->get('app.core.command_bus.default')->handle(new DeleteThoughtCommand($thought->getId()));
 
         $this->addFlash('success', 'Thought deleted!');
 

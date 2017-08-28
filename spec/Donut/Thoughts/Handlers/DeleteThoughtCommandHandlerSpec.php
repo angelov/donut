@@ -27,20 +27,25 @@
 
 namespace spec\Angelov\Donut\Thoughts\Handlers;
 
-use Prophecy\Argument;
 use Angelov\Donut\Core\EventBus\EventBusInterface;
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Thoughts\Commands\DeleteThoughtCommand;
 use Angelov\Donut\Thoughts\Events\ThoughtWasDeletedEvent;
 use Angelov\Donut\Thoughts\Handlers\DeleteThoughtCommandHandler;
-use PhpSpec\ObjectBehavior;
 use Angelov\Donut\Thoughts\Repositories\ThoughtsRepositoryInterface;
 use Angelov\Donut\Thoughts\Thought;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class DeleteThoughtCommandHandlerSpec extends ObjectBehavior
 {
-    function let(ThoughtsRepositoryInterface $repository, EventBusInterface $events)
+    const THOUGHT_ID = 't id';
+
+    function let(ThoughtsRepositoryInterface $thoughts, EventBusInterface $events, DeleteThoughtCommand $command)
     {
-        $this->beConstructedWith($repository, $events);
+        $this->beConstructedWith($thoughts, $events);
+
+        $command->getThoughtId()->willReturn(self::THOUGHT_ID);
     }
 
     function it_is_initializable()
@@ -48,11 +53,23 @@ class DeleteThoughtCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(DeleteThoughtCommandHandler::class);
     }
 
-    function it_deletes_the_given_thought(DeleteThoughtCommand $command, Thought $thought, ThoughtsRepositoryInterface $repository, EventBusInterface $events)
+    function it_throws_exception_if_the_thought_is_not_found(ThoughtsRepositoryInterface $thoughts, DeleteThoughtCommand $command)
     {
-        $command->getThought()->shouldBeCalled()->willReturn($thought);
+        $thoughts->find(self::THOUGHT_ID)->willThrow(ResourceNotFoundException::class);
 
-        $repository->destroy($thought)->shouldBeCalled();
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_deletes_the_given_thought(
+        DeleteThoughtCommand $command,
+        Thought $thought,
+        ThoughtsRepositoryInterface $thoughts,
+        EventBusInterface $events
+    ) {
+        $command->getThoughtId()->shouldBeCalled();
+        $thoughts->find(self::THOUGHT_ID)->shouldBeCalled()->willReturn($thought);
+
+        $thoughts->destroy($thought)->shouldBeCalled();
 
         $events->fire(Argument::type(ThoughtWasDeletedEvent::class))->shouldBeCalled();
 

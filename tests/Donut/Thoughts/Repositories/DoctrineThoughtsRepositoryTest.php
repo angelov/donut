@@ -55,6 +55,20 @@ class DoctrineThoughtsRepositoryTest extends KernelTestCase
     }
 
     /** @test */
+    public function it_finds_thoughts_by_id()
+    {
+        $nonImportant = $this->thoughtsFactory->get();
+        $toBeFound = $this->thoughtsFactory->get();
+
+        $this->repository->store($nonImportant);
+        $this->repository->store($toBeFound);
+
+        $found = $this->repository->find($toBeFound->getId());
+
+        $this->assertSame($toBeFound->getId(), $found->getId());
+    }
+
+    /** @test */
     public function it_stores_new_thoughts()
     {
         $thought = $this->thoughtsFactory->get();

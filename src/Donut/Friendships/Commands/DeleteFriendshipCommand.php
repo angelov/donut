@@ -27,18 +27,16 @@
 
 namespace Angelov\Donut\Friendships\Commands;
 
-use Angelov\Donut\Friendships\Friendship;
-
 class DeleteFriendshipCommand
 {
     private $friendship;
 
-    public function __construct(Friendship $friendship)
+    public function __construct(string $friendshipId)
     {
-        $this->friendship = $friendship;
+        $this->friendship = $friendshipId;
     }
 
-    public function getFriendship() : Friendship
+    public function getFriendshipId() : string
     {
         return $this->friendship;
     }

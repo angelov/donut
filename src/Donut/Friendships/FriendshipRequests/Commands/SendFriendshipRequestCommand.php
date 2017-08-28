@@ -27,18 +27,16 @@
 
 namespace Angelov\Donut\Friendships\FriendshipRequests\Commands;
 
-use Angelov\Donut\Users\User;
-
 class SendFriendshipRequestCommand
 {
     private $id;
     private $sender;
     private $recipient;
 
-    public function __construct(string $id, User $sender, User $recipient)
+    public function __construct(string $id, string $senderId, string $recipientId)
     {
-        $this->sender = $sender;
-        $this->recipient = $recipient;
+        $this->sender = $senderId;
+        $this->recipient = $recipientId;
         $this->id = $id;
     }
 
@@ -47,12 +45,12 @@ class SendFriendshipRequestCommand
         return $this->id;
     }
 
-    public function getSender() : User
+    public function getSenderId() : string
     {
         return $this->sender;
     }
 
-    public function getRecipient() : User
+    public function getRecipientId() : string
     {
         return $this->recipient;
     }

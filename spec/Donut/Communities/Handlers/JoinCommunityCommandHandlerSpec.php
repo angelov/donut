@@ -27,6 +27,8 @@
 
 namespace spec\Angelov\Donut\Communities\Handlers;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 use Angelov\Donut\Users\User;
 use Angelov\Donut\Communities\Community;
 use Angelov\Donut\Communities\Commands\JoinCommunityCommand;
@@ -36,9 +38,20 @@ use PhpSpec\ObjectBehavior;
 
 class JoinCommunityCommandHandlerSpec extends ObjectBehavior
 {
-    function let(CommunitiesRepositoryInterface $repository)
-    {
-        $this->beConstructedWith($repository);
+    function let(
+        CommunitiesRepositoryInterface $communities,
+        UsersRepositoryInterface $users,
+        Community $community,
+        User $user,
+        JoinCommunityCommand $command
+    ) {
+        $this->beConstructedWith($communities, $users);
+
+        $command->getUserId()->willReturn('user id');
+        $command->getCommunityId()->willReturn('community id');
+
+        $communities->find('community id')->willReturn($community);
+        $users->find('user id')->willReturn($user);
     }
 
     function it_is_initializable()
@@ -46,17 +59,28 @@ class JoinCommunityCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(JoinCommunityCommandHandler::class);
     }
 
+    function it_throws_exception_if_the_user_is_not_found(JoinCommunityCommand $command, UsersRepositoryInterface $users)
+    {
+        $users->find('user id')->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_throws_exception_if_the_community_is_not_found(JoinCommunityCommand $command, CommunitiesRepositoryInterface $communities)
+    {
+        $communities->find('community id')->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
     function it_joins_the_user_to_the_community(
         JoinCommunityCommand $command,
         User $user,
         Community $community,
-        CommunitiesRepositoryInterface $repository
+        CommunitiesRepositoryInterface $communities
     ) {
-        $command->getUser()->willReturn($user);
-        $command->getCommunity()->willReturn($community);
-
         $community->addMember($user)->shouldBeCalled();
-        $repository->store($community)->shouldBeCalled();
+        $communities->store($community)->shouldBeCalled();
 
         $this->handle($command);
     }

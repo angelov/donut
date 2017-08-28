@@ -52,7 +52,7 @@ services:
 
     app.thoughts.handlers.store:
         class: 'Angelov\Donut\Thoughts\Handlers\StoreThoughtCommandHandler'
-        arguments: ['@app.thoughts.repositories.default', '@app.core.event_bus.default']
+        arguments: ['@app.thoughts.repositories.default', '@app.users.repository.default', '@app.core.event_bus.default']
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Thoughts\Commands\StoreThoughtCommand' }
 

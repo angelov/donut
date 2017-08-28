@@ -7,3 +7,4 @@ imports:
     - { resource: 'services/communities.yml' }
     - { resource: 'services/friendships.yml' }
     - { resource: 'services/movies.yml' }
+    - { resource: 'services/places.yml' }

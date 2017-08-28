@@ -72,7 +72,7 @@ class UsersContext implements Context
         $this->em->persist($city);
 
         $id = $this->uuidGenerator->generate();
-        $this->commandBus->handle(new StoreUserCommand($id, $name, $email, $password, $city));
+        $this->commandBus->handle(new StoreUserCommand($id, $name, $email, $password, $city->getId()));
 
         $user = $this->users->find($id);
 

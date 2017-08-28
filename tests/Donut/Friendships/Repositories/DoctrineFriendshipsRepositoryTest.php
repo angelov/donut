@@ -67,6 +67,20 @@ class DoctrineFriendshipsRepositoryTest extends KernelTestCase
     }
 
     /** @test */
+    public function it_finds_friendships_by_id()
+    {
+        $nonImportant = $this->friendshipsFactory->get();
+        $toBeFound = $this->friendshipsFactory->get();
+
+        $this->repository->store($nonImportant);
+        $this->repository->store($toBeFound);
+
+        $found = $this->repository->find($toBeFound->getId());
+
+        $this->assertSame($toBeFound->getId(), $found->getId());
+    }
+
+    /** @test */
     public function it_stores_friendships()
     {
         $friendship = $this->friendshipsFactory->get();

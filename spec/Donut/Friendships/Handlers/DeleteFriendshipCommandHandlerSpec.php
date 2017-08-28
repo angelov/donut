@@ -27,6 +27,7 @@
 
 namespace spec\Angelov\Donut\Friendships\Handlers;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Angelov\Donut\Core\EventBus\EventBusInterface;
@@ -38,9 +39,11 @@ use Angelov\Donut\Friendships\Repositories\FriendshipsRepositoryInterface;
 
 class DeleteFriendshipCommandHandlerSpec extends ObjectBehavior
 {
-    public function let(FriendshipsRepositoryInterface $repository, EventBusInterface $eventBus)
+    public function let(FriendshipsRepositoryInterface $friendships, EventBusInterface $eventBus, DeleteFriendshipCommand $command)
     {
-        $this->beConstructedWith($repository, $eventBus);
+        $this->beConstructedWith($friendships, $eventBus);
+
+        $command->getFriendshipId()->willReturn('friendship id');
     }
 
     function it_is_initializable()
@@ -48,15 +51,24 @@ class DeleteFriendshipCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(DeleteFriendshipCommandHandler::class);
     }
 
-    function it_handles_delete_friendship_commands(
+    function it_throws_exception_when_the_friendship_is_not_found(
+        FriendshipsRepositoryInterface $friendships,
+        DeleteFriendshipCommand $command
+    ) {
+        $friendships->find('friendship id')->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_deletes_the_friendship(
         DeleteFriendshipCommand $command,
         Friendship $friendship,
-        FriendshipsRepositoryInterface $repository,
+        FriendshipsRepositoryInterface $friendships,
         EventBusInterface $eventBus
     ) {
-        $command->getFriendship()->willReturn($friendship);
+        $friendships->find('friendship id')->shouldBeCalled()->willReturn($friendship);
 
-        $repository->destroy($friendship)->shouldBeCalled();
+        $friendships->destroy($friendship)->shouldBeCalled();
 
         $eventBus->fire(Argument::type(FriendshipWasDeletedEvent::class))->shouldBeCalled();
 

@@ -92,10 +92,10 @@ class FriendshipsContext implements Context
     private function storeFriendshipBetweenUsers(User $first, User $second) : void
     {
         $id = $this->uuidGenerator->generate();
-        $this->commandBus->handle(new StoreFriendshipCommand($id, $first, $second));
+        $this->commandBus->handle(new StoreFriendshipCommand($id, $first->getId(), $second->getId()));
 
         $id = $this->uuidGenerator->generate();
-        $this->commandBus->handle(new StoreFriendshipCommand($id, $second, $first));
+        $this->commandBus->handle(new StoreFriendshipCommand($id, $second->getId(), $first->getId()));
     }
 
     /**
@@ -112,11 +112,14 @@ class FriendshipsContext implements Context
      */
     public function somebodyWantsUsToBeFriends(string $name) : void
     {
+        /** @var User $friend */
         $friend = $this->storage->get('created_user_' . $name);
+
+        /** @var User $user */
         $user = $this->storage->get('logged_user');
 
         $id = $this->uuidGenerator->generate();
-        $this->commandBus->handle(new SendFriendshipRequestCommand($id, $friend, $user));
+        $this->commandBus->handle(new SendFriendshipRequestCommand($id, $friend->getId(), $user->getId()));
 
         $request = $this->friendshipRequests->find($id);
 
@@ -128,11 +131,14 @@ class FriendshipsContext implements Context
      */
     public function iHaveSentAFriendshipRequestTo(string $name) : void
     {
+        /** @var User $friend */
         $friend = $this->storage->get('created_user_' . $name);
+
+        /** @var User $user */
         $user = $this->storage->get('logged_user');
 
         $id = $this->uuidGenerator->generate();
-        $this->commandBus->handle(new SendFriendshipRequestCommand($id, $user, $friend));
+        $this->commandBus->handle(new SendFriendshipRequestCommand($id, $user->getId(), $friend->getId()));
 
         $request = $this->friendshipRequests->find($id);
 

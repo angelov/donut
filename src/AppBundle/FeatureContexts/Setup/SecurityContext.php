@@ -81,7 +81,7 @@ class SecurityContext implements Context
         $id = $this->uuidGenerator->generate();
         $name = $this->storage->get('user_name', 'John Smith');
 
-        $this->commandBus->handle(new StoreUserCommand($id, $name, $email, '123456', $city));
+        $this->commandBus->handle(new StoreUserCommand($id, $name, $email, '123456', $city->getId()));
         $user = $this->users->find($id);
 
         $token = new UsernamePasswordToken($user, $user->getPassword(), 'randomstringbutnotnull', $user->getRoles());

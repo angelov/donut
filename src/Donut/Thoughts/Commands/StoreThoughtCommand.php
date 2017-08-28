@@ -28,7 +28,6 @@
 namespace Angelov\Donut\Thoughts\Commands;
 
 use DateTime;
-use Angelov\Donut\Users\User;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class StoreThoughtCommand
@@ -43,12 +42,12 @@ class StoreThoughtCommand
     private $content;
     private $createdAt;
 
-    public function __construct(string $id, User $author, string $content, DateTime $createdAt = null)
+    public function __construct(string $id, string $authorId, string $content, DateTime $createdAt = null)
     {
-        $this->author = $author;
+        $this->author = $authorId;
         $this->content = $content;
         $this->id = $id;
-        $this->createdAt = $createdAt;
+        $this->createdAt = $createdAt ?? new DateTime();
     }
 
     public function getId() : string
@@ -56,7 +55,7 @@ class StoreThoughtCommand
         return $this->id;
     }
 
-    public function getAuthor() : User
+    public function getAuthorId() : string
     {
         return $this->author;
     }

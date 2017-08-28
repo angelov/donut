@@ -28,9 +28,8 @@
 namespace spec\Angelov\Donut\Thoughts;
 
 use Angelov\Donut\Thoughts\Thought;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Angelov\Donut\Users\User;
+use PhpSpec\ObjectBehavior;
 
 class ThoughtSpec extends ObjectBehavior
 {

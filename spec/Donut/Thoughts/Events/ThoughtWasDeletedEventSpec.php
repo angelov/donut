@@ -28,9 +28,8 @@
 namespace spec\Angelov\Donut\Thoughts\Events;
 
 use Angelov\Donut\Thoughts\Events\ThoughtWasDeletedEvent;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Angelov\Donut\Thoughts\Thought;
+use PhpSpec\ObjectBehavior;
 
 class ThoughtWasDeletedEventSpec extends ObjectBehavior
 {

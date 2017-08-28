@@ -27,18 +27,20 @@
 
 namespace spec\Angelov\Donut\Friendships\FriendshipRequests\Handlers;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand;
 use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
 use Angelov\Donut\Friendships\FriendshipRequests\Handlers\CancelFriendshipRequestCommandHandler;
 use PhpSpec\ObjectBehavior;
 use Angelov\Donut\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface;
-use Angelov\Donut\Users\User;
 
 class CancelFriendshipRequestCommandHandlerSpec extends ObjectBehavior
 {
-    function let(FriendshipRequestsRepositoryInterface $repository)
+    function let(FriendshipRequestsRepositoryInterface $requests, CancelFriendshipRequestCommand $command)
     {
-        $this->beConstructedWith($repository);
+        $this->beConstructedWith($requests);
+
+        $command->getFriendshipRequestId()->willReturn('request id');
     }
 
     function it_is_initializable()
@@ -46,14 +48,23 @@ class CancelFriendshipRequestCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(CancelFriendshipRequestCommandHandler::class);
     }
 
+    function it_throws_exception_if_the_request_is_not_found(
+        FriendshipRequestsRepositoryInterface $requests,
+        CancelFriendshipRequestCommand $command
+    ) {
+        $requests->find('request id')->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
     function it_deletes_friendship_requests(
         CancelFriendshipRequestCommand $command,
         FriendshipRequest $request,
-        FriendshipRequestsRepositoryInterface $repository
+        FriendshipRequestsRepositoryInterface $requests
     ) {
-        $command->getFriendshipRequest()->willReturn($request);
+        $requests->find('request id')->shouldBeCalled()->willReturn($request);
 
-        $repository->destroy($request)->shouldBeCalled();
+        $requests->destroy($request)->shouldBeCalled();
 
         $this->handle($command);
     }

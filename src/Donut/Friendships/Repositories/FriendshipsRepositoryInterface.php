@@ -27,11 +27,17 @@
 
 namespace Angelov\Donut\Friendships\Repositories;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Friendships\Friendship;
 use Angelov\Donut\Users\User;
 
 interface FriendshipsRepositoryInterface
 {
+    /**
+     * @throws ResourceNotFoundException
+     */
+    public function find(string $id) : Friendship;
+
     public function store(Friendship $friendship) : void;
 
     public function destroy(Friendship $friendship) : void;

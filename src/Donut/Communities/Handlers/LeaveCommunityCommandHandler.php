@@ -30,27 +30,31 @@ namespace Angelov\Donut\Communities\Handlers;
 use Angelov\Donut\Communities\Commands\LeaveCommunityCommand;
 use Angelov\Donut\Communities\Exceptions\CommunityMemberNotFoundException;
 use Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface;
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 
 class LeaveCommunityCommandHandler
 {
     private $communities;
+    private $users;
 
-    public function __construct(CommunitiesRepositoryInterface $communities)
+    public function __construct(CommunitiesRepositoryInterface $communities, UsersRepositoryInterface $users)
     {
         $this->communities = $communities;
+        $this->users = $users;
     }
 
     /**
      * @throws CommunityMemberNotFoundException
+     * @throws ResourceNotFoundException
      */
     public function handle(LeaveCommunityCommand $command) : void
     {
-        $community = $command->getCommunity();
-        $user = $command->getUser();
+        $community = $this->communities->find($command->getCommunityId());
+        $user = $this->users->find($command->getUserId());
 
         $community->removeMember($user);
 
         $this->communities->store($community);
     }
-
 }

@@ -27,6 +27,7 @@
 
 namespace Angelov\Donut\Friendships\Repositories;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Angelov\Donut\Friendships\Friendship;
 use Angelov\Donut\Users\User;
@@ -38,6 +39,17 @@ class DoctrineFriendshipsRepository implements FriendshipsRepositoryInterface
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    public function find(string $id) : Friendship
+    {
+        $found = $this->entityManager->find(Friendship::class, $id);
+
+        if ($found) {
+            return $found;
+        }
+
+        throw new ResourceNotFoundException();
     }
 
     public function store(Friendship $friendship): void

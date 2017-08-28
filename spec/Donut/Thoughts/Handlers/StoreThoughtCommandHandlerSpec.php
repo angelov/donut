@@ -27,6 +27,9 @@
 
 namespace spec\Angelov\Donut\Thoughts\Handlers;
 
+use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
+use Angelov\Donut\Users\User;
 use Prophecy\Argument;
 use Angelov\Donut\Core\EventBus\EventBusInterface;
 use Angelov\Donut\Thoughts\Commands\StoreThoughtCommand;
@@ -38,9 +41,9 @@ use Angelov\Donut\Thoughts\Thought;
 
 class StoreThoughtCommandHandlerSpec extends ObjectBehavior
 {
-    function let(ThoughtsRepositoryInterface $repository, EventBusInterface $events)
+    function let(ThoughtsRepositoryInterface $repository, UsersRepositoryInterface $users, EventBusInterface $events)
     {
-        $this->beConstructedWith($repository, $events);
+        $this->beConstructedWith($repository, $users, $events);
     }
 
     function it_is_initializable()
@@ -48,9 +51,25 @@ class StoreThoughtCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(StoreThoughtCommandHandler::class);
     }
 
-    function it_stores_the_new_thoughts(StoreThoughtCommand $command, ThoughtsRepositoryInterface $repository, EventBusInterface $events)
+    function it_throws_exception_if_the_author_is_not_found(UsersRepositoryInterface $users, StoreThoughtCommand $command)
     {
-        $command->getAuthor()->shouldBeCalled();
+        $command->getAuthorId()->shouldBeCalled()->willReturn('author id');
+        $users->find('author id')->shouldBeCalled()->willThrow(ResourceNotFoundException::class);
+
+        $this->shouldThrow(ResourceNotFoundException::class)->during('handle', [$command]);
+    }
+
+    function it_stores_the_new_thought(
+        StoreThoughtCommand $command,
+        ThoughtsRepositoryInterface $repository,
+        UsersRepositoryInterface $users,
+        User $author,
+        EventBusInterface $events
+    ) {
+        $command->getAuthorId()->shouldBeCalled()->willReturn('author id');
+
+        $users->find('author id')->shouldBeCalled()->willReturn($author);
+
         $command->getContent()->shouldBeCalled();
         $command->getId()->shouldBeCalled();
         $command->getCreatedAt()->shouldBeCalled();

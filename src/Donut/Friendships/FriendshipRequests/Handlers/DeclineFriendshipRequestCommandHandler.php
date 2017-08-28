@@ -42,7 +42,7 @@ class DeclineFriendshipRequestCommandHandler
     public function handle(DeclineFriendshipRequestCommand $command) : void
     {
         $this->repository->destroy(
-            $command->getFriendshipRequest()
+            $this->repository->find($command->getFriendshipRequestId())
         );
     }
 }

@@ -42,6 +42,7 @@ class FriendshipsController extends Controller
      */
     public function delete(User $user) : Response
     {
+        // @todo use custom repository
         $em = $this->get('doctrine.orm.entity_manager');
         $repository = $em->getRepository(Friendship::class);
 
@@ -56,7 +57,7 @@ class FriendshipsController extends Controller
             'friend' => $user
         ]);
 
-        $this->get('app.core.command_bus.default')->handle(new DeleteFriendshipCommand($friendship));
+        $this->get('app.core.command_bus.default')->handle(new DeleteFriendshipCommand($friendship->getId()));
 
         $this->addFlash('success', 'Sorry to see broken friendships.');
 
