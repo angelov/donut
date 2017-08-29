@@ -21,7 +21,7 @@ jobs:
         - phpize
         - ./configure
         - make install
-        - echo "eextension=ast.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+        - echo "extension=ast.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
         - cd ..
       install:
         - composer install
