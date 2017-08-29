@@ -15,15 +15,16 @@ cache:
 jobs:
   include:
     - stage: static analysis
-      before_instal:
+      before_install:
         - git clone https://github.com/nikic/php-ast.git
         - cd php-ast
         - phpize
         - ./configure
         - make install
+        - echo "eextension=ast.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
       install:
         - composer install
-        - composer require phan/phan
+        - composer require etsy/phan
       script:
         - vendor/bin/phan --config-file=etc/phan-config.php
 
