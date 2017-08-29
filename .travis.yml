@@ -12,24 +12,36 @@ cache:
   directories:
     - vendor/
 
-before_install:
-  - sudo apt-get update > /dev/null
-  - sh -c ./etc/travis/install-jdk8.sh
-  - sh -c ./etc/travis/install-neo4j.sh
-
-install:
-  - composer install
-
-before_script:
-  - mv etc/travis/parameters.yml app/config/parameters.yml
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS donut_test;'
-# - ./bin/console doctrine:database:create --env=test
-  - ./bin/console doctrine:migrations:migrate --env=test --no-interaction --quiet
-
-script:
-  - vendor/bin/phpspec run --format=dot
-  - vendor/bin/phpunit
-  - vendor/bin/behat --format=progress
+jobs:
+  include:
+    - stage: static analysis
+    - before_instal:
+      - git clone https://github.com/nikic/php-ast.git
+      - cd php-ast
+      - phpize
+      - ./configure
+      - make install
+    - install:
+      - composer install
+      - composer require phan/phan
+    - script:
+      - vendor/bin/phan --config-file=etc/phan-config.php
+  include:
+    - stage: test
+    - before_install:
+        - sudo apt-get update > /dev/null
+        - sh -c ./etc/travis/install-jdk8.sh
+        - sh -c ./etc/travis/install-neo4j.sh
+    - install: composer install
+    - before_script:
+      - mv etc/travis/parameters.yml app/config/parameters.yml
+      - mysql -e 'CREATE DATABASE IF NOT EXISTS donut_test;'
+    # - ./bin/console doctrine:database:create --env=test
+      - ./bin/console doctrine:migrations:migrate --env=test --no-interaction --quiet
+    - script:
+      - vendor/bin/phpspec run --format=dot
+      - vendor/bin/phpunit
+      - vendor/bin/behat --format=progress
 
 notifications:
   email: false
