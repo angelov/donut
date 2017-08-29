@@ -45,5 +45,8 @@ jobs:
         - vendor/bin/phpunit
         - vendor/bin/behat --format=progress
 
+  allow_failures:
+    - stage: static analysis
+
 notifications:
   email: false
