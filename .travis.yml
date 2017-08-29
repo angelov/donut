@@ -22,6 +22,7 @@ jobs:
         - ./configure
         - make install
         - echo "eextension=ast.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+        - cd ..
       install:
         - composer install
         - composer require etsy/phan
