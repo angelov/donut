@@ -3,11 +3,6 @@ language: php
 php:
   - '7.1'
 
-services:
-  - mysql
-  - redis-server
-  - rabbitmq
-
 cache:
   directories:
     - vendor/
@@ -23,6 +18,7 @@ jobs:
         - make install
         - echo "extension=ast.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
         - cd ..
+        - phpenv config-rm xdebug.ini
       install:
         - composer install
         - composer require etsy/phan
@@ -30,6 +26,10 @@ jobs:
         - vendor/bin/phan --config-file=etc/phan-config.php
 
     - stage: test
+      services:
+        - mysql
+        - redis-server
+        - rabbitmq
       before_install:
         - sudo apt-get update > /dev/null
         - sh -c ./etc/travis/install-jdk8.sh
