@@ -14,7 +14,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Angelov\\Donut\\Tests\\Api\\": "tests/Api",
+            "Angelov\\Donut\\Tests\\": "tests/"
         }
     },
     "require": {
@@ -41,7 +42,8 @@
         "simple-bus/asynchronous-bundle": "^2.3",
         "simple-bus/jms-serializer-bundle-bridge": "^2.0",
         "simple-bus/rabbitmq-bundle-bridge": "^3.1",
-        "symfony/web-server-bundle": "^3.3"
+        "symfony/web-server-bundle": "^3.3",
+        "friendsofsymfony/rest-bundle": "^2.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -63,7 +65,8 @@
         "phpspec/phpspec": "^4.0",
         "phpunit/phpunit": "^6.0",
         "dama/doctrine-test-bundle": "^2.0",
-        "fzaninotto/faker": "^1.6"
+        "fzaninotto/faker": "^1.6",
+        "lakion/api-test-case": "^2.0"
     },
     "scripts": {
         "symfony-scripts": [

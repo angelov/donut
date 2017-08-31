@@ -25,46 +25,36 @@
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
-namespace Angelov\Donut\Communities\Repositories;
+namespace ApiBundle\Serialization;
 
-use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Angelov\Donut\Communities\Community;
+use JMS\Serializer\Context;
+use JMS\Serializer\GraphNavigator;
+use JMS\Serializer\Handler\SubscribingHandlerInterface;
+use JMS\Serializer\JsonSerializationVisitor;
 
-class DoctrineCommunitiesRepository implements CommunitiesRepositoryInterface
+class CommunityHandler implements SubscribingHandlerInterface
 {
-    private $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public static function getSubscribingMethods() : array
     {
-        $this->em = $em;
+        return [
+            [
+                'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
+                'format' => 'json',
+                'type' => Community::class,
+                'method' => 'serialize'
+            ]
+        ];
     }
 
-    public function store(Community $community): void
+    public function serialize(JsonSerializationVisitor $visitor, Community $community, array $type, Context $context) : array
     {
-        $this->em->persist($community);
-        $this->em->flush();
-    }
-
-    public function find(string $id): Community
-    {
-        $found = $this->getBaseRepository()->find($id);
-
-        if (!$found instanceof Community) {
-            throw new ResourceNotFoundException();
-        }
-
-        return $found;
-    }
-
-    private function getBaseRepository() : ObjectRepository
-    {
-        return $this->em->getRepository(Community::class);
-    }
-
-    public function all() : array
-    {
-        return $this->getBaseRepository()->findAll();
+        return [
+            'id' => $community->getId(),
+            'name' => $community->getName(),
+            'description' => $community->getDescription(),
+            'author' => $community->getAuthor()->getId(),
+            'created_at' => $community->getCreatedAt()->format('c')
+        ];
     }
 }

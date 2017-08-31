@@ -1,0 +1,8 @@
+Angelov\Donut\Users\User:
+
+    john:
+        __construct: false
+        id: 3e99473b-637a-4eb5-b151-baa3c441e73d
+        email: john@example.com
+        password: 123456
+        name: John Smith

@@ -1,0 +1,9 @@
+Angelov\Donut\Communities\Community:
+
+    community_1:
+        __construct: false
+        id: 6bb9b401-cebd-4dbe-b388-ec49f6c4cef8
+        name: Great community
+        description: This is the greatest community in the world!
+        author: '@john'
+        created_at: <(new \DateTime('2012-01-05 22:54'))>

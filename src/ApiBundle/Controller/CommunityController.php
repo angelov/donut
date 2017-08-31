@@ -25,46 +25,23 @@
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
-namespace Angelov\Donut\Communities\Repositories;
+namespace ApiBundle\Controller;
 
-use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Angelov\Donut\Communities\Community;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\HttpFoundation\Response;
 
-class DoctrineCommunitiesRepository implements CommunitiesRepositoryInterface
+class CommunityController extends FOSRestController
 {
-    private $em;
-
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * @Rest\Get("communities", name="app.api.communities.index", options={"method_prefix" = false})
+     */
+    public function getCommunitiesAction() : Response
     {
-        $this->em = $em;
-    }
+        $communities = $this->get('app.communities.repositories.default');
 
-    public function store(Community $community): void
-    {
-        $this->em->persist($community);
-        $this->em->flush();
-    }
-
-    public function find(string $id): Community
-    {
-        $found = $this->getBaseRepository()->find($id);
-
-        if (!$found instanceof Community) {
-            throw new ResourceNotFoundException();
-        }
-
-        return $found;
-    }
-
-    private function getBaseRepository() : ObjectRepository
-    {
-        return $this->em->getRepository(Community::class);
-    }
-
-    public function all() : array
-    {
-        return $this->getBaseRepository()->findAll();
+        return $this->handleView(
+            $this->view($communities->all())
+        );
     }
 }

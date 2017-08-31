@@ -41,3 +41,10 @@ services:
     app.factories.friendships:
         class: 'AppBundle\Factories\FriendshipsFactory'
         arguments: ['@app.core.uuid_generator', '@app.factories.users.faker']
+
+
+
+    app.api.serialization.community:
+        class: 'ApiBundle\Serialization\CommunityHandler'
+        tags:
+            - { name: 'jms_serializer.subscribing_handler', type: 'Angelov\Donut\Communities\Community', format: 'json' }
