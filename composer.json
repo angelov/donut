@@ -43,7 +43,8 @@
         "simple-bus/jms-serializer-bundle-bridge": "^2.0",
         "simple-bus/rabbitmq-bundle-bridge": "^3.1",
         "symfony/web-server-bundle": "^3.3",
-        "friendsofsymfony/rest-bundle": "^2.2"
+        "friendsofsymfony/rest-bundle": "^2.2",
+        "friendsofsymfony/oauth-server-bundle": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

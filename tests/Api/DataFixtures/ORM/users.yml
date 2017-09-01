@@ -1,8 +1,25 @@
 Angelov\Donut\Users\User:
-
     john:
         __construct: false
         id: 3e99473b-637a-4eb5-b151-baa3c441e73d
         email: john@example.com
         password: 123456
         name: John Smith
+
+ApiBundle\Oauth2\Client:
+    oauth:
+        randomId: client_id
+        secret: secret
+        allowedGrantTypes: [password, access_token, refresh_token]
+
+ApiBundle\Oauth2\AccessToken:
+    oauth_access_token:
+        client: "@oauth"
+        user: "@john"
+        token: SampleTokenNjZkNjY2MDEwMTAzMDkxMGE0OTlhYzU3NzYyMTE0ZGQ3ODcyMDAwM2EwMDZjNDI5NDlhMDdlMQ
+
+ApiBundle\Oauth2\RefreshToken:
+    oauth_refresh_token:
+        client: "@oauth"
+        user: "@john"
+        token: SampleRefreshTokenODllODY4ZTQyOThlNWIyMjA1ZDhmZjE1ZDYyMGMwOTUxOWM2NGFmNGRjNjQ2NDBhMDVlNGZjMmQ0YzgyNDM2Ng

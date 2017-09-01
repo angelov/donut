@@ -25,34 +25,32 @@
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
-namespace Angelov\Donut\Tests\Api;
+namespace ApiBundle\Oauth2;
 
-use Lakion\ApiTestCase\JsonApiTestCase;
-use Symfony\Component\HttpFoundation\Response;
+use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
+use Doctrine\ORM\Mapping as ORM;
 
-class ListingCommunitiesTest extends JsonApiTestCase
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="oauth2_access_token")
+ */
+class AccessToken extends BaseAccessToken
 {
-    /** @test */
-    public function listing_the_communities_as_non_authenticated_user()
-    {
-        $this->client->request('GET', '/api/communities');
-        $response = $this->client->getResponse();
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
 
-        $this->assertResponse($response, 'errors/non_authenticated', Response::HTTP_UNAUTHORIZED);
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity="ApiBundle\Oauth2\Client")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected $client;
 
-    /** @test */
-    public function listing_the_communities_as_authenticated_user()
-    {
-        $this->loadFixturesFromFile('users.yml');
-        $this->loadFixturesFromFile('communities.yml');
-
-        $this->client->request('GET', '/api/communities', [], [], [
-            'HTTP_Authorization' => 'Bearer SampleTokenNjZkNjY2MDEwMTAzMDkxMGE0OTlhYzU3NzYyMTE0ZGQ3ODcyMDAwM2EwMDZjNDI5NDlhMDdlMQ'
-        ]);
-
-        $response = $this->client->getResponse();
-
-        $this->assertResponse($response, 'communities/index', Response::HTTP_OK);
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity="Angelov\Donut\Users\User")
+     */
+    protected $user;
 }

@@ -10,7 +10,7 @@ parameters:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -97,6 +97,11 @@ doctrine:
                 is_bundle: false
                 dir: '%kernel.root_dir%/../src/Donut/Places'
                 prefix: 'Angelov\Donut\Places'
+            OAuth2:
+                type: annotation
+                is_bundle: false
+                dir: '%kernel.root_dir%/../src/ApiBundle/Oauth2'
+                prefix: 'ApiBundle\Oauth2'
 
 doctrine_migrations:
     dir_name: '%kernel.root_dir%/Resources/migrations'
@@ -172,3 +177,12 @@ fos_rest:
 
         # https://github.com/FriendsOfSymfony/FOSRestBundle/issues/1747
         # prefix_methods: false
+
+fos_oauth_server:
+    db_driver:           orm
+    client_class:        ApiBundle\Oauth2\Client
+    access_token_class:  ApiBundle\Oauth2\AccessToken
+    refresh_token_class: ApiBundle\Oauth2\RefreshToken
+    auth_code_class:     ApiBundle\Oauth2\AuthCode
+    service:
+        user_provider: 'app.users.security.user_provider'

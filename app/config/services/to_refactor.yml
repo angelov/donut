@@ -48,3 +48,8 @@ services:
         class: 'ApiBundle\Serialization\CommunityHandler'
         tags:
             - { name: 'jms_serializer.subscribing_handler', type: 'Angelov\Donut\Communities\Community', format: 'json' }
+
+    app.api.oauth2.commands.create_client:
+        class: ApiBundle\Console\CreateClientCommand
+        tags:
+            - { name: console.command }
