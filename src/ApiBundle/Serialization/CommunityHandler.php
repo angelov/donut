@@ -54,7 +54,7 @@ class CommunityHandler implements SubscribingHandlerInterface
             'name' => $community->getName(),
             'description' => $community->getDescription(),
             'author' => $community->getAuthor()->getId(),
-            'created_at' => $community->getCreatedAt()->format('c')
+            'created_at' => $community->getCreatedAt()->format('Y-m-d H:i')
         ];
     }
 }
