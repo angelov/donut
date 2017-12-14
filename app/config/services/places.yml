@@ -1,5 +1,8 @@
 services:
 
+    _defaults:
+        public: true
+
     # repositories
 
     app.places.cities.repository.default: '@app.places.cities.repository.doctrine'

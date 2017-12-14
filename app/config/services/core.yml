@@ -1,5 +1,8 @@
 services:
 
+    _defaults:
+        public: true
+
     # command bus
 
     app.core.command_bus.default: '@app.core.command_bus.simplebus'

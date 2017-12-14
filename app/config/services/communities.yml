@@ -1,5 +1,8 @@
 services:
 
+    _defaults:
+        public: true
+
     # repositories
 
     app.communities.repositories.default: '@app.communities.repositories.doctrine'

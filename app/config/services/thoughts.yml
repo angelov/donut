@@ -1,5 +1,8 @@
 services:
 
+    _defaults:
+        public: true
+
     # feed
 
     app.thoughts.feed:

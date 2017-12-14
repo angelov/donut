@@ -1,5 +1,8 @@
 services:
 
+    _defaults:
+        public: true
+
     # repositories
 
     app.friendships.friendship_requests.repositories.default: '@app.friendships.friendship_requests.repositories.doctrine'

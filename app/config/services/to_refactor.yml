@@ -1,5 +1,8 @@
 services:
 
+    _defaults:
+        public: true
+
     app.security.voter.delete_thought_voter:
         class: 'AppBundle\Security\Voter\DeleteThoughtVoter'
         tags:
