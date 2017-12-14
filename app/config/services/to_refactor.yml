@@ -56,3 +56,5 @@ services:
         class: ApiBundle\Console\CreateClientCommand
         tags:
             - { name: console.command }
+
+    app.neo4j.client.default: "@neo4j.client.default"

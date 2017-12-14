@@ -123,7 +123,7 @@ snc_redis:
 neo4j:
   connections:
     default:
-      schema: bolt
+      scheme: bolt
       host: "%neo4j_host%"
       port: "%neo4j_port%"
       username: "%neo4j_username%"

@@ -44,7 +44,7 @@ class IdsResolverTest extends KernelTestCase
         $kernel = self::createKernel();
         $kernel->boot();
 
-        $this->client = $kernel->getContainer()->get('neo4j.client.default');
+        $this->client = $kernel->getContainer()->get('app.neo4j.client.default');
         $this->resolver = $kernel->getContainer()->get('app.mutual_friends_resolver.neo4j.ids_resolver');
 
         $this->client->run('MATCH (n) DETACH DELETE n');

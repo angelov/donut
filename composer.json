@@ -36,7 +36,7 @@
         "doctrine/doctrine-migrations-bundle": "^1.2",
         "snc/redis-bundle": "^2.0",
         "predis/predis": "^1.1",
-        "neo4j/neo4j-bundle": "^0.2.0",
+        "neo4j/neo4j-bundle": "^0.4",
         "simple-bus/symfony-bridge": "^4.1",
         "graphaware/reco4php": "^2.0",
         "simple-bus/asynchronous-bundle": "^2.3",

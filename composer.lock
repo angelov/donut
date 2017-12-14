@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f85845804b3eb41bb75a0343461d5a74",
+    "content-hash": "440d8eb0aa1ef84df6f8a74647ab864b",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2270,28 +2270,30 @@
         },
         {
             "name": "neo4j/neo4j-bundle",
-            "version": "0.2.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/neo4j-contrib/neo4j-symfony.git",
-                "reference": "41e334c88ab4b6b845a0316aeb8beda63642367c"
+                "reference": "b6846de1f51ff144d40556b3cef9871f228db49f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/neo4j-contrib/neo4j-symfony/zipball/41e334c88ab4b6b845a0316aeb8beda63642367c",
-                "reference": "41e334c88ab4b6b845a0316aeb8beda63642367c",
+                "url": "https://api.github.com/repos/neo4j-contrib/neo4j-symfony/zipball/b6846de1f51ff144d40556b3cef9871f228db49f",
+                "reference": "b6846de1f51ff144d40556b3cef9871f228db49f",
                 "shasum": ""
             },
             "require": {
                 "graphaware/neo4j-bolt": "^1.6",
                 "graphaware/neo4j-php-client": "^4.6.4",
                 "php": "^7.0",
-                "symfony/framework-bundle": "^3.0"
+                "symfony/dependency-injection": " ^2.8.3 || ^3.0.3 || ^4.0",
+                "symfony/framework-bundle": "^2.8.32 || ^3.0 || ^4.0",
+                "symfony/http-kernel": "^2.8 || ^3.0 || ^4.0",
+                "twig/twig": "^1.18 || ^2.0"
             },
             "require-dev": {
-                "matthiasnoback/symfony-dependency-injection-test": "^1.0",
-                "phpunit/phpunit": "^5.4",
-                "symfony/symfony": "^3.0"
+                "matthiasnoback/symfony-dependency-injection-test": "^2.3",
+                "symfony/phpunit-bridge": "^3.3 || ^4.0"
             },
             "suggest": {
                 "graphaware/neo4j-php-ogm": "To have EntityManager support"
@@ -2320,7 +2322,7 @@
             "keywords": [
                 "neo4j"
             ],
-            "time": "2017-01-24T10:29:32+00:00"
+            "time": "2017-12-12T20:50:53+00:00"
         },
         {
             "name": "ocramius/proxy-manager",
