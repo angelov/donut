@@ -65,7 +65,7 @@
         "webmozart/assert": "^1.2",
         "phpspec/phpspec": "^4.0",
         "phpunit/phpunit": "^6.0",
-        "dama/doctrine-test-bundle": "^2.0",
+        "dama/doctrine-test-bundle": "^4.0",
         "fzaninotto/faker": "^1.6",
         "lakion/api-test-case": "^2.0"
     },
