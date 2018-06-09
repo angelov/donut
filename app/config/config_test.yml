@@ -27,7 +27,7 @@ doctrine:
 snc_redis:
     clients:
         default:
-            dsn: redis://localhost/1
+            dsn: redis://redis/1
 
 security:
     encoders:
