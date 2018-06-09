@@ -19,6 +19,7 @@ security:
         oauth_token:
             pattern:    ^/oauth/v2/token
             security:   false
+            logout_on_user_change: true
 
         oauth_authorize:
             pattern:    ^/oauth/v2/auth
@@ -28,12 +29,14 @@ security:
 #                login_path: /oauth/v2/auth
             anonymous: true
 #            context: test_connect
+            logout_on_user_change: true
 
         api:
             pattern:    ^/api
             fos_oauth:  true
             stateless:  true
             anonymous:  false
+            logout_on_user_change: true
 
         main:
             anonymous: ~
@@ -52,6 +55,8 @@ security:
 
             logout:
                 path: '/logout'
+
+            logout_on_user_change: true
 
 
     access_control:
