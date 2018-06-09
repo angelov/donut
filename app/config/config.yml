@@ -120,7 +120,7 @@ snc_redis:
         default:
             type: predis
             alias: default
-            dsn: redis://redis
+            dsn: "redis://%redis_host%"
 
 neo4j:
   connections:

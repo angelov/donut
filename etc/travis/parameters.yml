@@ -18,3 +18,4 @@ parameters:
     rabbit_mq_user: guest
     rabbit_mq_password: guest
     rabbit_mq_vhost: /
+    redis_host: localhost
