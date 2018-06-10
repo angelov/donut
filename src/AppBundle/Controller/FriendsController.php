@@ -43,7 +43,7 @@ class FriendsController extends Controller
         $suggestedUsers = [];
 
         try {
-            $recommender = new RecommenderService($this->get('neo4j.client.default'));
+            $recommender = new RecommenderService($this->get('app.neo4j.client.default'));
             $recommendation = $recommender->recommendFriendsForuser($user);
 
             $users = $this->get('app.users.repository.default');

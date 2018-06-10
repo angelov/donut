@@ -49,7 +49,7 @@ class FriendSuggestionsController extends Controller
                 (current)-[:NOT_INTERESTED_TO_BE_FRIEND_WITH]->(suggested)      
         ';
 
-        $client = $this->get('neo4j.client.default');
+        $client = $this->get('app.neo4j.client.default');
 
         $client->run($query, [
             'current' => $this->getUser()->getId(),
