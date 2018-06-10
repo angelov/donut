@@ -44,8 +44,10 @@ class ListingCommunitiesTest extends JsonApiTestCase
     /** @test */
     public function listing_the_communities_as_authenticated_user()
     {
-        $this->loadFixturesFromFile('users.yml');
-        $this->loadFixturesFromFile('communities.yml');
+        $this->loadFixturesFromFiles([
+            'users.yml',
+            'communities.yml'
+        ]);
 
         $this->client->request('GET', '/api/communities', [], [], [
             'HTTP_Authorization' => 'Bearer SampleTokenNjZkNjY2MDEwMTAzMDkxMGE0OTlhYzU3NzYyMTE0ZGQ3ODcyMDAwM2EwMDZjNDI5NDlhMDdlMQ'
