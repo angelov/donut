@@ -19,6 +19,7 @@ jobs:
         - echo "extension=ast.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
         - cd ..
         - phpenv config-rm xdebug.ini
+        - mv etc/travis/.env .env
       install:
         - composer install
         - composer require etsy/phan
@@ -31,12 +32,12 @@ jobs:
         - redis-server
         - rabbitmq
       before_install:
+        - mv etc/travis/.env .env
         - sudo apt-get update > /dev/null
         - sh -c ./etc/travis/install-jdk8.sh
         - sh -c ./etc/travis/install-neo4j.sh
       install: composer install
       before_script:
-        - mv etc/travis/.env .env
         - mysql -e 'CREATE DATABASE IF NOT EXISTS donut_test;'
       # - ./bin/console doctrine:database:create --env=test
         - ./bin/console doctrine:migrations:migrate --env=test --no-interaction --quiet
