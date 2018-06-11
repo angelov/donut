@@ -1,7 +1,7 @@
 services:
 
     _defaults:
-        public: true
+        public: false
         autowire: true
 
     app.security.voter.delete_thought_voter:
@@ -11,12 +11,14 @@ services:
 
     app.users.register_residency:
         class: 'AppBundle\FriendsSuggestions\RegisterUserResidencyInNeo4j'
+        public: true
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Users\Events\UserRegisteredEvent' }
 
 
     app.users.send_welcoming_email:
         class: 'AppBundle\EventSubscribers\Users\SendWelcomingEmail'
+        public: true
         tags:
             - { name: 'asynchronous_event_subscriber', subscribes_to: 'Angelov\Donut\Users\Events\UserRegisteredEvent' }
 

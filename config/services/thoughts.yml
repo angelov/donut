@@ -1,7 +1,7 @@
 services:
 
     _defaults:
-        public: true
+        public: false
         autowire: true
 
     # feed
@@ -64,11 +64,13 @@ services:
 
     app.thoughts.handlers.store:
         class: 'Angelov\Donut\Thoughts\Handlers\StoreThoughtCommandHandler'
+        public: true
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Thoughts\Commands\StoreThoughtCommand' }
 
     app.thoughts.handlers.delete:
         class: 'Angelov\Donut\Thoughts\Handlers\DeleteThoughtCommandHandler'
+        public: true
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Thoughts\Commands\DeleteThoughtCommand' }
 
@@ -77,10 +79,12 @@ services:
 
     app.thoughts.event_subscribers.increase_thoughts_number_for_user:
         class: 'Angelov\Donut\Thoughts\EventSubscribers\IncreaseThoughtsNumberForUser'
+        public: true
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Thoughts\Events\ThoughtWasPublishedEvent' }
 
     app.thoughts.event_subscribers.decrease_thoughts_number_for_user:
         class: 'Angelov\Donut\Thoughts\EventSubscribers\DecreaseThoughtsNumberForUser'
+        public: true
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Thoughts\Events\ThoughtWasDeletedEvent' }

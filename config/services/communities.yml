@@ -1,7 +1,7 @@
 services:
 
     _defaults:
-        public: true
+        public: false
         autowire: true
 
     # repositories
@@ -25,15 +25,18 @@ services:
 
     app.communities.handlers.store:
         class: 'Angelov\Donut\Communities\Handlers\StoreCommunityCommandHandler'
+        public: true
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\StoreCommunityCommand' }
 
     app.communities.handlers.join:
+        public: true
         class: 'Angelov\Donut\Communities\Handlers\JoinCommunityCommandHandler'
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\JoinCommunityCommand' }
 
     app.communities.handlers.leave:
+        public: true
         class: 'Angelov\Donut\Communities\Handlers\LeaveCommunityCommandHandler'
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\LeaveCommunityCommand' }

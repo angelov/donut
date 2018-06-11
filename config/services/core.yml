@@ -1,7 +1,7 @@
 services:
 
     _defaults:
-        public: true
+        public: false
         autowire: true
 
     # command bus

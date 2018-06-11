@@ -76,7 +76,7 @@ class CommunitiesController extends AbstractController
             /** @var StoreCommunityCommand $command */
             $command = $form->getData();
 
-            $this->get('app.core.command_bus.default')->handle($command);
+            $this->commandBus->handle($command);
 
             $this->addFlash('success', 'Community was successfully created!');
 

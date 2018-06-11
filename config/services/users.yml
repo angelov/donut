@@ -1,7 +1,7 @@
 services:
 
     _defaults:
-        public: true
+        public: false
         autowire: true
 
     # repositories
@@ -57,5 +57,6 @@ services:
 
     app.users.handlers.store:
         class: 'Angelov\Donut\Users\Handlers\StoreUserCommandHandler'
+        public: true
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Users\Commands\StoreUserCommand' }

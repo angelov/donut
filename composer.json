@@ -65,7 +65,7 @@
         "friends-of-behat/context-service-extension": "^1.0",
         "friends-of-behat/service-container-extension": "^1.0",
         "friends-of-behat/symfony-extension": "^1.0",
-        "friends-of-behat/cross-container-extension": "^1.0",
+        "friends-of-behat/cross-container-extension": "dev-test-container",
         "friends-of-behat/variadic-extension": "^1.0",
         "webmozart/assert": "^1.2",
         "phpspec/phpspec": "^4.0",
@@ -79,6 +79,10 @@
         {
             "type": "git",
             "url": "https://github.com/angelov/reco4php"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/angelov/CrossContainerExtension"
         }
     ],
     "scripts": {
