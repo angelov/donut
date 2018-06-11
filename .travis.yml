@@ -41,6 +41,7 @@ jobs:
         - mysql -e 'CREATE DATABASE IF NOT EXISTS donut_test;'
       # - ./bin/console doctrine:database:create --env=test
         - ./bin/console doctrine:migrations:migrate --no-interaction --quiet
+        - mv etc/travis/phpunit.xml phpunit.xml
       script:
         - vendor/bin/phpspec run --format=dot
         - vendor/bin/phpunit
