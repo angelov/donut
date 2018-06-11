@@ -27,17 +27,18 @@
 
 namespace AppBundle\Controller;
 
+use GraphAware\Neo4j\Client\Client;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Angelov\Donut\Users\User;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class FriendSuggestionsController extends Controller
+class FriendSuggestionsController extends AbstractController
 {
     /**
      * @Route("/friends/suggestions/{id}/ignore", name="app.friendships.suggestions.ignore")
      */
-    public function ignoreAction(User $suggestedUser) : Response
+    public function ignoreAction(User $suggestedUser, Client $client) : Response
     {
         // @todo refactor
 
@@ -48,8 +49,6 @@ class FriendSuggestionsController extends Controller
             CREATE
                 (current)-[:NOT_INTERESTED_TO_BE_FRIEND_WITH]->(suggested)      
         ';
-
-        $client = $this->get('app.neo4j.client.default');
 
         $client->run($query, [
             'current' => $this->getUser()->getId(),

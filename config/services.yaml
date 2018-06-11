@@ -17,3 +17,17 @@ imports:
     - { resource: 'services/friendships.yml' }
     - { resource: 'services/movies.yml' }
     - { resource: 'services/places.yml' }
+
+services:
+    _defaults:
+        autowire: true
+
+    AppBundle\Controller\:
+        resource: '../src/AppBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    ApiBundle\Controller\:
+        resource: '../src/ApiBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']

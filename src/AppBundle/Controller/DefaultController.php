@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,7 +20,7 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
@@ -28,10 +28,10 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
     /**
      * @Route("/", name="homepage")

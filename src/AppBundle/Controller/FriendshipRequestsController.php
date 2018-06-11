@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,14 +20,16 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace AppBundle\Controller;
 
+use Angelov\Donut\Core\CommandBus\CommandBusInterface;
 use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
+use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand;
 use Angelov\Donut\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand;
@@ -35,21 +37,31 @@ use Angelov\Donut\Friendships\FriendshipRequests\Commands\SendFriendshipRequestC
 use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
 use Angelov\Donut\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class FriendshipRequestsController extends Controller
+class FriendshipRequestsController extends AbstractController
 {
+    private $uuidGenerator;
+    private $commandBus;
+
+    public function __construct(UuidGeneratorInterface $uuidGenerator, CommandBusInterface $commandBus)
+    {
+        $this->uuidGenerator = $uuidGenerator;
+        $this->commandBus = $commandBus;
+    }
+
     /**
      * @Route("/friendships/send/{id}", name="friendships.requests.store", methods={"GET"})
      */
-    public function sendFriendshipRequestAction(User $user) : Response
+    public function sendFriendshipRequestAction(User $user, UserInterface $currentUser) : Response
     {
-        $currentUser = $this->getUser();
+        /** @var $currentUser User */
 
-        $id = $this->get('app.core.uuid_generator')->generate();
+        $id = $this->uuidGenerator->generate();
 
-        $this->get('app.core.command_bus.default')->handle(new SendFriendshipRequestCommand($id, $currentUser->getId(), $user->getId()));
+        $this->commandBus->handle(new SendFriendshipRequestCommand($id, $currentUser->getId(), $user->getId()));
 
         $this->addFlash('success', 'Friendship request successfully sent!');
 
@@ -73,7 +85,7 @@ class FriendshipRequestsController extends Controller
         ]);
 
         try {
-            $this->get('app.core.command_bus.default')->handle(new CancelFriendshipRequestCommand($friendshipRequest->getId()));
+            $this->commandBus->handle(new CancelFriendshipRequestCommand($friendshipRequest->getId()));
         } catch (ResourceNotFoundException $e) {
             $this->addFlash('error', 'Something went wrong!');
             return $this->redirectToRoute('app.friends.index');
@@ -98,7 +110,7 @@ class FriendshipRequestsController extends Controller
         ]);
 
         try {
-            $this->get('app.core.command_bus.default')->handle(new DeclineFriendshipRequestCommand($friendshipRequest->getId()));
+            $this->commandBus->handle(new DeclineFriendshipRequestCommand($friendshipRequest->getId()));
         } catch (ResourceNotFoundException $e) {
             $this->addFlash('error', 'Something went wrong!');
             return $this->redirectToRoute('app.friends.index');
@@ -123,7 +135,7 @@ class FriendshipRequestsController extends Controller
         ]);
 
         try {
-            $this->get('app.core.command_bus.default')->handle(new AcceptFriendshipRequestCommand($friendshipRequest->getId()));
+            $this->commandBus->handle(new AcceptFriendshipRequestCommand($friendshipRequest->getId()));
         } catch (ResourceNotFoundException $e) {
             $this->addFlash('error', 'Something went wrong!');
             return $this->redirectToRoute('app.friends.index');

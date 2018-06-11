@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,7 +20,7 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
@@ -29,18 +29,17 @@ namespace AppBundle\Controller;
 
 use Angelov\Donut\Users\Form\LoginForm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="security_login")
      */
-    public function loginAction() : Response
+    public function loginAction(AuthenticationUtils $authUtils) : Response
     {
-        $authUtils = $this->get('security.authentication_utils');
-
         $error = $authUtils->getLastAuthenticationError();
         $lastUsername = $authUtils->getLastUsername();
 

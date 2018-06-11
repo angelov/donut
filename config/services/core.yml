@@ -5,6 +5,8 @@ services:
 
     # command bus
 
+    Angelov\Donut\Core\CommandBus\CommandBusInterface: '@app.core.command_bus.simplebus'
+
     app.core.command_bus.default: '@app.core.command_bus.simplebus'
 
     app.core.command_bus.simplebus:
@@ -62,6 +64,8 @@ services:
 
 
     # uuid generator
+
+    Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface: '@app.core.uuid_generator'
 
     app.core.uuid_generator:
         class: 'Angelov\Donut\Core\UuidGenerator\DoctrineUuidGeneratorAdapter'

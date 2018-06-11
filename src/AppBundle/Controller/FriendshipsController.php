@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,22 +20,30 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace AppBundle\Controller;
 
+use Angelov\Donut\Core\CommandBus\CommandBusInterface;
 use Angelov\Donut\Friendships\Commands\DeleteFriendshipCommand;
 use Angelov\Donut\Friendships\Friendship;
 use Angelov\Donut\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class FriendshipsController extends Controller
+class FriendshipsController extends AbstractController
 {
+    private $commandBus;
+
+    public function __construct(CommandBusInterface $commandBus)
+    {
+        $this->commandBus = $commandBus;
+    }
+
     /**
      * @Route("/friendships/remove/{id}", name="app.friendships.remove", methods={"GET"})
      * @todo fix to use delete requests
@@ -57,7 +65,7 @@ class FriendshipsController extends Controller
             'friend' => $user
         ]);
 
-        $this->get('app.core.command_bus.default')->handle(new DeleteFriendshipCommand($friendship->getId()));
+        $this->commandBus->handle(new DeleteFriendshipCommand($friendship->getId()));
 
         $this->addFlash('success', 'Sorry to see broken friendships.');
 

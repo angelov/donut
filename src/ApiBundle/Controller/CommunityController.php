@@ -27,21 +27,27 @@
 
 namespace ApiBundle\Controller;
 
+use Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Response;
 
 class CommunityController extends FOSRestController
 {
+    private $communities;
+
+    public function __construct(CommunitiesRepositoryInterface $communities)
+    {
+        $this->communities = $communities;
+    }
+
     /**
      * @Rest\Get("communities", name="app.api.communities.index", options={"method_prefix" = false})
      */
     public function getCommunitiesAction() : Response
     {
-        $communities = $this->get('app.communities.repositories.default');
-
         return $this->handleView(
-            $this->view($communities->all())
+            $this->view($this->communities->all())
         );
     }
 }

@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,7 +20,7 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
@@ -28,19 +28,20 @@
 namespace AppBundle\Controller;
 
 use Angelov\Donut\Core\ResultLists\Sorting\OrderDirection;
+use Angelov\Donut\Movies\MoviesList\MoviesListInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Angelov\Donut\Core\ResultLists\Sorting\OrderField;
 use Angelov\Donut\Movies\Genre;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class MoviesController extends Controller
+class MoviesController extends AbstractController
 {
     /**
      * @Route("/movies", name="app.movies.index")
      */
-    public function indexAction(Request $request) : Response
+    public function indexAction(Request $request, MoviesListInterface $moviesList) : Response
     {
         $selectedGenres = [];
         foreach ($request->query->all() as $item => $value) {
@@ -58,7 +59,6 @@ class MoviesController extends Controller
         $perPage = 12;
         $offset = ($page-1)*$perPage;
 
-        $moviesList = $this->get('app.movies.movies_list');
         $moviesList->filterByGenres($genresFilter);
         $moviesList->filterByPeriod($periodFilter[0], $periodFilter[1]);
         $moviesList->setItemsPerPage($perPage);

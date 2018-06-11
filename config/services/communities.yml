@@ -5,7 +5,7 @@ services:
 
     # repositories
 
-    app.communities.repositories.default: '@app.communities.repositories.doctrine'
+    Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface: '@app.communities.repositories.doctrine'
 
     app.communities.repositories.doctrine:
         class: 'Angelov\Donut\Communities\Repositories\DoctrineCommunitiesRepository'
@@ -25,18 +25,18 @@ services:
 
     app.communities.handlers.store:
         class: 'Angelov\Donut\Communities\Handlers\StoreCommunityCommandHandler'
-        arguments: ['@app.communities.repositories.default', '@app.users.repository.default']
+        autowire: true
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\StoreCommunityCommand' }
 
     app.communities.handlers.join:
         class: 'Angelov\Donut\Communities\Handlers\JoinCommunityCommandHandler'
-        arguments: ['@app.communities.repositories.default', '@app.users.repository.default']
+        autowire: true
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\JoinCommunityCommand' }
 
     app.communities.handlers.leave:
         class: 'Angelov\Donut\Communities\Handlers\LeaveCommunityCommandHandler'
-        arguments: ['@app.communities.repositories.default', '@app.users.repository.default']
+        autowire: true
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\LeaveCommunityCommand' }

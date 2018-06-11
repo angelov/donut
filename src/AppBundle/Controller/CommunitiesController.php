@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,7 +20,7 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
@@ -31,22 +31,32 @@ use Angelov\Donut\Communities\Commands\JoinCommunityCommand;
 use Angelov\Donut\Communities\Commands\LeaveCommunityCommand;
 use Angelov\Donut\Communities\Commands\StoreCommunityCommand;
 use Angelov\Donut\Communities\Form\CommunityType;
+use Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface;
+use Angelov\Donut\Core\CommandBus\CommandBusInterface;
 use Angelov\Donut\Users\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class CommunitiesController extends Controller
+class CommunitiesController extends AbstractController
 {
+    private $communities;
+    private $commandBus;
+
+    public function __construct(CommunitiesRepositoryInterface $communities, CommandBusInterface $commandBus)
+    {
+        $this->communities = $communities;
+        $this->commandBus = $commandBus;
+    }
+
     /**
      * @Route("/communities", name="app.communities.index", methods={"GET", "HEAD"})
      */
     public function indexAction() : Response
     {
-        $repository = $this->get('app.communities.repositories.default');
-
-        $communities = $repository->all();
+        $communities = $this->communities->all();
 
         return $this->render('communities/index.html.twig', [
             'communities' => $communities
@@ -83,8 +93,7 @@ class CommunitiesController extends Controller
      */
     public function showAction($id) : Response
     {
-        $repository = $this->get('app.communities.repositories.default');
-        $community = $repository->find($id);
+        $community = $this->communities->find($id);
 
         return $this->render('communities/show.html.twig', [
             'community' => $community
@@ -94,12 +103,11 @@ class CommunitiesController extends Controller
     /**
      * @Route("/communities/{id}/join", name="app.communities.join", methods={"POST"})
      */
-    public function joinAction($id) : Response
+    public function joinAction(UserInterface $user, $id) : Response
     {
         /** @var User $user */
-        $user = $this->getUser();
 
-        $this->get('app.core.command_bus.default')->handle(new JoinCommunityCommand($user->getId(), $id));
+        $this->commandBus->handle(new JoinCommunityCommand($user->getId(), $id));
 
         $this->addFlash('success', 'Successfully joined the community');
 
@@ -109,12 +117,11 @@ class CommunitiesController extends Controller
     /**
      * @Route("/communities/{id}/leave", name="app.communities.leave", methods={"POST"})
      */
-    public function leaveAction($id) : Response
+    public function leaveAction(UserInterface $user, $id) : Response
     {
         /** @var User $user */
-        $user = $this->getUser();
 
-        $this->get('app.core.command_bus.default')->handle(new LeaveCommunityCommand($user->getId(), $id));
+        $this->commandBus->handle(new LeaveCommunityCommand($user->getId(), $id));
 
         $this->addFlash('success', 'Successfully left the community');
 

@@ -57,4 +57,6 @@ services:
         tags:
             - { name: console.command }
 
+    GraphAware\Neo4j\Client\Client: "@neo4j.client.default"
+
     app.neo4j.client.default: "@neo4j.client.default"

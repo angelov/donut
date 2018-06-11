@@ -5,6 +5,8 @@ services:
 
     # repositories
 
+    Angelov\Donut\Users\Repositories\UsersRepositoryInterface: '@app.users.repository.doctrine'
+
     app.users.repository.default: '@app.users.repository.doctrine'
 
     app.users.repository.doctrine:

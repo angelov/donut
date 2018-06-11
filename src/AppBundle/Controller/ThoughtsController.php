@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,13 +20,14 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace AppBundle\Controller;
 
+use Angelov\Donut\Core\CommandBus\CommandBusInterface;
 use Angelov\Donut\Core\ResultLists\Sorting\OrderDirection;
 use Angelov\Donut\Core\ResultLists\Sorting\OrderField;
 use Angelov\Donut\Thoughts\ThoughtsFeed\ThoughtsFeedInterface;
@@ -35,16 +36,23 @@ use Angelov\Donut\Thoughts\Commands\StoreThoughtCommand;
 use Angelov\Donut\Thoughts\Thought;
 use Angelov\Donut\Thoughts\Form\ThoughtType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ThoughtsController extends Controller
+class ThoughtsController extends AbstractController
 {
+    private $commandBus;
+
+    public function __construct(CommandBusInterface $commandBus)
+    {
+        $this->commandBus = $commandBus;
+    }
+
     /**
      * @Route("/thoughts", name="app.thoughts.index", methods={"GET", "HEAD", "POST"})
      */
-    public function indexAction(Request $request) : Response
+    public function indexAction(Request $request, ThoughtsFeedInterface $thoughtsList) : Response
     {
         $form = $this->createForm(ThoughtType::class);
         $form->handleRequest($request);
@@ -54,15 +62,12 @@ class ThoughtsController extends Controller
             /** @var StoreThoughtCommand $thought */
             $command = $form->getData();
 
-            $this->get('app.core.command_bus.default')->handle($command);
+            $this->commandBus->handle($command);
 
             $this->addFlash('success', 'Thought shared!');
 
             return $this->redirectToRoute('app.thoughts.index');
         }
-
-        /** @var ThoughtsFeedInterface $thoughtsList */
-        $thoughtsList = $this->get('app.thoughts.feed');
 
         $page = $request->query->get('page', 1);
         $perPage = 10;
@@ -90,7 +95,7 @@ class ThoughtsController extends Controller
             return $this->redirectToRoute('app.thoughts.index');
         }
 
-        $this->get('app.core.command_bus.default')->handle(new DeleteThoughtCommand($thought->getId()));
+        $this->commandBus->handle(new DeleteThoughtCommand($thought->getId()));
 
         $this->addFlash('success', 'Thought deleted!');
 

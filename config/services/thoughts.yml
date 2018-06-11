@@ -5,6 +5,8 @@ services:
 
     # feed
 
+    Angelov\Donut\Thoughts\ThoughtsFeed\ThoughtsFeedInterface: '@app.thoughts.feed'
+
     app.thoughts.feed:
         class: 'Angelov\Donut\Thoughts\ThoughtsFeed\DoctrineThoughtsFeed'
         arguments: ['@doctrine.orm.entity_manager', '@app.users.security.current_user']

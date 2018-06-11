@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,23 +20,34 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace AppBundle\Controller;
 
+use Angelov\Donut\Core\CommandBus\CommandBusInterface;
 use Angelov\Donut\Users\Commands\StoreUserCommand;
+use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 use Angelov\Donut\Users\User;
 use Angelov\Donut\Users\Form\UserRegistrationForm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UsersController extends Controller
+class UsersController extends AbstractController
 {
+    private $commandBus;
+    private $users;
+
+    public function __construct(CommandBusInterface $commandBus, UsersRepositoryInterface $users)
+    {
+        $this->commandBus = $commandBus;
+        $this->users = $users;
+    }
+
     /**
      * @Route("/register", name="app.users.register")
      */
@@ -51,7 +62,7 @@ class UsersController extends Controller
             /** @var StoreUserCommand $command */
             $command = $form->getData();
 
-            $this->get('app.core.command_bus.default')->handle($command);
+            $this->commandBus->handle($command);
 
             $this->addFlash('success', 'Registration was successful. You many now login.');
 
@@ -68,7 +79,7 @@ class UsersController extends Controller
      */
     public function indexAction() : Response
     {
-        $users = $this->get('app.users.repository.default')->all();
+        $users = $this->users->all();
 
         return $this->render('users/index.html.twig', [
             'users' => $users
