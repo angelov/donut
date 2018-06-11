@@ -10,7 +10,7 @@
     <php>
 
         <ini name="error_reporting" value="-1" />
-        <server name="KERNEL_CLASS" value="AppKernel" />
+        <server name="KERNEL_CLASS" value="AppBundle\Kernel" />
         <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
 
         <env name="NEO4J_DSN" value="bolt://neo4j:neo4j@localhost:7687" />
