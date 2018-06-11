@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,23 +20,21 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace Angelov\Donut\Tests\Friendships\FriendshipRequests\Repositories;
 
+use Angelov\Donut\Tests\Donut\TestCase;
 use AppBundle\Factories\UsersFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
 use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
 use Angelov\Donut\Friendships\FriendshipRequests\Repositories\DoctrineFriendshipRequestsRepository;
-use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
-use Angelov\Donut\Users\User;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class DoctrineFriendshipRequestsRepositoryTest extends KernelTestCase
+class DoctrineFriendshipRequestsRepositoryTest extends TestCase
 {
     /** @var DoctrineFriendshipRequestsRepository */
     private $repository;
@@ -50,15 +48,14 @@ class DoctrineFriendshipRequestsRepositoryTest extends KernelTestCase
     /** @var UuidGeneratorInterface */
     private $uuidGenerator;
 
-    public function setUp()
+    protected function setUp()
     {
-        $kernel = self::createKernel();
-        $kernel->boot();
+        parent::setUp();
 
-        $this->repository = $kernel->getContainer()->get('app.friendships.friendship_requests.repositories.doctrine');
-        $this->entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $this->usersFactory = $kernel->getContainer()->get('app.factories.users.faker');
-        $this->uuidGenerator = $kernel->getContainer()->get('app.core.uuid_generator');
+        $this->repository = $this->getService(DoctrineFriendshipRequestsRepository::class);
+        $this->entityManager = $this->getService(EntityManagerInterface::class);
+        $this->usersFactory = $this->getService(UsersFactory::class);
+        $this->uuidGenerator = $this->getService(UuidGeneratorInterface::class);
     }
 
     /** @test */

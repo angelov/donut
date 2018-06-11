@@ -17,41 +17,41 @@ services:
             - '@__symfony__.doctrine.orm.entity_manager'
             - '@__symfony__.security.password_encoder'
             - '@app.behat.storage'
-            - '@__symfony__.app.core.uuid_generator'
-            - '@__symfony__.app.users.repository.default'
-            - '@__symfony__.app.core.command_bus.default'
+            - '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
+            - '@__symfony__.Angelov\Donut\Users\Repositories\UsersRepositoryInterface'
+            - '@__symfony__.Angelov\Donut\Core\CommandBus\CommandBusInterface'
 
     app.feature_contexts.setup.thoughts:
         class: 'AppBundle\FeatureContexts\Setup\ThoughtsContext'
-        arguments: ['@app.behat.storage', '@__symfony__.app.core.uuid_generator', '@__symfony__.app.core.command_bus.default']
+        arguments: ['@app.behat.storage', '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface', '@__symfony__.Angelov\Donut\Core\CommandBus\CommandBusInterface']
 
     app.feature_contexts.setup.communities:
         class: 'AppBundle\FeatureContexts\Setup\CommunitiesContext'
         arguments:
-            - '@__symfony__.app.core.command_bus.default'
+            - '@__symfony__.Angelov\Donut\Core\CommandBus\CommandBusInterface'
             - '@app.behat.storage'
-            - '@__symfony__.app.core.uuid_generator'
+            - '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
             - '@__symfony__.Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface'
 
     app.feature_contexts.setup.friendships:
         class: 'AppBundle\FeatureContexts\Setup\FriendshipsContext'
         arguments:
             - '@app.behat.storage'
-            - '@__symfony__.app.core.uuid_generator'
-            - '@__symfony__.app.core.command_bus.default'
-            - '@__symfony__.app.friendships.friendship_requests.repositories.default'
+            - '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
+            - '@__symfony__.Angelov\Donut\Core\CommandBus\CommandBusInterface'
+            - '@__symfony__.Angelov\Donut\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface'
 
     app.feature_contexts.setup.movies:
         class: 'AppBundle\FeatureContexts\Setup\MoviesContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface']
 
     app.feature_contexts.setup.movie_genres:
         class: 'AppBundle\FeatureContexts\Setup\MovieGenresContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface']
 
     app.feature_contexts.setup.cities:
         class: 'AppBundle\FeatureContexts\Setup\CitiesContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.app.core.uuid_generator']
+        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface']
 
     app.feature_contexts.setup.security:
         class: 'AppBundle\FeatureContexts\Setup\SecurityContext'
@@ -60,9 +60,9 @@ services:
             - '@__symfony__.session'
             - '@mink.default_session'
             - '@app.behat.storage'
-            - '@__symfony__.app.core.uuid_generator'
-            - '@__symfony__.app.core.command_bus.default'
-            - '@__symfony__.app.users.repository.default'
+            - '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
+            - '@__symfony__.Angelov\Donut\Core\CommandBus\CommandBusInterface'
+            - '@__symfony__.Angelov\Donut\Users\Repositories\UsersRepositoryInterface'
 
     app.feature_contexts.setup.pagination:
         class: 'AppBundle\FeatureContexts\Setup\PaginationContext'

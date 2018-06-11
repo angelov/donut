@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,23 +20,23 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace Angelov\Donut\Tests\Communities\Repositories;
 
+use Angelov\Donut\Tests\Donut\TestCase;
 use AppBundle\Factories\CommunitiesFactory;
 use AppBundle\Factories\UsersFactory;
-use Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface;
 use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Doctrine\ORM\EntityManager;
 use Angelov\Donut\Communities\Community;
 use Angelov\Donut\Communities\Repositories\DoctrineCommunitiesRepository;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Doctrine\ORM\EntityManagerInterface;
 
-class DoctrineCommunitiesRepositoryTest extends KernelTestCase
+class DoctrineCommunitiesRepositoryTest extends TestCase
 {
     /**
      * @var DoctrineCommunitiesRepository
@@ -58,15 +58,14 @@ class DoctrineCommunitiesRepositoryTest extends KernelTestCase
      */
     private $communitiesFactory;
 
-    public function setUp()
+    protected function setUp()
     {
-        $kernel = static::createKernel();
-        $kernel->boot();
+        parent::setUp();
 
-        $this->repository = $kernel->getContainer()->get('app.communities.repositories.doctrine');
-        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $this->usersFactory = $kernel->getContainer()->get('app.factories.users.faker');
-        $this->communitiesFactory = $kernel->getContainer()->get('app.factories.communities.faker');
+        $this->repository = $this->getService(DoctrineCommunitiesRepository::class);
+        $this->em = $this->getService(EntityManagerInterface::class);
+        $this->usersFactory = $this->getService(UsersFactory::class);
+        $this->communitiesFactory = $this->getService(CommunitiesFactory::class);
     }
 
     /** @test */

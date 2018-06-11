@@ -5,7 +5,7 @@ security:
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         users:
-            id: 'app.users.security.user_provider'
+            id: 'Angelov\Donut\Users\Security\Provider\RepositoryUserProvider'
 
     encoders:
         Angelov\Donut\Users\User: 'bcrypt'

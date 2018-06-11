@@ -37,7 +37,7 @@ use Angelov\Donut\Users\Exceptions\EmailTakenException;
 use Angelov\Donut\Users\Handlers\StoreUserCommandHandler;
 use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 use Angelov\Donut\Users\User;
-use Donut\Places\Repositories\CitiesRepositoryInterface;
+use Angelov\Donut\Places\Repositories\CitiesRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;

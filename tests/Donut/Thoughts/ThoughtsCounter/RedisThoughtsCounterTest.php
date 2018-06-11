@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,21 +20,19 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace Angelov\Donut\Tests\Thoughts\ThoughtsCounter;
 
-use AppBundle\Factories\ThoughtsFactory;
+use Angelov\Donut\Tests\Donut\TestCase;
 use AppBundle\Factories\UsersFactory;
 use Predis\Client;
 use Angelov\Donut\Thoughts\ThoughtsCounter\RedisThoughtsCounter;
-use Angelov\Donut\Users\User;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class RedisThoughtsCounterTest extends KernelTestCase
+class RedisThoughtsCounterTest extends TestCase
 {
     /** @var Client */
     private $redisClient;
@@ -45,14 +43,13 @@ class RedisThoughtsCounterTest extends KernelTestCase
     /** @var UsersFactory */
     private $usersFactory;
 
-    public function setUp()
+    protected function setUp()
     {
-        $kernel = self::createKernel();
-        $kernel->boot();
+        parent::setUp();
 
-        $this->redisClient = $kernel->getContainer()->get('snc_redis.default');
-        $this->counter = $kernel->getContainer()->get('app.thoughts.thoughts_counter.redis');
-        $this->usersFactory = $kernel->getContainer()->get('app.factories.users.faker');
+        $this->redisClient = $this->getService(Client::class);
+        $this->counter = $this->getService(RedisThoughtsCounter::class);
+        $this->usersFactory = $this->getService(UsersFactory::class);
     }
 
     /** @test */

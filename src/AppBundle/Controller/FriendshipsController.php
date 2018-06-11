@@ -31,6 +31,7 @@ use Angelov\Donut\Core\CommandBus\CommandBusInterface;
 use Angelov\Donut\Friendships\Commands\DeleteFriendshipCommand;
 use Angelov\Donut\Friendships\Friendship;
 use Angelov\Donut\Users\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,10 +49,9 @@ class FriendshipsController extends AbstractController
      * @Route("/friendships/remove/{id}", name="app.friendships.remove", methods={"GET"})
      * @todo fix to use delete requests
      */
-    public function delete(User $user) : Response
+    public function delete(User $user, EntityManagerInterface $em) : Response
     {
         // @todo use custom repository
-        $em = $this->get('doctrine.orm.entity_manager');
         $repository = $em->getRepository(Friendship::class);
 
         if (! $user->isFriendWith($this->getUser())) {

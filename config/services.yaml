@@ -2,26 +2,23 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
-#    neo4j_host: neo4j
-#    neo4j_port: 7687
-#    neo4j_username: neo4j
-#    neo4j_password: blabla
-
-imports:
-    - { resource: 'services/to_refactor.yml' }
-
-    - { resource: 'services/core.yml' }
-    - { resource: 'services/users.yml' }
-    - { resource: 'services/thoughts.yml' }
-    - { resource: 'services/communities.yml' }
-    - { resource: 'services/friendships.yml' }
-    - { resource: 'services/movies.yml' }
-    - { resource: 'services/places.yml' }
 
 services:
     _defaults:
         public: false
         autowire: true
+        autoconfigure: true
+
+    Angelov\Donut\:
+        resource: '../src/Donut/*'
+
+    AppBundle\:
+        resource: '../src/AppBundle/*'
+        exclude: '../src/AppBundle/{Controller,FeatureContexts,Kernel.php}'
+
+    ApiBundle\:
+        resource: '../src/ApiBundle/*'
+        exclude: '../src/ApiBundle/Controller'
 
     AppBundle\Controller\:
         resource: '../src/AppBundle/Controller'
@@ -32,3 +29,209 @@ services:
         resource: '../src/ApiBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
+
+
+#### CORE
+
+    # uuid generator
+
+    Doctrine\ORM\Id\UuidGenerator: ~
+
+    # command bus
+    Angelov\Donut\Core\CommandBus\SimpleBusAdapter:
+        autowire: false
+        arguments: ['@simple_bus.command_bus']
+
+#    # event bus
+    Angelov\Donut\Core\EventBus\SimpleBusAdapter:
+        autowire: false
+        arguments: ['@simple_bus.event_bus']
+
+#### COMMUNITIES
+
+    # command handlers
+
+    app.communities.handlers.store:
+        class: 'Angelov\Donut\Communities\Handlers\StoreCommunityCommandHandler'
+        public: true
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\StoreCommunityCommand' }
+
+    app.communities.handlers.join:
+        public: true
+        class: 'Angelov\Donut\Communities\Handlers\JoinCommunityCommandHandler'
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\JoinCommunityCommand' }
+
+    app.communities.handlers.leave:
+        public: true
+        class: 'Angelov\Donut\Communities\Handlers\LeaveCommunityCommandHandler'
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\LeaveCommunityCommand' }
+
+
+
+#### USERS
+
+
+    # security
+
+    Angelov\Donut\Users\User:
+        factory: ['@Angelov\Donut\Users\Security\CurrentUserResolver\CurrentUserResolver', 'getUser']
+
+
+    # command handlers
+
+    app.users.handlers.store:
+        class: 'Angelov\Donut\Users\Handlers\StoreUserCommandHandler'
+        public: true
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Users\Commands\StoreUserCommand' }
+
+
+
+### MESSY
+
+
+    app.users.register_residency:
+        class: 'AppBundle\FriendsSuggestions\RegisterUserResidencyInNeo4j'
+        public: true
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Users\Events\UserRegisteredEvent' }
+
+
+    app.users.send_welcoming_email:
+        class: 'AppBundle\EventSubscribers\Users\SendWelcomingEmail'
+        public: true
+        tags:
+            - { name: 'asynchronous_event_subscriber', subscribes_to: 'Angelov\Donut\Users\Events\UserRegisteredEvent' }
+
+
+
+    app.api.serialization.community:
+        class: 'ApiBundle\Serialization\CommunityHandler'
+        tags:
+            - { name: 'jms_serializer.subscribing_handler', type: 'Angelov\Donut\Communities\Community', format: 'json' }
+
+
+    GraphAware\Neo4j\Client\Client: "@neo4j.client.default"
+
+
+####### THOUGHTS
+
+
+    # thoughts counter
+
+    Angelov\Donut\Thoughts\ThoughtsCounter\ThoughtsCounterInterface: '@app.thoughts.thoughts_counter.ensuring_default_value'
+
+    app.thoughts.thoughts_counter.default: '@app.thoughts.thoughts_counter.ensuring_default_value'
+
+    Angelov\Donut\Thoughts\ThoughtsCounter\RedisThoughtsCounter: '@app.thoughts.thoughts_counter.redis'
+
+    app.thoughts.thoughts_counter.redis:
+        class: 'Angelov\Donut\Thoughts\ThoughtsCounter\RedisThoughtsCounter'
+
+    Angelov\Donut\Thoughts\ThoughtsCounter\LoggingThoughtsCounter: '@app.thoughts.thoughts_counter.logging'
+
+    app.thoughts.thoughts_counter.logging:
+        class: 'Angelov\Donut\Thoughts\ThoughtsCounter\LoggingThoughtsCounter'
+        arguments: ['@app.thoughts.thoughts_counter.redis', '@logger']
+
+    app.thoughts.thoughts_counter.ensuring_default_value:
+        class: 'Angelov\Donut\Thoughts\ThoughtsCounter\EnsuringDefaultValueThoughtCounter'
+        arguments: ['@app.thoughts.thoughts_counter.logging']
+
+
+    # command handlers
+
+    app.thoughts.handlers.store:
+        class: 'Angelov\Donut\Thoughts\Handlers\StoreThoughtCommandHandler'
+        public: true
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Thoughts\Commands\StoreThoughtCommand' }
+
+    app.thoughts.handlers.delete:
+        class: 'Angelov\Donut\Thoughts\Handlers\DeleteThoughtCommandHandler'
+        public: true
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Thoughts\Commands\DeleteThoughtCommand' }
+
+
+    # event subscribers
+
+    app.thoughts.event_subscribers.increase_thoughts_number_for_user:
+        class: 'Angelov\Donut\Thoughts\EventSubscribers\IncreaseThoughtsNumberForUser'
+        public: true
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Thoughts\Events\ThoughtWasPublishedEvent' }
+
+    app.thoughts.event_subscribers.decrease_thoughts_number_for_user:
+        class: 'Angelov\Donut\Thoughts\EventSubscribers\DecreaseThoughtsNumberForUser'
+        public: true
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Thoughts\Events\ThoughtWasDeletedEvent' }
+
+    Predis\Client: '@snc_redis.default'
+
+
+
+##### FRIENDSHIPS
+
+    # handlers
+
+    app.friendships.friendship_requests.handlers.send:
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\SendFriendshipRequestCommandHandler'
+        public: true
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand' }
+
+    app.friendships.friendship_requests.handlers.cancel:
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\CancelFriendshipRequestCommandHandler'
+        public: true
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand' }
+
+    app.friendships.friendship_requests.handlers.decline:
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\DeclineFriendshipRequestCommandHandler'
+        public: true
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand' }
+
+    app.friendships.friendship_requests.handlers.accept:
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\AcceptFriendshipRequestCommandHandler'
+        public: true
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand' }
+
+    app.friendships.handlers.delete:
+        class: 'Angelov\Donut\Friendships\Handlers\DeleteFriendshipCommandHandler'
+        public: true
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\Commands\DeleteFriendshipCommand' }
+
+    app.friendships.handlers.store:
+        class: 'Angelov\Donut\Friendships\Handlers\StoreFriendshipCommandHandler'
+        public: true
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\Commands\StoreFriendshipCommand' }
+
+
+    # event subscribers
+
+    app.friendships.event_subsribers.record_created_friendship:
+        class: 'Angelov\Donut\Friendships\EventSubscribers\RecordCreatedFriendship'
+        public: true
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasCreatedEvent' }
+
+    app.friendships.event_subscribers.record_deleted_friendship:
+        class: 'Angelov\Donut\Friendships\EventSubscribers\RecordDeletedFriendship'
+        public: true
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasDeletedEvent' }
+
+    app.friendships.event_subscribers.delete_inverse_friendship:
+        class: 'Angelov\Donut\Friendships\EventSubscribers\DeleteInverseFriendship'
+        public: true
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasDeletedEvent' }

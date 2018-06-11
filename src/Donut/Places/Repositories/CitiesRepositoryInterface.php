@@ -1,6 +1,6 @@
 <?php
 
-namespace Donut\Places\Repositories;
+namespace Angelov\Donut\Places\Repositories;
 
 use Angelov\Donut\Core\Exceptions\ResourceNotFoundException;
 use Angelov\Donut\Places\City;

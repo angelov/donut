@@ -4,27 +4,6 @@ services:
         public: false
         autowire: true
 
-    # command bus
-
-    Angelov\Donut\Core\CommandBus\CommandBusInterface: '@app.core.command_bus.simplebus'
-
-    app.core.command_bus.default: '@app.core.command_bus.simplebus'
-
-    app.core.command_bus.simplebus:
-        class: 'Angelov\Donut\Core\CommandBus\SimpleBusAdapter'
-        arguments: ['@command_bus']
-
-
-    # event bus
-
-    Angelov\Donut\Core\EventBus\EventBusInterface: '@app.core.event_bus.simplebus'
-
-    app.core.event_bus.default: '@app.core.event_bus.simplebus'
-
-    app.core.event_bus.simplebus:
-        class: 'Angelov\Donut\Core\EventBus\SimpleBusAdapter'
-        arguments: ['@simple_bus.event_bus']
-
 
     # result lists
 

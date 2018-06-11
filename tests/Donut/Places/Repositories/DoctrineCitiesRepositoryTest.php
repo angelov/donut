@@ -1,28 +1,51 @@
 <?php
 
+/**
+ * Donut Social Network - Yet another experimental social network.
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
+ *
+ * This file is part of Donut Social Network.
+ *
+ * Donut Social Network is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Donut Social Network is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package Donut Social Network
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
+ * @license https://github.com/angelov/donut/blob/master/LICENSE
+ * @author Dejan Angelov <angelovdejan92@gmail.com>
+ */
+
 namespace Angelov\Donut\Tests\Places\Repositories;
 
 use Angelov\Donut\Places\City;
 use Angelov\Donut\Places\Repositories\DoctrineCitiesRepository;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\Kernel;
+use Angelov\Donut\Tests\Donut\TestCase;
+use Doctrine\ORM\EntityManagerInterface;
 
-class DoctrineCitiesRepositoryTest extends KernelTestCase
+class DoctrineCitiesRepositoryTest extends TestCase
 {
     /** @var DoctrineCitiesRepository */
     private $repository;
 
-    /** @var  Kernel */
-    private $bootedkernel;
+    /** @var EntityManagerInterface */
+    private $entityManager;
 
-    public function setUp()
+    protected function setUp()
     {
-        $kernel = self::createKernel();
-        $kernel->boot();
+        parent::setUp();
 
-        $this->bootedkernel = $kernel;
-
-        $this->repository = $kernel->getContainer()->get('app.places.cities.repository.doctrine');
+        $this->repository = $this->getService(DoctrineCitiesRepository::class);
+        $this->entityManager = $this->getService(EntityManagerInterface::class);
     }
 
     /** @test */
@@ -31,7 +54,7 @@ class DoctrineCitiesRepositoryTest extends KernelTestCase
         $toBeFound = new City('1', 'To be found');
         $nonImportant = new City('2', 'Non-important');
 
-        $em = $this->bootedkernel->getContainer()->get('doctrine.orm.entity_manager');
+        $em = $this->entityManager;
 
         $em->persist($toBeFound);
         $em->persist($nonImportant);

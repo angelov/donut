@@ -3,8 +3,4 @@ services:
     _defaults:
         public: false
         autowire: true
-
-    Angelov\Donut\Movies\MoviesList\MoviesListInterface: '@app.movies.movies_list'
-
-    app.movies.movies_list:
-        class: 'Angelov\Donut\Movies\MoviesList\DoctrineMoviesList'
+        autoconfigure: true

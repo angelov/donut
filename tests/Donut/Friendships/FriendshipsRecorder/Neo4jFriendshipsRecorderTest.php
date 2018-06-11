@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,22 +20,20 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace Angelov\Donut\Tests\Friendships\FriendshipsRecorder;
 
+use Angelov\Donut\Tests\Donut\TestCase;
 use AppBundle\Factories\FriendshipsFactory;
 use AppBundle\Factories\UsersFactory;
 use GraphAware\Neo4j\Client\Client;
-use Angelov\Donut\Friendships\Friendship;
 use Angelov\Donut\Friendships\FriendshipsRecorder\Neo4jFriendshipsRecorder;
-use Angelov\Donut\Users\User;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class Neo4jFriendshipsRecorderTest extends KernelTestCase
+class Neo4jFriendshipsRecorderTest extends TestCase
 {
     /** @var Neo4jFriendshipsRecorder */
     private $recorder;
@@ -49,15 +47,14 @@ class Neo4jFriendshipsRecorderTest extends KernelTestCase
     /** @var $usersFactory UsersFactory */
     private $usersFactory;
 
-    public function setUp()
+    protected function setUp()
     {
-        $kernel = self::createKernel();
-        $kernel->boot();
+        parent::setUp();
 
-        $this->recorder = $kernel->getContainer()->get('app.friendships.friendships_recorder.neo4j');
-        $this->client = $kernel->getContainer()->get('app.neo4j.client.default');
-        $this->friendshipsFactory = $kernel->getContainer()->get('app.factories.friendships');
-        $this->usersFactory = $kernel->getContainer()->get('app.factories.users.faker');
+        $this->recorder = $this->getService(Neo4jFriendshipsRecorder::class);
+        $this->client = $this->getService(Client::class);
+        $this->friendshipsFactory = $this->getService(FriendshipsFactory::class);
+        $this->usersFactory = $this->getService(UsersFactory::class);
     }
 
     /** @test */

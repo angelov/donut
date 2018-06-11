@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,18 +20,18 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace Angelov\Donut\Tests\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver;
 
+use Angelov\Donut\Tests\Donut\TestCase;
 use GraphAware\Neo4j\Client\Client;
 use Angelov\Donut\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver\IdsResolver;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class IdsResolverTest extends KernelTestCase
+class IdsResolverTest extends TestCase
 {
     /** @var Client */
     private $client;
@@ -39,13 +39,12 @@ class IdsResolverTest extends KernelTestCase
     /** @var IdsResolver */
     private $resolver;
 
-    public function setUp()
+    protected function setUp()
     {
-        $kernel = self::createKernel();
-        $kernel->boot();
+        parent::setUp();
 
-        $this->client = $kernel->getContainer()->get('app.neo4j.client.default');
-        $this->resolver = $kernel->getContainer()->get('app.mutual_friends_resolver.neo4j.ids_resolver');
+        $this->client = $this->getService(Client::class);
+        $this->resolver = $this->getService(IdsResolver::class);
 
         $this->client->run('MATCH (n) DETACH DELETE n');
     }

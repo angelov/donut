@@ -4,7 +4,7 @@ namespace spec\Angelov\Donut\Places\Repositories;
 
 use Angelov\Donut\Places\Repositories\DoctrineCitiesRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Donut\Places\Repositories\CitiesRepositoryInterface;
+use Angelov\Donut\Places\Repositories\CitiesRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class DoctrineCitiesRepositorySpec extends ObjectBehavior

@@ -3,6 +3,7 @@ services:
     _defaults:
         public: false
         autowire: true
+        autoconfigure: true
 
     # feed
 
@@ -47,12 +48,11 @@ services:
 
     app.thoughts.thoughts_counter.logging:
         class: 'Angelov\Donut\Thoughts\ThoughtsCounter\LoggingThoughtsCounter'
-        decorates: Angelov\Donut\Thoughts\ThoughtsCounter\RedisThoughtsCounter
-        arguments: ['@app.thoughts.thoughts_counter.logging.inner', '@logger']
+        arguments: ['@app.thoughts.thoughts_counter.redis', '@logger']
 
     app.thoughts.thoughts_counter.ensuring_default_value:
         class: 'Angelov\Donut\Thoughts\ThoughtsCounter\EnsuringDefaultValueThoughtCounter'
-        decorates: Angelov\Donut\Thoughts\ThoughtsCounter\LoggingThoughtsCounter
+        arguments: ['@app.thoughts.thoughts_counter.logging']
 
     app.thoughts.thoughts_counter.twig.exstension:
         class: 'Angelov\Donut\Thoughts\ThoughtsCounter\Twig\ThoughtsCounterExtension'

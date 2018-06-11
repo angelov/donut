@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,24 +20,22 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace Angelov\Donut\Tests\Friendships\FriendshipRequests\Repositories;
 
+use Angelov\Donut\Tests\Donut\TestCase;
 use AppBundle\Factories\FriendshipsFactory;
 use AppBundle\Factories\UsersFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Angelov\Donut\Friendships\Friendship;
-use Angelov\Donut\Friendships\FriendshipRequests\FriendshipRequest;
 use Angelov\Donut\Friendships\Repositories\DoctrineFriendshipsRepository;
 use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
-use Angelov\Donut\Users\User;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class DoctrineFriendshipsRepositoryTest extends KernelTestCase
+class DoctrineFriendshipsRepositoryTest extends TestCase
 {
     /** @var DoctrineFriendshipsRepository */
     private $repository;
@@ -54,16 +52,15 @@ class DoctrineFriendshipsRepositoryTest extends KernelTestCase
     /** @var UsersRepositoryInterface */
     private $usersRepository;
 
-    public function setUp()
+    protected function setUp()
     {
-        $kernel = self::createKernel();
-        $kernel->boot();
+        parent::setUp();
 
-        $this->repository = $kernel->getContainer()->get('app.friendships.repositories.doctrine');
-        $this->entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $this->friendshipsFactory = $kernel->getContainer()->get('app.factories.friendships');
-        $this->usersFactory =  $kernel->getContainer()->get('app.factories.users.faker');
-        $this->usersRepository = $kernel->getContainer()->get('app.users.repository.default');
+        $this->repository = $this->getService(DoctrineFriendshipsRepository::class);
+        $this->entityManager = $this->getService(EntityManagerInterface::class);
+        $this->friendshipsFactory = $this->getService(FriendshipsFactory::class);
+        $this->usersFactory = $this->getService(UsersFactory::class);
+        $this->usersRepository = $this->getService(UsersRepositoryInterface::class);
     }
 
     /** @test */

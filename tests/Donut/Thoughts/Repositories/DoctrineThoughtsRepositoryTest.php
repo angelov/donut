@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,20 +20,20 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
 namespace Angelov\Donut\Tests\Thoughts\Repositories;
 
+use Angelov\Donut\Tests\Donut\TestCase;
 use AppBundle\Factories\ThoughtsFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Angelov\Donut\Thoughts\Repositories\DoctrineThoughtsRepository;
 use Angelov\Donut\Thoughts\Thought;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class DoctrineThoughtsRepositoryTest extends KernelTestCase
+class DoctrineThoughtsRepositoryTest extends TestCase
 {
     /** @var EntityManagerInterface */
     private $em;
@@ -44,14 +44,13 @@ class DoctrineThoughtsRepositoryTest extends KernelTestCase
     /** @var ThoughtsFactory */
     private $thoughtsFactory;
 
-    public function setUp()
+    protected function setUp()
     {
-        $kernel = self::createKernel();
-        $kernel->boot();
+        parent::setUp();
 
-        $this->repository = $kernel->getContainer()->get('app.thoughts.repositories.doctrine');
-        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $this->thoughtsFactory = $kernel->getContainer()->get('app.factories.thoughts.faker');
+        $this->repository = $this->getService(DoctrineThoughtsRepository::class);
+        $this->em = $this->getService(EntityManagerInterface::class);
+        $this->thoughtsFactory = $this->getService(ThoughtsFactory::class);
     }
 
     /** @test */
