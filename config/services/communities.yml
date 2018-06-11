@@ -2,6 +2,7 @@ services:
 
     _defaults:
         public: true
+        autowire: true
 
     # repositories
 
@@ -9,14 +10,13 @@ services:
 
     app.communities.repositories.doctrine:
         class: 'Angelov\Donut\Communities\Repositories\DoctrineCommunitiesRepository'
-        arguments: ['@doctrine.orm.entity_manager']
 
 
     # form
 
     app.communities.form.community_type:
         class: 'Angelov\Donut\Communities\Form\CommunityType'
-        arguments: ['@app.users.security.current_user', '@app.core.uuid_generator']
+        arguments: ['@app.users.security.current_user', '@Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface']
         tags:
             - { name: 'form.type' }
 
@@ -25,18 +25,15 @@ services:
 
     app.communities.handlers.store:
         class: 'Angelov\Donut\Communities\Handlers\StoreCommunityCommandHandler'
-        autowire: true
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\StoreCommunityCommand' }
 
     app.communities.handlers.join:
         class: 'Angelov\Donut\Communities\Handlers\JoinCommunityCommandHandler'
-        autowire: true
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\JoinCommunityCommand' }
 
     app.communities.handlers.leave:
         class: 'Angelov\Donut\Communities\Handlers\LeaveCommunityCommandHandler'
-        autowire: true
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Communities\Commands\LeaveCommunityCommand' }

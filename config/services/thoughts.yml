@@ -2,6 +2,7 @@ services:
 
     _defaults:
         public: true
+        autowire: true
 
     # feed
 
@@ -14,11 +15,12 @@ services:
 
     # repositories
 
+    Angelov\Donut\Thoughts\Repositories\ThoughtsRepositoryInterface: '@app.thoughts.repositories.doctrine'
+
     app.thoughts.repositories.default: '@app.thoughts.repositories.doctrine'
 
     app.thoughts.repositories.doctrine:
         class: 'Angelov\Donut\Thoughts\Repositories\DoctrineThoughtsRepository'
-        arguments: ['@doctrine.orm.entity_manager']
 
 
     # form
@@ -32,23 +34,28 @@ services:
 
     # thoughts counter
 
+    Angelov\Donut\Thoughts\ThoughtsCounter\ThoughtsCounterInterface: '@app.thoughts.thoughts_counter.ensuring_default_value'
+
     app.thoughts.thoughts_counter.default: '@app.thoughts.thoughts_counter.ensuring_default_value'
+
+    Angelov\Donut\Thoughts\ThoughtsCounter\RedisThoughtsCounter: '@app.thoughts.thoughts_counter.redis'
 
     app.thoughts.thoughts_counter.redis:
         class: 'Angelov\Donut\Thoughts\ThoughtsCounter\RedisThoughtsCounter'
-        arguments: ['@snc_redis.default']
+
+    Angelov\Donut\Thoughts\ThoughtsCounter\LoggingThoughtsCounter: '@app.thoughts.thoughts_counter.logging'
 
     app.thoughts.thoughts_counter.logging:
         class: 'Angelov\Donut\Thoughts\ThoughtsCounter\LoggingThoughtsCounter'
-        arguments: ['@app.thoughts.thoughts_counter.redis', '@logger']
+        decorates: Angelov\Donut\Thoughts\ThoughtsCounter\RedisThoughtsCounter
+        arguments: ['@app.thoughts.thoughts_counter.logging.inner', '@logger']
 
     app.thoughts.thoughts_counter.ensuring_default_value:
         class: 'Angelov\Donut\Thoughts\ThoughtsCounter\EnsuringDefaultValueThoughtCounter'
-        arguments: ['@app.thoughts.thoughts_counter.logging']
+        decorates: Angelov\Donut\Thoughts\ThoughtsCounter\LoggingThoughtsCounter
 
     app.thoughts.thoughts_counter.twig.exstension:
         class: 'Angelov\Donut\Thoughts\ThoughtsCounter\Twig\ThoughtsCounterExtension'
-        arguments: ['@app.thoughts.thoughts_counter.default']
         tags:
             - { name: 'twig.extension' }
 
@@ -57,13 +64,11 @@ services:
 
     app.thoughts.handlers.store:
         class: 'Angelov\Donut\Thoughts\Handlers\StoreThoughtCommandHandler'
-        arguments: ['@app.thoughts.repositories.default', '@app.users.repository.default', '@app.core.event_bus.default']
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Thoughts\Commands\StoreThoughtCommand' }
 
     app.thoughts.handlers.delete:
         class: 'Angelov\Donut\Thoughts\Handlers\DeleteThoughtCommandHandler'
-        arguments: ['@app.thoughts.repositories.default', '@app.core.event_bus.default']
         tags:
             - { name: 'command_handler', handles: 'Angelov\Donut\Thoughts\Commands\DeleteThoughtCommand' }
 
@@ -72,12 +77,10 @@ services:
 
     app.thoughts.event_subscribers.increase_thoughts_number_for_user:
         class: 'Angelov\Donut\Thoughts\EventSubscribers\IncreaseThoughtsNumberForUser'
-        arguments: ['@app.thoughts.thoughts_counter.default']
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Thoughts\Events\ThoughtWasPublishedEvent' }
 
     app.thoughts.event_subscribers.decrease_thoughts_number_for_user:
         class: 'Angelov\Donut\Thoughts\EventSubscribers\DecreaseThoughtsNumberForUser'
-        arguments: ['@app.thoughts.thoughts_counter.default']
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Thoughts\Events\ThoughtWasDeletedEvent' }

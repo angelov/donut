@@ -27,7 +27,7 @@
 
 namespace Angelov\Donut\Core\UuidGenerator;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\UuidGenerator;
 
 class DoctrineUuidGeneratorAdapter implements UuidGeneratorInterface
@@ -35,7 +35,7 @@ class DoctrineUuidGeneratorAdapter implements UuidGeneratorInterface
     private $entityManager;
     private $baseGenerator;
 
-    public function __construct(EntityManager $entityManager, UuidGenerator $baseGenerator)
+    public function __construct(EntityManagerInterface $entityManager, UuidGenerator $baseGenerator)
     {
         $this->entityManager = $entityManager;
         $this->baseGenerator = $baseGenerator;

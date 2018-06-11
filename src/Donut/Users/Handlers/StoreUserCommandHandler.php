@@ -2,7 +2,7 @@
 
 /**
  * Donut Social Network - Yet another experimental social network.
- * Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  *
  * This file is part of Donut Social Network.
  *
@@ -20,7 +20,7 @@
  * along with Donut Social Network.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package Donut Social Network
- * @copyright Copyright (C) 2016-2017, Dejan Angelov <angelovdejan92@gmail.com>
+ * @copyright Copyright (C) 2016-2018, Dejan Angelov <angelovdejan92@gmail.com>
  * @license https://github.com/angelov/donut/blob/master/LICENSE
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
@@ -36,7 +36,7 @@ use Angelov\Donut\Users\Exceptions\EmailTakenException;
 use Angelov\Donut\Users\Repositories\UsersRepositoryInterface;
 use Angelov\Donut\Users\User;
 use Donut\Places\Repositories\CitiesRepositoryInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class StoreUserCommandHandler
 {
@@ -49,7 +49,7 @@ class StoreUserCommandHandler
     public function __construct(
         UsersRepositoryInterface $users,
         CitiesRepositoryInterface $cities,
-        UserPasswordEncoder $passwordEncoder,
+        UserPasswordEncoderInterface $passwordEncoder,
         EmailAvailabilityCheckerInterface $emailAvailabilityChecker,
         EventBusInterface $eventBus
     ) {

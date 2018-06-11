@@ -2,6 +2,7 @@ services:
 
     _defaults:
         public: true
+        autowire: true
 
     app.security.voter.delete_thought_voter:
         class: 'AppBundle\Security\Voter\DeleteThoughtVoter'
@@ -10,14 +11,12 @@ services:
 
     app.users.register_residency:
         class: 'AppBundle\FriendsSuggestions\RegisterUserResidencyInNeo4j'
-        arguments: ['@neo4j.client.default']
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Users\Events\UserRegisteredEvent' }
 
 
     app.users.send_welcoming_email:
         class: 'AppBundle\EventSubscribers\Users\SendWelcomingEmail'
-        arguments: ['@mailer', '@twig']
         tags:
             - { name: 'asynchronous_event_subscriber', subscribes_to: 'Angelov\Donut\Users\Events\UserRegisteredEvent' }
 
@@ -25,25 +24,24 @@ services:
         class: 'Faker\Generator'
         factory: ['Faker\Factory', 'create']
 
+    AppBundle\Factories\CitiesFactory: '@app.factories.cities.faker'
+
     app.factories.cities.faker:
         class: 'AppBundle\Factories\CitiesFactory'
-        arguments: ['@app.core.faker', '@app.core.uuid_generator']
+
+    AppBundle\Factories\UsersFactory: '@app.factories.users.faker'
 
     app.factories.users.faker:
         class: 'AppBundle\Factories\UsersFactory'
-        arguments: ['@app.core.faker', '@app.core.uuid_generator', '@app.factories.cities.faker']
 
     app.factories.communities.faker:
         class: 'AppBundle\Factories\CommunitiesFactory'
-        arguments: ['@app.core.faker', '@app.core.uuid_generator', '@app.factories.users.faker']
 
     app.factories.thoughts.faker:
         class: 'AppBundle\Factories\ThoughtsFactory'
-        arguments: ['@app.core.faker', '@app.core.uuid_generator', '@app.factories.users.faker']
 
     app.factories.friendships:
         class: 'AppBundle\Factories\FriendshipsFactory'
-        arguments: ['@app.core.uuid_generator', '@app.factories.users.faker']
 
 
 
@@ -60,3 +58,5 @@ services:
     GraphAware\Neo4j\Client\Client: "@neo4j.client.default"
 
     app.neo4j.client.default: "@neo4j.client.default"
+
+    Predis\Client: '@snc_redis.default'
