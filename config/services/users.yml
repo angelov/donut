@@ -1,0 +1,69 @@
+services:
+
+    _defaults:
+        public: true
+
+    # repositories
+
+    app.users.repository.default: '@app.users.repository.doctrine'
+
+    app.users.repository.doctrine:
+        class: 'Angelov\Donut\Users\Repositories\DoctrineUsersRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+
+    # email availability checker
+
+    app.users.email_availability_checker.default: '@app.users.email_availability_checker.repository'
+
+    app.users.email_availability_checker.repository:
+        class: 'Angelov\Donut\Users\EmailAvailabilityChecker\EmailAvailabilityChecker'
+        arguments: ['@app.users.repository.default']
+
+
+    # security
+
+    app.users.security.current_user_resolver:
+        class: 'Angelov\Donut\Users\Security\CurrentUserResolver\CurrentUserResolver'
+        arguments: ['@security.token_storage']
+
+    app.users.security.current_user:
+        class: 'Angelov\Donut\Users\User'
+        factory: ['@app.users.security.current_user_resolver', 'getUser']
+
+    app.users.security.user_provider:
+        class: 'Angelov\Donut\Users\Security\Provider\RepositoryUserProvider'
+        arguments: ['@app.users.repository.default']
+
+
+    # form
+
+    app.users.form.registration:
+        class: 'Angelov\Donut\Users\Form\UserRegistrationForm'
+        arguments: ['@doctrine.orm.entity_manager', '@app.core.uuid_generator']
+        tags:
+            - { name: 'form.type' }
+
+
+    # validation
+
+    app.users.validation.validators.unique_email:
+        class: 'Angelov\Donut\Users\Validation\Validators\UniqueEmailValidator'
+        arguments: ['@app.users.email_availability_checker.repository']
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+
+    # command handlers
+
+    app.users.handlers.store:
+        class: 'Angelov\Donut\Users\Handlers\StoreUserCommandHandler'
+        arguments:
+            - '@app.users.repository.default'
+            - '@app.places.cities.repository.default'
+            - '@security.password_encoder'
+            - '@app.users.email_availability_checker.default'
+            - '@app.core.event_bus.default'
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Users\Commands\StoreUserCommand' }

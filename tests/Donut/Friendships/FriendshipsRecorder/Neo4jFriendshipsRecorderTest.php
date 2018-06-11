@@ -55,7 +55,7 @@ class Neo4jFriendshipsRecorderTest extends KernelTestCase
         $kernel->boot();
 
         $this->recorder = $kernel->getContainer()->get('app.friendships.friendships_recorder.neo4j');
-        $this->client = $kernel->getContainer()->get('neo4j.client.default');
+        $this->client = $kernel->getContainer()->get('app.neo4j.client.default');
         $this->friendshipsFactory = $kernel->getContainer()->get('app.factories.friendships');
         $this->usersFactory = $kernel->getContainer()->get('app.factories.users.faker');
     }

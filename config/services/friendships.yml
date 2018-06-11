@@ -1,0 +1,117 @@
+services:
+
+    _defaults:
+        public: true
+
+    # repositories
+
+    app.friendships.friendship_requests.repositories.default: '@app.friendships.friendship_requests.repositories.doctrine'
+
+    app.friendships.friendship_requests.repositories.doctrine:
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Repositories\DoctrineFriendshipRequestsRepository'
+        arguments: ['@doctrine.orm.entity_manager']
+
+    app.friendships.repositories.default: '@app.friendships.repositories.doctrine'
+
+    app.friendships.repositories.doctrine:
+        class: 'Angelov\Donut\Friendships\Repositories\DoctrineFriendshipsRepository'
+        arguments: ['@doctrine.orm.entity_manager']
+
+
+    # handlers
+
+    app.friendships.friendship_requests.handlers.send:
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\SendFriendshipRequestCommandHandler'
+        arguments: ['@app.friendships.friendship_requests.repositories.default', '@app.users.repository.default']
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\SendFriendshipRequestCommand' }
+
+    app.friendships.friendship_requests.handlers.cancel:
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\CancelFriendshipRequestCommandHandler'
+        arguments: ['@app.friendships.friendship_requests.repositories.default']
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\CancelFriendshipRequestCommand' }
+
+    app.friendships.friendship_requests.handlers.decline:
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\DeclineFriendshipRequestCommandHandler'
+        arguments: ['@app.friendships.friendship_requests.repositories.default']
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\DeclineFriendshipRequestCommand' }
+
+    app.friendships.friendship_requests.handlers.accept:
+        class: 'Angelov\Donut\Friendships\FriendshipRequests\Handlers\AcceptFriendshipRequestCommandHandler'
+        arguments:
+            - '@app.friendships.friendship_requests.repositories.default'
+            - '@app.core.uuid_generator'
+            - '@app.core.command_bus.default'
+            - '@app.core.event_bus.default'
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\FriendshipRequests\Commands\AcceptFriendshipRequestCommand' }
+
+    app.friendships.handlers.delete:
+        class: 'Angelov\Donut\Friendships\Handlers\DeleteFriendshipCommandHandler'
+        arguments: ['@app.friendships.repositories.default', '@app.core.event_bus.default']
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\Commands\DeleteFriendshipCommand' }
+
+    app.friendships.handlers.store:
+        class: 'Angelov\Donut\Friendships\Handlers\StoreFriendshipCommandHandler'
+        arguments: ['@app.friendships.repositories.default', '@app.users.repository.default', '@app.core.event_bus.default']
+        tags:
+            - { name: 'command_handler', handles: 'Angelov\Donut\Friendships\Commands\StoreFriendshipCommand' }
+
+
+    # event subscribers
+
+    app.friendships.event_subsribers.record_created_friendship:
+        class: 'Angelov\Donut\Friendships\EventSubscribers\RecordCreatedFriendship'
+        arguments: ['@app.friendships.friendships_recorder.neo4j']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasCreatedEvent' }
+
+    app.friendships.event_subscribers.record_deleted_friendship:
+        class: 'Angelov\Donut\Friendships\EventSubscribers\RecordDeletedFriendship'
+        arguments: ['@app.friendships.friendships_recorder.neo4j']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasDeletedEvent' }
+
+    app.friendships.event_subscribers.delete_inverse_friendship:
+        class: 'Angelov\Donut\Friendships\EventSubscribers\DeleteInverseFriendship'
+        arguments: ['@app.friendships.repositories.default']
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasDeletedEvent' }
+
+
+    # friendships recorder
+
+    app.friendships.friendships_recorder.neo4j:
+        class: 'Angelov\Donut\Friendships\FriendshipsRecorder\Neo4jFriendshipsRecorder'
+        arguments: ['@neo4j.client.default']
+
+
+    # mutual friends resolver
+
+    app.mutual_friends_resolver.default: '@app.mutual_friends_resolver.neo4j'
+
+    app.mutual_friends_resolver.neo4j:
+        class: 'Angelov\Donut\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver\Neo4jMutualFriendsResolver'
+        arguments:
+            - '@app.mutual_friends_resolver.neo4j.ids_resolver'
+            - '@app.friendships.mutual_friends_resolver.users_provider.repository'
+
+    app.mutual_friends_resolver.neo4j.ids_resolver:
+        class: 'Angelov\Donut\Friendships\MutualFriendsResolver\Neo4jMutualFriendsResolver\IdsResolver'
+        arguments:
+            - '@neo4j.client.default'
+
+    app.friendships.mutual_friends_resolver.users_provider.repository:
+        class: 'Angelov\Donut\Friendships\MutualFriendsResolver\UsersProvider\RepositoryUsersProvider'
+        arguments:
+            - '@app.users.repository.default'
+
+    app.friendships.mutual_friends_resolver.mutual_friends_exstension:
+          class: 'Angelov\Donut\Friendships\MutualFriendsResolver\Twig\MutualFriendsExtension'
+          arguments:
+              - '@app.mutual_friends_resolver.default'
+          tags:
+              - { name: 'twig.extension' }

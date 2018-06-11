@@ -1,0 +1,5 @@
+simple_bus_rabbit_mq_bundle_bridge:
+    events:
+        # this producer service will be defined by OldSoundRabbitMqBundle,
+        # its name is old_sound_rabbit_mq.%producer_name%_producer
+        producer_service_id: old_sound_rabbit_mq.asynchronous_events_producer

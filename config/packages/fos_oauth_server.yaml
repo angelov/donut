@@ -1,0 +1,9 @@
+fos_oauth_server:
+    authorize: false
+    db_driver:           orm
+    client_class:        ApiBundle\Oauth2\Client
+    access_token_class:  ApiBundle\Oauth2\AccessToken
+    refresh_token_class: ApiBundle\Oauth2\RefreshToken
+    auth_code_class:     ApiBundle\Oauth2\AuthCode
+    service:
+        user_provider: 'app.users.security.user_provider'
