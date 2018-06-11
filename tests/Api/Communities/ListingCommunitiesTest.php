@@ -27,10 +27,9 @@
 
 namespace Angelov\Donut\Tests\Api;
 
-use Lakion\ApiTestCase\JsonApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListingCommunitiesTest extends JsonApiTestCase
+class ListingCommunitiesTest extends ApiTestCase
 {
     /** @test */
     public function listing_the_communities_as_non_authenticated_user()

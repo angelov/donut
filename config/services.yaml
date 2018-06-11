@@ -1,0 +1,19 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'en'
+#    neo4j_host: neo4j
+#    neo4j_port: 7687
+#    neo4j_username: neo4j
+#    neo4j_password: blabla
+
+imports:
+    - { resource: 'services/to_refactor.yml' }
+
+    - { resource: 'services/core.yml' }
+    - { resource: 'services/users.yml' }
+    - { resource: 'services/thoughts.yml' }
+    - { resource: 'services/communities.yml' }
+    - { resource: 'services/friendships.yml' }
+    - { resource: 'services/movies.yml' }
+    - { resource: 'services/places.yml' }

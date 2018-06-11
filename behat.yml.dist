@@ -9,7 +9,13 @@ default:
             sessions:
                 symfony:
                     symfony: ~
-        FriendsOfBehat\SymfonyExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            env_file: .env
+            kernel:
+                class: 'AppBundle\Kernel'
+                path: src/AppBundle/Kernel.php
+                debug: true
+                bootstrap: features/bootstrap/bootstrap.php
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\ContextServiceExtension:
             imports:

@@ -1,0 +1,5 @@
+neo4j:
+  connections:
+    default:
+      scheme: bolt
+      dsn: "%env(resolve:NEO4J_DSN)%"
