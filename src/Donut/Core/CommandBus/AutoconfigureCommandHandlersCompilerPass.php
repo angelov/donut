@@ -25,7 +25,7 @@
  * @author Dejan Angelov <angelovdejan92@gmail.com>
  */
 
-namespace Donut\Core\CommandBus;
+namespace Angelov\Donut\Core\CommandBus;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -33,8 +33,8 @@ services:
 
 #### CORE
 
-    # uuid generator
-
+    GraphAware\Neo4j\Client\Client: "@neo4j.client.default"
+    Predis\Client: '@snc_redis.default'
     Doctrine\ORM\Id\UuidGenerator: ~
 
     # command bus
@@ -42,7 +42,7 @@ services:
         autowire: false
         arguments: ['@simple_bus.command_bus']
 
-#    # event bus
+    # event bus
     Angelov\Donut\Core\EventBus\SimpleBusAdapter:
         autowire: false
         arguments: ['@simple_bus.event_bus']
@@ -50,43 +50,31 @@ services:
 
 #### USERS
 
-
     # security
 
     Angelov\Donut\Users\User:
         factory: ['@Angelov\Donut\Users\Security\CurrentUserResolver\CurrentUserResolver', 'getUser']
 
 
-
-### MESSY
-
-
-    app.users.register_residency:
-        class: 'AppBundle\FriendsSuggestions\RegisterUserResidencyInNeo4j'
-        public: true
-        tags:
-            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Users\Events\UserRegisteredEvent' }
-
-
-    app.users.send_welcoming_email:
-        class: 'AppBundle\EventSubscribers\Users\SendWelcomingEmail'
-        public: true
-        tags:
-            - { name: 'asynchronous_event_subscriber', subscribes_to: 'Angelov\Donut\Users\Events\UserRegisteredEvent' }
-
-
+#### MESSY
 
     app.api.serialization.community:
         class: 'ApiBundle\Serialization\CommunityHandler'
         tags:
             - { name: 'jms_serializer.subscribing_handler', type: 'Angelov\Donut\Communities\Community', format: 'json' }
 
+    AppBundle\FriendsSuggestions\RegisterUserResidencyInNeo4j:
+        public: true
+        tags:
+            - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Users\Events\UserRegisteredEvent' }
 
-    GraphAware\Neo4j\Client\Client: "@neo4j.client.default"
+    AppBundle\EventSubscribers\Users\SendWelcomingEmail:
+        public: true
+        tags:
+            - { name: 'asynchronous_event_subscriber', subscribes_to: 'Angelov\Donut\Users\Events\UserRegisteredEvent' }
 
 
-####### THOUGHTS
-
+#### THOUGHTS
 
     # thoughts counter
 
@@ -112,40 +100,32 @@ services:
 
     # event subscribers
 
-    app.thoughts.event_subscribers.increase_thoughts_number_for_user:
-        class: 'Angelov\Donut\Thoughts\EventSubscribers\IncreaseThoughtsNumberForUser'
+    Angelov\Donut\Thoughts\EventSubscribers\IncreaseThoughtsNumberForUser:
         public: true
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Thoughts\Events\ThoughtWasPublishedEvent' }
 
-    app.thoughts.event_subscribers.decrease_thoughts_number_for_user:
-        class: 'Angelov\Donut\Thoughts\EventSubscribers\DecreaseThoughtsNumberForUser'
+    Angelov\Donut\Thoughts\EventSubscribers\DecreaseThoughtsNumberForUser:
         public: true
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Thoughts\Events\ThoughtWasDeletedEvent' }
 
-    Predis\Client: '@snc_redis.default'
 
-
-
-##### FRIENDSHIPS
+#### FRIENDSHIPS
 
     # event subscribers
 
-    app.friendships.event_subsribers.record_created_friendship:
-        class: 'Angelov\Donut\Friendships\EventSubscribers\RecordCreatedFriendship'
+    Angelov\Donut\Friendships\EventSubscribers\RecordCreatedFriendship:
         public: true
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasCreatedEvent' }
 
-    app.friendships.event_subscribers.record_deleted_friendship:
-        class: 'Angelov\Donut\Friendships\EventSubscribers\RecordDeletedFriendship'
+    Angelov\Donut\Friendships\EventSubscribers\RecordDeletedFriendship:
         public: true
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasDeletedEvent' }
 
-    app.friendships.event_subscribers.delete_inverse_friendship:
-        class: 'Angelov\Donut\Friendships\EventSubscribers\DeleteInverseFriendship'
+    Angelov\Donut\Friendships\EventSubscribers\DeleteInverseFriendship:
         public: true
         tags:
             - { name: 'event_subscriber', subscribes_to: 'Angelov\Donut\Friendships\Events\FriendshipWasDeletedEvent' }

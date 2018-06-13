@@ -27,7 +27,7 @@
 
 namespace Angelov\Donut\Tests\Donut\Core\CommandBus;
 
-use Donut\Core\CommandBus\AutoconfigureCommandHandlersCompilerPass;
+use Angelov\Donut\Core\CommandBus\AutoconfigureCommandHandlersCompilerPass;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
