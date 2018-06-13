@@ -2,9 +2,11 @@
 
 namespace AppBundle;
 
+use Donut\Core\CommandBus\AutoconfigureCommandHandlersCompilerPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -33,6 +35,11 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
+    }
+
+    protected function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new AutoconfigureCommandHandlersCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1000);
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
