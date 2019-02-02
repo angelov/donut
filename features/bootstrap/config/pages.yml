@@ -2,7 +2,7 @@ services:
 
     app.behat.pages.abstract:
         abstract: true
-        arguments: ['@mink.default_session', '@__symfony__.router']
+        arguments: ['@behat.mink.default_session', '@router']
 
     # users
 

@@ -10,21 +10,15 @@ default:
                 symfony:
                     symfony: ~
         FriendsOfBehat\SymfonyExtension:
-            env_file: .env
             kernel:
                 class: 'AppBundle\Kernel'
                 path: src/AppBundle/Kernel.php
                 debug: true
-                bootstrap: features/bootstrap/bootstrap.php
-        FriendsOfBehat\CrossContainerExtension: ~
-        FriendsOfBehat\ContextServiceExtension:
-            imports:
-                - 'features/bootstrap/config/services.yml'
         FriendsOfBehat\VariadicExtension: ~
 
     suites:
         registration:
-            contexts_services:
+            contexts:
                 - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.users'
@@ -34,7 +28,7 @@ default:
                 tags: "@users"
 
         login:
-            contexts_services:
+            contexts:
                 - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.users'
@@ -43,7 +37,7 @@ default:
                 tags: "@login"
 
         thoughts:
-            contexts_services:
+            contexts:
                 - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
@@ -56,7 +50,7 @@ default:
                 tags: '@thoughts'
 
         creating_communities:
-            contexts_services:
+            contexts:
                 - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
@@ -65,7 +59,7 @@ default:
                 tags: '@creating_communities'
 
         browsing_communities:
-            contexts_services:
+            contexts:
                 - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.setup.users'
                 - 'app.feature_contexts.hooks.doctrine'
@@ -76,7 +70,7 @@ default:
                 tags: '@browsing_communities'
 
         viewing_communities:
-            contexts_services:
+            contexts:
                 - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
@@ -87,7 +81,7 @@ default:
                 tags: '@viewing_communities'
 
         viewing_user_profile:
-            contexts_services:
+            contexts:
                 - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
@@ -99,7 +93,7 @@ default:
                 tags: '@viewing_user_profile'
 
         managing_friendships:
-            contexts_services:
+            contexts:
                 - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
@@ -111,7 +105,7 @@ default:
                 tags: '@managing_friendships'
 
         browsing_users:
-            contexts_services:
+            contexts:
                 - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'
@@ -123,7 +117,7 @@ default:
                 tags: '@browsing_users'
 
         browsing_movies:
-            contexts_services:
+            contexts:
                 - 'app.feature_contexts.hooks.redis'
                 - 'app.feature_contexts.hooks.doctrine'
                 - 'app.feature_contexts.setup.security'

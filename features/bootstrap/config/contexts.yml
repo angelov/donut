@@ -1,72 +1,72 @@
 services:
 
     _defaults:
-        tags: ['fob.context_service']
+        public: true
 
     app.feature_contexts.hooks.doctrine:
         class: 'Angelov\Donut\Behat\Hooks\PurgeDatabase'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager']
 
     app.feature_contexts.hooks.redis:
         class: 'Angelov\Donut\Behat\Hooks\RedisDatabaseCleanerHookContext'
-        arguments: ['@__symfony__.snc_redis.default']
+        arguments: ['@snc_redis.default']
 
     app.feature_contexts.setup.users:
         class: 'AppBundle\FeatureContexts\Setup\UsersContext'
         arguments:
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.security.password_encoder'
+            - '@doctrine.orm.entity_manager'
+            - '@security.password_encoder'
             - '@app.behat.storage'
-            - '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
-            - '@__symfony__.Angelov\Donut\Users\Repositories\UsersRepositoryInterface'
-            - '@__symfony__.Angelov\Donut\Core\CommandBus\CommandBusInterface'
+            - '@Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
+            - '@Angelov\Donut\Users\Repositories\UsersRepositoryInterface'
+            - '@Angelov\Donut\Core\CommandBus\CommandBusInterface'
 
     app.feature_contexts.setup.thoughts:
         class: 'AppBundle\FeatureContexts\Setup\ThoughtsContext'
-        arguments: ['@app.behat.storage', '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface', '@__symfony__.Angelov\Donut\Core\CommandBus\CommandBusInterface']
+        arguments: ['@app.behat.storage', '@Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface', '@Angelov\Donut\Core\CommandBus\CommandBusInterface']
 
     app.feature_contexts.setup.communities:
         class: 'AppBundle\FeatureContexts\Setup\CommunitiesContext'
         arguments:
-            - '@__symfony__.Angelov\Donut\Core\CommandBus\CommandBusInterface'
+            - '@Angelov\Donut\Core\CommandBus\CommandBusInterface'
             - '@app.behat.storage'
-            - '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
-            - '@__symfony__.Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface'
+            - '@Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
+            - '@Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface'
 
     app.feature_contexts.setup.friendships:
         class: 'AppBundle\FeatureContexts\Setup\FriendshipsContext'
         arguments:
             - '@app.behat.storage'
-            - '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
-            - '@__symfony__.Angelov\Donut\Core\CommandBus\CommandBusInterface'
-            - '@__symfony__.Angelov\Donut\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface'
+            - '@Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
+            - '@Angelov\Donut\Core\CommandBus\CommandBusInterface'
+            - '@Angelov\Donut\Friendships\FriendshipRequests\Repositories\FriendshipRequestsRepositoryInterface'
 
     app.feature_contexts.setup.movies:
         class: 'AppBundle\FeatureContexts\Setup\MoviesContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface']
+        arguments: ['@doctrine.orm.entity_manager', '@app.behat.storage', '@Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface']
 
     app.feature_contexts.setup.movie_genres:
         class: 'AppBundle\FeatureContexts\Setup\MovieGenresContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface']
+        arguments: ['@doctrine.orm.entity_manager', '@app.behat.storage', '@Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface']
 
     app.feature_contexts.setup.cities:
         class: 'AppBundle\FeatureContexts\Setup\CitiesContext'
-        arguments: ['@__symfony__.doctrine.orm.entity_manager', '@app.behat.storage', '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface']
+        arguments: ['@doctrine.orm.entity_manager', '@app.behat.storage', '@Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface']
 
     app.feature_contexts.setup.security:
         class: 'AppBundle\FeatureContexts\Setup\SecurityContext'
         arguments:
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.session'
-            - '@mink.default_session'
+            - '@doctrine.orm.entity_manager'
+            - '@session'
+            - '@behat.mink.default_session'
             - '@app.behat.storage'
-            - '@__symfony__.Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
-            - '@__symfony__.Angelov\Donut\Core\CommandBus\CommandBusInterface'
-            - '@__symfony__.Angelov\Donut\Users\Repositories\UsersRepositoryInterface'
+            - '@Angelov\Donut\Core\UuidGenerator\UuidGeneratorInterface'
+            - '@Angelov\Donut\Core\CommandBus\CommandBusInterface'
+            - '@Angelov\Donut\Users\Repositories\UsersRepositoryInterface'
 
     app.feature_contexts.setup.pagination:
         class: 'AppBundle\FeatureContexts\Setup\PaginationContext'
-        arguments: ['@mink.default_session']
+        arguments: ['@behat.mink.default_session']
 
     app.feature_contexts.users.registration:
         class: 'AppBundle\FeatureContexts\RegistrationContext'

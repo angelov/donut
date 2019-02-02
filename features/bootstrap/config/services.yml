@@ -4,17 +4,12 @@ imports:
 
 services:
 
-    mink.default_session:
-        class: 'Behat\Mink\Session'
-        factory: ['@__behat__.mink', 'getSession']
-        lazy: true
-
     app.behat.storage:
         class: 'Angelov\Donut\Behat\Service\Storage\InMemoryStorage'
 
     app.behat.validation_errors_parser:
         class: 'Angelov\Donut\Behat\Service\ValidationErrorsChecker\ValidationErrorsParser'
-        arguments: ['@mink.default_session']
+        arguments: ['@behat.mink.default_session']
 
     app.behat.validation_errors_checker:
         class: 'Angelov\Donut\Behat\Service\ValidationErrorsChecker\GlobalValidationErrorsChecker'
@@ -22,7 +17,7 @@ services:
 
     app.behat.alerts_parser:
         class: 'Angelov\Donut\Behat\Service\AlertsChecker\BootstrapAlertsParser'
-        arguments: ['@mink.default_session']
+        arguments: ['@behat.mink.default_session']
 
     app.behat.alerts_checker:
         class: 'Angelov\Donut\Behat\Service\AlertsChecker\AlertsChecker'

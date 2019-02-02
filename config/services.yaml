@@ -11,6 +11,7 @@ services:
 
     Angelov\Donut\:
         resource: '../src/Donut/*'
+        exclude: '../src/Donut/Behat'
 
     AppBundle\:
         resource: '../src/AppBundle/*'

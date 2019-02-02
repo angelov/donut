@@ -41,3 +41,7 @@ behat.yml
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> friends-of-behat/symfony-extension ###
+/behat.yml
+###< friends-of-behat/symfony-extension ###
