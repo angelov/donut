@@ -32,7 +32,7 @@ jobs:
         - redis-server
         - rabbitmq
       before_install:
-        - mv etc/travis/.env .env
+        - mv etc/travis/.env.test .env.test
         - sudo apt-get update > /dev/null
         - sh -c ./etc/travis/install-jdk8.sh
         - sh -c ./etc/travis/install-neo4j.sh
