@@ -3,11 +3,11 @@
 namespace Angelov\Donut\Tests\Api;
 
 // @temporary
-use Lakion\ApiTestCase\JsonApiTestCase;
+use ApiTestCase\JsonApiTestCase;
 
 class ApiTestCase extends JsonApiTestCase
 {
-    public function tearDown()
+    public function tearDown() : void
     {
         $this->client = null;
 

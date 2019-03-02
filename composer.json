@@ -66,7 +66,7 @@
         "friends-of-behat/symfony-extension": "^2.0",
         "friends-of-behat/variadic-extension": "^1.0",
         "fzaninotto/faker": "^1.6",
-        "lakion/api-test-case": "^3.1",
+        "lchrusciel/api-test-case": "^4.0",
         "matthiasnoback/symfony-dependency-injection-test": "^3.0",
         "phpspec/phpspec": "^4.0",
         "phpunit/phpunit": "^7.2",
