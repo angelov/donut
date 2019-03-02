@@ -3,7 +3,7 @@
 
 Developed by [Dejan Angelov](http://angelovdejan.me)
 
-[![Build Status](https://travis-ci.com/angelov/donut.svg?token=QFyzVvNy4gWHppYxGyLE&branch=master)](https://travis-ci.com/angelov/donut) 
+[![Build Status](https://travis-ci.org/angelov/donut.svg?branch=master)](https://travis-ci.org/angelov/donut) 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/angelov/donut/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/angelov/donut/?branch=master) 
 
 **Caution:** This is just an experimental project developed only for educational purposes.
