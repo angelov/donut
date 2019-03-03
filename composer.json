@@ -11,7 +11,8 @@
     "autoload-dev": {
         "psr-4": {
             "Angelov\\Donut\\Tests\\Api\\": "tests/Api",
-            "Angelov\\Donut\\Tests\\": "tests/"
+            "Angelov\\Donut\\Tests\\": "tests/",
+            "spec\\Angelov\\": "spec/"
         }
     },
     "require": {
@@ -69,10 +70,13 @@
         "lchrusciel/api-test-case": "^4.0",
         "matthiasnoback/symfony-dependency-injection-test": "^3.0",
         "phpspec/phpspec": "^4.0",
+        "phpstan/phpstan": "^0.11.2",
+        "phpstan/phpstan-doctrine": "^0.11.1",
+        "phpstan/phpstan-phpunit": "^0.11.0",
+        "phpstan/phpstan-symfony": "^0.11.1",
         "phpunit/phpunit": "^7.2",
         "symfony/dotenv": "^4.1",
         "symfony/phpunit-bridge": "^4.1",
-        "vimeo/psalm": "^0.3",
         "webmozart/assert": "^1.2"
     },
 

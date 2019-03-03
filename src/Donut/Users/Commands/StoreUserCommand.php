@@ -59,7 +59,7 @@ class StoreUserCommand
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
-        $this->city = $cityId;
+        $this->cityId = $cityId;
         $this->id = $id;
     }
 
@@ -85,6 +85,6 @@ class StoreUserCommand
 
     public function getCityId() : string
     {
-        return $this->city;
+        return $this->cityId;
     }
 }
