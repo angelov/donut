@@ -23,7 +23,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: bcmath, mbstring
-          tools: symfony
+          tools: composer:v1, symfony
 
       - name: Shutdown Ubuntu MySQL
         run: sudo service mysql stop
