@@ -1,0 +1,63 @@
+name: Default
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4']
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: bcmath, mbstring
+          tools: symfony
+
+      - name: Shutdown Ubuntu MySQL
+        run: sudo service mysql stop
+
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: '5.7'
+          mysql root password: 'root'
+
+      - name: Setup Neo4j
+        uses: baptouuuu/setup-neo4j@v1.2.0
+        with:
+          password: neo4j
+
+      - name: Setup RabbitMq
+        uses: getong/rabbitmq-action@v1.2
+        with:
+          rabbitmq version: '3.8.2-management-alpine'
+          host port: 5672
+          rabbitmq user: 'guest'
+          rabbitmq password: 'guest'
+          rabbitmq vhost: 'vhost'
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run PHPSpec
+        run: vendor/bin/phpspec run --ansi --no-interaction -f dot
