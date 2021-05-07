@@ -33,7 +33,7 @@ jobs:
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
-          mysql version: ${{ matrix.php-versions }}
+          mysql version: ${{ matrix.mysql-versions }}
           mysql root password: 'root'
 
       - name: Setup Neo4j
