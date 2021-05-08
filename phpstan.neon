@@ -6,4 +6,4 @@ includes:
 
 parameters:
     symfony:
-        container_xml_path: '%rootDir%/../../../var/cache/dev/AppBundleAppBundle_KernelDevDebugContainer.xml'
+        container_xml_path: 'var/cache/dev/AppBundleAppBundle_KernelDevDebugContainer.xml'

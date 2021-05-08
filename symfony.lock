@@ -218,6 +218,9 @@
     "lakion/api-test-case": {
         "version": "v3.1.1"
     },
+    "lchrusciel/api-test-case": {
+        "version": "v4.0.0"
+    },
     "matthiasnoback/symfony-config-test": {
         "version": "4.0.0"
     },
