@@ -80,6 +80,9 @@ jobs:
           mv etc/github/.env.test .env.test
           composer dump-env $APP_ENV
 
+      - name: Warmup cache
+        run: bin/console cache:warmup
+
       - name: Analyze with PHPStan
         run: phpstan analyse -l 6 src
         continue-on-error: true
