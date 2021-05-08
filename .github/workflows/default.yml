@@ -71,7 +71,7 @@ jobs:
 
       - name: Dump the environment
         run: |
-          echo "DATABASE_URL=$DATABASE_URL" >> .env.$APP_ENV
+          mv etc/github/.env.test .env.test
           composer dump-env $APP_ENV
 
       - name: Run PHPSpec
@@ -84,7 +84,7 @@ jobs:
 
       - name: Run PHPUnit
         run: |
-          mv etc/travis/phpunit.xml phpunit.xml
+          mv etc/github/phpunit.xml phpunit.xml
           vendor/bin/phpunit
 
       - name: Run Behat
