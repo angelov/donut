@@ -82,7 +82,7 @@ jobs:
           APP_ENV=dev bin/console cache:warmup
 
       - name: Check coding style
-        run: phpcs --standard=PSR2 src/ spec/ tests/
+        run: phpcs --standard=PSR2 src/
         continue-on-error: true
 
       - name: Analyze with PHPStan
