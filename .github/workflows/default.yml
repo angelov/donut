@@ -19,7 +19,6 @@ jobs:
 
     env:
       APP_ENV: test
-      DATABASE_URL: "mysql://root:root@127.0.0.1:3306/donut_test"
 
     steps:
       - uses: actions/checkout@v2
@@ -57,9 +56,6 @@ jobs:
       - name: Setup Redis
         uses: zhulik/redis-action@1.1.0
 
-      #- name: Validate composer.json and composer.lock
-      #  run: composer validate --strict
-
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v2
@@ -72,8 +68,8 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      #- name: Add Mockery
-      #  run: COMPOSER_MEMORY_LIMIT=-1 composer require mockery/mockery --dev
+      - name: Add Mockery
+        run: COMPOSER_MEMORY_LIMIT=-1 composer require mockery/mockery --dev
 
       - name: Dump the environment
         run: |
@@ -97,10 +93,10 @@ jobs:
           APP_ENV=test bin/console doctrine:database:create -vvv
           APP_ENV=test bin/console doctrine:migrations:migrate -n -vvv
 
-      #- name: Run PHPUnit
-      #  run: |
-      #    mv etc/github/phpunit.xml phpunit.xml
-      #    vendor/bin/phpunit
+      - name: Run PHPUnit
+        run: |
+          mv etc/github/phpunit.xml phpunit.xml
+          vendor/bin/phpunit
 
       - name: Run Behat
         run: vendor/bin/behat --format=progress
