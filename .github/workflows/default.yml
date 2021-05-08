@@ -29,7 +29,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: bcmath, mbstring
-          tools: composer:v1, symfony
+          tools: composer:v1, symfony, phpstan
 
       - name: Shutdown Ubuntu MySQL
         run: sudo service mysql stop
@@ -79,6 +79,9 @@ jobs:
         run: |
           mv etc/github/.env.test .env.test
           composer dump-env $APP_ENV
+
+      - name: Analyze with PHPStan
+        run: phpstan analyse -l 6 src
 
       - name: Run PHPSpec
         run: vendor/bin/phpspec run --ansi --no-interaction -f dot
