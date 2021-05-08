@@ -83,6 +83,7 @@ jobs:
 
       - name: Check coding style
         run: phpcs --standard=PSR2 src/ spec/ tests/
+        continue-on-error: true
 
       - name: Analyze with PHPStan
         run: vendor/bin/phpstan analyse -l 6 src
