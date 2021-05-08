@@ -69,6 +69,11 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
+      - name: Dump the environment
+        run: |
+          echo "DATABASE_URL=$DATABASE_URL" >> .env.$APP_ENV
+          composer dump-env $APP_ENV
+
       - name: Run PHPSpec
         run: vendor/bin/phpspec run --ansi --no-interaction -f dot
 
