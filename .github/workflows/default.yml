@@ -79,8 +79,8 @@ jobs:
 
       - name: Prepare database
         run: |
-          APP_ENV=test mysql -e 'CREATE DATABASE IF NOT EXISTS donut_test;'
-          APP_ENV=test ./bin/console doctrine:migrations:migrate --no-interaction --quiet
+          APP_ENV=test bin/console doctrine:database:create -vvv
+          APP_ENV=test bin/console doctrine:migrations:migrate -n -vvv
 
       - name: Run PHPUnit
         run: |
