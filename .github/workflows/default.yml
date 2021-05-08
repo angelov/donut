@@ -17,6 +17,10 @@ jobs:
         php-versions: ['7.2'] #, '7.3', '7.4']
         mysql-versions: ['5.7'] #, '8.0']
 
+    env:
+      APP_ENV: test
+      DATABASE_URL: "mysql://db_user:db_password@127.0.0.1:3306/db_name"
+
     steps:
       - uses: actions/checkout@v2
 
@@ -68,8 +72,15 @@ jobs:
       - name: Run PHPSpec
         run: vendor/bin/phpspec run --ansi --no-interaction -f dot
 
+      - name: Prepare database
+        run: |
+          APP_ENV=test mysql -e 'CREATE DATABASE IF NOT EXISTS donut_test;'
+          APP_ENV=test ./bin/console doctrine:migrations:migrate --no-interaction --quiet
+
       - name: Run PHPUnit
-        run: vendor/bin/phpunit
+        run: |
+          mv etc/travis/phpunit.xml phpunit.xml
+          vendor/bin/phpunit
 
       - name: Run Behat
         run: vendor/bin/behat --format=progress
