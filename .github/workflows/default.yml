@@ -86,7 +86,7 @@ jobs:
           APP_ENV=dev bin/console cache:warmup
 
       - name: Analyze with PHPStan
-        run: phpstan analyse -l 6 src
+        run: vendor/bin/phpstan analyse -l 6 src
         continue-on-error: true
 
       - name: Run PHPSpec
