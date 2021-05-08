@@ -82,6 +82,7 @@ jobs:
 
       - name: Analyze with PHPStan
         run: phpstan analyse -l 6 src
+        continue-on-error: true
 
       - name: Run PHPSpec
         run: vendor/bin/phpspec run --ansi --no-interaction -f dot
