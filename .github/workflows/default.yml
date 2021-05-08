@@ -28,7 +28,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: bcmath, mbstring
-          tools: composer:v1, symfony, phpstan
+          tools: composer:v1, symfony, phpcs
 
       - name: Shutdown Ubuntu MySQL
         run: sudo service mysql stop
@@ -80,6 +80,9 @@ jobs:
         run: |
           APP_ENV=test bin/console cache:warmup
           APP_ENV=dev bin/console cache:warmup
+
+      - name: Check coding style
+        run: phpcs --standard=PSR2 src/ spec/ tests/
 
       - name: Analyze with PHPStan
         run: vendor/bin/phpstan analyse -l 6 src
