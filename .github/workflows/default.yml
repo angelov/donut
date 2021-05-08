@@ -43,7 +43,7 @@ jobs:
       - name: Setup Neo4j
         uses: baptouuuu/setup-neo4j@v1.2.0
         with:
-          password: neo4j
+          password: 'neo4j'
 
       - name: Setup RabbitMq
         uses: getong/rabbitmq-action@v1.2
@@ -53,6 +53,9 @@ jobs:
           rabbitmq user: 'guest'
           rabbitmq password: 'guest'
           rabbitmq vhost: 'vhost'
+
+      - name: Setup Redis
+        uses: zhulik/redis-action@1.1.0
 
       #- name: Validate composer.json and composer.lock
       #  run: composer validate --strict
