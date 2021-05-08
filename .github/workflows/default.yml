@@ -68,9 +68,6 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-#      - name: Add Mockery
-#        run: COMPOSER_MEMORY_LIMIT=-1 composer require mockery/mockery --dev
-
       - name: Dump the environment
         run: |
           mv etc/github/.env.test .env.test
