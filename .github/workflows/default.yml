@@ -42,6 +42,8 @@ jobs:
 
       - name: Setup Neo4j
         uses: mdanics/Setup-Neo4j@1.0.0
+        with:
+          tag: '3.5'
 
       - name: Setup RabbitMq
         uses: getong/rabbitmq-action@v1.2
