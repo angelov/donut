@@ -13,7 +13,7 @@
         <server name="KERNEL_CLASS" value="AppBundle\Kernel" />
         <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
 
-        <env name="NEO4J_DSN" value="bolt://neo4j:neo4j@localhost:7687" />
+        <env name="NEO4J_DSN" value="bolt://@localhost:7687" />
 
         <!-- ###+ doctrine/doctrine-bundle ### -->
         <!-- Format described at http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url -->
