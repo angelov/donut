@@ -81,7 +81,9 @@ jobs:
           composer dump-env $APP_ENV
 
       - name: Warmup cache
-        run: bin/console cache:warmup
+        run: |
+          APP_ENV=test bin/console cache:warmup
+          APP_ENV=dev bin/console cache:warmup
 
       - name: Analyze with PHPStan
         run: phpstan analyse -l 6 src
