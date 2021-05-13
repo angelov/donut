@@ -28,7 +28,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: bcmath, mbstring
-          tools: composer:v1, symfony, phpcs
+          tools: composer, symfony, phpcs
 
       - name: Shutdown Ubuntu MySQL
         run: sudo service mysql stop
@@ -67,9 +67,6 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
-
-      - name: Add Mockery
-        run: COMPOSER_MEMORY_LIMIT=-1 composer require mockery/mockery --dev
 
       - name: Dump the environment
         run: |
