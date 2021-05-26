@@ -28,11 +28,11 @@
 namespace ApiBundle\Controller;
 
 use Angelov\Donut\Communities\Repositories\CommunitiesRepositoryInterface;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Response;
 
-class CommunityController extends FOSRestController
+class CommunityController extends AbstractFOSRestController
 {
     private $communities;
 

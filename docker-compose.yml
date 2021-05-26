@@ -26,10 +26,10 @@ services:
       container_name: donut-webserver
       working_dir: /application
       volumes:
-          - .:/application
-          - ./etc/docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+        - .:/application
+        - ./etc/docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       ports:
-       - "8080:80"
+        - "8080:80"
 
     php-fpm:
       build: etc/docker/php-fpm
@@ -37,10 +37,10 @@ services:
       working_dir: /application
       volumes:
         - .:/application
-        - ./etc/docker/php-fpm/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini
+        - ./etc/docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
 
     neo4j:
-      image: neo4j:latest
+      image: neo4j:3.5
       container_name: donut-neo4j
       environment:
        - NEO4J_AUTH=neo4j/blabla

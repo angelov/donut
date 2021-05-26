@@ -47,7 +47,7 @@ class Neo4jFriendshipsRecorderTest extends TestCase
     /** @var $usersFactory UsersFactory */
     private $usersFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

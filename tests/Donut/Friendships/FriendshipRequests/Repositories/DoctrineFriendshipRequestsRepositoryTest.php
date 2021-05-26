@@ -48,7 +48,7 @@ class DoctrineFriendshipRequestsRepositoryTest extends TestCase
     /** @var UuidGeneratorInterface */
     private $uuidGenerator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

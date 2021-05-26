@@ -45,7 +45,7 @@ class DoctrineUsersRepositoryTest extends TestCase
     /** @var UsersFactory */
     private $usersFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

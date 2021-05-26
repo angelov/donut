@@ -40,7 +40,7 @@ class DoctrineCitiesRepositoryTest extends TestCase
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
