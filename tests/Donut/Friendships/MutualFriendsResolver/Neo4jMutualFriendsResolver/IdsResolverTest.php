@@ -39,7 +39,7 @@ class IdsResolverTest extends TestCase
     /** @var IdsResolver */
     private $resolver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

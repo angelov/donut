@@ -17,6 +17,7 @@
 /web/bundles/
 /web/images/posters/
 .web-server-pid
+.phpunit.result.cache
 
 ###> symfony/web-server-bundle ###
 /.web-server-pid

@@ -58,7 +58,7 @@ class DoctrineCommunitiesRepositoryTest extends TestCase
      */
     private $communitiesFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

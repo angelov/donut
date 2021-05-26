@@ -52,7 +52,7 @@ class DoctrineFriendshipsRepositoryTest extends TestCase
     /** @var UsersRepositoryInterface */
     private $usersRepository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

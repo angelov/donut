@@ -28,12 +28,15 @@
 namespace Angelov\Donut\Tests\Donut\Core\CommandBus;
 
 use Angelov\Donut\Core\CommandBus\AutoconfigureCommandHandlersCompilerPass;
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 class AutoconfigureCommandHandlersCompilerPassTest extends AbstractCompilerPassTestCase
 {
+    use ArraySubsetAsserts;
+
     protected function registerCompilerPass(ContainerBuilder $container) : void
     {
         $container->addCompilerPass(new AutoconfigureCommandHandlersCompilerPass());

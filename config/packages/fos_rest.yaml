@@ -1,6 +1,7 @@
 fos_rest:
-    routing_loader:
-        default_format: json
+
+    body_listener: false
+    routing_loader: false
     format_listener:
         enabled: true
         rules:

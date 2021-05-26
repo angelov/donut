@@ -44,7 +44,7 @@ class DoctrineThoughtsRepositoryTest extends TestCase
     /** @var ThoughtsFactory */
     private $thoughtsFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

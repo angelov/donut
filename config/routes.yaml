@@ -4,7 +4,7 @@ app:
 
 api:
     resource: "../../src/ApiBundle/Controller/"
-    type:     'rest'
+    type:     annotation
     prefix:   /api
 
 fos_oauth_server_token:
